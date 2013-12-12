@@ -7,11 +7,11 @@ require "comable/version"
 Gem::Specification.new do |s|
   s.name        = "comable"
   s.version     = Comable::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Comable."
-  s.description = "TODO: Description of Comable."
+  s.authors     = ["YOSHIDA Hiroki"]
+  s.email       = ["hyoshida@appirits.com"]
+  s.homepage    = "https://github.com/hyoshida/comable#comable"
+  s.summary     = "Comable provides a simple way to add e-commerce features to your Ruby on Rails application."
+  s.description = "Comable provides a simple way to add e-commerce features to your Ruby on Rails application."
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
