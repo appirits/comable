@@ -23,16 +23,6 @@ module Comable::ActsAsComableCustomer
         end
       end
 
-      def add_cart_by_product(product)
-        raise unless product.is_a?(Product)
-        cart_item = Comable::CartItem.where(customer_id: self.id, product_id: product.id).first
-        if cart_item
-          cart_item.update_attributes(quantity: cart_item.quantity.next)
-        else
-          Comable::CartItem.create(customer_id: self.id, product_id: product.id)
-        end
-      end
-
       def cart_items
         Comable::CartItem.where(customer_id: self.id)
       end
@@ -48,6 +38,17 @@ module Comable::ActsAsComableCustomer
       end
 
       private
+
+      def add_cart_by_product(product)
+        raise unless product.is_a?(Product)
+        cart_items = Comable::CartItem.where(customer_id: self.id, product_id: product.id)
+        if cart_items.any?
+          cart_item = cart_items.first
+          cart_item.update_attributes(quantity: cart_item.quantity.next)
+        else
+          cart_items.create
+        end
+      end
 
       def alias_methods_to_comable_customer_accsesor
         config = Comable::Engine::config
