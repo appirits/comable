@@ -14,7 +14,16 @@ module Comable::ActsAsComableCustomer
         alias_methods_to_comable_customer_accsesor
       end
 
-      def add_cart(product)
+      def add_cart(obj)
+        case obj
+        when Product
+          add_cart_by_product(obj)
+        when Array
+          obj.map {|product| add_cart_by_product(product) }
+        end
+      end
+
+      def add_cart_by_product(product)
         raise unless product.is_a?(Product)
         cart_item = Comable::CartItem.where(customer_id: self.id, product_id: product.id).first
         if cart_item
@@ -26,6 +35,16 @@ module Comable::ActsAsComableCustomer
 
       def cart_items
         Comable::CartItem.where(customer_id: self.id)
+      end
+
+      def cart
+        Cart.new(cart_items)
+      end
+
+      class Cart < Array
+        def price
+          self.sum(&:price)
+        end
       end
 
       private
