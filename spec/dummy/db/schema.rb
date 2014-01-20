@@ -11,16 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131214194807) do
+ActiveRecord::Schema.define(version: 20140120051547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comable_cart_items", force: true do |t|
+    t.integer "customer_id",             null: false
+    t.integer "product_id",              null: false
+    t.integer "quantity",    default: 1, null: false
+  end
+
+  add_index "comable_cart_items", ["customer_id", "product_id"], name: "index_comable_cart_items_on_customer_id_and_product_id", unique: true, using: :btree
+
+  create_table "customers", force: true do |t|
+    t.string "family_name", null: false
+    t.string "first_name",  null: false
+  end
 
   create_table "products", force: true do |t|
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "code",       null: false
+    t.integer  "price"
+    t.text     "caption"
   end
 
 end
