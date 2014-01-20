@@ -5,5 +5,7 @@ class CreateComableCartItems < ActiveRecord::Migration
       t.integer :product_id, null: false
       t.integer :quantity, default: 1, null: false
     end
+
+    add_index :comable_cart_items, [ :customer_id, :product_id ], unique: true
   end
 end
