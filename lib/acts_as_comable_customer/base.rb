@@ -20,6 +20,17 @@ module Comable::ActsAsComableCustomer
           add_cart_by_product(obj)
         when Array
           obj.map {|product| add_cart_by_product(product) }
+        else
+          raise
+        end
+      end
+
+      def remove_cart(obj)
+        case obj
+        when Product
+          remove_cart_by_product(obj)
+        else
+          raise
         end
       end
 
@@ -47,6 +58,20 @@ module Comable::ActsAsComableCustomer
           cart_item.update_attributes(quantity: cart_item.quantity.next)
         else
           cart_items.create
+        end
+      end
+
+      def remove_cart_by_product(product)
+        raise unless product.is_a?(Product)
+
+        cart_item = Comable::CartItem.where(customer_id: self.id, product_id: product.id).first
+        return false unless cart_item
+
+        cart_item.quantity = cart_item.quantity.pred
+        if cart_item.quantity.nonzero?
+          cart_item.save
+        else
+          cart_item.destroy
         end
       end
 
