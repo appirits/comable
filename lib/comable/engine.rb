@@ -7,6 +7,6 @@ module Comable
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
 
-    config.product_default_column_names = %i( name code )
+    config.product_default_column_names = %i( name code price caption )
   end
 end

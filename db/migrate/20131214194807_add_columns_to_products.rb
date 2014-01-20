@@ -2,6 +2,8 @@ class AddColumnsToProducts < ActiveRecord::Migration
   def change
     add_column_safety_to_products :name, :string, null: false
     add_column_safety_to_products :code, :string, null: false
+    add_column_safety_to_products :price, :integer
+    add_column_safety_to_products :caption, :text
   end
 
   private
