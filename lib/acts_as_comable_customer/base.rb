@@ -16,7 +16,7 @@ module Comable::ActsAsComableCustomer
 
       def add_cart_item(obj)
         case obj
-        when Product
+        when ::Comable::Engine::config.product_table.to_s.classify.constantize
           add_product(obj)
         when Array
           obj.map {|product| add_product(product) }
@@ -27,7 +27,7 @@ module Comable::ActsAsComableCustomer
 
       def remove_cart_item(obj)
         case obj
-        when Product
+        when ::Comable::Engine::config.product_table.to_s.classify.constantize
           remove_product(obj)
         else
           raise
@@ -35,7 +35,8 @@ module Comable::ActsAsComableCustomer
       end
 
       def cart_items
-        Comable::CartItem.where(customer_id: self.id)
+        customer_id = "#{::Comable::Engine::config.customer_table.to_s.singularize}_id"
+        Comable::CartItem.where(customer_id => self.id)
       end
 
       def cart
@@ -51,8 +52,12 @@ module Comable::ActsAsComableCustomer
       private
 
       def add_product(product)
-        raise unless product.is_a?(Product)
-        cart_items = Comable::CartItem.where(customer_id: self.id, product_id: product.id)
+        raise unless product.is_a?(::Comable::Engine::config.product_table.to_s.classify.constantize)
+
+        customer_id = "#{::Comable::Engine::config.customer_table.to_s.singularize}_id"
+        product_id = "#{::Comable::Engine::config.product_table.to_s.singularize}_id"
+
+        cart_items = Comable::CartItem.where(customer_id => self.id, product_id => product.id)
         if cart_items.any?
           cart_item = cart_items.first
           cart_item.update_attributes(quantity: cart_item.quantity.next)
@@ -62,9 +67,12 @@ module Comable::ActsAsComableCustomer
       end
 
       def remove_product(product)
-        raise unless product.is_a?(Product)
+        raise unless product.is_a?(::Comable::Engine::config.product_table.to_s.classify.constantize)
 
-        cart_item = Comable::CartItem.where(customer_id: self.id, product_id: product.id).first
+        customer_id = "#{::Comable::Engine::config.customer_table.to_s.singularize}_id"
+        product_id = "#{::Comable::Engine::config.product_table.to_s.singularize}_id"
+
+        cart_item = Comable::CartItem.where(customer_id => self.id, product_id => product.id).first
         return false unless cart_item
 
         cart_item.quantity = cart_item.quantity.pred
