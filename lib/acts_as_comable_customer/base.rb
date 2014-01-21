@@ -14,21 +14,21 @@ module Comable::ActsAsComableCustomer
         alias_methods_to_comable_customer_accsesor
       end
 
-      def add_cart(obj)
+      def add_cart_item(obj)
         case obj
         when Product
-          add_cart_by_product(obj)
+          add_product(obj)
         when Array
-          obj.map {|product| add_cart_by_product(product) }
+          obj.map {|product| add_product(product) }
         else
           raise
         end
       end
 
-      def remove_cart(obj)
+      def remove_cart_item(obj)
         case obj
         when Product
-          remove_cart_by_product(obj)
+          remove_product(obj)
         else
           raise
         end
@@ -50,7 +50,7 @@ module Comable::ActsAsComableCustomer
 
       private
 
-      def add_cart_by_product(product)
+      def add_product(product)
         raise unless product.is_a?(Product)
         cart_items = Comable::CartItem.where(customer_id: self.id, product_id: product.id)
         if cart_items.any?
@@ -61,7 +61,7 @@ module Comable::ActsAsComableCustomer
         end
       end
 
-      def remove_cart_by_product(product)
+      def remove_product(product)
         raise unless product.is_a?(Product)
 
         cart_item = Comable::CartItem.where(customer_id: self.id, product_id: product.id).first
