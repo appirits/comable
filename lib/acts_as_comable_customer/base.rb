@@ -86,8 +86,7 @@ module Comable::ActsAsComableCustomer
         config = Comable::Engine::config
         return unless config.respond_to?(:customer_columns)
 
-        config.customer_default_column_names.each do |column_name|
-          actual_column_name = config.customer_columns[column_name]
+        config.customer_columns.each_pair do |column_name,actual_column_name|
           next if actual_column_name.blank?
           next if actual_column_name == column_name
 

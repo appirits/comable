@@ -20,8 +20,7 @@ module Comable::ActsAsComableProduct
         config = Comable::Engine::config
         return unless config.respond_to?(:product_columns)
 
-        config.product_default_column_names.each do |column_name|
-          actual_column_name = config.product_columns[column_name]
+        config.product_columns.each_pair do |column_name,actual_column_name|
           next if actual_column_name.blank?
           next if actual_column_name == column_name
 
