@@ -4,6 +4,8 @@ module Comable::ActsAsComableCustomer
 
     module ClassMethods
       def acts_as_comable_customer
+        has_many :comable_orders, class_name: 'Comable::Order'
+        alias_method :orders, :comable_orders
         include InstanceMethods
       end
     end
@@ -47,6 +49,10 @@ module Comable::ActsAsComableCustomer
         def price
           self.sum(&:price)
         end
+      end
+
+      def order
+        self.orders.create
       end
 
       private
