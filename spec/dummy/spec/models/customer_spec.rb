@@ -3,11 +3,11 @@ require 'spec_helper'
 describe Customer do
   it { expect { described_class.new }.to_not raise_error }
 
-  subject { FactoryGirl.build_stubbed(described_class.name.underscore) }
-
   context "カート処理" do
     let (:products) { FactoryGirl.create_list(:product, 5, :many) }
     let (:product) { products.first }
+
+    subject { FactoryGirl.build_stubbed(described_class.name.underscore) }
 
     it "商品を投入できること" do
       subject.add_cart_item(product)
@@ -46,6 +46,8 @@ describe Customer do
   context "注文処理" do
     let (:product) { FactoryGirl.create(:product) }
 
+    subject { FactoryGirl.create(described_class.name.underscore) }
+
     it "商品を購入できること" do
       subject.add_cart_item(product)
       subject.order
@@ -55,6 +57,12 @@ describe Customer do
       subject.add_cart_item(product)
       subject.order
       expect(subject.orders.last).to be
+    end
+
+    it "受注配送レコードが正しく存在すること" do
+      subject.add_cart_item(product)
+      subject.order
+      expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
     end
   end
 end
