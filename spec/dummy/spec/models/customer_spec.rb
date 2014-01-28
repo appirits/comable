@@ -64,5 +64,11 @@ describe Customer do
       subject.order
       expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
     end
+
+    it "受注詳細レコードが正しく存在すること" do
+      subject.add_cart_item(product)
+      subject.order
+      expect(subject.orders.last.order_deliveries.last.order_details.last.product).to eq(product)
+    end
   end
 end
