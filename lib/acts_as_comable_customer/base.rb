@@ -55,8 +55,8 @@ module Comable::ActsAsComableCustomer
         end
       end
 
-      def order
-        self.orders.create
+      def order(params={})
+        self.orders.create(params)
         self.reset_cart
       end
 

@@ -76,5 +76,34 @@ describe Customer do
       subject.order
       expect(subject.orders.last.order_deliveries.last.order_details.last.product).to eq(product)
     end
+
+    context "複数配送" do
+      let (:params) {
+        {
+          order: {
+            comable_order_deliveries_attributes: {
+              0 => {
+                family_name: 'comable',
+                first_name: 'one'
+              },
+              1 => {
+                family_name: 'comable',
+                first_name: 'two'
+              },
+              2 => {
+                family_name: 'comable',
+                first_name: 'three'
+              }
+            }
+          }
+        }
+      }
+
+      it "受注配送レコードが複数個存在すること" do
+        subject.add_cart_item(product)
+        subject.order(params[:order])
+        expect(subject.orders.last.order_deliveries.count).to eq(3)
+      end
+    end
   end
 end
