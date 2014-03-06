@@ -3,10 +3,12 @@ module Comable
     belongs_to Comable::Engine::config.customer_table.to_s.singularize.to_sym
     has_many :comable_order_deliveries, dependent: :destroy, class_name: 'Comable::OrderDelivery', foreign_key: 'comable_order_id'
 
+    accepts_nested_attributes_for :comable_order_deliveries
+
     alias_method :order_deliveries, :comable_order_deliveries
 
     before_create :generate_code
-    after_create :create_order_delivery
+    before_create :assign_default_attributes
 
     private
 
@@ -17,12 +19,8 @@ module Comable
       end
     end
 
-    def create_order_delivery
-      customer = self.send(Comable::Engine::config.customer_table.to_s.singularize)
-      self.order_deliveries.create(
-        family_name: customer.family_name,
-        first_name: customer.first_name
-      )
+    def assign_default_attributes
+      self.order_deliveries.build if self.order_deliveries.empty?
     end
   end
 end
