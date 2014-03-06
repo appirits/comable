@@ -36,6 +36,10 @@ module Comable::ActsAsComableCustomer
         end
       end
 
+      def reset_cart
+        self.cart_items.destroy_all
+      end
+
       def cart_items
         customer_id = "#{Comable::Engine::config.customer_table.to_s.singularize}_id"
         Comable::CartItem.where(customer_id => self.id)
@@ -53,6 +57,7 @@ module Comable::ActsAsComableCustomer
 
       def order
         self.orders.create
+        self.reset_cart
       end
 
       private

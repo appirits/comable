@@ -53,6 +53,12 @@ describe Customer do
       subject.order
     end
 
+    it "商品を購入後はカートが空になること" do
+      subject.add_cart_item(product)
+      subject.order
+      expect(subject.cart_items).to be_empty
+    end
+
     it "受注レコードが正しく存在すること" do
       subject.add_cart_item(product)
       subject.order
