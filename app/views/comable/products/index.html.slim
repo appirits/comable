@@ -4,7 +4,7 @@ ul.products
   - @products.each do |product|
     li.product
       h2.name
-        = product.name
+        = link_to product.name, comable.product_path(product)
       .caption
         = product.caption
       .price
