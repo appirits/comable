@@ -2,8 +2,12 @@ module Comable::ActsAsComableCustomer
   module Base
     extend ActiveSupport::Concern
 
+    class Comable::InvalidOrder < StandardError; end
+
     module ClassMethods
       def acts_as_comable_customer
+        has_many :comable_orders, class_name: 'Comable::Order'
+        alias_method :orders, :comable_orders
         include InstanceMethods
       end
     end
@@ -34,6 +38,10 @@ module Comable::ActsAsComableCustomer
         end
       end
 
+      def reset_cart
+        self.cart_items.destroy_all
+      end
+
       def cart_items
         customer_id = "#{Comable::Engine::config.customer_table.to_s.singularize}_id"
         Comable::CartItem.where(customer_id => self.id)
@@ -47,6 +55,15 @@ module Comable::ActsAsComableCustomer
         def price
           self.sum(&:price)
         end
+      end
+
+      def order(params={})
+        order = self.orders.build(params)
+        order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
+          next unless order_detail.product
+          raise Comable::InvalidOrder unless self.remove_cart_item(order_detail.product)
+        end
+        order.save
       end
 
       private
@@ -86,8 +103,7 @@ module Comable::ActsAsComableCustomer
         config = Comable::Engine::config
         return unless config.respond_to?(:customer_columns)
 
-        config.customer_default_column_names.each do |column_name|
-          actual_column_name = config.customer_columns[column_name]
+        config.customer_columns.each_pair do |column_name,actual_column_name|
           next if actual_column_name.blank?
           next if actual_column_name == column_name
 
