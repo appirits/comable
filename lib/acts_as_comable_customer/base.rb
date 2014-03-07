@@ -2,6 +2,8 @@ module Comable::ActsAsComableCustomer
   module Base
     extend ActiveSupport::Concern
 
+    class Comable::InvalidOrder < StandardError; end
+
     module ClassMethods
       def acts_as_comable_customer
         has_many :comable_orders, class_name: 'Comable::Order'
@@ -59,7 +61,7 @@ module Comable::ActsAsComableCustomer
         order = self.orders.build(params)
         order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
           next unless order_detail.product
-          self.remove_cart_item(order_detail.product)
+          raise Comable::InvalidOrder unless self.remove_cart_item(order_detail.product)
         end
         order.save
       end

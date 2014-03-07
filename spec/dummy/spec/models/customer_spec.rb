@@ -117,6 +117,18 @@ describe Customer do
           }
         }
       }
+      let (:invalid_params) {
+        params[:order][:comable_order_deliveries_attributes][1].update(
+          comable_order_details_attributes: {
+            0 => {
+              product_id: product.id,
+              quantity: 1,
+              price: product.price
+            }
+          }
+        )
+        params
+      }
 
       it "受注配送レコードが複数個存在すること" do
         subject.add_cart_item(product)
@@ -128,6 +140,11 @@ describe Customer do
         subject.add_cart_item(product)
         subject.order(params[:order])
         expect(subject.orders.last.order_deliveries.map(&:order_details).flatten.count).to eq(1)
+      end
+
+      it "不正なパラメータが渡された場合にエラーが発生すること" do
+        subject.add_cart_item(product)
+        expect { subject.order(invalid_params[:order]) }.to raise_error(Comable::InvalidOrder)
       end
     end
   end
