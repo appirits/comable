@@ -65,10 +65,22 @@ describe Customer do
       expect(subject.orders.last).to be
     end
 
+    it "受注配送レコードが１つ存在すること" do
+      subject.add_cart_item(product)
+      subject.order
+      expect(subject.orders.last.order_deliveries.count).to eq(1)
+    end
+
     it "受注配送レコードが正しく存在すること" do
       subject.add_cart_item(product)
       subject.order
       expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
+    end
+
+    it "受注詳細レコードが１つ存在すること" do
+      subject.add_cart_item(product)
+      subject.order
+      expect(subject.orders.last.order_deliveries.last.order_details.count).to eq(1)
     end
 
     it "受注詳細レコードが正しく存在すること" do
@@ -103,6 +115,12 @@ describe Customer do
         subject.add_cart_item(product)
         subject.order(params[:order])
         expect(subject.orders.last.order_deliveries.count).to eq(3)
+      end
+
+      it "１つの受注レコードに受注詳細レコードが１つだけ紐づくこと" do
+        subject.add_cart_item(product)
+        subject.order(params[:order])
+        expect(subject.orders.last.order_deliveries.map(&:order_details).flatten.count).to eq(1)
       end
     end
   end

@@ -20,7 +20,7 @@ module Comable
       self.family_name ||= customer.family_name
       self.first_name ||= customer.first_name
 
-      assign_default_attributes_to_order_details if self.order_details.empty?
+      assign_default_attributes_to_order_details if first_order_detail?
     end
 
     def assign_default_attributes_to_order_details
@@ -34,6 +34,10 @@ module Comable
           :price => cart_item.price
         )
       end
+    end
+
+    def first_order_detail?
+      self.order.order_deliveries.count.zero? && self.order_details.empty?
     end
   end
 end
