@@ -2,6 +2,12 @@ language:
   - ruby
 rvm:
   - 2.1.0
+env:
+  - RAILS_VERSION=
+  - RAILS_VERSION=4.0.0
+  - RAILS_VERSION=3.2.0
+before_install:
+  - sh -c '[ "$RAILS_VERSION" = "" ] || rm Gemfile.lock'
 before_script:
-  - createuser --createdb dummy
+  - psql -U postgres -c 'CREATE ROLE dummy WITH LOGIN CREATEDB;'
   - bundle exec rake db:create

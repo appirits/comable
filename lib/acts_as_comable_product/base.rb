@@ -1,6 +1,8 @@
 module Comable::ActsAsComableProduct
   module Base
-    extend ActiveSupport::Concern
+    def self.included(base)
+      base.extend ClassMethods
+    end
 
     module ClassMethods
       def acts_as_comable_product

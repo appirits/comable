@@ -1,6 +1,8 @@
 module Comable::ActsAsComableCustomer
   module Base
-    extend ActiveSupport::Concern
+    def self.included(base)
+      base.extend ClassMethods
+    end
 
     class Comable::InvalidOrder < StandardError; end
 
