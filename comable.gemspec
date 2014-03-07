@@ -1,5 +1,15 @@
 $:.push File.expand_path("../lib", __FILE__)
 
+# Testing Against Multiple Rails Versions
+# from http://www.schneems.com/post/50991826838/testing-against-multiple-rails-versions/
+rails_version = ENV["RAILS_VERSION"] || "default"
+rails_version_spec = case rails_version
+when "default"
+  ">= 3.2.0"
+else
+  "~> #{rails_version}"
+end
+
 # Maintain your gem's version:
 require "comable/version"
 
@@ -15,5 +25,5 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
-  s.add_dependency "rails", ">= 4.0.0"
+  s.add_dependency "rails", rails_version_spec
 end
