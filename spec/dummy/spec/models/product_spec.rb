@@ -5,8 +5,9 @@ describe Product do
 
   context "attributes" do
     let (:title) { 'sample product' }
+    let! (:product) { FactoryGirl.create(:product, title: title) }
 
-    subject { described_class.new(title: title) }
+    subject { Product.first }
 
     its (:name) { should eq(title) }
   end

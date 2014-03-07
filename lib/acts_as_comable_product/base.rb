@@ -6,16 +6,12 @@ module Comable::ActsAsComableProduct
 
     module ClassMethods
       def acts_as_comable_product
+        after_initialize :alias_methods_to_comable_product_accsesor
         include InstanceMethods
       end
     end
 
     module InstanceMethods
-      def initialize(attributes={})
-        super
-        alias_methods_to_comable_product_accsesor
-      end
-
       private
 
       def alias_methods_to_comable_product_accsesor
