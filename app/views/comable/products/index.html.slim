@@ -1,0 +1,11 @@
+h1 商品一覧
+
+ul.products
+  - @products.each do |product|
+    li.product
+      h2.name
+        = product.title
+      .caption
+        = product.caption
+      .price
+        = number_to_currency product.price
