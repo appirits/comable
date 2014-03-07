@@ -12,3 +12,10 @@ gemspec
 
 # To use debugger
 # gem 'debugger'
+gem 'coveralls', require: false
+
+group :development, :test do
+  gem 'pg'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails', require: false
+end

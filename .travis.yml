@@ -1,0 +1,7 @@
+language:
+  - ruby
+rvm:
+  - 2.0.0
+before_script:
+  - createuser --createdb dummy
+  - bundle exec rake db:create
