@@ -33,6 +33,8 @@ module Comable
           :quantity => cart_item.quantity,
           :price => cart_item.price
         )
+
+        customer.remove_cart_item(product)
       end
     end
 

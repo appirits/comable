@@ -104,7 +104,14 @@ describe Customer do
               },
               2 => {
                 family_name: 'comable',
-                first_name: 'three'
+                first_name: 'three',
+                comable_order_details_attributes: {
+                  0 => {
+                    product_id: product.id,
+                    quantity: 1,
+                    price: product.price
+                  }
+                }
               }
             }
           }

@@ -56,8 +56,12 @@ module Comable::ActsAsComableCustomer
       end
 
       def order(params={})
-        self.orders.create(params)
-        self.reset_cart
+        order = self.orders.build(params)
+        order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
+          next unless order_detail.product
+          self.remove_cart_item(order_detail.product)
+        end
+        order.save
       end
 
       private
