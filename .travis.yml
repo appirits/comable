@@ -3,4 +3,5 @@ language:
 rvm:
   - 2.0.0
 before_script:
-  - bundle exec rake
+  - createuser --createdb dummy
+  - bundle exec rake db:create
