@@ -93,6 +93,8 @@ describe Customer do
       let (:params) {
         {
           order: {
+            family_name: 'comable',
+            first_name: 'orderer',
             comable_order_deliveries_attributes: {
               0 => {
                 family_name: 'comable',

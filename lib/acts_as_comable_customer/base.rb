@@ -81,6 +81,7 @@ module Comable::ActsAsComableCustomer
           raise Comable::InvalidOrder unless self.remove_cart_item(order_detail.product)
         end
         order.save
+        order
       end
 
       private

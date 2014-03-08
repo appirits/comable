@@ -12,3 +12,6 @@ ul.cart
         = number_to_currency product.price
       .quantity
         = number_with_delimiter cart_item.quantity
+
+.order
+  = link_to '注文', comable.new_order_path

@@ -42,8 +42,10 @@ ActiveRecord::Schema.define(version: 20140128030224) do
   end
 
   create_table "comable_orders", force: true do |t|
-    t.integer  "customer_id", null: false
+    t.integer  "customer_id"
     t.string   "code",        null: false
+    t.string   "family_name", null: false
+    t.string   "first_name",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

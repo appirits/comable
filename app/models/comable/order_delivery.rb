@@ -10,11 +10,13 @@ module Comable
 
     before_create :assign_default_attributes
 
-    def customer
-      self.order.send(Comable::Engine::config.customer_table.to_s.singularize)
+    def customer=(customer)
+      @customer = customer
     end
 
-    private
+    def customer
+      self.order.send(Comable::Engine::config.customer_table.to_s.singularize) || @customer
+    end
 
     def assign_default_attributes
       self.family_name ||= customer.family_name
@@ -22,6 +24,8 @@ module Comable
 
       assign_default_attributes_to_order_details if first_order_detail?
     end
+
+    private
 
     def assign_default_attributes_to_order_details
       customer.cart.each do |cart_item|

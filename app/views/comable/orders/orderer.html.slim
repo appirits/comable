@@ -1,0 +1,7 @@
+h1 注文者情報入力
+
+.orderer
+  = form_for @order, url: comable.orderer_order_path do |f|
+    = f.text_field :family_name, placeholder: '姓'
+    = f.text_field :first_name, placeholder: '名'
+    = f.submit
