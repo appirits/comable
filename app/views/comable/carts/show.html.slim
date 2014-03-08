@@ -1,0 +1,14 @@
+h1 カート
+
+ul.cart
+  - @cart.each do |cart_item|
+    - product = cart_item.product
+    li.product
+      h2.name
+        = link_to product.name, comable.product_path(product)
+      .caption
+        = product.caption
+      .price
+        = number_to_currency product.price
+      .quantity
+        = number_with_delimiter cart_item.quantity

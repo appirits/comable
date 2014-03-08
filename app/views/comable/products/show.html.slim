@@ -5,3 +5,8 @@
     = @product.caption
   .price
     = number_to_currency @product.price
+
+.add_card
+  = form_tag comable.add_cart_path do
+    = hidden_field_tag :product_id, @product.id
+    = submit_tag 'カートに入れる'
