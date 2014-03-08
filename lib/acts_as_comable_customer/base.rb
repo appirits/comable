@@ -18,6 +18,17 @@ module Comable::ActsAsComableCustomer
     end
 
     module InstanceMethods
+      require 'comable/customer_session'
+      include Comable::CustomerSession
+
+      def logged_in?
+        not self.new_record?
+      end
+
+      def not_logged_in?
+        not logged_in?
+      end
+
       def add_cart_item(obj)
         case obj
         when Comable::Engine::config.product_table.to_s.classify.constantize
@@ -39,10 +50,12 @@ module Comable::ActsAsComableCustomer
       end
 
       def reset_cart
+        return super unless self.logged_in?
         self.cart_items.destroy_all
       end
 
       def cart_items
+        return super unless self.logged_in?
         customer_id = "#{Comable::Engine::config.customer_table.to_s.singularize}_id"
         Comable::CartItem.where(customer_id => self.id)
       end
@@ -54,6 +67,10 @@ module Comable::ActsAsComableCustomer
       class Cart < Array
         def price
           self.sum(&:price)
+        end
+
+        def products
+          self.map(&:product)
         end
       end
 
@@ -69,6 +86,8 @@ module Comable::ActsAsComableCustomer
       private
 
       def add_product_to_cart(product)
+        return super unless self.logged_in?
+
         cart_items = find_cart_items_by(product)
         if cart_items.any?
           cart_item = cart_items.first
@@ -79,6 +98,8 @@ module Comable::ActsAsComableCustomer
       end
 
       def remove_product_from_cart(product)
+        return super unless self.logged_in?
+
         cart_item = find_cart_items_by(product).first
         return false unless cart_item
 
@@ -91,6 +112,8 @@ module Comable::ActsAsComableCustomer
       end
 
       def find_cart_items_by(product)
+        return super unless self.logged_in?
+
         raise unless product.is_a?(Comable::Engine::config.product_table.to_s.classify.constantize)
 
         customer_id = "#{Comable::Engine::config.customer_table.to_s.singularize}_id"
