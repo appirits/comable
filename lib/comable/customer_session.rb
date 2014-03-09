@@ -4,7 +4,7 @@ module Comable::CustomerSession
     case obj
     when ActionDispatch::Request::Session
       @session = obj
-      @session['comable.cart_items'] ||= Marshal.dump([])
+      @cart_items = load_cart_from_session
       super()
     else
       super
@@ -12,12 +12,12 @@ module Comable::CustomerSession
   end
 
   def reset_cart
-    @session.delete('comable.cart_items')
-    @session['comable.cart_items'] = Marshal.dump([])
+    @cart_items = []
+    reset_session
   end
 
   def cart_items
-    Marshal.load(@session['comable.cart_items'])
+    @cart_items
   end
 
   private
@@ -38,7 +38,7 @@ module Comable::CustomerSession
       cart_items << Comable::CartItem.new(product_id => product.id)
     end
 
-    @session['comable.cart_items'] = Marshal.dump(cart_items.map(&:dup))
+    save_cart_to_session
   end
 
   def remove_product_from_cart(product)
@@ -55,10 +55,30 @@ module Comable::CustomerSession
     cart_item.quantity = cart_item.quantity.pred
     cart_items.delete(cart_item) if cart_item.quantity.zero?
 
-    @session['comable.cart_items'] = Marshal.dump(cart_items.map(&:dup))
+    save_cart_to_session
   end
 
   def find_cart_items_by(product)
     raise 'not implemented'
+  end
+
+  def reset_session
+    @session.delete('comable.cart')
+  end
+
+  def save_cart_to_session
+    cart_items_dump = Marshal.dump(@cart_items.map(&:dup))
+    cart_items_dump_compressed = Zlib::Deflate.deflate(cart_items_dump)
+    @session['comable.cart'] = cart_items_dump_compressed
+  end
+
+  def load_cart_from_session
+    cart_items_dump_compressed = @session['comable.cart']
+    if cart_items_dump_compressed
+      cart_items_dump = Zlib::Inflate.inflate(cart_items_dump_compressed)
+      @cart_items = Marshal.load(cart_items_dump)
+    else
+      @cart_items = []
+    end
   end
 end
