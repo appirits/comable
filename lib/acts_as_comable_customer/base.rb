@@ -74,10 +74,12 @@ module Comable::ActsAsComableCustomer
         end
       end
 
-      def order(params={})
-        order = self.orders.build(params)
-        Comable::CashRegister.new(customer: self, order: order).exec
-        order
+      def preorder(order_params={})
+        Comable::CashRegister.new(customer: self, order_attributes: order_params).build_order
+      end
+
+      def order(order_params={})
+        Comable::CashRegister.new(customer: self, order_attributes: order_params).create_order
       end
 
       private

@@ -6,22 +6,32 @@ class Comable::CashRegister
 
   def initialize(attributes)
     @customer = attributes[:customer]
-    @order = attributes[:order]
+    @order = @customer.orders.build(attributes[:order_attributes])
   end
 
-  def exec
-    raise Comable::InvalidOrder if invalid
+  def build_order
     assign_default_attributes_to_order
+    raise Comable::InvalidOrder if invalid
+    order
+  end
+
+  def create_order
+    order = build_order
     order.save
+    customer.reset_cart
+    order
   end
 
   def valid
-    # TODO: このメソッド内ではカートの中身をいじらないようにすべき
+    cart = customer.cart
+
     order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
       next unless order_detail.product
-      return false unless customer.remove_cart_item(order_detail.product)
+      result = cart.reject! {|cart_item| cart_item.product == order_detail.product }
+      return false if result.nil?
     end
-    true
+
+    cart.empty?
   end
 
   def invalid
@@ -61,14 +71,10 @@ class Comable::CashRegister
         :quantity => cart_item.quantity,
         :price => cart_item.price
       )
-
-      customer.remove_cart_item(product)
     end
   end
 
   def first_order_detail?(order_delivery)
-    return false unless order.order_deliveries.first == order_delivery
-    return false if order_delivery.order_details.any?
-    true
+    order.order_deliveries.map(&:order_details).all?(&:empty?)
   end
 end

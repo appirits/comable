@@ -24,6 +24,7 @@ module Comable
     end
 
     def confirm
+      @order = @customer.preorder(build_order_nested_attributes)
     end
 
     def create
