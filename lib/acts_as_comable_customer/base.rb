@@ -4,8 +4,6 @@ module Comable::ActsAsComableCustomer
       base.extend ClassMethods
     end
 
-    class Comable::InvalidOrder < StandardError; end
-
     module ClassMethods
       def acts_as_comable_customer
         has_many :comable_orders, class_name: 'Comable::Order'
@@ -19,6 +17,8 @@ module Comable::ActsAsComableCustomer
 
     module InstanceMethods
       require 'comable/customer_session'
+      require 'comable/cash_register'
+
       include Comable::CustomerSession
 
       def logged_in?
@@ -76,11 +76,7 @@ module Comable::ActsAsComableCustomer
 
       def order(params={})
         order = self.orders.build(params)
-        order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
-          next unless order_detail.product
-          raise Comable::InvalidOrder unless self.remove_cart_item(order_detail.product)
-        end
-        order.save
+        Comable::CashRegister.new(customer: self, order: order).exec
         order
       end
 

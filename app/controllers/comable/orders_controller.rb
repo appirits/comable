@@ -58,7 +58,6 @@ module Comable
       order_attributes = JSON.parse(session['comable.order'] || '{}')
       order_attributes.update(order_params) if order_params
       @order = Order.new(order_attributes)
-      @order.customer = @customer
     end
 
     def save
