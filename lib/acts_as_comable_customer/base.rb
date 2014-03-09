@@ -88,7 +88,7 @@ module Comable::ActsAsComableCustomer
         cart_items = find_cart_items_by(product)
         if cart_items.any?
           cart_item = cart_items.first
-          cart_item.update_attributes(quantity: cart_item.quantity.next)
+          cart_item.increment!(:quantity)
         else
           cart_items.create
         end
@@ -100,9 +100,8 @@ module Comable::ActsAsComableCustomer
         cart_item = find_cart_items_by(product).first
         return false unless cart_item
 
-        cart_item.quantity = cart_item.quantity.pred
-        if cart_item.quantity.nonzero?
-          cart_item.save
+        if cart_item.quantity.pred.nonzero?
+          cart_item.decrement!(:quantity)
         else
           cart_item.destroy
         end
