@@ -2,6 +2,7 @@ module Comable
   class OrdersController < ApplicationController
     before_filter :load_order
     before_filter :verify
+    before_filter :redirect_for_logged_in_customer, only: [ :new, :orderer ]
     after_filter :save_order, except: :create
 
     def new
@@ -90,6 +91,10 @@ module Comable
           ]
         )
       end
+    end
+
+    def redirect_for_logged_in_customer
+      return redirect_to delivery_order_path if @customer.logged_in?
     end
   end
 end

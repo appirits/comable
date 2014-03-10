@@ -4,14 +4,16 @@ describe Comable::OrdersController do
   render_views
 
   let (:product) { FactoryGirl.create(:product) }
+  let (:add_to_cart) { customer.add_cart_item(product) }
+  let (:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_order_deliveries_attributes: [ family_name: 'hoge', first_name: 'piyo' ] } } }
 
+  before { login }
   before { add_to_cart }
   before { request }
 
   context "ゲストの場合" do
     let (:customer) { Customer.new(session) }
-    let (:add_to_cart) { customer.add_cart_item(product) }
-    let (:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_order_deliveries_attributes: [ family_name: 'hoge', first_name: 'piyo' ] } } }
+    let (:login) { }
 
     describe "GET 'new'" do
       let (:request) { get :new }
@@ -61,6 +63,46 @@ describe Comable::OrdersController do
         let (:request) { post :create, order_params }
         its (:response) { should redirect_to(:confirm_order) }
       end
+    end
+  end
+
+  context "会員の場合" do
+    let (:customer) { FactoryGirl.create(:customer) }
+    let (:login) { controller.stub(:logged_in_customer).and_return(customer) }
+
+    describe "GET 'new'" do
+      let (:request) { get :new }
+      its (:response) { should redirect_to(:delivery_order) }
+    end
+
+    describe "GET 'orderer'" do
+      let (:request) { get :orderer }
+      its (:response) { should redirect_to(:delivery_order) }
+    end
+
+    describe "POST 'orderer'" do
+      let (:request) { post :orderer, order_params }
+      its (:response) { should redirect_to(:delivery_order) }
+    end
+
+    describe "GET 'delivery'" do
+      let (:request) { get :delivery }
+      its (:response) { should be_success }
+    end
+
+    describe "POST 'delivery'" do
+      let (:request) { post :delivery, order_params }
+      its (:response) { should redirect_to(:confirm_order) }
+    end
+
+    describe "GET 'confirm'" do
+      let (:request) { get :confirm }
+      its (:response) { should be_success }
+    end
+
+    describe "POST 'create'" do
+      let (:request) { post :create, order_params }
+      its (:response) { should be_success }
     end
   end
 end

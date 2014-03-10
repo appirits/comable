@@ -2,6 +2,10 @@ module Comable
   class ApplicationController < ActionController::Base
     before_filter :load
 
+    def logged_in_customer
+      # Please override this method for logged in customer
+    end
+
     private
 
     def load
@@ -10,7 +14,8 @@ module Comable
     end
 
     def load_customer
-      @customer = Customer.new(session)
+      @customer = logged_in_customer
+      @customer ||= Customer.new(session)
     end
 
     def load_cart
