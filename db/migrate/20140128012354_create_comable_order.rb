@@ -1,8 +1,10 @@
 class CreateComableOrder < ActiveRecord::Migration
   def change
     create_table :comable_orders do |t|
-      t.references customer_table_name, null: false
+      t.references customer_table_name
       t.string :code, null: false
+      t.string :family_name, null: false
+      t.string :first_name, null: false
       t.timestamps
     end
   end

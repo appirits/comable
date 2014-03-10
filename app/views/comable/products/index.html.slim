@@ -1,0 +1,11 @@
+h1 商品一覧
+
+ul.products
+  - @products.each do |product|
+    li.product
+      h2.name
+        = link_to product.name, comable.product_path(product)
+      .caption
+        = product.caption
+      .price
+        = number_to_currency product.price

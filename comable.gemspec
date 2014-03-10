@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
   s.add_dependency "rails", rails_version_spec
+  s.add_dependency "slim-rails"
 end

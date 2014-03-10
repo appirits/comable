@@ -7,8 +7,10 @@ module Comable
 
     alias_method :order_deliveries, :comable_order_deliveries
 
+    validates :family_name, presence: true
+    validates :first_name, presence: true
+
     before_create :generate_code
-    before_create :assign_default_attributes
 
     private
 
@@ -17,10 +19,6 @@ module Comable
         random_token = SecureRandom.urlsafe_base64(nil, false)
         break random_token unless self.class.exists?(code: random_token)
       end
-    end
-
-    def assign_default_attributes
-      self.order_deliveries.build if self.order_deliveries.empty?
     end
   end
 end
