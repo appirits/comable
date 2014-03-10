@@ -1,8 +1,8 @@
 module Comable
   class OrdersController < ApplicationController
-    before_filter :load
+    before_filter :load_order
     before_filter :verify
-    after_filter :save, except: :create
+    after_filter :save_order, except: :create
 
     def new
     end
@@ -43,11 +43,6 @@ module Comable
       session.delete('comable.order')
     end
 
-    def load
-      load_customer
-      load_order
-    end
-
     def verify
       if @customer.cart.empty?
         flash[:error] = 'cart is empty'
@@ -55,18 +50,13 @@ module Comable
       end
     end
 
-    def load_customer
-      @customer = Customer.new(session)
-    end
-
     def load_order
-      @customer = Customer.new(session)
       order_attributes = JSON.parse(session['comable.order'] || '{}')
       order_attributes.update(order_params) if order_params
       @order = Order.new(order_attributes)
     end
 
-    def save
+    def save_order
       session['comable.order'] = build_order_nested_attributes.to_json
     end
 
