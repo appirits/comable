@@ -10,14 +10,14 @@ module Comable
     def orderer
       case request.method_symbol
       when :post
-        redirect_to action: :delivery
+        redirect_to comable.delivery_order_path
       end
     end
 
     def delivery
       case request.method_symbol
       when :post
-        redirect_to action: :confirm
+        redirect_to comable.confirm_order_path
       when :get
         @order.order_deliveries.build if @order.order_deliveries.size.zero?
       end
@@ -29,7 +29,12 @@ module Comable
 
     def create
       @order = @customer.order(build_order_nested_attributes)
-      reset_session
+      if @order.valid?
+        reset_session
+      else
+        flash[:error] = 'invalid order'
+        redirect_to comable.confirm_order_path
+      end
     end
 
     private

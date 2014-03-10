@@ -7,6 +7,9 @@ module Comable
 
     alias_method :order_deliveries, :comable_order_deliveries
 
+    validates :family_name, presence: true
+    validates :first_name, presence: true
+
     before_create :generate_code
 
     private

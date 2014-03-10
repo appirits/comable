@@ -1,8 +1,8 @@
 module Comable::CustomerSession
   def initialize(*args)
     obj = args.first
-    case obj
-    when session_class
+    case obj.class.name
+    when /Session/
       @session = obj
       @cart_items = load_cart_from_session
       super()
@@ -79,15 +79,6 @@ module Comable::CustomerSession
       @cart_items = Marshal.load(cart_items_dump)
     else
       @cart_items = []
-    end
-  end
-
-  def session_class
-    case Rails.version.split('.').first.to_i
-    when 4
-      ActionDispatch::Request::Session
-    when 3
-      Rack::Session::Abstract::SessionHash
     end
   end
 end
