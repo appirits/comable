@@ -7,6 +7,13 @@
 
 This project rocks and uses MIT-LICENSE.
 
+## Requirements
+
+* Ruby on Rails 3.2, 4.0
+* Ruby 2.1
+
+And `strong_parameters` gem is required only for Rails 3.
+
 ## Development
 
 To set up a development environment, simply do:
