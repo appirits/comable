@@ -23,7 +23,16 @@ module EngineControllerTestMonkeyPatch
   private
 
   def process_action(action, parameters = nil, session = nil, flash = nil, method = "GET")
+    default_parameters = { use_route: :comable }
+
     parameters ||= {}
-    process(action, method, parameters.merge!(:use_route => :comable), session, flash, )
+    parameters = default_parameters.merge(parameters)
+
+    case Rails::VERSION::MAJOR
+    when 4
+      process(action, method, parameters, session, flash, )
+    when 3
+      process(action, parameters, session, flash, method)
+    end
   end
 end
