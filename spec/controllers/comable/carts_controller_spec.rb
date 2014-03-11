@@ -24,6 +24,10 @@ describe Comable::CartsController do
       it 'カートに１つの商品が投入されていること' do
         expect(assigns[:customer].cart.count).to eq(1)
       end
+
+      it 'flashにメッセージが格納されていること' do
+        expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
+      end
     end
   end
 end

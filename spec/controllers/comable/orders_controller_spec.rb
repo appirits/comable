@@ -7,13 +7,24 @@ describe Comable::OrdersController do
   let (:add_to_cart) { customer.add_cart_item(product) }
   let (:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_order_deliveries_attributes: [ family_name: 'hoge', first_name: 'piyo' ] } } }
 
-  before { login }
-  before { add_to_cart }
-  before { request }
+  context "カートが空の場合" do
+    before { request }
+
+    describe "GET 'new'" do
+      let (:request) { get :new }
+      its (:response) { should redirect_to(:cart) }
+
+      it 'flashにメッセージが格納されていること' do
+        expect(flash[:alert]).to eq I18n.t('comable.carts.empty')
+      end
+    end
+  end
 
   context "ゲストの場合" do
+    before { add_to_cart }
+    before { request }
+
     let (:customer) { Customer.new(session) }
-    let (:login) { }
 
     describe "GET 'new'" do
       let (:request) { get :new }
@@ -57,16 +68,28 @@ describe Comable::OrdersController do
           post :create, order_params
         }
         its (:response) { should be_success }
+
+        it 'flashにメッセージが格納されていること' do
+          expect(flash[:notice]).to eq I18n.t('comable.orders.success')
+        end
       end
 
       context "不正な手順のリクエストの場合" do
         let (:request) { post :create, order_params }
         its (:response) { should redirect_to(:confirm_order) }
+
+        it 'flashにメッセージが格納されていること' do
+          expect(flash[:alert]).to eq I18n.t('comable.orders.failure')
+        end
       end
     end
   end
 
   context "会員の場合" do
+    before { login }
+    before { add_to_cart }
+    before { request }
+
     let (:customer) { FactoryGirl.create(:customer) }
     let (:login) { controller.stub(:logged_in_customer).and_return(customer) }
 
@@ -103,6 +126,10 @@ describe Comable::OrdersController do
     describe "POST 'create'" do
       let (:request) { post :create, order_params }
       its (:response) { should be_success }
+
+      it 'flashにメッセージが格納されていること' do
+        expect(flash[:notice]).to eq I18n.t('comable.orders.success')
+      end
     end
   end
 end

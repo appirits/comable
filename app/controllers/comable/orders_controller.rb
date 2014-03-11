@@ -31,9 +31,10 @@ module Comable
     def create
       @order = @customer.order(build_order_nested_attributes)
       if @order.valid?
+        flash[:notice] = I18n.t('comable.orders.success')
         reset_session
       else
-        flash[:error] = 'invalid order'
+        flash[:alert] = I18n.t('comable.orders.failure')
         redirect_to comable.confirm_order_path
       end
     end
@@ -46,7 +47,7 @@ module Comable
 
     def verify
       if @customer.cart.empty?
-        flash[:error] = 'cart is empty'
+        flash[:alert] = I18n.t('comable.carts.empty')
         redirect_to comable.cart_path
       end
     end

@@ -1,0 +1,8 @@
+ja:
+  comable:
+    carts:
+      add_product: '１つの商品がカートに入りしました'
+      empty: 'カートに商品が入っていません'
+    orders:
+      success: '注文が完了しました'
+      failure: '注文に失敗しました。入力項目を見直してください。'
