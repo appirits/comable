@@ -5,11 +5,16 @@ module Comable::ActsAsComableCustomer
     end
 
     module ClassMethods
-      def acts_as_comable_customer
-        has_many :comable_orders, class_name: 'Comable::Order'
-        alias_method :orders, :comable_orders
+      def acts_as_comable_customer(options={})
+        default_options = { mapping_flag: true }
+        options = default_options.merge(options)
 
-        after_initialize :alias_methods_to_comable_customer_accsesor
+        if options[:mapping_flag]
+          has_many :comable_orders, class_name: 'Comable::Order'
+          alias_method :orders, :comable_orders
+
+          after_initialize :alias_methods_to_comable_customer_accsesor
+        end
 
         include InstanceMethods
       end
