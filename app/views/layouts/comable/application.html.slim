@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title Comable
+    = stylesheet_link_tag "comable/application", media: "all"
+    = javascript_include_tag "comable/application"
+    = csrf_meta_tags
+  body
+    == yield
