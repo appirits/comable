@@ -9,6 +9,6 @@ describe Comable::Product do
 
     subject { Comable::Product.first }
 
-    its (:name) { should eq(title) }
+    its (:name) { should eq(name) }
   end
 end

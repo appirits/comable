@@ -25,16 +25,12 @@ module Comable::CustomerSession
   def add_product_to_cart(product)
     cart_items = self.cart_items
 
-    selected_cart_items = cart_items.select do |cart_item|
-      product_in_cart = cart_item.send(Comable::Engine::config.product_table.to_s.singularize)
-      product_in_cart == product
-    end
-
+    selected_cart_items = cart_items.select {|cart_item| cart_item.product == product }
     if selected_cart_items.any?
       cart_item = selected_cart_items.first
       cart_item.quantity = cart_item.quantity.next
     else
-      product_id = "#{Comable::Engine::config.product_table.to_s.singularize}_id"
+      product_id = "#{Comable::Product.table_name.singularize}_id"
       cart_items << Comable::CartItem.new(product_id => product.id)
     end
 
@@ -44,11 +40,7 @@ module Comable::CustomerSession
   def remove_product_from_cart(product)
     cart_items = self.cart_items
 
-    selected_cart_items = cart_items.select do |cart_item|
-      product_in_cart = cart_item.send(Comable::Engine::config.product_table.to_s.singularize)
-      product_in_cart == product
-    end
-
+    selected_cart_items = cart_items.select {|cart_item| cart_item.product == product }
     return false if selected_cart_items.empty?
 
     cart_item = selected_cart_items.first

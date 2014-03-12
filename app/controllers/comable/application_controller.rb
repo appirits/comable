@@ -15,7 +15,7 @@ module Comable
 
     def load_customer
       @customer = logged_in_customer
-      @customer ||= ::Customer.new(session)
+      @customer ||= Comable::Customer.new(session)
     end
 
     def load_cart

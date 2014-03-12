@@ -5,8 +5,14 @@ module Comable::ActsAsComableProduct
     end
 
     module ClassMethods
-      def acts_as_comable_product
-        after_initialize :alias_methods_to_comable_product_accsesor
+      def acts_as_comable_product(options={})
+        default_options = { mapping_flag: true }
+        options = default_options.merge(options)
+
+        if options[:mapping_flag]
+          after_initialize :alias_methods_to_comable_product_accsesor
+        end
+
         include InstanceMethods
       end
     end

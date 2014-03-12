@@ -1,7 +1,7 @@
 # TODO: 別ファイル化
-if not Comable::Engine::config.respond_to?(:customer_table)
-  class Comable::Customer < ActiveRecord::Base
-    acts_as_comable_customer
+if not Comable::Engine::config.respond_to?(:product_table)
+  class Comable::Product < ActiveRecord::Base
+    acts_as_comable_product
 
     class << self
       def origin_class
@@ -14,15 +14,15 @@ if not Comable::Engine::config.respond_to?(:customer_table)
     end
   end
 else
-  class Comable::Customer
-    include Comable::ActsAsComableCustomer::Base
-    acts_as_comable_customer(mapping_flag: false)
+  class Comable::Product
+    include Comable::ActsAsComableProduct::Base
+    acts_as_comable_product(mapping_flag: false)
 
     attr_reader :origin
 
     class << self
       def origin_class
-        Comable::Engine::config.customer_table.to_s.classify.constantize
+        Comable::Engine::config.product_table.to_s.classify.constantize
       end
 
       def method_missing(method_name, *args, &block)
@@ -47,7 +47,7 @@ else
 end
 
 module Comable
-  class Customer
+  class Product
     class << self
       def mapping?
         self.origin_class != self

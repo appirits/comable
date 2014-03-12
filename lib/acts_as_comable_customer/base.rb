@@ -10,7 +10,7 @@ module Comable::ActsAsComableCustomer
         options = default_options.merge(options)
 
         if options[:mapping_flag]
-          has_many :comable_orders, class_name: 'Comable::Order'
+          has_many :comable_orders, class_name: 'Comable::Order', foreign_key: "#{Comable::Customer.table_name.singularize}_id"
           alias_method :orders, :comable_orders
 
           after_initialize :alias_methods_to_comable_customer_accsesor
@@ -36,7 +36,7 @@ module Comable::ActsAsComableCustomer
 
       def add_cart_item(obj)
         case obj
-        when Comable::Engine::config.product_table.to_s.classify.constantize
+        when Comable::Product.origin_class
           add_product_to_cart(obj)
         when Array
           obj.map {|product| add_product_to_cart(product) }
@@ -47,7 +47,7 @@ module Comable::ActsAsComableCustomer
 
       def remove_cart_item(obj)
         case obj
-        when Comable::Engine::config.product_table.to_s.classify.constantize
+        when Comable::Product.origin_class
           remove_product_from_cart(obj)
         else
           raise
@@ -61,7 +61,7 @@ module Comable::ActsAsComableCustomer
 
       def cart_items
         return super unless self.logged_in?
-        customer_id = "#{Comable::Engine::config.customer_table.to_s.singularize}_id"
+        customer_id = "#{Comable::Customer.table_name.singularize}_id"
         Comable::CartItem.where(customer_id => self.id)
       end
 
@@ -80,11 +80,17 @@ module Comable::ActsAsComableCustomer
       end
 
       def preorder(order_params={})
-        Comable::CashRegister.new(customer: self, order_attributes: order_params).build_order
+        Comable::CashRegister.new(
+          customer: self,
+          order_attributes: order_params
+        ).build_order
       end
 
       def order(order_params={})
-        Comable::CashRegister.new(customer: self, order_attributes: order_params).create_order
+        Comable::CashRegister.new(
+          customer: self,
+          order_attributes: order_params
+        ).create_order
       end
 
       private
@@ -117,10 +123,10 @@ module Comable::ActsAsComableCustomer
       def find_cart_items_by(product)
         return super unless self.logged_in?
 
-        raise unless product.is_a?(Comable::Engine::config.product_table.to_s.classify.constantize)
+        raise unless product.is_a?(Comable::Product.origin_class)
 
-        customer_id = "#{Comable::Engine::config.customer_table.to_s.singularize}_id"
-        product_id = "#{Comable::Engine::config.product_table.to_s.singularize}_id"
+        customer_id = "#{Comable::Customer.table_name.singularize}_id"
+        product_id = "#{Comable::Product.table_name.singularize}_id"
 
         Comable::CartItem.where(customer_id => self.id, product_id => product.id)
       end
