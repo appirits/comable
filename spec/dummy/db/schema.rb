@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140128030224) do
     t.integer "quantity",    default: 1, null: false
   end
 
-  add_index "comable_cart_items", ["customer_id", "product_id"], name: "index_comable_cart_items_on_customer_id_and_product_id", unique: true, using: :btree
+  add_index "comable_cart_items", ["customer_id", "product_id"], name: "comable_cart_items_by_customer", unique: true, using: :btree
 
   create_table "comable_order_deliveries", force: true do |t|
     t.integer  "comable_order_id", null: false

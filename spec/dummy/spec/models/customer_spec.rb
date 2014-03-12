@@ -86,7 +86,7 @@ describe Customer do
     it "受注詳細レコードが正しく存在すること" do
       subject.add_cart_item(product)
       subject.order
-      expect(subject.orders.last.order_deliveries.last.order_details.last.product).to eq(product)
+      expect(subject.orders.last.order_deliveries.last.order_details.last.product.origin).to eq(product)
     end
 
     context "複数配送" do

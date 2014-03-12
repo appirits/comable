@@ -27,7 +27,7 @@ class Comable::CashRegister
 
     order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
       next unless order_detail.product
-      result = cart.reject! {|cart_item| cart_item.product == order_detail.product }
+      result = cart.reject! {|cart_item| cart_item.product.origin == order_detail.product.origin }
       return false if result.nil?
     end
 

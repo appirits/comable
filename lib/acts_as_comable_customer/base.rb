@@ -103,7 +103,7 @@ module Comable::ActsAsComableCustomer
           cart_item = cart_items.first
           cart_item.increment!(:quantity)
         else
-          cart_items.create
+          cart_items.create!
         end
       end
 
@@ -116,7 +116,7 @@ module Comable::ActsAsComableCustomer
         if cart_item.quantity.pred.nonzero?
           cart_item.decrement!(:quantity)
         else
-          cart_item.destroy
+          cart_item.destroy!
         end
       end
 

@@ -14,6 +14,14 @@ module Comable
       end
     end
 
+    COLUMN_TYPES = %w( string text integer datetime )
+
+    COLUMN_TYPES.each do |column_type|
+      define_method column_type do |column_name, options={}|
+        add_column(column_name, column_type, options)
+      end
+    end
+
     private
 
     def type
@@ -37,12 +45,11 @@ module Comable
       end
     end
 
-    def missing_method(method_name, *args)
+    def add_column(column_name, column_type, options={})
       if Comable::Engine::config.respond_to?("#{type}_columns")
-        column_name = args.first
         return if Comable::Engine::config.send("#{type}_columns")[column_name]
       end
-      @migration.add_column table_name, *args
+      @migration.add_column table_name, column_name, column_type, options
     end
   end
 end
