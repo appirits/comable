@@ -116,7 +116,7 @@ module Comable::ActsAsComableCustomer
         if cart_item.quantity.pred.nonzero?
           cart_item.decrement!(:quantity)
         else
-          cart_item.destroy!
+          cart_item.destroy
         end
       end
 
