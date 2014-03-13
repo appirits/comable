@@ -14,37 +14,8 @@ if not Comable::Engine::config.respond_to?(:customer_table)
     end
   end
 else
-  class Comable::Customer
-    include Comable::ActsAsComableCustomer::Base
-    acts_as_comable_customer(mapping_flag: false)
-
-    attr_reader :origin
-
-    class << self
-      def origin_class
-        Comable::Engine::config.customer_table.to_s.classify.constantize
-      end
-
-      def method_missing(method_name, *args, &block)
-        self.origin_class.send(method_name, *args, &block)
-      end
-    end
-
-    def initialize(*args)
-      obj = args.first
-      case obj
-      when self.class.origin_class
-        @origin = obj
-      else
-        @origin = self.class.origin_class.new(*args)
-        super
-      end
-    end
-
-    def method_missing(method_name, *args, &block)
-      self.origin.send(method_name, *args, &block)
-    end
-  end
+  require 'comable/model_mapper_definition'
+  Comable::ModelMapperDefinition.new(:customer)
 end
 
 module Comable
