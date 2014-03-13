@@ -25,7 +25,7 @@ module Comable::CustomerSession
   def add_product_to_cart(product)
     cart_items = self.cart_items
 
-    selected_cart_items = cart_items.select {|cart_item| cart_item.product.origin == product.origin }
+    selected_cart_items = cart_items.select {|cart_item| cart_item.product == product }
     if selected_cart_items.any?
       cart_item = selected_cart_items.first
       cart_item.quantity = cart_item.quantity.next
@@ -40,7 +40,7 @@ module Comable::CustomerSession
   def remove_product_from_cart(product)
     cart_items = self.cart_items
 
-    selected_cart_items = cart_items.select {|cart_item| cart_item.product.origin == product.origin }
+    selected_cart_items = cart_items.select {|cart_item| cart_item.product == product }
     return false if selected_cart_items.empty?
 
     cart_item = selected_cart_items.first

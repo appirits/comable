@@ -37,8 +37,8 @@ else
         @origin = obj
       else
         @origin = self.class.origin_class.new(*args)
+        super
       end
-      super
     end
 
     def method_missing(method_name, *args, &block)

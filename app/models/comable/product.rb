@@ -26,7 +26,17 @@ else
       end
 
       def method_missing(method_name, *args, &block)
-        self.origin_class.send(method_name, *args, &block)
+        result = self.origin_class.send(method_name, *args, &block)
+        case result
+        when self.origin_class
+          self.new(result)
+        when Array
+          result.map {|obj| self.new(obj) }
+        when ActiveRecord::Relation
+          ActiveRecord::Relation.new(self, result.arel_table)
+        else
+          result
+        end
       end
     end
 
@@ -42,6 +52,14 @@ else
 
     def method_missing(method_name, *args, &block)
       self.origin.send(method_name, *args, &block)
+    end
+
+    def ==(product)
+      if product.respond_to?(:origin)
+        self.origin == product.origin
+      else
+        self.origin == product
+      end
     end
   end
 end

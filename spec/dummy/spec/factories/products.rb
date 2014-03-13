@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :product do
+  factory :product, class: Comable::Product do
     name "test_product"
     code "1234567"
     price 100

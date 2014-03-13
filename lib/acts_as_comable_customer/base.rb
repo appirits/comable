@@ -36,7 +36,7 @@ module Comable::ActsAsComableCustomer
 
       def add_cart_item(obj)
         case obj
-        when Comable::Product.origin_class
+        when Comable::Product
           add_product_to_cart(obj)
         when Array
           obj.map {|product| add_product_to_cart(product) }
@@ -47,7 +47,7 @@ module Comable::ActsAsComableCustomer
 
       def remove_cart_item(obj)
         case obj
-        when Comable::Product.origin_class
+        when Comable::Product
           remove_product_from_cart(obj)
         else
           raise
@@ -123,7 +123,7 @@ module Comable::ActsAsComableCustomer
       def find_cart_items_by(product)
         return super unless self.logged_in?
 
-        raise unless product.is_a?(Comable::Product.origin_class)
+        raise unless product.is_a?(Comable::Product)
 
         customer_id = "#{Comable::Customer.table_name.singularize}_id"
         product_id = "#{Comable::Product.table_name.singularize}_id"
