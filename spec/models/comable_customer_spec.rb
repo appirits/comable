@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Customer do
-  let (:customer) { FactoryGirl.create(described_class.name.underscore) }
+describe Comable::Customer do
+  let (:customer) { FactoryGirl.create(:customer) }
 
   subject { customer }
 
@@ -108,11 +108,7 @@ describe Customer do
                 family_name: 'comable',
                 first_name: 'three',
                 comable_order_details_attributes: {
-                  0 => {
-                    product_id: product.id,
-                    quantity: 1,
-                    price: product.price
-                  }
+                  0 => order_details_attributes
                 }
               }
             }
@@ -122,14 +118,17 @@ describe Customer do
       let (:invalid_params) {
         params[:order][:comable_order_deliveries_attributes][1].update(
           comable_order_details_attributes: {
-            0 => {
-              product_id: product.id,
-              quantity: 1,
-              price: product.price
-            }
+            0 => order_details_attributes
           }
         )
         params
+      }
+      let (:order_details_attributes) {
+        {
+          :"#{Comable::Product.table_name.singularize}_id" => product.id,
+          :quantity => 1,
+          :price => product.price
+        }
       }
 
       it "受注配送レコードが複数個存在すること" do

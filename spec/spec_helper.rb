@@ -17,6 +17,7 @@ Dir[Rails.root.join("../../spec/support/**/*.rb")].each { |f| require f }
 # for FactoryGirl
 require 'factory_girl'
 Dir[Rails.root.join("spec/factories/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("../../spec/factories/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
   # ## Mock Framework
