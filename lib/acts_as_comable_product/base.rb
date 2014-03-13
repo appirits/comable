@@ -6,10 +6,10 @@ module Comable::ActsAsComableProduct
 
     module ClassMethods
       def acts_as_comable_product(options={})
-        default_options = { mapping_flag: true }
+        default_options = { model_class_flag: true }
         options = default_options.merge(options)
 
-        if options[:mapping_flag]
+        if options[:model_class_flag]
           after_initialize :alias_methods_to_comable_product_accsesor
         end
 

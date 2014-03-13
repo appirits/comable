@@ -5,9 +5,31 @@ module Comable
 
     def initialize(model_type)
       @model_type = model_type
-      @klass = Comable.const_set(model_type.to_s.classify, build_class)
-      define_acts_as_comable_model
-      define_origin_class_method
+      @klass = Comable.const_set(model_type.to_s.classify, mapping? ? build_mapper_class : build_model_class)
+      include_acts_as_comable_model
+      define_mapping_class_method
+      define_origin_class_method if mapping?
+    end
+
+    def mapping?
+      Comable::Engine::config.respond_to?("#{model_type}_table")
+    end
+
+    def nonmapping?
+      not mapping?
+    end
+
+    def include_acts_as_comable_model
+      klass.send(:include, "Comable::ActsAsComable#{model_type.to_s.classify}::Base".constantize)
+      klass.send("acts_as_comable_#{model_type}", model_class_flag: nonmapping?)
+    end
+
+    def define_mapping_class_method
+      klass.class_eval %{
+        def self.mapping?
+          #{mapping?}
+        end
+      }
     end
 
     def define_origin_class_method
@@ -18,12 +40,21 @@ module Comable
       }
     end
 
-    def define_acts_as_comable_model
-      klass.send(:include, "Comable::ActsAsComable#{model_type.to_s.classify}::Base".constantize)
-      klass.send("acts_as_comable_#{model_type}", mapping_flag: false)
+    def build_model_class
+      Class.new(ActiveRecord::Base) do
+        class << self
+          def origin_class
+            self
+          end
+        end
+
+        def origin
+          self
+        end
+      end
     end
 
-    def build_class
+    def build_mapper_class
       Class.new do
         attr_reader :origin
 

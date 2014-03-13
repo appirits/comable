@@ -6,10 +6,10 @@ module Comable::ActsAsComableCustomer
 
     module ClassMethods
       def acts_as_comable_customer(options={})
-        default_options = { mapping_flag: true }
+        default_options = { model_class_flag: true }
         options = default_options.merge(options)
 
-        if options[:mapping_flag]
+        if options[:model_class_flag]
           has_many :comable_orders, class_name: 'Comable::Order', foreign_key: "#{Comable::Customer.table_name.singularize}_id"
           alias_method :orders, :comable_orders
 
