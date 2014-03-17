@@ -1,31 +1,37 @@
 module Comable
   class ModelMapperDefinition
-    attr_accessor :model_type
-    attr_accessor :klass
-
     def initialize(model_type)
       @model_type = model_type
-      @klass = Comable.const_set(model_type.to_s.classify, mapping? ? build_mapper_class : build_model_class)
+      @klass = mapping? ? build_mapper_class : build_model_class
+    end
+
+    def define
+      defined_class = Comable.const_set(@model_type.to_s.classify, @klass)
+
       include_acts_as_comable_model
       define_mapping_class_method
       define_origin_class_method if mapping?
+
+      defined_class
     end
 
     def mapping?
-      Comable::Engine::config.respond_to?("#{model_type}_table")
+      Comable::Engine::config.respond_to?("#{@model_type}_table")
     end
 
     def nonmapping?
       not mapping?
     end
 
+    private
+
     def include_acts_as_comable_model
-      klass.send(:include, "Comable::ActsAsComable#{model_type.to_s.classify}::Base".constantize)
-      klass.send("acts_as_comable_#{model_type}", model_class_flag: nonmapping?)
+      @klass.send(:include, "Comable::ActsAsComable#{@model_type.to_s.classify}::Base".constantize)
+      @klass.send("acts_as_comable_#{@model_type}", model_class_flag: nonmapping?)
     end
 
     def define_mapping_class_method
-      klass.class_eval %{
+      @klass.class_eval %{
         def self.mapping?
           #{mapping?}
         end
@@ -33,9 +39,9 @@ module Comable
     end
 
     def define_origin_class_method
-      klass.class_eval %{
+      @klass.class_eval %{
         def self.origin_class
-          Comable::Engine::config.send("#{model_type}_table").to_s.classify.constantize
+          Comable::Engine::config.send("#{@model_type}_table").to_s.classify.constantize
         end
       }
     end

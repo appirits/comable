@@ -1,3 +1,3 @@
 require 'comable/model_mapper_definition'
 
-Comable::ModelMapperDefinition.new(:customer)
+Comable::ModelMapperDefinition.new(:customer).define
