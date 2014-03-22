@@ -1,7 +1,7 @@
 h1 カート
 
 ul.cart
-  - @cart.each do |cart_item|
+  - current_customer.cart.each do |cart_item|
     - product = cart_item.product
     li.product
       h2.name

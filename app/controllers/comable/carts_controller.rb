@@ -6,7 +6,7 @@ module Comable
     def add
       product = Comable::Product.find(params[:product_id])
       if product
-        @customer.add_cart_item(product)
+        current_customer.add_cart_item(product)
         flash[:notice] = I18n.t('comable.carts.add_product')
       end
       redirect_to cart_path

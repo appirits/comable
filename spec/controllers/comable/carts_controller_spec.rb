@@ -4,6 +4,7 @@ describe Comable::CartsController do
   render_views
 
   let (:product) { FactoryGirl.create(:product) }
+  let (:current_customer) { controller.current_customer }
 
   before { request }
 
@@ -13,7 +14,7 @@ describe Comable::CartsController do
       its (:response) { should be_success }
 
       it 'カートに商品が投入されていないこと' do
-        expect(assigns[:customer].cart.count).to be_zero
+        expect(current_customer.cart.count).to be_zero
       end
     end
 
@@ -22,7 +23,7 @@ describe Comable::CartsController do
       its (:response) { should redirect_to(:cart) }
 
       it 'カートに１つの商品が投入されていること' do
-        expect(assigns[:customer].cart.count).to eq(1)
+        expect(current_customer.cart.count).to eq(1)
       end
 
       it 'flashにメッセージが格納されていること' do

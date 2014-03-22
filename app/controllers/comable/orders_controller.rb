@@ -25,11 +25,11 @@ module Comable
     end
 
     def confirm
-      @order = @customer.preorder(build_order_nested_attributes)
+      @order = current_customer.preorder(build_order_nested_attributes)
     end
 
     def create
-      @order = @customer.order(build_order_nested_attributes)
+      @order = current_customer.order(build_order_nested_attributes)
       if @order.valid?
         flash[:notice] = I18n.t('comable.orders.success')
         reset_session
@@ -46,7 +46,7 @@ module Comable
     end
 
     def verify
-      if @customer.cart.empty?
+      if current_customer.cart.empty?
         flash[:alert] = I18n.t('comable.carts.empty')
         redirect_to comable.cart_path
       end
@@ -95,7 +95,7 @@ module Comable
     end
 
     def redirect_for_logged_in_customer
-      return redirect_to delivery_order_path if @customer.logged_in?
+      return redirect_to delivery_order_path if current_customer.logged_in?
     end
   end
 end
