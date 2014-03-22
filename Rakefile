@@ -1,3 +1,5 @@
+ENV['DUMMY_APP'] ||= 'dummy'
+
 begin
   require 'bundler/setup'
 rescue LoadError
@@ -14,9 +16,13 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
+APP_RAKEFILE = File.expand_path("../spec/#{ENV['DUMMY_APP']}/Rakefile", __FILE__)
 load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
-task default: [ 'app:db:migrate', 'app:spec' ]
+RSpec::Core::RakeTask.new('app:spec:custom') do |spec|
+  spec.pattern = [ "spec/{models,views,controllers,helpers,#{ENV['DUMMY_APP']}}/**/*_spec.rb", "spec/*_spec.rb"  ]
+end
+
+task default: [ 'app:db:migrate', 'app:spec:custom' ]
