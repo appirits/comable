@@ -8,7 +8,7 @@ module Comable
 
     def load_customer
       @current_customer = logged_in_customer
-      @current_customer ||= Comable::Customer.new(session)
+      @current_customer ||= Customer.new(session)
     end
 
     def logged_in_customer

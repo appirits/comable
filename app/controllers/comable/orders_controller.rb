@@ -55,7 +55,7 @@ module Comable
     def load_order
       order_attributes = JSON.parse(session['comable.order'] || '{}')
       order_attributes.update(order_params) if order_params
-      @order = Comable::Order.new(order_attributes)
+      @order = Order.new(order_attributes)
     end
 
     def save_order

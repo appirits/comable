@@ -6,25 +6,16 @@ class CreateComableCartItems < ActiveRecord::Migration
       t.integer :quantity, default: 1, null: false
     end
 
-    add_index :comable_cart_items, [ "#{customer_table_name}_id", "#{product_table_name}_id" ], unique: true, name: 'comable_cart_items_by_customer'
+    add_index :comable_cart_items, [ "#{customer_table_name}_id", "#{product_table_name}_id" ], unique: true
   end
 
   private
 
-  # TODO: リファクタリング
   def customer_table_name
-    if Comable::Engine::config.respond_to?(:customer_table)
-      Comable::Engine::config.customer_table.to_s.singularize
-    else
-      :comable_customer
-    end
+    Comable::Engine::config.customer_table.to_s.singularize
   end
 
   def product_table_name
-    if Comable::Engine::config.respond_to?(:product_table)
-      Comable::Engine::config.product_table.to_s.singularize
-    else
-      :comable_product
-    end
+    Comable::Engine::config.product_table.to_s.singularize
   end
 end

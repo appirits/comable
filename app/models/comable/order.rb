@@ -1,6 +1,6 @@
 module Comable
   class Order < ActiveRecord::Base
-    belongs_to Comable::Customer.table_name.singularize.to_sym, class_name: "::#{Comable::Customer.origin_class.name}"
+    belongs_to Comable::Engine::config.customer_table.to_s.singularize.to_sym
     has_many :comable_order_deliveries, dependent: :destroy, class_name: 'Comable::OrderDelivery', foreign_key: 'comable_order_id'
 
     accepts_nested_attributes_for :comable_order_deliveries
@@ -11,16 +11,6 @@ module Comable
     validates :first_name, presence: true
 
     before_create :generate_code
-
-    alias_method :customer_orgin, Comable::Customer.table_name.singularize.to_sym
-
-    def customer
-      if Comable::Customer.mapping?
-        Comable::Customer.new(self.customer_orgin)
-      else
-        self.customer_orgin
-      end
-    end
 
     private
 

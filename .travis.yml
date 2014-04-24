@@ -3,12 +3,9 @@ language:
 rvm:
   - 2.1.0
 env:
-  - DUMMY_APP= RAILS_VERSION=
-  - DUMMY_APP= RAILS_VERSION=4.0.0
-  - DUMMY_APP= RAILS_VERSION=3.2.0
-  - DUMMY_APP=dummy_without_mapping RAILS_VERSION=
-  - DUMMY_APP=dummy_without_mapping RAILS_VERSION=4.0.0
-  - DUMMY_APP=dummy_without_mapping RAILS_VERSION=3.2.0
+  - RAILS_VERSION=
+  - RAILS_VERSION=4.0.0
+  - RAILS_VERSION=3.2.0
 before_install:
   - sh -c '[ "$RAILS_VERSION" = "" ] || rm Gemfile.lock'
   - sh -c '[ "$RAILS_VERSION" = "3.2.0" ] && echo "gem \"strong_parameters\"" >> Gemfile || :'

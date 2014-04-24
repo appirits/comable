@@ -12,10 +12,6 @@ class CreateComableOrderDetails < ActiveRecord::Migration
   private
 
   def product_table_name
-    if Comable::Engine::config.respond_to?(:product_table)
-      Comable::Engine::config.product_table.to_s.singularize
-    else
-      :comable_product
-    end
+    Comable::Engine::config.product_table.to_s.singularize
   end
 end

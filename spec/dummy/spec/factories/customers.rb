@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :customer, class: Comable::Customer do
+  factory :customer do
     family_name "foo"
     first_name "bar"
   end
