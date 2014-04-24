@@ -6,7 +6,10 @@ module Comable::ActsAsComableProduct
 
     module ClassMethods
       def acts_as_comable_product
+        Comable.const_set(:Product, self)
+
         after_initialize :alias_methods_to_comable_product_accsesor
+
         include InstanceMethods
       end
     end

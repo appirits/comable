@@ -7,7 +7,7 @@ describe Product do
     let (:title) { 'sample product' }
     let! (:product) { FactoryGirl.create(:product, title: title) }
 
-    subject { Product.first }
+    subject { Comable::Product.first }
 
     its (:name) { should eq(title) }
   end

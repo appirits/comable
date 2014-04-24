@@ -63,7 +63,7 @@ class Comable::CashRegister
 
   def assign_default_attributes_to_order_details(order_delivery)
     customer.cart.each do |cart_item|
-      product_colmun_name = Comable::Engine::config.product_table.to_s.singularize
+      product_colmun_name = Comable::Product.model_name.singular
       product = cart_item.send(product_colmun_name)
 
       order_delivery.order_details.build(

@@ -26,7 +26,7 @@ module Comable::CustomerSession
     cart_items = self.cart_items
 
     selected_cart_items = cart_items.select do |cart_item|
-      product_in_cart = cart_item.send(Comable::Engine::config.product_table.to_s.singularize)
+      product_in_cart = cart_item.send(Comable::Product.model_name.singular)
       product_in_cart == product
     end
 
@@ -34,7 +34,7 @@ module Comable::CustomerSession
       cart_item = selected_cart_items.first
       cart_item.quantity = cart_item.quantity.next
     else
-      product_id = "#{Comable::Engine::config.product_table.to_s.singularize}_id"
+      product_id = "#{Comable::Product.model_name.singular}_id"
       cart_items << Comable::CartItem.new(product_id => product.id)
     end
 
@@ -45,7 +45,7 @@ module Comable::CustomerSession
     cart_items = self.cart_items
 
     selected_cart_items = cart_items.select do |cart_item|
-      product_in_cart = cart_item.send(Comable::Engine::config.product_table.to_s.singularize)
+      product_in_cart = cart_item.send(Comable::Product.model_name.singular)
       product_in_cart == product
     end
 

@@ -9,7 +9,7 @@ module Comable
     alias_method :order_details, :comable_order_details
 
     def customer
-      self.order.send(Comable::Engine::config.customer_table.to_s.singularize)
+      self.order.send(Comable::Customer.model_name.singular)
     end
   end
 end

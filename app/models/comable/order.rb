@@ -1,6 +1,6 @@
 module Comable
   class Order < ActiveRecord::Base
-    belongs_to Comable::Engine::config.customer_table.to_s.singularize.to_sym
+    belongs_to Comable::Customer.model_name.singular.to_sym
     has_many :comable_order_deliveries, dependent: :destroy, class_name: 'Comable::OrderDelivery', foreign_key: 'comable_order_id'
 
     accepts_nested_attributes_for :comable_order_deliveries
