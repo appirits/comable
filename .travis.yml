@@ -11,4 +11,5 @@ before_install:
   - sh -c '[ "$RAILS_VERSION" = "3.2.0" ] && echo "gem \"strong_parameters\"" >> Gemfile || :'
 before_script:
   - psql -U postgres -c 'CREATE ROLE dummy WITH LOGIN CREATEDB;'
-  - bundle exec rake db:create
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:migrate RAILS_ENV=test

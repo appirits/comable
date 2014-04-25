@@ -22,4 +22,4 @@ Bundler::GemHelper.install_tasks
 # from https://github.com/rspec/rspec-rails/issues/936
 task 'test:prepare'
 
-task default: [ 'app:db:migrate', 'app:spec' ]
+task default: 'app:spec'
