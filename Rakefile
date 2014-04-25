@@ -19,4 +19,7 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
+# from https://github.com/rspec/rspec-rails/issues/936
+task 'test:prepare'
+
 task default: [ 'app:db:migrate', 'app:spec' ]
