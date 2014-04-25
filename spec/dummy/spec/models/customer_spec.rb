@@ -1,15 +1,13 @@
 require 'spec_helper'
 
-describe Comable::Customer do
-  let (:customer) { FactoryGirl.create(:customer) }
-
-  subject { customer }
-
+describe Customer do
   it { expect { described_class.new }.to_not raise_error }
 
   context "カート処理" do
     let (:products) { FactoryGirl.create_list(:product, 5, :many) }
     let (:product) { products.first }
+
+    subject { FactoryGirl.build_stubbed(described_class.name.underscore) }
 
     it "商品を投入できること" do
       subject.add_cart_item(product)
@@ -47,6 +45,8 @@ describe Comable::Customer do
 
   context "注文処理" do
     let (:product) { FactoryGirl.create(:product) }
+
+    subject { FactoryGirl.create(described_class.name.underscore) }
 
     it "商品を購入できること" do
       subject.add_cart_item(product)
@@ -108,7 +108,11 @@ describe Comable::Customer do
                 family_name: 'comable',
                 first_name: 'three',
                 comable_order_details_attributes: {
-                  0 => order_details_attributes
+                  0 => {
+                    product_id: product.id,
+                    quantity: 1,
+                    price: product.price
+                  }
                 }
               }
             }
@@ -118,17 +122,14 @@ describe Comable::Customer do
       let (:invalid_params) {
         params[:order][:comable_order_deliveries_attributes][1].update(
           comable_order_details_attributes: {
-            0 => order_details_attributes
+            0 => {
+              product_id: product.id,
+              quantity: 1,
+              price: product.price
+            }
           }
         )
         params
-      }
-      let (:order_details_attributes) {
-        {
-          :"#{Comable::Product.table_name.singularize}_id" => product.id,
-          :quantity => 1,
-          :price => product.price
-        }
       }
 
       it "受注配送レコードが複数個存在すること" do

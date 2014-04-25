@@ -1,2 +1,0 @@
-cd ..
-bundle exec rake
