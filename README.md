@@ -7,6 +7,38 @@
 
 This project rocks and uses MIT-LICENSE.
 
+## Installation
+
+1. Add comable in the `Gemfile`:
+
+  ```ruby
+  gem 'comable', github: 'hyoshida/comable'
+  ```
+
+2. Download and install by running:
+
+  ```bash
+  bundle install
+  ```
+
+3. Create a file named `comable.rb` in `config/initializers` and add names of tables and columns in this file.
+
+  ```ruby
+  module Comable
+    class Engine < ::Rails::Engine
+      config.product_table = :products
+      config.product_columns = { name: :title }
+      config.customer_table = :customers
+    end
+  end
+  ```
+
+4. Get gem migrations:
+
+  ```bash
+  bundle exec rails generate comable:install
+  ```
+
 ## Requirements
 
 * Ruby on Rails 3.2, 4.0

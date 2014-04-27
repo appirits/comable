@@ -1,0 +1,8 @@
+Description:
+    Explain the generator
+
+Example:
+    rails generate comable:install
+
+    This will create:
+        what/will/it/create
