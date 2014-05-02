@@ -45,8 +45,13 @@ describe Customer do
 
   context "注文処理" do
     let (:product) { FactoryGirl.create(:product) }
+    let (:stock) { product.stocks.first }
 
     subject { FactoryGirl.create(described_class.name.underscore) }
+
+    before do
+      stock.update_attributes(quantity: 10)
+    end
 
     it "商品を購入できること" do
       subject.add_cart_item(product)
@@ -87,6 +92,11 @@ describe Customer do
       subject.add_cart_item(product)
       subject.order
       expect(subject.orders.last.order_deliveries.last.order_details.last.product).to eq(product)
+    end
+
+    it "在庫が減っていること" do
+      subject.add_cart_item(product)
+      expect { subject.order }.to change { product.stocks.first.quantity }.by(-1)
     end
 
     context "複数配送" do

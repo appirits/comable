@@ -1,17 +1,16 @@
-module Comable::ActsAsComableProduct
+module Comable::ActsAsComableStock
   module Base
     def self.included(base)
       base.extend ClassMethods
     end
 
     module ClassMethods
-      def acts_as_comable_product
-        Comable.const_set(:Product, self)
+      def acts_as_comable_stock
+        Comable.const_set(:Stock, self)
 
-        has_many Comable::Stock.model_name.plural.to_sym
+        belongs_to Comable::Product.model_name.singular.to_sym
 
-        after_initialize :alias_methods_to_comable_product_accsesor
-        after_save :create_stock
+        after_initialize :alias_methods_to_comable_stock_accsesor
 
         include InstanceMethods
       end
@@ -20,13 +19,9 @@ module Comable::ActsAsComableProduct
     module InstanceMethods
       private
 
-      def create_stock
-        self.stocks.create(code: self.code)
-      end
-
-      def alias_methods_to_comable_product_accsesor
+      def alias_methods_to_comable_stock_accsesor
         config = Comable::Engine::config
-        return unless config.respond_to?(:product_columns)
+        return unless config.respond_to?(:stock_columns)
 
         config.product_columns.each_pair do |column_name,actual_column_name|
           next if actual_column_name.blank?
@@ -41,4 +36,4 @@ module Comable::ActsAsComableProduct
   end
 end
 
-ActiveRecord::Base.send :include, Comable::ActsAsComableProduct::Base
+ActiveRecord::Base.send :include, Comable::ActsAsComableStock::Base
