@@ -11,7 +11,7 @@ module Comable::ActsAsComableProduct
         has_many Comable::Stock.model_name.plural.to_sym
 
         after_initialize :alias_methods_to_comable_product_accsesor
-        after_save :create_stock
+        after_create :create_stock
 
         include InstanceMethods
       end
@@ -21,7 +21,8 @@ module Comable::ActsAsComableProduct
       private
 
       def create_stock
-        self.stocks.create(code: self.code)
+        stocks = self.stocks.where(code: self.code).limit(1)
+        stocks.create if stocks.empty?
       end
 
       def alias_methods_to_comable_product_accsesor
