@@ -12,6 +12,10 @@ module Comable::ActsAsComableStock
 
         after_initialize :alias_methods_to_comable_stock_accsesor
 
+        scope :activated, -> { where.not(product_id_num: nil) }
+        scope :unsold, -> { where('quantity > ?', 0) }
+        scope :soldout, -> { where('quantity <= ?', 0) }
+
         include InstanceMethods
       end
     end

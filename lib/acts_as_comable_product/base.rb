@@ -18,6 +18,10 @@ module Comable::ActsAsComableProduct
     end
 
     module InstanceMethods
+      def has_stocks?
+        self.stocks.activated.unsold.exists?
+      end
+
       private
 
       def create_stock
