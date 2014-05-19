@@ -4,6 +4,10 @@ FactoryGirl.define do
     code "1234567-001"
     quantity nil
 
+    trait :with_product do
+      product { FactoryGirl.create(:product) }
+    end
+
     trait :soldout do
       quantity 0
     end
@@ -17,7 +21,6 @@ FactoryGirl.define do
     end
 
     trait :many do
-      product { FactoryGirl.create(:product) }
       sequence(:product_id_num) {|n| n.next }
       sequence(:code) {|n| "%07d" % n.next }
     end

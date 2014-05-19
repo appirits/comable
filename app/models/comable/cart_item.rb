@@ -7,7 +7,7 @@ module Comable
 
     def price
       stock = self.send(Comable::Stock.model_name.singular)
-      stock.product.price * self.quantity
+      stock.price * self.quantity
     end
   end
 end

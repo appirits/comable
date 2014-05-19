@@ -16,6 +16,8 @@ module Comable::ActsAsComableStock
         scope :unsold, -> { where('quantity > ?', 0) }
         scope :soldout, -> { where('quantity <= ?', 0) }
 
+        delegate :price, to: Comable::Product.model_name.singular.to_sym
+
         include InstanceMethods
       end
     end

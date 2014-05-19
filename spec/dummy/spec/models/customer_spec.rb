@@ -4,10 +4,8 @@ describe Customer do
   it { expect { described_class.new }.to_not raise_error }
 
   context "カート処理" do
-    let (:stocks) { FactoryGirl.create_list(:stock, 5, :many, :unsold) }
+    let (:stocks) { FactoryGirl.create_list(:stock, 5, :many, :unsold, :with_product) }
     let (:stock) { stocks.first }
-    let (:products) { stocks.map(&:product) }
-    let (:product) { stock.product }
 
     subject { FactoryGirl.build_stubbed(described_class.name.underscore) }
 
@@ -18,12 +16,12 @@ describe Customer do
     it "商品の個数を増やした際の合計金額が正しいこと" do
       subject.add_cart_item(stock)
       subject.add_cart_item(stock)
-      expect(subject.cart_items.first.price).to eq(product.price * 2)
+      expect(subject.cart_items.first.price).to eq(stock.price * 2)
     end
 
     it "商品を複数投入した際の合計金額が正しいこと" do
       subject.add_cart_item(stocks)
-      expect(subject.cart.price).to eq(products.sum(&:price))
+      expect(subject.cart.price).to eq(stocks.sum(&:price))
     end
 
     it "商品を削除できること" do
@@ -35,19 +33,18 @@ describe Customer do
       subject.add_cart_item(stock)
       subject.add_cart_item(stock)
       subject.remove_cart_item(stock)
-      expect(subject.cart_items.first.price).to eq(product.price)
+      expect(subject.cart_items.first.price).to eq(stock.price)
     end
 
     it "商品を削除した際の合計金額が正しいこと" do
       subject.add_cart_item(stocks)
       subject.remove_cart_item(stock)
-      expect(subject.cart.price).to eq(products.sum(&:price) - product.price)
+      expect(subject.cart.price).to eq(stocks.sum(&:price) - stock.price)
     end
   end
 
   context "注文処理" do
-    let (:stock) { FactoryGirl.create(:stock, :unsold, product: product) }
-    let (:product) { FactoryGirl.create(:product) }
+    let (:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
 
     subject { FactoryGirl.create(described_class.name.underscore) }
     before { subject.add_cart_item(stock) }
@@ -78,7 +75,7 @@ describe Customer do
 
     it "受注詳細レコードが１つ存在すること" do
       subject.order
-      expect(subject.orders.last.order_deliveries.last.order_details.last.product).to eq(product)
+      expect(subject.orders.last.order_deliveries.last.order_details.last.stock).to eq(stock)
     end
 
     it "在庫が減っていること" do
@@ -107,7 +104,7 @@ describe Customer do
                   0 => {
                     stock_id: stock.id,
                     quantity: 1,
-                    price: product.price
+                    price: stock.price
                   }
                 }
               }
@@ -121,7 +118,7 @@ describe Customer do
             0 => {
               stock_id: stock.id,
               quantity: 1,
-              price: product.price
+              price: stock.price
             }
           }
         )
