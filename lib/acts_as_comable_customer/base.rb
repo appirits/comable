@@ -92,6 +92,8 @@ module Comable::ActsAsComableCustomer
       def add_stock_to_cart(stock)
         return super unless self.logged_in?
 
+        raise unless stock.has_stocks?
+
         cart_items = find_cart_items_by(stock)
         if cart_items.any?
           cart_item = cart_items.first

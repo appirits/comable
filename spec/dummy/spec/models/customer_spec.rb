@@ -41,6 +41,14 @@ describe Customer do
       subject.remove_cart_item(stock)
       expect(subject.cart.price).to eq(stocks.sum(&:price) - stock.price)
     end
+
+    context "在庫がない場合" do
+      let (:stocks) { FactoryGirl.create_list(:stock, 5, :many, :soldout, :with_product) }
+
+      it "商品を投入できないこと" do
+        expect { subject.add_cart_item(stock) }.to raise_error
+      end
+    end
   end
 
   context "注文処理" do

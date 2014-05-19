@@ -23,6 +23,12 @@ module Comable::ActsAsComableStock
     end
 
     module InstanceMethods
+      def has_stocks?
+        return false if self.product_id_num.nil?
+        return false if self.quantity.nil?
+        self.quantity > 0
+      end
+
       def decrement_quantity!
         ActiveRecord::Base.transaction do
           self.decrement!(:quantity)
