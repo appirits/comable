@@ -26,8 +26,8 @@ class Comable::CashRegister
     cart = customer.cart
 
     order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
-      next unless order_detail.product
-      result = cart.reject! {|cart_item| cart_item.product == order_detail.product }
+      next unless order_detail.stock
+      result = cart.reject! {|cart_item| cart_item.stock == order_detail.stock }
       return false if result.nil?
     end
 
@@ -63,11 +63,11 @@ class Comable::CashRegister
 
   def assign_default_attributes_to_order_details(order_delivery)
     customer.cart.each do |cart_item|
-      product_colmun_name = Comable::Product.model_name.singular
-      product = cart_item.send(product_colmun_name)
+      stock_colmun_name = Comable::Stock.model_name.singular
+      stock = cart_item.send(stock_colmun_name)
 
       order_delivery.order_details.build(
-        :"#{product_colmun_name}_id" => product.id,
+        :"#{stock_colmun_name}_id" => stock.id,
         :quantity => cart_item.quantity,
         :price => cart_item.price
       )

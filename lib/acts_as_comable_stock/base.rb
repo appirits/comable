@@ -33,7 +33,7 @@ module Comable::ActsAsComableStock
         config = Comable::Engine::config
         return unless config.respond_to?(:stock_columns)
 
-        config.product_columns.each_pair do |column_name,actual_column_name|
+        config.stock_columns.each_pair do |column_name,actual_column_name|
           next if actual_column_name.blank?
           next if actual_column_name == column_name
 

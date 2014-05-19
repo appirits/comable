@@ -71,8 +71,8 @@ module Comable::ActsAsComableCustomer
           self.sum(&:price)
         end
 
-        def products
-          self.map(&:product)
+        def stocks
+          self.map(&:stock)
         end
       end
 
@@ -115,11 +115,13 @@ module Comable::ActsAsComableCustomer
         return super unless self.logged_in?
 
         raise unless product.is_a?(Comable::Product)
+        stock = product.stocks.first
+        raise unless stock
 
         customer_id = "#{Comable::Customer.model_name.singular}_id"
-        product_id = "#{Comable::Product.model_name.singular}_id"
+        stock_id = "#{Comable::Stock.model_name.singular}_id"
 
-        Comable::CartItem.where(customer_id => self.id, product_id => product.id)
+        Comable::CartItem.where(customer_id => self.id, stock_id => stock.id)
       end
 
       def alias_methods_to_comable_customer_accsesor

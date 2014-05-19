@@ -96,7 +96,7 @@ describe Customer do
 
     it "在庫が減っていること" do
       subject.add_cart_item(product)
-      expect { subject.order }.to change { product.stocks.first.quantity }.by(-1)
+      expect { subject.order }.to change { stock.reload.quantity }.by(-1)
     end
 
     context "複数配送" do
@@ -119,7 +119,7 @@ describe Customer do
                 first_name: 'three',
                 comable_order_details_attributes: {
                   0 => {
-                    product_id: product.id,
+                    stock_id: stock.id,
                     quantity: 1,
                     price: product.price
                   }
@@ -133,7 +133,7 @@ describe Customer do
         params[:order][:comable_order_deliveries_attributes][1].update(
           comable_order_details_attributes: {
             0 => {
-              product_id: product.id,
+              stock_id: stock.id,
               quantity: 1,
               price: product.price
             }

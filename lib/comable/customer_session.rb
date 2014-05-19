@@ -24,18 +24,19 @@ module Comable::CustomerSession
 
   def add_product_to_cart(product)
     cart_items = self.cart_items
+    stock = product.stocks.first
 
     selected_cart_items = cart_items.select do |cart_item|
-      product_in_cart = cart_item.send(Comable::Product.model_name.singular)
-      product_in_cart == product
+      stock_in_cart = cart_item.send(Comable::Stock.model_name.singular)
+      stock_in_cart == stock
     end
 
     if selected_cart_items.any?
       cart_item = selected_cart_items.first
       cart_item.quantity = cart_item.quantity.next
     else
-      product_id = "#{Comable::Product.model_name.singular}_id"
-      cart_items << Comable::CartItem.new(product_id => product.id)
+      stock_id = "#{Comable::Stock.model_name.singular}_id"
+      cart_items << Comable::CartItem.new(stock_id => stock.id)
     end
 
     save_cart_to_session
@@ -43,10 +44,11 @@ module Comable::CustomerSession
 
   def remove_product_from_cart(product)
     cart_items = self.cart_items
+    stock = product.stocks.first
 
     selected_cart_items = cart_items.select do |cart_item|
-      product_in_cart = cart_item.send(Comable::Product.model_name.singular)
-      product_in_cart == product
+      stock_in_cart = cart_item.send(Comable::Stock.model_name.singular)
+      stock_in_cart == stock
     end
 
     return false if selected_cart_items.empty?

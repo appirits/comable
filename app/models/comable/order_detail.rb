@@ -1,15 +1,19 @@
 module Comable
   class OrderDetail < ActiveRecord::Base
-    belongs_to Comable::Product.model_name.singular.to_sym
+    belongs_to Comable::Stock.model_name.singular.to_sym
     belongs_to :comable_order_deliveries, class_name: 'Comable::OrderDelivery'
 
     after_create :decrement_stock
 
+    def product
+      stock = self.send(Comable::Stock.model_name.singular)
+      stock.product
+    end
+
     private
 
     def decrement_stock
-      product = self.send(Comable::Product.model_name.singular)
-      stock = product.stocks.first
+      stock = self.send(Comable::Stock.model_name.singular)
       stock.decrement_quantity!
     end
   end
