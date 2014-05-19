@@ -21,6 +21,12 @@ module Comable::ActsAsComableStock
     end
 
     module InstanceMethods
+      def decrement_quantity!
+        ActiveRecord::Base.transaction do
+          self.decrement!(:quantity)
+        end
+      end
+
       private
 
       def alias_methods_to_comable_stock_accsesor

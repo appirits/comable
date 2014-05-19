@@ -10,9 +10,7 @@ module Comable
     def decrement_stock
       product = self.send(Comable::Product.model_name.singular)
       stock = product.stocks.first
-      ActiveRecord::Base.transaction do
-        stock.decrement!(:quantity)
-      end
+      stock.decrement_quantity!
     end
   end
 end
