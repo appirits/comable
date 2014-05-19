@@ -15,5 +15,11 @@ FactoryGirl.define do
     trait :inavtivated do
       product_id_num nil
     end
+
+    trait :many do
+      product { FactoryGirl.create(:product) }
+      sequence(:product_id_num) {|n| n.next }
+      sequence(:code) {|n| "%07d" % n.next }
+    end
   end
 end

@@ -22,9 +22,8 @@ module Comable::CustomerSession
 
   private
 
-  def add_product_to_cart(product)
+  def add_stock_to_cart(stock)
     cart_items = self.cart_items
-    stock = product.stocks.first
 
     selected_cart_items = cart_items.select do |cart_item|
       stock_in_cart = cart_item.send(Comable::Stock.model_name.singular)
@@ -42,9 +41,8 @@ module Comable::CustomerSession
     save_cart_to_session
   end
 
-  def remove_product_from_cart(product)
+  def remove_stock_from_cart(stock)
     cart_items = self.cart_items
-    stock = product.stocks.first
 
     selected_cart_items = cart_items.select do |cart_item|
       stock_in_cart = cart_item.send(Comable::Stock.model_name.singular)
@@ -60,7 +58,7 @@ module Comable::CustomerSession
     save_cart_to_session
   end
 
-  def find_cart_items_by(product)
+  def find_cart_items_by(stock)
     raise 'not implemented'
   end
 
