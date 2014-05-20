@@ -34,9 +34,12 @@ module Comable::ActsAsComableCustomer
       def add_cart_item(obj)
         case obj
         when Comable::Product
-          add_product_to_cart(obj)
+          stock = obj.stocks.first
+          add_stock_to_cart(stock)
+        when Comable::Stock
+          add_stock_to_cart(obj)
         when Array
-          obj.map {|product| add_product_to_cart(product) }
+          obj.map {|item| add_cart_item(item) }
         else
           raise
         end
@@ -44,8 +47,8 @@ module Comable::ActsAsComableCustomer
 
       def remove_cart_item(obj)
         case obj
-        when Comable::Product
-          remove_product_from_cart(obj)
+        when Comable::Stock
+          remove_stock_from_cart(obj)
         else
           raise
         end
@@ -71,8 +74,8 @@ module Comable::ActsAsComableCustomer
           self.sum(&:price)
         end
 
-        def products
-          self.map(&:product)
+        def stocks
+          self.map(&:stock)
         end
       end
 
@@ -86,10 +89,12 @@ module Comable::ActsAsComableCustomer
 
       private
 
-      def add_product_to_cart(product)
+      def add_stock_to_cart(stock)
         return super unless self.logged_in?
 
-        cart_items = find_cart_items_by(product)
+        raise unless stock.has_stocks?
+
+        cart_items = find_cart_items_by(stock)
         if cart_items.any?
           cart_item = cart_items.first
           cart_item.increment!(:quantity)
@@ -98,10 +103,10 @@ module Comable::ActsAsComableCustomer
         end
       end
 
-      def remove_product_from_cart(product)
+      def remove_stock_from_cart(stock)
         return super unless self.logged_in?
 
-        cart_item = find_cart_items_by(product).first
+        cart_item = find_cart_items_by(stock).first
         return false unless cart_item
 
         if cart_item.quantity.pred.nonzero?
@@ -111,15 +116,15 @@ module Comable::ActsAsComableCustomer
         end
       end
 
-      def find_cart_items_by(product)
+      def find_cart_items_by(stock)
         return super unless self.logged_in?
 
-        raise unless product.is_a?(Comable::Product)
+        raise unless stock.is_a?(Comable::Stock)
 
         customer_id = "#{Comable::Customer.model_name.singular}_id"
-        product_id = "#{Comable::Product.model_name.singular}_id"
+        stock_id = "#{Comable::Stock.model_name.singular}_id"
 
-        Comable::CartItem.where(customer_id => self.id, product_id => product.id)
+        Comable::CartItem.where(customer_id => self.id, stock_id => stock.id)
       end
 
       def alias_methods_to_comable_customer_accsesor
