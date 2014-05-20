@@ -19,5 +19,5 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails', require: false
   gem 'capybara'
-  gem 'rspec-steps'
+  gem 'rspec-example_steps'
 end

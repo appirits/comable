@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'rspec/example_steps'
 
 describe "カート処理", type: :feature do
   let (:product) { FactoryGirl.create(:product, stocks: [stock]) }
@@ -12,29 +13,29 @@ describe "カート処理", type: :feature do
     expect(page).to have_content product.price
   end
 
-  steps "ゲスト購入の場合" do
-    # 商品/在庫レコードの残骸が残ってしまうのでテストケース終了後に削除
-    after (:all) { Product.delete_all and Stock.delete_all }
-
-    it "1. 商品をカートに投入できること" do
+  # refs:
+  #   http://railsware.com/blog/2012/01/08/capybara-with-givenwhenthen-steps-in-acceptance-testing/
+  #   http://d.hatena.ne.jp/bowbow99/20090523/1243043153
+  Steps "ゲスト購入" do
+    Given "カートに商品があるとき" do
       visit comable.product_path(product)
       click_button 'カートに入れる'
       expect(page).to have_content I18n.t('comable.carts.add_product')
     end
 
-    it "2. 注文画面に遷移できること" do
+    When "注文画面に遷移して" do
       visit comable.cart_path
       click_link '注文'
       expect(page).to have_content "規約に同意して注文"
     end
 
-    it "3. 注文者情報入力画面に遷移できること" do
+    When "注文者情報入力画面に遷移して" do
       visit comable.new_order_path
       click_link "規約に同意して注文"
       expect(page).to have_content "注文者情報入力"
     end
 
-    it "4. 配送先情報入力画面に遷移できること" do
+    When "配送先情報入力画面に遷移して" do
       visit comable.orderer_order_path
       within("form") do
         fill_in :order_family_name, with: 'foo'
@@ -44,13 +45,13 @@ describe "カート処理", type: :feature do
       expect(page).to have_content "配送先情報入力"
     end
 
-    it "5. 注文情報確認画面に遷移できること" do
+    When "注文情報確認画面に遷移して" do
       visit comable.delivery_order_path
       click_button I18n.t('helpers.submit.create')
       expect(page).to have_content "注文情報確認"
     end
 
-    it "6. 注文できること" do
+    Then "注文できること" do
       visit comable.confirm_order_path
       click_button I18n.t('helpers.submit.create')
       expect(page).to have_content "注文完了"
