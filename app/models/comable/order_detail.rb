@@ -6,14 +6,14 @@ module Comable
     after_create :decrement_stock
 
     def product
-      stock = self.send(Comable::Stock.model_name.singular)
+      stock = send(Comable::Stock.model_name.singular)
       stock.product
     end
 
     private
 
     def decrement_stock
-      stock = self.send(Comable::Stock.model_name.singular)
+      stock = send(Comable::Stock.model_name.singular)
       stock.decrement_quantity!
     end
   end

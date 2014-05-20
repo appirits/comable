@@ -1,6 +1,5 @@
 class CreateStocks < ActiveRecord::Migration
   def change
-    create_table :stocks do |t|
-    end
+    create_table :stocks
   end
 end

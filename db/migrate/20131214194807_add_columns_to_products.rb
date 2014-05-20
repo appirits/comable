@@ -8,10 +8,10 @@ class AddColumnsToProducts < ActiveRecord::Migration
 
   private
 
-  def add_column_safety_to_products(column_name, type_name, options={})
-    if Comable::Engine::config.respond_to?(:product_columns)
-      return if Comable::Engine::config.product_columns[column_name]
+  def add_column_safety_to_products(column_name, type_name, options = {})
+    if Comable::Engine.config.respond_to?(:product_columns)
+      return if Comable::Engine.config.product_columns[column_name]
     end
-    add_column Comable::Engine::config.product_table, column_name, type_name, options
+    add_column Comable::Engine.config.product_table, column_name, type_name, options
   end
 end

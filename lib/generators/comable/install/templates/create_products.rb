@@ -1,6 +1,5 @@
 class CreateProducts < ActiveRecord::Migration
   def change
-    create_table :products do |t|
-    end
+    create_table :products
   end
 end

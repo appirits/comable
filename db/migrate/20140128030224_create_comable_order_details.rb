@@ -12,6 +12,6 @@ class CreateComableOrderDetails < ActiveRecord::Migration
   private
 
   def stock_table_name
-    Comable::Engine::config.stock_table.to_s.singularize
+    Comable::Engine.config.stock_table.to_s.singularize
   end
 end

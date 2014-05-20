@@ -1,0 +1,10 @@
+LineLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - vendor/**/*
+    - spec/dummy/db/schema.rb

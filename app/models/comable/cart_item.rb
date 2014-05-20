@@ -3,16 +3,16 @@ module Comable
     belongs_to Comable::Customer.model_name.singular.to_sym
     belongs_to Comable::Stock.model_name.singular.to_sym
 
-    validates "#{Comable::Customer.model_name.singular}_id", uniqueness: { scope: [ "#{Comable::Customer.model_name.singular}_id", "#{Comable::Stock.model_name.singular}_id" ] }
+    validates "#{Comable::Customer.model_name.singular}_id", uniqueness: { scope: ["#{Comable::Customer.model_name.singular}_id", "#{Comable::Stock.model_name.singular}_id"] }
 
     def product
-      stock = self.send(Comable::Stock.model_name.singular)
+      stock = send(Comable::Stock.model_name.singular)
       stock.product
     end
 
     def price
-      stock = self.send(Comable::Stock.model_name.singular)
-      stock.price * self.quantity
+      stock = send(Comable::Stock.model_name.singular)
+      stock.price * quantity
     end
   end
 end

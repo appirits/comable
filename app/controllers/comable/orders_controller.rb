@@ -2,7 +2,7 @@ module Comable
   class OrdersController < ApplicationController
     before_filter :load_order
     before_filter :verify
-    before_filter :redirect_for_logged_in_customer, only: [ :new, :orderer ]
+    before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
     after_filter :save_order, except: :create
 
     def new
@@ -80,18 +80,26 @@ module Comable
       return unless params[:order]
       case action_name.to_sym
       when :orderer
-        params.require(:order).permit(
+        order_params_for_orderer
+      when :delivery
+        order_params_for_delivery
+      end
+    end
+
+    def order_params_for_orderer
+      params.require(:order).permit(
+        :family_name,
+        :first_name
+      )
+    end
+
+    def order_params_for_delivery
+      params.require(:order).permit(
+        comable_order_deliveries_attributes: [
           :family_name,
           :first_name
-        )
-      when :delivery
-        params.require(:order).permit(
-          comable_order_deliveries_attributes: [
-            :family_name,
-            :first_name
-          ]
-        )
-      end
+        ]
+      )
     end
 
     def redirect_for_logged_in_customer
