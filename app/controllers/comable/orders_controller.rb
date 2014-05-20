@@ -20,7 +20,7 @@ module Comable
       when :post
         redirect_to comable.confirm_order_path
       when :get
-        @order.order_deliveries.build if @order.order_deliveries.size.zero?
+        @order.order_deliveries.build if @order.order_deliveries.empty?
       end
     end
 
