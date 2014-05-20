@@ -71,11 +71,10 @@ module Comable
 
         class Cart < Array
           def price
-            sum(&:price)
-          end
-
-          def stocks
-            map(&:stock)
+            stock_key = Comable::Stock.model_name.singular.to_sym
+            product_key = Comable::Product.model_name.singular.to_sym
+            cart_item_ids = map(&:id)
+            Comable::CartItem.includes(stock_key => product_key).where(id: cart_item_ids).to_a.sum(&:price)
           end
         end
 

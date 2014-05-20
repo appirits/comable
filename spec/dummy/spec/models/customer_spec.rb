@@ -16,7 +16,7 @@ describe Customer do
     it '商品の個数を増やした際の合計金額が正しいこと' do
       subject.add_cart_item(stock)
       subject.add_cart_item(stock)
-      expect(subject.cart_items.first.price).to eq(stock.price * 2)
+      expect(subject.cart.price).to eq(stock.price * 2)
     end
 
     it '商品を複数投入した際の合計金額が正しいこと' do
@@ -149,7 +149,7 @@ describe Customer do
 
       it '１つの受注レコードに受注詳細レコードが１つだけ紐づくこと' do
         subject.order(params[:order])
-        expect(subject.orders.last.order_deliveries.map(&:order_details).flatten.count).to eq(1)
+        expect(subject.orders.last.order_deliveries.map { |order_delivery| order_delivery.order_details.count }.sum).to eq(1)
       end
 
       it '不正なパラメータが渡された場合にエラーが発生すること' do

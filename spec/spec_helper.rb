@@ -46,4 +46,15 @@ RSpec.configure do |config|
   config.order = :random
 
   config.include EngineControllerTestMonkeyPatch, type: :controller
+
+  # for Bullet
+  # refs: https://github.com/flyerhzm/bullet#run-in-tests
+  config.before(:each) do
+    Bullet.start_request if Bullet.enable?
+  end
+
+  config.after(:each) do
+    Bullet.perform_out_of_channel_notifications if Bullet.enable? && Bullet.notification?
+    Bullet.end_request if Bullet.enable?
+  end
 end
