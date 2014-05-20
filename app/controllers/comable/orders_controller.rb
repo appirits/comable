@@ -46,10 +46,9 @@ module Comable
     end
 
     def verify
-      if current_customer.cart.empty?
-        flash[:alert] = I18n.t('comable.carts.empty')
-        redirect_to comable.cart_path
-      end
+      return if current_customer.cart.any?
+      flash[:alert] = I18n.t('comable.carts.empty')
+      redirect_to comable.cart_path
     end
 
     def load_order
