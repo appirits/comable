@@ -22,4 +22,8 @@ Bundler::GemHelper.install_tasks
 # from https://github.com/rspec/rspec-rails/issues/936
 task 'test:prepare'
 
-task default: 'app:spec'
+task :rubocop do
+  exec 'rubocop'
+end
+
+task default: ['app:spec', 'rubocop']
