@@ -12,21 +12,21 @@ describe "comable/products/show.html.slim" do
     end
   end
 
-  context "在庫切れ商品の場合" do
-    let (:stock) { FactoryGirl.create(:stock, :soldout) }
-    let (:product) { FactoryGirl.create(:product, stocks: [stock]) }
-
-    it "カート投入ボタンが存在しないこと" do
-      expect(rendered).not_to have_selector("form[action='#{comable.add_cart_path}']")
-    end
-  end
-
-  context "在庫切れ商品の場合" do
+  context "在庫あり商品の場合" do
     let (:stock) { FactoryGirl.create(:stock, :unsold) }
     let (:product) { FactoryGirl.create(:product, stocks: [stock]) }
 
     it "カート投入ボタンが存在すること" do
       expect(rendered).to have_selector("form[action='#{comable.add_cart_path}']")
+    end
+  end
+
+  context "在庫なし商品の場合" do
+    let (:stock) { FactoryGirl.create(:stock, :soldout) }
+    let (:product) { FactoryGirl.create(:product, stocks: [stock]) }
+
+    it "カート投入ボタンが存在しないこと" do
+      expect(rendered).not_to have_selector("form[action='#{comable.add_cart_path}']")
     end
   end
 end
