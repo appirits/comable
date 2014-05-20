@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'rspec/example_steps'
 
-describe 'カート処理', type: :feature do
-  let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
-  let(:stock) { FactoryGirl.create(:stock, :unsold) }
+feature 'カート処理' do
+  given(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+  given(:stock) { FactoryGirl.create(:stock, :unsold) }
 
-  before { product }
+  background { product }
 
-  it '商品詳細画面に遷移できること' do
+  scenario '商品詳細画面に遷移できること' do
     visit comable.products_path
     click_link product.name
     expect(page).to have_content product.price
