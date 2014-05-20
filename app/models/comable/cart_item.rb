@@ -5,6 +5,11 @@ module Comable
 
     validates "#{Comable::Customer.model_name.singular}_id", uniqueness: { scope: [ "#{Comable::Customer.model_name.singular}_id", "#{Comable::Stock.model_name.singular}_id" ] }
 
+    def product
+      stock = self.send(Comable::Stock.model_name.singular)
+      stock.product
+    end
+
     def price
       stock = self.send(Comable::Stock.model_name.singular)
       stock.price * self.quantity
