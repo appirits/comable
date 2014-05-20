@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/hyoshida/comable/badge.png)](https://coveralls.io/r/hyoshida/comable)
 [![Dependency Status](https://www.versioneye.com/user/projects/531934ceec1375cd39000931/badge.png)](https://www.versioneye.com/user/projects/531934ceec1375cd39000931)
 
-This project rocks and uses MIT-LICENSE.
+Comable provides a simple way to add e-commerce features to your Ruby on Rails application.
 
 ## Installation
 
