@@ -42,7 +42,7 @@ This project rocks and uses MIT-LICENSE.
 
 ## Requirements
 
-* Ruby on Rails 3.2, 4.0
+* Ruby on Rails 3.2, 4.1
 * Ruby 2.1
 
 And `strong_parameters`, `everywhere` gems are required only for Rails 3.
