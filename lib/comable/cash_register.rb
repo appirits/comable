@@ -23,6 +23,16 @@ class Comable::CashRegister
   end
 
   def valid
+    valid_cart && valid_stock
+  end
+
+  def invalid
+    not valid
+  end
+
+  private
+
+  def valid_cart
     cart = customer.cart
 
     order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
@@ -34,11 +44,12 @@ class Comable::CashRegister
     cart.empty?
   end
 
-  def invalid
-    not valid
+  def valid_stock
+    order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
+      next unless order_detail.stock
+      return false unless order_detail.stock.has_stocks?
+    end
   end
-
-  private
 
   def assign_default_attributes_to_order
     order.family_name ||= customer.family_name

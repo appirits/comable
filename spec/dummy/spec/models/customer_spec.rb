@@ -90,6 +90,14 @@ describe Customer do
       expect { subject.order }.to change { stock.reload.quantity }.by(-1)
     end
 
+    context "在庫がない場合" do
+      before { stock.update_attributes(quantity: 0) }
+
+      it "商品を購入できないこと" do
+        expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      end
+    end
+
     context "複数配送" do
       let (:params) {
         {
