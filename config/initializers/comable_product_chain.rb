@@ -83,28 +83,47 @@ module ActiveRecord
   #   product.name
   #   #=> true (= products.title)
   #
+  # TODO
+  #   初回呼び出し時に失敗する
+  #   ex.)
+  #     % rails console
+  #     irb> Comable::Product
+  #     => Product (call 'Product.connection' to establish a connection)
+  #     irb> exit
+  #
+  #     % rails console
+  #     irb> Comable::Product.new.name
+  #     => NoMethodError: undefined method `name' for #<Product:...>
+  #     irb> Comable::Product.new.name
+  #     => nil
+  #
   class Relation
-    # TODO: 初回呼び出し時に失敗する
-    #   ex.)
-    #
-    #   % rails console
-    #   irb> Comable::Product
-    #   => Product (call 'Product.connection' to establish a connection)
-    #   irb> exit
-    #
-    #   % rails console
-    #   irb> Comable::Product.new.name
-    #   => NoMethodError: undefined method `name' for #<Product:...>
-    #   irb> Comable::Product.new.name
-    #   => nil
-    #
     def to_a_with_comable_product
       return to_a_without_comable_product unless self.const_defined?(:Comable)
       return to_a_without_comable_product unless Comable.const_defined?(:ProductColumnsMapper)
       return to_a_without_comable_product unless @klass.include?(Comable::ProductColumnsMapper)
-      return to_a_without_comable_product unless self.comable_product_flag
+      return to_a_without_comable_product unless comable_product_flag
       to_a_without_comable_product.each { |record| record.comable_product }
     end
     alias_method_chain :to_a, :comable_product
+  end
+
+  # 用途
+  #   comable_productメソッドを利用後にレコードを作成した場合は
+  #   Comable::ProductColumnsMapper#comable_productを個別呼び出さなくても済むようになる
+  #
+  # 使用例
+  #   product = Product.comable_product.new(name: 'test')
+  #   product.name
+  #   #=> 'test' (= products.title)
+  #
+  # TODO
+  #   初回呼び出し時に失敗する
+  #
+  class Base
+    def initialize(attributes = nil, options = {})
+      self.comable_product if self.respond_to?(:comable_product) && self.class.current_scope.try(:comable_product_flag)
+      super
+    end
   end
 end

@@ -34,7 +34,7 @@ module Comable
 
         def add_cart_item(obj)
           case obj
-          when Comable::Product
+          when Comable::Product.model
             add_stock_to_cart(obj.stocks.first)
           when Comable::Stock
             add_stock_to_cart(obj)

@@ -64,17 +64,17 @@ module Comable
           # alias_attributeと同じことを、対象カラム名を動的に変更して行う
           class_eval <<-EOS
             def #{column_name}
-              target_column_name = mapped_comable_product_column_name('#{column_name}')
+              target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
               self.send target_column_name
             end
 
             def #{column_name}=(value)
-              target_column_name = mapped_comable_product_column_name('#{column_name}')
+              target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
               self.send target_column_name + '=', value
             end
 
             def #{column_name}?
-              target_column_name = mapped_product_column_name('#{column_name}')
+              target_column_name = mapped_product_column_name('#{column_name}').to_s
               self.send target_column_name + '?'
             end
           EOS
