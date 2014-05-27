@@ -16,9 +16,8 @@ module ActiveRecord
     attr_accessor :comable_product_flag
 
     def comable_product
-      clone = self.clone
-      clone.comable_product_flag = true
-      clone
+      self.comable_product_flag = true
+      self
     end
 
     def build_where_with_comable_product(opts = :chain, *rest)
@@ -32,7 +31,7 @@ module ActiveRecord
 
     def order_with_comable_product(opts = nil, *rest)
       return order_without_comable_product(opts, *rest) if opts.nil?
-      return order_without_comable_product(opts, *rest) unless comable_product_mall_no_value
+      return order_without_comable_product(opts, *rest) unless comable_product_flag
 
       self.order_without_comable_product(opts_with_mapped_comable_product_column_name(opts), *rest).dup
     end
@@ -50,7 +49,7 @@ module ActiveRecord
       when String, Symbol
         mapped_comable_product_column_names(opts.to_s)
       else
-        raise
+        opts
       end
     end
 
@@ -99,13 +98,13 @@ module ActiveRecord
     #   irb> Comable::Product.new.name
     #   => nil
     #
-    def new_with_comable_product(*args, &block)
-      return new_without_comable_product unless self.const_defined?(:Comable)
-      return new_without_comable_product unless Comable.const_defined?(:ProductColumnsMapper)
-      return new_without_comable_product unless @klass.include?(Comable::ProductColumnsMapper)
-      return new_without_comable_product unless comable_product_flag
-      new_without_comable_product(*args, &block).tap { |instance| instance.comable_product }
+    def to_a_with_comable_product
+      return to_a_without_comable_product unless self.const_defined?(:Comable)
+      return to_a_without_comable_product unless Comable.const_defined?(:ProductColumnsMapper)
+      return to_a_without_comable_product unless @klass.include?(Comable::ProductColumnsMapper)
+      return to_a_without_comable_product unless self.comable_product_flag
+      to_a_without_comable_product.each { |record| record.comable_product }
     end
-    alias_method_chain :new, :comable_product
+    alias_method_chain :to_a, :comable_product
   end
 end
