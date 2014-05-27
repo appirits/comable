@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_product
-          Comable.const_set(:Product, self.comable_product)
+          Comable.const_set(:Product, comable_product)
 
           has_many Comable::Stock.model_name.plural.to_sym
 

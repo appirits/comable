@@ -33,7 +33,7 @@ module ActiveRecord
       return order_without_comable_product(opts, *rest) if opts.nil?
       return order_without_comable_product(opts, *rest) unless comable_product_flag
 
-      self.order_without_comable_product(opts_with_mapped_comable_product_column_name(opts), *rest).dup
+      order_without_comable_product(opts_with_mapped_comable_product_column_name(opts), *rest).dup
     end
     alias_method_chain :order, :comable_product
 
@@ -42,10 +42,8 @@ module ActiveRecord
     def opts_with_mapped_comable_product_column_name(opts)
       case opts
       when Hash
-        opts.inject(Hash.new) do |result,(key,value)|
-          result[mapped_comable_product_column_name(key.to_s)] = value
-          result
-        end
+        key_values = opts.map { |key, value| [mapped_comable_product_column_name(key.to_s), value] }.flatten
+        Hash[key_values]
       when String, Symbol
         mapped_comable_product_column_names(opts.to_s)
       else
@@ -57,7 +55,7 @@ module ActiveRecord
       comable_product_column_names[column_name.to_sym] || column_name
     end
 
-    def mapped_comable_product_column_names(comable_product_mall_no, column_names)
+    def mapped_comable_product_column_names(column_names)
       column_names.map { |column_name| mapped_comable_product_column_name(column_name) }
     end
 
@@ -122,7 +120,7 @@ module ActiveRecord
   #
   class Base
     def initialize(attributes = nil, options = {})
-      self.comable_product if self.respond_to?(:comable_product) && self.class.current_scope.try(:comable_product_flag)
+      comable_product if self.respond_to?(:comable_product) && self.class.current_scope.try(:comable_product_flag)
       super
     end
   end

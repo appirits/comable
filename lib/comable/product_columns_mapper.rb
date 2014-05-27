@@ -52,38 +52,54 @@ module Comable
       private
 
       def changed_for_mapped_comable_product_colums
-        changed_without_comable_product_colums.
-          map {|column_name| unmapped_comable_product_column_name(column_name) }.
-          select {|column_name| self.class.comable_product_column_names[column_name.to_sym] }
+        changed_without_comable_product_colums
+          .map { |column_name| unmapped_comable_product_column_name(column_name) }
+          .select { |column_name| self.class.comable_product_column_names[column_name.to_sym] }
       end
     end
 
     module ClassMethods
       def comable_product_columns_mapper
-        comable_product_column_names.each_pair do |column_name,_|
+        comable_product_column_names.keys.each do |column_name|
           # alias_attributeと同じことを、対象カラム名を動的に変更して行う
-          class_eval <<-EOS
-            def #{column_name}
-              target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
-              self.send target_column_name
-            end
-
-            def #{column_name}=(value)
-              target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
-              self.send target_column_name + '=', value
-            end
-
-            def #{column_name}?
-              target_column_name = mapped_product_column_name('#{column_name}').to_s
-              self.send target_column_name + '?'
-            end
-          EOS
+          define_getter_method(column_name)
+          define_setter_method(column_name)
+          define_predicate_method(column_name)
         end
       end
 
       def comable_product_column_names
         return {} unless Comable::Engine.config.respond_to?(:product_columns)
         Comable::Engine.config.product_columns
+      end
+
+      private
+
+      def define_getter_method(column_name)
+        class_eval <<-EOS
+          def #{column_name}
+            target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
+            self.send target_column_name
+          end
+        EOS
+      end
+
+      def define_setter_method(column_name)
+        class_eval <<-EOS
+          def #{column_name}=(value)
+            target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
+            self.send target_column_name + '=', value
+          end
+        EOS
+      end
+
+      def define_predicate_method(column_name)
+        class_eval <<-EOS
+          def #{column_name}?
+            target_column_name = mapped_product_column_name('#{column_name}').to_s
+            self.send target_column_name + '?'
+          end
+        EOS
       end
     end
   end
