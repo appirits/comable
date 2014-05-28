@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_product
-          Comable.const_set(:Product, comable_product)
+          Comable.const_set(:Product, comable(:product))
 
           has_many Comable::Stock.model_name.plural.to_sym
 
@@ -16,7 +16,7 @@ module Comable
           include InstanceMethods
 
           require 'comable/product_columns_mapper'
-          include Comable::ProductColumnsMapper
+          include Comable::ColumnsMapper
         end
       end
 

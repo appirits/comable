@@ -8,7 +8,7 @@ module Comable
     def product
       stock = send(Comable::Stock.model_name.singular)
       # TODO: if stock.comable_stock_flag
-      stock.product.tap { |obj| obj.comable_product }
+      stock.product.tap { |obj| obj.comable(:product) }
     end
 
     def price

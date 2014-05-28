@@ -11,77 +11,81 @@ module ActiveRecord
   module Querying
     case Rails::VERSION::MAJOR
     when 4
-      delegate :comable_product, to: :all
+      delegate :comable, to: :all
     when 3
-      delegate :comable_product, to: :scoped
+      delegate :comable, to: :scoped
     end
   end
 
   module QueryMethods
-    attr_accessor :comable_product_flag
+    def comable_values
+      @comable_values ||= {}
+    end
 
-    def comable_product
-      self.comable_product_flag = true
+    def comable(type)
+      comable_values[:type] = type
+      comable_values[:flag] = true
       self
     end
 
-    def build_where_with_comable_product(opts = :chain, *rest)
-      return build_where_without_comable_product(opts, *rest) if opts == :chain
-      return build_where_without_comable_product(opts, *rest) unless comable_product_flag
+    def build_where_with_comable(opts = :chain, *rest)
+      return build_where_without_comable(opts, *rest) if opts == :chain
+      return build_where_without_comable(opts, *rest) unless comable_values[:flag]
 
-      build_where_without_comable_product(opts_with_mapped_comable_product_column_name(opts), *rest)
+      build_where_without_comable(opts_with_mapped_comable_column_name(opts), *rest)
     end
-    alias_method_chain :build_where, :comable_product
+    alias_method_chain :build_where, :comable
 
-    def order_with_comable_product(opts = nil, *rest)
-      return order_without_comable_product(opts, *rest) if opts.nil?
-      return order_without_comable_product(opts, *rest) unless comable_product_flag
+    def order_with_comable(opts = nil, *rest)
+      return order_without_comable(opts, *rest) if opts.nil?
+      return order_without_comable(opts, *rest) unless comable_values[:flag]
 
-      order_without_comable_product(opts_with_mapped_comable_product_column_name(opts), *rest).dup
+      order_without_comable(opts_with_mapped_comable_column_name(opts), *rest).dup
     end
-    alias_method_chain :order, :comable_product
+    alias_method_chain :order, :comable
 
     private
 
-    def opts_with_mapped_comable_product_column_name(opts)
+    def opts_with_mapped_comable_column_name(opts)
       case opts
       when Hash
-        key_values = opts.map { |key, value| [mapped_comable_product_column_name(key.to_s), value] }.flatten
+        key_values = opts.map { |key, value| [mapped_comable_column_name(key.to_s), value] }.flatten
         Hash[key_values]
       when String, Symbol
-        mapped_comable_product_column_names(opts.to_s)
+        mapped_comable_column_names(opts.to_s)
       else
         opts
       end
     end
 
-    def mapped_comable_product_column_name(column_name)
-      comable_product_column_names[column_name.to_sym] || column_name
+    def mapped_comable_column_name(column_name)
+      comable_column_names[column_name.to_sym] || column_name
     end
 
-    def mapped_comable_product_column_names(column_names)
-      column_names.map { |column_name| mapped_comable_product_column_name(column_name) }
+    def mapped_comable_column_names(column_names)
+      column_names.map { |column_name| mapped_comable_column_name(column_name) }
     end
 
-    def comable_product_column_names
-      return {} unless Comable::Engine.config.respond_to?(:product_columns)
-      Comable::Engine.config.product_columns
+    def comable_column_names
+      method_name = "#{comable_values[:type]}_columns"
+      return {} unless Comable::Engine.config.respond_to?(method_name)
+      Comable::Engine.config.send(method_name)
     end
   end
 
   # 用途
-  #   comable_productメソッドを利用してレコードを検索した場合は
-  #   Comable::ProductColumnsMapper#comable_productを個別呼び出さなくても済むようになる
+  #   comableメソッドを利用してレコードを検索した場合は
+  #   Comable::ColumnsMapper#comableを個別呼び出さなくても済むようになる
   #
   # 使用例
-  #   product = Product.comable_product.where(name: 'test').first
+  #   product = Product.comable(:product).where(name: 'test').first
   #   product.comable_product
   #   product.name
   #   #=> 'test' (= products.title)
   #
   #   こうなっていたコードが以下のようになる
   #
-  #   product = Product.comable_product.where(name: 'test').first
+  #   product = Product.comable(:product).where(name: 'test').first
   #   product.name
   #   #=> true (= products.title)
   #
@@ -100,25 +104,25 @@ module ActiveRecord
   #     => nil
   #
   class Relation
-    def to_a_with_comable_product
-      return to_a_without_comable_product unless self.const_defined?(:Comable)
-      return to_a_without_comable_product unless Comable.const_defined?(:ProductColumnsMapper)
-      return to_a_without_comable_product unless @klass.include?(Comable::ProductColumnsMapper)
-      return to_a_without_comable_product unless comable_product_flag
-      to_a_without_comable_product.each { |record| record.comable_product }
+    def to_a_with_comable
+      return to_a_without_comable unless self.const_defined?(:Comable)
+      return to_a_without_comable unless Comable.const_defined?(:ColumnsMapper)
+      return to_a_without_comable unless @klass.include?(Comable::ColumnsMapper)
+      return to_a_without_comable unless comable_values[:flag]
+      to_a_without_comable.each { |record| record.comable(comable_values[:type]) }
     end
-    alias_method_chain :to_a, :comable_product
+    alias_method_chain :to_a, :comable
 
     # for Rails 3
     alias_method :model, :klass if Rails::VERSION::MAJOR == 3
   end
 
   # 用途
-  #   comable_productメソッドを利用後にレコードを作成した場合は
-  #   Comable::ProductColumnsMapper#comable_productを個別呼び出さなくても済むようになる
+  #   comableメソッドを利用後にレコードを作成した場合は
+  #   Comable::ColumnsMapper#comableを個別呼び出さなくても済むようになる
   #
   # 使用例
-  #   product = Product.comable_product.new(name: 'test')
+  #   product = Product.comable(:product).new(name: 'test')
   #   product.name
   #   #=> 'test' (= products.title)
   #
@@ -126,16 +130,17 @@ module ActiveRecord
   #   初回呼び出し時に失敗する
   #
   class Base
-    def initialize_with_comable_product(*args, &block)
+    def initialize_with_comable(*args, &block)
       case Rails::VERSION::MAJOR
       when 4
         current_scope = self.class.current_scope
       when 3
         current_scope = self.class.scoped
       end
-      comable_product if self.respond_to?(:comable_product) && current_scope.try(:comable_product_flag)
-      initialize_without_comable_product(*args, &block)
+      comable_values = current_scope.try(:comable_values) || {}
+      comable(comable_values[:type]) if self.respond_to?(:comable) && comable_values[:flag]
+      initialize_without_comable(*args, &block)
     end
-    alias_method_chain :initialize, :comable_product
+    alias_method_chain :initialize, :comable
   end
 end

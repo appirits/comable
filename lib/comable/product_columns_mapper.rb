@@ -1,5 +1,5 @@
 module Comable
-  module ProductColumnsMapper
+  module ColumnsMapper
     extend ActiveSupport::Concern
 
     # 用途
@@ -13,54 +13,34 @@ module Comable
     #         module ClassMethods
     #           def acts_as_comable_product
     #             ...
-    #             include ProductColumnsMapper
+    #             include ColumnsMapper
     #             ...
     #
     #   product = Comable::Product.first
     #   product.name
     #   #=> NoMethodError: undefined method `name' for #<Product:...>
     #
-    #   product.comable_product.name
+    #   product.comable(:product).name
     #   #=> 'test product'
     #
     included do
-      def comable_product(comable_product_column_mapping_flag = true)
-        return true if @comable_product_column_mapping_flag
-
-        extend ClassMethods
-        comable_product_columns_mapper
-
-        @comable_product_column_mapping_flag = comable_product_column_mapping_flag
+      def comable_values
+        @comable_values ||= {}
       end
 
-      def mapped_comable_product_column_name(column_name)
-        return column_name unless @comable_product_column_mapping_flag
-        self.class.comable_product_column_names[column_name.to_sym] || column_name
+      def comable(type)
+        return true if comable_values[:flag]
+
+        comable_values[:type] = type
+        comable_values[:flag] = true
+
+        comable_columns_mapper
+
+        comable_values[:flag]
       end
 
-      def unmapped_comable_product_column_name(column_name)
-        return column_name unless @comable_product_column_mapping_flag
-        self.class.comable_product_column_names.invert[column_name.to_sym] || column_name
-      end
-
-      def changed_with_comable_product_colums
-        return changed_without_comable_product_colums unless @comable_product_column_mapping_flag
-        changed_without_comable_product_colums + changed_for_mapped_comable_product_colums
-      end
-      alias_method_chain :changed, :comable_product_colums
-
-      private
-
-      def changed_for_mapped_comable_product_colums
-        changed_without_comable_product_colums
-          .map { |column_name| unmapped_comable_product_column_name(column_name) }
-          .select { |column_name| self.class.comable_product_column_names[column_name.to_sym] }
-      end
-    end
-
-    module ClassMethods
-      def comable_product_columns_mapper
-        comable_product_column_names.keys.each do |column_name|
+      def comable_columns_mapper
+        comable_column_names.keys.each do |column_name|
           # alias_attributeと同じことを、対象カラム名を動的に変更して行う
           define_getter_method(column_name)
           define_setter_method(column_name)
@@ -68,17 +48,40 @@ module Comable
         end
       end
 
-      def comable_product_column_names
-        return {} unless Comable::Engine.config.respond_to?(:product_columns)
-        Comable::Engine.config.product_columns
+      def mapped_comable_column_name(column_name)
+        return column_name unless comable_values[:flag]
+        comable_column_names[column_name.to_sym] || column_name
       end
 
+      def unmapped_comable_column_name(column_name)
+        return column_name unless comable_values[:flag]
+        comable_column_names.invert[column_name.to_sym] || column_name
+      end
+
+      def changed_with_comable_colums
+        return changed_without_comable_colums unless comable_values[:flag]
+        changed_without_comable_colums + changed_for_mapped_comable_colums
+      end
+      alias_method_chain :changed, :comable_colums
+
       private
+
+      def changed_for_mapped_comable_colums
+        changed_without_comable_colums
+          .map { |column_name| unmapped_comable_column_name(column_name) }
+          .select { |column_name| comable_column_names[column_name.to_sym] }
+      end
+
+      def comable_column_names
+        method_name = "#{comable_values[:type]}_columns"
+        return {} unless Comable::Engine.config.respond_to?(method_name)
+        Comable::Engine.config.send(method_name)
+      end
 
       def define_getter_method(column_name)
         class_eval <<-EOS
           def #{column_name}
-            target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
+            target_column_name = mapped_comable_column_name('#{column_name}').to_s
             self.send target_column_name
           end
         EOS
@@ -87,7 +90,7 @@ module Comable
       def define_setter_method(column_name)
         class_eval <<-EOS
           def #{column_name}=(value)
-            target_column_name = mapped_comable_product_column_name('#{column_name}').to_s
+            target_column_name = mapped_comable_column_name('#{column_name}').to_s
             self.send target_column_name + '=', value
           end
         EOS
@@ -96,7 +99,7 @@ module Comable
       def define_predicate_method(column_name)
         class_eval <<-EOS
           def #{column_name}?
-            target_column_name = mapped_product_column_name('#{column_name}').to_s
+            target_column_name = mapped_column_name('#{column_name}').to_s
             self.send target_column_name + '?'
           end
         EOS
