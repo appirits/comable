@@ -52,7 +52,7 @@ module ActiveRecord
         key_values = opts.map { |key, value| [mapped_comable_column_name(key.to_s), value] }.flatten
         Hash[key_values]
       when String, Symbol
-        mapped_comable_column_names(opts.to_s)
+        mapped_comable_column_names_for_string(opts.to_s)
       else
         opts
       end
@@ -62,8 +62,11 @@ module ActiveRecord
       comable_column_names[column_name.to_sym] || column_name
     end
 
-    def mapped_comable_column_names(column_names)
-      column_names.map { |column_name| mapped_comable_column_name(column_name) }
+    def mapped_comable_column_names_for_string(string)
+      comable_column_names.each do |old_column_name, new_column_name|
+        string.gsub!(/\b#{old_column_name}\b/, new_column_name.to_s)
+      end
+      string
     end
 
     def comable_column_names

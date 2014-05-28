@@ -11,19 +11,13 @@ module Comable
 
           belongs_to Comable::Product.model_name.singular.to_sym
 
-          scope :activated, -> { where.not(comable_column_name[:product_id_num] => nil) }
-          scope :unsold, -> { where("#{comable_column_name[:quantity]} > ?", 0) }
-          scope :soldout, -> { where("#{comable_column_name[:quantity]} <= ?", 0) }
+          scope :activated, -> { where.not(product_id_num: nil) }
+          scope :unsold, -> { where('quantity > ?', 0) }
+          scope :soldout, -> { where('quantity <= ?', 0) }
 
           delegate :price, to: Comable::Product.model_name.singular.to_sym
 
           include InstanceMethods
-        end
-
-        def comable_column_name
-          default_columns = { product_id: :product_id, product_id_num: :product_id_num, code: :code, quantity: :quantity }
-          return default_columns unless Comable::Engine.config.respond_to?(:stock_columns)
-          default_columns.merge(Comable::Engine.config.stock_columns)
         end
       end
 
@@ -40,7 +34,7 @@ module Comable
 
         def decrement_quantity!
           ActiveRecord::Base.transaction do
-            decrement!(self.class.comable_column_name[:quantity])
+            decrement!(:quantity)
           end
         end
       end
