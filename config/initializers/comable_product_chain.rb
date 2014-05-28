@@ -28,7 +28,6 @@ module ActiveRecord
     def build_where_with_comable_product(opts = :chain, *rest)
       return build_where_without_comable_product(opts, *rest) if opts == :chain
       return build_where_without_comable_product(opts, *rest) unless comable_product_flag
-      build
 
       build_where_without_comable_product(opts_with_mapped_comable_product_column_name(opts), *rest)
     end
