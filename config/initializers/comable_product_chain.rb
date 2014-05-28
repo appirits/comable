@@ -9,7 +9,12 @@ module ActiveRecord
   #   #=> [<products.titleが"test"であるレコード>]
   #
   module Querying
-    delegate :comable_product, to: :all
+    case Rails::VERSION::MAJOR
+    when 4
+      delegate :comable_product, to: :all
+    when 3
+      delegate :comable_product, to: :scoped
+    end
   end
 
   module QueryMethods
