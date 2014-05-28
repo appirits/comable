@@ -7,11 +7,9 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          Comable.const_set(:Stock, self)
+          Comable.const_set(:Stock, comable(:stock))
 
           belongs_to Comable::Product.model_name.singular.to_sym
-
-          after_initialize :alias_methods_to_comable_stock_accsesor
 
           scope :activated, -> { where.not(comable_column_name[:product_id_num] => nil) }
           scope :unsold, -> { where("#{comable_column_name[:quantity]} > ?", 0) }
@@ -43,22 +41,6 @@ module Comable
         def decrement_quantity!
           ActiveRecord::Base.transaction do
             decrement!(self.class.comable_column_name[:quantity])
-          end
-        end
-
-        private
-
-        def alias_methods_to_comable_stock_accsesor
-          config = Comable::Engine.config
-          return unless config.respond_to?(:stock_columns)
-
-          config.stock_columns.each_pair do |column_name, actual_column_name|
-            next if actual_column_name.blank?
-            next if actual_column_name == column_name
-
-            class_eval do
-              alias_attribute column_name, actual_column_name
-            end
           end
         end
       end

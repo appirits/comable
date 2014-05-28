@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :stock do
+  factory :stock, class: 'Comable::Stock' do
     product_id_num 1
     code '1234567-001'
     quantity nil
