@@ -109,6 +109,9 @@ module ActiveRecord
       to_a_without_comable_product.each { |record| record.comable_product }
     end
     alias_method_chain :to_a, :comable_product
+
+    # for Rails 3
+    alias_method :model, :klass if Rails::VERSION::MAJOR == 3
   end
 
   # 用途
@@ -124,9 +127,16 @@ module ActiveRecord
   #   初回呼び出し時に失敗する
   #
   class Base
-    def initialize(attributes = nil, options = {})
-      comable_product if self.respond_to?(:comable_product) && self.class.current_scope.try(:comable_product_flag)
-      super
+    def initialize_with_comable_product(*args, &block)
+      case Rails::VERSION::MAJOR
+      when 4
+        current_scope = self.class.current_scope
+      when 3
+        current_scope = self.class.scoped
+      end
+      comable_product if self.respond_to?(:comable_product) && current_scope.try(:comable_product_flag)
+      initialize_without_comable_product(*args, &block)
     end
+    alias_method_chain :initialize, :comable_product
   end
 end
