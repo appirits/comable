@@ -7,7 +7,8 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          Comable.const_set(:Stock, comable(:stock))
+          Comable.const_set(:Stock, self)
+          Comable::Stock.const_set(:Mapper, comable(:stock))
 
           belongs_to Comable::Product.model_name.singular.to_sym
 

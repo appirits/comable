@@ -1,11 +1,11 @@
 module Comable
   class ProductsController < ApplicationController
     def index
-      @products = Comable::Product.all
+      @products = Comable::Product::Mapper.all
     end
 
     def show
-      @product = Comable::Product.find(params[:id])
+      @product = Comable::Product::Mapper.find(params[:id])
     end
   end
 end

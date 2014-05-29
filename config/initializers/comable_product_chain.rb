@@ -88,20 +88,6 @@ module ActiveRecord
   #   product.name
   #   #=> true (= products.title)
   #
-  # TODO
-  #   初回呼び出し時に失敗する
-  #   ex.)
-  #     % rails console
-  #     irb> Comable::Product
-  #     => Product (call 'Product.connection' to establish a connection)
-  #     irb> exit
-  #
-  #     % rails console
-  #     irb> Comable::Product.new.name
-  #     => NoMethodError: undefined method `name' for #<Product:...>
-  #     irb> Comable::Product.new.name
-  #     => nil
-  #
   class Relation
     def to_a_with_comable
       return to_a_without_comable unless self.const_defined?(:Comable)
@@ -124,9 +110,6 @@ module ActiveRecord
   #   product = Product.comable(:product).new(name: 'test')
   #   product.name
   #   #=> 'test' (= products.title)
-  #
-  # TODO
-  #   初回呼び出し時に失敗する
   #
   class Base
     def initialize_with_comable(*args, &block)

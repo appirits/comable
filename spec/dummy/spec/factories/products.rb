@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :product, class: 'Comable::Product' do
+  factory :product, class: 'Comable::Product::Mapper' do
     title 'test_product'
     code '1234567'
     price 100

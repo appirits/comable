@@ -14,8 +14,12 @@ describe Product do
   context 'where' do
     before { product }
 
-    it 'name => title' do
-      expect(Comable::Product.where(name: title).count).to eq(1)
+    it 'name => title: success' do
+      expect(Comable::Product::Mapper.where(name: title).count).to eq(1)
+    end
+
+    it 'name => title: fail' do
+      expect { Comable::Product.where(name: title).count }.to raise_error
     end
   end
 end
