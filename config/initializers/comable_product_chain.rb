@@ -19,7 +19,7 @@ module ActiveRecord
 
   module QueryMethods
     def comable_values
-      @comable_values ||= {}
+      @comable_values ||= @klass.instance_variable_get(:@comable_values) || {}
     end
 
     def comable(type)
@@ -133,6 +133,19 @@ module ActiveRecord
   #   初回呼び出し時に失敗する
   #
   class Base
+    class << self
+      def comable_values
+        @comable_values ||= {}
+      end
+
+      def comable(type)
+        fail ImmutableRelation if @loaded
+        comable_values[:type] = type
+        comable_values[:flag] = true
+        self
+      end
+    end
+
     def initialize_with_comable(*args, &block)
       case Rails::VERSION::MAJOR
       when 4
@@ -140,8 +153,8 @@ module ActiveRecord
       when 3
         current_scope = self.class.scoped
       end
-      comable_values = current_scope.try(:comable_values) || {}
-      comable(comable_values[:type]) if self.respond_to?(:comable) && comable_values[:flag]
+      comable_values = current_scope.try(:comable_values) || self.class.comable_values
+      comable(comable_values[:type]) if respond_to?(:comable) && comable_values[:flag]
       initialize_without_comable(*args, &block)
     end
     alias_method_chain :initialize, :comable
