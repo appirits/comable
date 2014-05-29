@@ -4,7 +4,7 @@ module Comable
     end
 
     def add
-      product = Comable::Product::Mapper.find(params[:product_id])
+      product = Comable::Product.find(params[:product_id])
       if product
         current_customer.add_cart_item(product)
         flash[:notice] = I18n.t('comable.carts.add_product')

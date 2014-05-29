@@ -15,11 +15,11 @@ describe Product do
     before { product }
 
     it 'name => title: success' do
-      expect(Comable::Product::Mapper.where(name: title).count).to eq(1)
+      expect(Comable::Product.where(name: title).count).to eq(1)
     end
 
     it 'name => title: fail' do
-      expect { Comable::Product.where(name: title).count }.to raise_error
+      expect { Product.where(name: title).count }.to raise_error
     end
   end
 end

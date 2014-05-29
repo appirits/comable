@@ -7,9 +7,6 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_customer
-          Comable.const_set(:Customer, self)
-          Comable::Customer.const_set(:Mapper, comable(:customer))
-
           has_many :comable_orders, class_name: 'Comable::Order'
           alias_method :orders, :comable_orders
 
@@ -33,9 +30,9 @@ module Comable
 
         def add_cart_item(obj)
           case obj
-          when Comable::Product
+          when Comable::Product.model
             add_stock_to_cart(obj.stocks.first)
-          when Comable::Stock
+          when Comable::Stock.model
             add_stock_to_cart(obj)
           when Array
             obj.map { |item| add_cart_item(item) }
@@ -46,7 +43,7 @@ module Comable
 
         def remove_cart_item(obj)
           case obj
-          when Comable::Stock
+          when Comable::Stock.model
             remove_stock_from_cart(obj)
           else
             fail
@@ -117,7 +114,7 @@ module Comable
         def find_cart_items_by(stock)
           return super unless self.logged_in?
 
-          fail unless stock.is_a?(Comable::Stock)
+          fail unless stock.is_a?(Comable::Stock.model)
 
           customer_id = "#{Comable::Customer.model_name.singular}_id"
           stock_id = "#{Comable::Stock.model_name.singular}_id"
