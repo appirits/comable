@@ -29,18 +29,14 @@ module ActiveRecord
     end
 
     def build_where_with_comable(opts = :chain, *rest)
-      return build_where_without_comable(opts, *rest) if opts == :chain
-      return build_where_without_comable(opts, *rest) unless comable_values[:flag]
-
-      build_where_without_comable(opts_with_mapped_comable_column_name(opts), *rest)
+      opts = opts_with_mapped_comable_column_name(opts) if comable_values[:flag]
+      build_where_without_comable(opts, *rest)
     end
     alias_method_chain :build_where, :comable
 
     def order_with_comable(opts = nil, *rest)
-      return order_without_comable(opts, *rest) if opts.nil?
-      return order_without_comable(opts, *rest) unless comable_values[:flag]
-
-      order_without_comable(opts_with_mapped_comable_column_name(opts), *rest).dup
+      opts = opts_with_mapped_comable_column_name(opts) if comable_values[:flag]
+      order_without_comable(opts, *rest)
     end
     alias_method_chain :order, :comable
 
