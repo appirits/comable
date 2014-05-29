@@ -50,7 +50,7 @@ module ActiveRecord
       case opts
       when Hash
         key_values = opts.map { |key, value| [mapped_comable_column_name(key.to_s), value] }.flatten
-        Hash[key_values]
+        Hash[*key_values]
       when String, Symbol
         mapped_comable_column_names_for_string(opts.to_s)
       else
