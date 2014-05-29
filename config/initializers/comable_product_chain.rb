@@ -97,9 +97,6 @@ module ActiveRecord
       to_a_without_comable.each { |record| record.comable(comable_values[:type]) }
     end
     alias_method_chain :to_a, :comable
-
-    # for Rails 3
-    alias_method :model, :klass if Rails::VERSION::MAJOR == 3
   end
 
   # 用途
