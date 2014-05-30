@@ -7,13 +7,13 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          belongs_to Comable::Product.model_name.singular.to_sym
+          belongs_to :product, class_name: Comable::Product.model.name
 
           scope :activated, -> { where.not(product_id_num: nil) }
           scope :unsold, -> { where('quantity > ?', 0) }
           scope :soldout, -> { where('quantity <= ?', 0) }
 
-          delegate :price, to: Comable::Product.model_name.singular.to_sym
+          delegate :price, to: :product
 
           include InstanceMethods
         end
