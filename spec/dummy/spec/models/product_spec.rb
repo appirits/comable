@@ -4,7 +4,8 @@ describe Product do
   it { expect { described_class.new }.to_not raise_error }
 
   let(:title) { 'sample product' }
-  let(:product) { FactoryGirl.create(:product, title: title) }
+  let(:product) { FactoryGirl.create(:product, title: title, comable_stocks: [stock]) }
+  let(:stock) { FactoryGirl.create(:stock) }
 
   context 'attributes' do
     subject { product }
@@ -21,5 +22,10 @@ describe Product do
     it 'name => title: fail' do
       expect { Product.where(name: title).count }.to raise_error
     end
+  end
+
+  context 'has_many' do
+    subject { product }
+    its(:stocks) { should be_any }
   end
 end
