@@ -7,18 +7,25 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_product
-          has_many :stocks, class_name: Comable::Stock.model.name
+          has_many :comable_stocks, class_name: Comable::Stock.model.name
 
           after_create :create_stock
 
           include InstanceMethods
 
-          require 'comable/columns_mapper'
           include Comable::ColumnsMapper
         end
       end
 
       module InstanceMethods
+        def stocks
+          comable_flag = comable_values[:flag] if respond_to?(:comable_values)
+          stocks = comable_stocks
+          return if stocks.nil?
+          stocks.each { |stock| stock.comable(:stock) } if comable_flag
+          stocks
+        end
+
         def unsold?
           stocks.activated.unsold.exists?
         end

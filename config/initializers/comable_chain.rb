@@ -22,9 +22,13 @@ module ActiveRecord
       @comable_values ||= {}
     end
 
-    def comable(type)
-      comable_values[:type] = type
-      comable_values[:flag] = true
+    def comable(obj = nil)
+      obj = true if obj.nil?
+      comable_values[:flag] = obj ? true : false
+      case obj
+      when Symbol, String
+        comable_values[:type] = obj.to_sym
+      end
       self
     end
 

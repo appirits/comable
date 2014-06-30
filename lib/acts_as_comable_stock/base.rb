@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          belongs_to :product, class_name: Comable::Product.model.name
+          belongs_to :comable_product, class_name: Comable::Product.model.name, foreign_key: Comable::Product.foreign_key
 
           scope :activated, -> { where.not(product_id_num: nil) }
           scope :unsold, -> { where('quantity > ?', 0) }
@@ -17,12 +17,19 @@ module Comable
 
           include InstanceMethods
 
-          require 'comable/columns_mapper'
           include Comable::ColumnsMapper
         end
       end
 
       module InstanceMethods
+        def product
+          comable_flag = comable_values[:flag] if respond_to?(:comable_values)
+          product = comable_product
+          return if product.nil?
+          product.comable(:product) if comable_flag
+          product
+        end
+
         def unsold?
           return false if product_id_num.nil?
           return false if quantity.nil?

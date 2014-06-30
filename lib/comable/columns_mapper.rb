@@ -28,14 +28,14 @@ module Comable
         @comable_values ||= {}
       end
 
-      def comable(type)
-        return true if comable_values[:flag]
-
-        comable_values[:type] = type
-        comable_values[:flag] = true
-
-        comable_columns_mapper
-
+      def comable(obj = nil)
+        obj = true if obj.nil?
+        comable_values[:flag] = obj ? true : false
+        case obj
+        when Symbol, String
+          comable_values[:type] = obj.to_sym
+          comable_columns_mapper
+        end
         comable_values[:flag]
       end
 

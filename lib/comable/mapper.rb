@@ -24,6 +24,10 @@ module Comable
       "::#{Comable::Engine.config.send("#{comable_type}_table").to_s.classify}".constantize
     end
 
+    def foreign_key
+      "#{model_name.singular}_id"
+    end
+
     private
 
     def comable_type

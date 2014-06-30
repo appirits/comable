@@ -1,14 +1,17 @@
 module Comable
   class OrderDetail < ActiveRecord::Base
-    belongs_to :stock, class_name: Comable::Stock.model.name
+    belongs_to :comable_stock, class_name: Comable::Stock.model.name, foreign_key: Comable::Stock.foreign_key
     belongs_to :comable_order_deliveries, class_name: 'Comable::OrderDelivery'
 
     after_create :decrement_stock
 
-    def product
-      # TODO: if stock.comable_stock_flag
-      stock.product.tap { |obj| obj.comable(:product) }
+    def stock
+      stock = comable_stock
+      stock.comable(:stock)
+      stock
     end
+
+    delegate :product, to: :stock
 
     private
 

@@ -12,7 +12,6 @@ module Comable
 
           include InstanceMethods
 
-          require 'comable/columns_mapper'
           include Comable::ColumnsMapper
         end
       end
@@ -60,8 +59,10 @@ module Comable
 
         def cart_items
           return super unless self.logged_in?
+          comable_flag = false
+          comable_flag = comable_values[:flag] if respond_to?(:comable_values)
           customer_id = "#{Comable::Customer.model_name.singular}_id"
-          Comable::CartItem.where(customer_id => id)
+          Comable::CartItem.comable(comable_flag).where(customer_id => id)
         end
 
         def cart
@@ -70,10 +71,8 @@ module Comable
 
         class Cart < Array
           def price
-            stock_key = Comable::Stock.model_name.singular.to_sym
-            product_key = Comable::Product.model_name.singular.to_sym
             cart_item_ids = map(&:id)
-            Comable::CartItem.includes(stock_key => product_key).where(id: cart_item_ids).to_a.sum(&:price)
+            Comable::CartItem.includes(comable_stock: :comable_product).where(id: cart_item_ids).to_a.sum(&:price)
           end
         end
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rspec/example_steps'
 
 feature 'カート処理' do
-  given(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+  given(:product) { FactoryGirl.create(:product, comable_stocks: [stock]) }
   given(:stock) { FactoryGirl.create(:stock, :unsold) }
 
   background { product }
