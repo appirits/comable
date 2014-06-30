@@ -61,8 +61,7 @@ module Comable
           return super unless self.logged_in?
           comable_flag = false
           comable_flag = comable_values[:flag] if respond_to?(:comable_values)
-          customer_id = "#{Comable::Customer.model_name.singular}_id"
-          Comable::CartItem.comable(comable_flag).where(customer_id => id)
+          Comable::CartItem.comable(comable_flag).where(Comable::Customer.foreign_key => id)
         end
 
         def cart
@@ -118,10 +117,9 @@ module Comable
 
           fail unless stock.is_a?(Comable::Stock.model)
 
-          customer_id = "#{Comable::Customer.model_name.singular}_id"
-          stock_id = "#{Comable::Stock.model_name.singular}_id"
-
-          Comable::CartItem.where(customer_id => id, stock_id => stock.id)
+          Comable::CartItem
+            .where(Comable::Customer.foreign_key => id)
+            .where(Comable::Stock.foreign_key => stock.id)
         end
       end
     end

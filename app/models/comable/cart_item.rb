@@ -3,7 +3,7 @@ module Comable
     belongs_to :customer, class_name: Comable::Customer.model.name, foreign_key: Comable::Customer.foreign_key
     belongs_to :comable_stock, class_name: Comable::Stock.model.name, foreign_key: Comable::Stock.foreign_key
 
-    validates "#{Comable::Customer.model_name.singular}_id", uniqueness: { scope: ["#{Comable::Customer.model_name.singular}_id", "#{Comable::Stock.model_name.singular}_id"] }
+    validates Comable::Customer.foreign_key, uniqueness: { scope: [Comable::Customer.foreign_key, Comable::Stock.foreign_key] }
 
     include Comable::ColumnsMapper
 

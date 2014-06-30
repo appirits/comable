@@ -27,10 +27,9 @@ module Comable
         found_cart_item = found_cart_items.first
         found_cart_item.quantity = found_cart_item.quantity.next
       else
-        stock_id = "#{Comable::Stock.model_name.singular}_id"
         comable_flag = false
         comable_flag = comable_values[:flag] if respond_to?(:comable_values)
-        @cart_items << Comable::CartItem.comable(comable_flag).new(stock_id => stock.id)
+        @cart_items << Comable::CartItem.comable(comable_flag).new(Comable::Stock.foreign_key => stock.id)
       end
       save_cart_to_session
     end
@@ -48,7 +47,7 @@ module Comable
 
     def find_cart_items_by(stock)
       cart_items.select do |cart_item|
-        stock_in_cart = cart_item.send(Comable::Stock.model_name.singular)
+        stock_in_cart = cart_item.stock
         stock_in_cart == stock
       end
     end
