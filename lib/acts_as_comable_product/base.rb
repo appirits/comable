@@ -13,7 +13,7 @@ module Comable
 
           include InstanceMethods
 
-          require 'comable/product_columns_mapper'
+          require 'comable/columns_mapper'
           include Comable::ColumnsMapper
         end
       end

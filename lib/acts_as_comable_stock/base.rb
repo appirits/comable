@@ -16,6 +16,9 @@ module Comable
           delegate :price, to: :product
 
           include InstanceMethods
+
+          require 'comable/columns_mapper'
+          include Comable::ColumnsMapper
         end
       end
 
