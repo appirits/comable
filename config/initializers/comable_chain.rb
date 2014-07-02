@@ -30,6 +30,7 @@ module ActiveRecord
       obj = true if obj.nil?
       comable_values[:flag] = obj ? true : false
       comable_values[:type] = obj.to_sym if obj.class.in? [Symbol, String]
+      warning_checker
       self
     end
 
@@ -74,6 +75,13 @@ module ActiveRecord
       method_name = "#{comable_values[:type]}_columns"
       return {} unless Comable::Engine.config.respond_to?(method_name)
       Comable::Engine.config.send(method_name)
+    end
+
+    def warning_checker
+      comable_column_names.each do |old_column_name, new_column_name|
+        return if old_column_name != new_column_name
+        Rails.logger.warn "[Comable:WARNING] #{old_column_name} is duplicated in Comable::Engine.config.#{comable_values[:type]}_columns."
+      end
     end
   end
 
