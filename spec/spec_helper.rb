@@ -6,7 +6,6 @@ Coveralls.wear!('rails')
 
 require File.expand_path('../dummy/config/environment', __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -57,4 +56,13 @@ RSpec.configure do |config|
     Bullet.perform_out_of_channel_notifications if Bullet.enable? && Bullet.notification?
     Bullet.end_request if Bullet.enable?
   end
+
+  # for Rspec 3
+  # refs: https://github.com/rspec/rspec-rails/issues/932#issuecomment-43521700
+  config.infer_spec_type_from_file_location!
+
+  # Disable should syntax.
+  # refs: https://www.relishapp.com/rspec/rspec-expectations/v/3-0/docs/syntax-configuration#disable-should-syntax
+  config.expect_with(:rspec) { |c| c.syntax = :expect }
+  config.mock_with(:rspec) { |c| c.syntax = :expect }
 end
