@@ -126,4 +126,31 @@ module ActiveRecord
     end
     alias_method_chain :initialize, :comable
   end
+
+  # Rails 3.x で scope に対してのカラムマッピングが正常に動作するようにするためのもの
+  #
+  # 原因
+  #   scope 内の条件が unscoped { ... } 内で実行されるため、カラムマッピングを実施する為のフラグが
+  #   引き継がれず、カラムマッピングが作動しない
+  #
+  # 対策
+  #   scope メソッドでは unscoped { ... } の結果を Relation.new として再生成しているので
+  #   relation メソッドを利用した際にカラムマッピング実施フラグがあればこれを継承するようにした
+  #
+  class Base
+    class << self
+      def relation_with_comable(*args, &block)
+        return relation_without_comable(*args, &block) unless self.respond_to?(:comable)
+        return relation_without_comable(*args, &block) unless current_scope
+        return relation_without_comable(*args, &block) unless current_scope.comable_values
+        return relation_without_comable(*args, &block) unless current_scope.comable_values[:flag]
+        relation_without_comable(*args, &block).comable(current_scope.comable_values[:type])
+      end
+
+      case Rails::VERSION::MAJOR
+      when 3
+        alias_method_chain :relation, :comable
+      end
+    end
+  end
 end
