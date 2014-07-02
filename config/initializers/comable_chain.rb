@@ -99,7 +99,7 @@ module ActiveRecord
       return to_a_without_comable unless Comable.const_defined?(:ColumnsMapper)
       return to_a_without_comable unless @klass.include?(Comable::ColumnsMapper)
       return to_a_without_comable unless comable_values[:flag]
-      to_a_without_comable.each { |record| record.comable(comable_values[:type]) }
+      to_a_without_comable.each { |record| record.comable!(comable_values[:type]) }
     end
     alias_method_chain :to_a, :comable
   end
@@ -122,7 +122,7 @@ module ActiveRecord
         current_scope = self.class.scoped
       end
       comable_values = current_scope.try(:comable_values) || {}
-      comable(comable_values[:type]) if self.respond_to?(:comable) && comable_values[:flag]
+      comable!(comable_values[:type]) if self.respond_to?(:comable) && comable_values[:flag]
       initialize_without_comable(*args, &block)
     end
     alias_method_chain :initialize, :comable

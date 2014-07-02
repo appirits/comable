@@ -13,7 +13,6 @@ module Comable
       stock = comable_stock
       return if stock.nil?
       stock.comable(:stock)
-      stock
     end
 
     delegate :product, to: :stock

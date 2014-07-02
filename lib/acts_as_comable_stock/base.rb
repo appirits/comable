@@ -23,11 +23,11 @@ module Comable
 
       module InstanceMethods
         def product
-          comable_flag = comable_values[:flag] if respond_to?(:comable_values)
+          return comable_product unless respond_to?(:comable_values)
+          return comable_product unless comable_values[:flag]
           product = comable_product
           return if product.nil?
-          product.comable(:product) if comable_flag
-          product
+          product.comable(:product)
         end
 
         def unsold?

@@ -8,7 +8,6 @@ module Comable
     def stock
       stock = comable_stock
       stock.comable(:stock)
-      stock
     end
 
     delegate :product, to: :stock

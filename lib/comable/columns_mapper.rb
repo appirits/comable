@@ -29,14 +29,15 @@ module Comable
       end
 
       def comable(obj = nil)
+        clone.comable!(obj)
+      end
+
+      def comable!(obj = nil)
         obj = true if obj.nil?
         comable_values[:flag] = obj ? true : false
-        case obj
-        when Symbol, String
-          comable_values[:type] = obj.to_sym
-          comable_columns_mapper
-        end
-        comable_values[:flag]
+        comable_values[:type] = obj.to_sym if obj.class.in? [Symbol, String]
+        comable_columns_mapper if obj.class.in? [Symbol, String]
+        self
       end
 
       def comable_columns_mapper
