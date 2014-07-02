@@ -5,7 +5,7 @@ module ActiveRecord
   #   意識せずに実装できるよう、デフォルト名による各カラムへのアクセスを可能にする
   #
   # 使用例
-  #   Comable::Product.comable_product.where(name: "test")
+  #   Product.comable(:product).where(name: "test")
   #   #=> [<products.titleが"test"であるレコード>]
   #
   module Querying
@@ -83,8 +83,7 @@ module ActiveRecord
   #
   # 使用例
   #   product = Product.comable(:product).where(name: 'test').first
-  #   product.comable_product
-  #   product.name
+  #   product.comable(:product).name
   #   #=> 'test' (= products.title)
   #
   #   こうなっていたコードが以下のようになる

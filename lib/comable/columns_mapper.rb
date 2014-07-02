@@ -16,7 +16,7 @@ module Comable
     #             include ColumnsMapper
     #             ...
     #
-    #   product = Comable::Product.first
+    #   product = Product.first
     #   product.name
     #   #=> NoMethodError: undefined method `name' for #<Product:...>
     #
