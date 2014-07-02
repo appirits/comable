@@ -42,7 +42,8 @@ module Comable
 
         def decrement_quantity!
           ActiveRecord::Base.transaction do
-            decrement!(:quantity)
+            # TODO: カラムマッピングのdecrementメソッドへの対応
+            update_attributes(quantity: quantity.pred)
           end
         end
       end
