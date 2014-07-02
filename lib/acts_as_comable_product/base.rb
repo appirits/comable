@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_product
-          has_many :comable_stocks, class_name: Comable::Stock.model.name
+          has_many :comable_stocks, class_name: Comable::Stock.model_name
 
           after_create :create_stock
 

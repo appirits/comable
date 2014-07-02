@@ -19,13 +19,17 @@ module Comable
       model.comable(comable_type).new(*args, &block)
     end
 
-    def model
+    def model_name
       # TODO: テーブル名とモデル名が異なるケースに対応できるよう検討
-      "::#{Comable::Engine.config.send("#{comable_type}_table").to_s.classify}".constantize
+      "::#{Comable::Engine.config.send("#{comable_type}_table").to_s.classify}"
+    end
+
+    def model
+      model_name.constantize
     end
 
     def foreign_key
-      "#{model_name.singular}_id"
+      "#{model.model_name.singular}_id"
     end
 
     private

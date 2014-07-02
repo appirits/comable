@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          belongs_to :comable_product, class_name: Comable::Product.model.name, foreign_key: Comable::Product.foreign_key
+          belongs_to :comable_product, class_name: Comable::Product.model_name, foreign_key: Comable::Product.foreign_key
 
           scope :activated, -> { where.not(product_id_num: nil) }
           scope :unsold, -> { where('quantity > ?', 0) }
