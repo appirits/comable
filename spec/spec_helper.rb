@@ -57,4 +57,8 @@ RSpec.configure do |config|
     Bullet.perform_out_of_channel_notifications if Bullet.enable? && Bullet.notification?
     Bullet.end_request if Bullet.enable?
   end
+
+  # for Rspec 3
+  # refs: https://github.com/rspec/rspec-rails/issues/932#issuecomment-43521700
+  config.infer_spec_type_from_file_location!
 end
