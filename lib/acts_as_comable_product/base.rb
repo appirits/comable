@@ -19,11 +19,12 @@ module Comable
 
       module InstanceMethods
         def stocks
-          comable_flag = comable_values[:flag] if respond_to?(:comable_values)
+          return comable_stocks unless respond_to?(:comable_values)
+          return comable_stocks unless comable_values[:flag]
           stocks = comable_stocks
           return if stocks.nil?
-          stocks.each { |stock| stock.comable(:stock) } if comable_flag
-          stocks
+          stocks = stocks.current_scope if Rails::VERSION::MAJOR == 4
+          stocks.comable(:stock)
         end
 
         def unsold?

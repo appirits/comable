@@ -27,5 +27,9 @@ describe Product do
   context 'has_many' do
     subject { product }
     its(:stocks) { should be_any }
+
+    it 'unsold?' do
+      expect { subject.unsold? }.not_to raise_error
+    end
   end
 end
