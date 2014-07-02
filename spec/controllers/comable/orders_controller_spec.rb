@@ -91,7 +91,7 @@ describe Comable::OrdersController do
     before { request }
 
     let(:customer) { FactoryGirl.create(:customer) }
-    let(:login) { controller.stub(:logged_in_customer).and_return(customer) }
+    let(:login) { allow(controller).to receive(:logged_in_customer).and_return(customer) }
 
     describe "GET 'new'" do
       let(:request) { get :new }
