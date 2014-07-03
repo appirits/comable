@@ -1,9 +1,16 @@
+# C: Line is too long.
 LineLength:
   Enabled: false
 
+# C: Missing top-level class documentation comment.
 Documentation:
   Enabled: false
 
+# C: Use only ascii symbols in comments.
+AsciiComments:
+  Enabled: false
+
+# Ignore files.
 AllCops:
   Exclude:
     - vendor/**/*

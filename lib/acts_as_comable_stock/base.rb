@@ -7,29 +7,26 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          Comable.const_set(:Stock, self)
+          belongs_to :comable_product, class_name: Comable::Product.model_name, foreign_key: Comable::Product.foreign_key
 
-          belongs_to Comable::Product.model_name.singular.to_sym
+          scope :activated, -> { where.not(product_id_num: nil) }
+          scope :unsold, -> { where('quantity > ?', 0) }
+          scope :soldout, -> { where('quantity <= ?', 0) }
 
-          after_initialize :alias_methods_to_comable_stock_accsesor
-
-          scope :activated, -> { where.not(comable_column_name[:product_id_num] => nil) }
-          scope :unsold, -> { where("#{comable_column_name[:quantity]} > ?", 0) }
-          scope :soldout, -> { where("#{comable_column_name[:quantity]} <= ?", 0) }
-
-          delegate :price, to: Comable::Product.model_name.singular.to_sym
+          delegate :price, to: :product
 
           include InstanceMethods
-        end
-
-        def comable_column_name
-          default_columns = { product_id: :product_id, product_id_num: :product_id_num, code: :code, quantity: :quantity }
-          return default_columns unless Comable::Engine.config.respond_to?(:stock_columns)
-          default_columns.merge(Comable::Engine.config.stock_columns)
         end
       end
 
       module InstanceMethods
+        def product
+          return comable_product unless comable_values[:flag]
+          product = comable_product
+          return if product.nil?
+          product.comable(:product)
+        end
+
         def unsold?
           return false if product_id_num.nil?
           return false if quantity.nil?
@@ -42,23 +39,8 @@ module Comable
 
         def decrement_quantity!
           ActiveRecord::Base.transaction do
-            decrement!(self.class.comable_column_name[:quantity])
-          end
-        end
-
-        private
-
-        def alias_methods_to_comable_stock_accsesor
-          config = Comable::Engine.config
-          return unless config.respond_to?(:stock_columns)
-
-          config.stock_columns.each_pair do |column_name, actual_column_name|
-            next if actual_column_name.blank?
-            next if actual_column_name == column_name
-
-            class_eval do
-              alias_attribute column_name, actual_column_name
-            end
+            # TODO: カラムマッピングのdecrementメソッドへの対応
+            update_attributes(quantity: quantity.pred)
           end
         end
       end

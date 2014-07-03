@@ -1,17 +1,20 @@
 module Comable
   class CartItem < ActiveRecord::Base
-    belongs_to Comable::Customer.model_name.singular.to_sym
-    belongs_to Comable::Stock.model_name.singular.to_sym
+    belongs_to :customer, class_name: Comable::Customer.model_name, foreign_key: Comable::Customer.foreign_key
+    belongs_to :comable_stock, class_name: Comable::Stock.model_name, foreign_key: Comable::Stock.foreign_key
 
-    validates "#{Comable::Customer.model_name.singular}_id", uniqueness: { scope: ["#{Comable::Customer.model_name.singular}_id", "#{Comable::Stock.model_name.singular}_id"] }
+    validates Comable::Customer.foreign_key, uniqueness: { scope: [Comable::Customer.foreign_key, Comable::Stock.foreign_key] }
 
-    def product
-      stock = send(Comable::Stock.model_name.singular)
-      stock.product
+    def stock
+      return comable_stock unless comable_values[:flag]
+      stock = comable_stock
+      return if stock.nil?
+      stock.comable(:stock)
     end
 
+    delegate :product, to: :stock
+
     def price
-      stock = send(Comable::Stock.model_name.singular)
       stock.price * quantity
     end
   end

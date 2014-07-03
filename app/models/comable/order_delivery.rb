@@ -8,8 +8,6 @@ module Comable
     alias_method :order, :comable_order
     alias_method :order_details, :comable_order_details
 
-    def customer
-      order.send(Comable::Customer.model_name.singular)
-    end
+    delegate :customer, to: :order
   end
 end

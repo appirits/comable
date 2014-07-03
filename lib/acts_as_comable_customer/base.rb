@@ -7,12 +7,8 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_customer
-          Comable.const_set(:Customer, self)
-
           has_many :comable_orders, class_name: 'Comable::Order'
           alias_method :orders, :comable_orders
-
-          after_initialize :alias_methods_to_comable_customer_accsesor
 
           include InstanceMethods
         end
@@ -34,9 +30,9 @@ module Comable
 
         def add_cart_item(obj)
           case obj
-          when Comable::Product
+          when Comable::Product.model
             add_stock_to_cart(obj.stocks.first)
-          when Comable::Stock
+          when Comable::Stock.model
             add_stock_to_cart(obj)
           when Array
             obj.map { |item| add_cart_item(item) }
@@ -47,7 +43,7 @@ module Comable
 
         def remove_cart_item(obj)
           case obj
-          when Comable::Stock
+          when Comable::Stock.model
             remove_stock_from_cart(obj)
           else
             fail
@@ -61,8 +57,7 @@ module Comable
 
         def cart_items
           return super unless self.logged_in?
-          customer_id = "#{Comable::Customer.model_name.singular}_id"
-          Comable::CartItem.where(customer_id => id)
+          Comable::CartItem.comable(comable_values[:flag]).where(Comable::Customer.foreign_key => id)
         end
 
         def cart
@@ -71,10 +66,8 @@ module Comable
 
         class Cart < Array
           def price
-            stock_key = Comable::Stock.model_name.singular.to_sym
-            product_key = Comable::Product.model_name.singular.to_sym
             cart_item_ids = map(&:id)
-            Comable::CartItem.includes(stock_key => product_key).where(id: cart_item_ids).to_a.sum(&:price)
+            Comable::CartItem.includes(comable_stock: :comable_product).where(id: cart_item_ids).to_a.sum(&:price)
           end
         end
 
@@ -118,26 +111,11 @@ module Comable
         def find_cart_items_by(stock)
           return super unless self.logged_in?
 
-          fail unless stock.is_a?(Comable::Stock)
+          fail unless stock.is_a?(Comable::Stock.model)
 
-          customer_id = "#{Comable::Customer.model_name.singular}_id"
-          stock_id = "#{Comable::Stock.model_name.singular}_id"
-
-          Comable::CartItem.where(customer_id => id, stock_id => stock.id)
-        end
-
-        def alias_methods_to_comable_customer_accsesor
-          config = Comable::Engine.config
-          return unless config.respond_to?(:customer_columns)
-
-          config.customer_columns.each_pair do |column_name, actual_column_name|
-            next if actual_column_name.blank?
-            next if actual_column_name == column_name
-
-            class_eval do
-              alias_attribute column_name, actual_column_name
-            end
-          end
+          Comable::CartItem
+            .where(Comable::Customer.foreign_key => id)
+            .where(Comable::Stock.foreign_key => stock.id)
         end
       end
     end
