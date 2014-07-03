@@ -104,17 +104,17 @@ module Comable
 
       def define_getter_method(column_name)
         target_column_name = mapped_comable_column_name(column_name)
-        eigenclass.send(:alias_method, column_name, target_column_name)
+        define_singleton_method(column_name) { send target_column_name }
       end
 
       def define_setter_method(column_name)
         target_column_name = mapped_comable_column_name(column_name)
-        eigenclass.send(:alias_method, "#{column_name}=", "#{target_column_name}=")
+        define_singleton_method("#{column_name}=") { |value| send "#{target_column_name}=", value }
       end
 
       def define_predicate_method(column_name)
         target_column_name = mapped_comable_column_name(column_name)
-        eigenclass.send(:alias_method, "#{column_name}?", "#{target_column_name}?")
+        define_singleton_method("#{column_name}?") { send "#{target_column_name}?" }
       end
     end
 
@@ -243,7 +243,7 @@ module Comable
             current_scope = self.class.scoped
           end
           comable_values = current_scope.try(:comable_values) || {}
-          comable!(comable_values[:type]) if self.respond_to?(:comable) && comable_values[:flag]
+          comable!(comable_values[:type]) if comable_values[:flag]
           super
         end
       end
