@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'comable/products/show.html.slim' do
   let(:product) { FactoryGirl.build(:product) }
-  let(:add_cart_button) { "form[action='#{comable.add_cart_path}']" }
+  let(:add_cart_button) { '.add_cart input[type=submit]' }
 
   before { assign(:product, product) }
   before { render }
