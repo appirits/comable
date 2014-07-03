@@ -194,7 +194,6 @@ module Comable
       #
       module RelationMethod
         def relation(*args, &block)
-          return super unless self.respond_to?(:comable)
           return super unless current_scope
           return super unless current_scope.comable_values
           return super unless current_scope.comable_values[:flag]
@@ -219,7 +218,6 @@ module Comable
         #   #=> true (= products.title)
         #
         def to_a
-          return super unless @klass.include?(InstanceMethods)
           return super unless comable_values[:flag]
           super.each { |record| record.comable!(comable_values[:type]) }
         end

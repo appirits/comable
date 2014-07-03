@@ -57,9 +57,7 @@ module Comable
 
         def cart_items
           return super unless self.logged_in?
-          comable_flag = false
-          comable_flag = comable_values[:flag] if respond_to?(:comable_values)
-          Comable::CartItem.comable(comable_flag).where(Comable::Customer.foreign_key => id)
+          Comable::CartItem.comable(comable_values[:flag]).where(Comable::Customer.foreign_key => id)
         end
 
         def cart

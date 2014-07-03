@@ -17,7 +17,6 @@ module Comable
 
       module InstanceMethods
         def stocks
-          return comable_stocks unless respond_to?(:comable_values)
           return comable_stocks unless comable_values[:flag]
           stocks = comable_stocks
           return if stocks.nil?

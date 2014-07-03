@@ -21,7 +21,6 @@ module Comable
 
       module InstanceMethods
         def product
-          return comable_product unless respond_to?(:comable_values)
           return comable_product unless comable_values[:flag]
           product = comable_product
           return if product.nil?

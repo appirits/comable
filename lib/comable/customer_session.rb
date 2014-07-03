@@ -27,9 +27,7 @@ module Comable
         found_cart_item = found_cart_items.first
         found_cart_item.quantity = found_cart_item.quantity.next
       else
-        comable_flag = false
-        comable_flag = comable_values[:flag] if respond_to?(:comable_values)
-        @cart_items << Comable::CartItem.comable(comable_flag).new(Comable::Stock.foreign_key => stock.id)
+        @cart_items << Comable::CartItem.comable(comable_values[:flag]).new(Comable::Stock.foreign_key => stock.id)
       end
       save_cart_to_session
     end
