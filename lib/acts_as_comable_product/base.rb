@@ -12,8 +12,6 @@ module Comable
           after_create :create_stock
 
           include InstanceMethods
-
-          include Comable::ColumnsMapper
         end
       end
 

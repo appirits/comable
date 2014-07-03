@@ -2,7 +2,7 @@ module Comable
   module ColumnsMapper
     class << self
       def enable
-        include InstanceMethods
+        ::ActiveRecord::Base.send(:include, InstanceMethods)
 
         ::ActiveRecord::Relation.send(:prepend, ActiveRecord::QueryMethods)
         ::ActiveRecord::Relation.send(:prepend, ActiveRecord::Relation)
@@ -44,13 +44,15 @@ module Comable
       end
 
       def mapped_comable_column_name(column_name)
-        return column_name unless comable_values[:flag]
         comable_column_names[column_name.to_sym] || column_name
       end
 
       def unmapped_comable_column_name(column_name)
-        return column_name unless comable_values[:flag]
         comable_column_names.invert[column_name.to_sym] || column_name
+      end
+
+      def eigenclass
+        class << self; self; end
       end
     end
 
@@ -101,30 +103,18 @@ module Comable
       private
 
       def define_getter_method(column_name)
-        class_eval <<-EOS
-          def #{column_name}
-            target_column_name = mapped_comable_column_name('#{column_name}').to_s
-            self.send target_column_name
-          end
-        EOS
+        target_column_name = mapped_comable_column_name(column_name)
+        eigenclass.send(:alias_method, column_name, target_column_name)
       end
 
       def define_setter_method(column_name)
-        class_eval <<-EOS
-          def #{column_name}=(value)
-            target_column_name = mapped_comable_column_name('#{column_name}').to_s
-            self.send target_column_name + '=', value
-          end
-        EOS
+        target_column_name = mapped_comable_column_name(column_name)
+        eigenclass.send(:alias_method, "#{column_name}=", "#{target_column_name}=")
       end
 
       def define_predicate_method(column_name)
-        class_eval <<-EOS
-          def #{column_name}?
-            target_column_name = mapped_column_name('#{column_name}').to_s
-            self.send target_column_name + '?'
-          end
-        EOS
+        target_column_name = mapped_comable_column_name(column_name)
+        eigenclass.send(:alias_method, "#{column_name}?", "#{target_column_name}?")
       end
     end
 
@@ -229,9 +219,7 @@ module Comable
         #   #=> true (= products.title)
         #
         def to_a
-          return super unless self.const_defined?(:Comable)
-          return super unless Comable.const_defined?(:ColumnsMapper)
-          return super unless @klass.include?(Comable::ColumnsMapper)
+          return super unless @klass.include?(InstanceMethods)
           return super unless comable_values[:flag]
           super.each { |record| record.comable!(comable_values[:type]) }
         end

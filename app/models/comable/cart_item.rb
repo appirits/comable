@@ -5,8 +5,6 @@ module Comable
 
     validates Comable::Customer.foreign_key, uniqueness: { scope: [Comable::Customer.foreign_key, Comable::Stock.foreign_key] }
 
-    include Comable::ColumnsMapper
-
     def stock
       return comable_stock unless respond_to?(:comable_values)
       return comable_stock unless comable_values[:flag]

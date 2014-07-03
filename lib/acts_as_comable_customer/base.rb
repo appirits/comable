@@ -11,8 +11,6 @@ module Comable
           alias_method :orders, :comable_orders
 
           include InstanceMethods
-
-          include Comable::ColumnsMapper
         end
       end
 
