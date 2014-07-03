@@ -24,16 +24,5 @@ module Dummy
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :ja
     I18n.enforce_available_locales = true
-
-    config.after_initialize do
-      # for Bullet
-      if Rails.env.test?
-        Bullet.enable = true
-        Bullet.bullet_logger = true
-        Bullet.raise = true
-      end
-
-      Comable::ColumnsMapper.enable
-    end
   end
 end
