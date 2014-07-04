@@ -35,8 +35,9 @@ module Comable
         private
 
         def create_stock
-          target_stocks = stocks.where(code: code).limit(1)
-          target_stocks.create if target_stocks.empty?
+          product = comable(:product)
+          stocks = product.stocks
+          stocks.create(code: product.code) unless stocks.exists?
         end
       end
     end
