@@ -4,11 +4,11 @@ module Comable
     end
 
     def add
-      product = Comable::Product.find_by(id: params[:product_id])
+      product = Comable::Product.where(id: params[:product_id]).first
       return redirect_by_product_not_found unless product
 
       if product.sku?
-        stock = product.stocks.find_by(id: params[:stock_id])
+        stock = product.stocks.where(id: params[:stock_id]).first
         return redirect_by_product_not_found unless stock
       end
 
