@@ -6,11 +6,15 @@
   .price
     = number_to_currency @product.price
 
-- if @product.unsold?
-  .add_card
-    = form_tag comable.add_cart_path do
-      = hidden_field_tag :product_id, @product.id
-      = submit_tag 'カートに入れる'
-- else
-  .sold_out
-    | 品切れ中
+= form_tag comable.add_cart_path do
+  - if @product.sku?
+    .sku
+      = sku_table @product, border: 1
+
+  - if @product.unsold?
+    .add_cart
+        = hidden_field_tag :product_id, @product.id
+        = submit_tag 'カートに入れる'
+  - else
+    .sold_out
+      | 品切れ中

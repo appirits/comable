@@ -14,6 +14,7 @@ module Comable
           scope :soldout, -> { where('quantity <= ?', 0) }
 
           delegate :price, to: :product
+          delegate :sku?, to: :product
 
           include InstanceMethods
         end
