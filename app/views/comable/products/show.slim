@@ -9,34 +9,7 @@
 = form_tag comable.add_cart_path do
   - if @product.sku?
     .sku
-      - stocks = @product.stocks.activated
-      - sku_h_choice_names = stocks.group_by(&:sku_h_choice_name)
-      - sku_v_choice_names = stocks.group_by(&:sku_v_choice_name)
-      table border=1
-        tr
-          - sku_item_name = @product.sku_h_item_name
-          - sku_item_name += '/' + @product.sku_v_item_name if @product.has_sku_v_item_name?
-          th = sku_item_name
-          - sku_h_choice_names.keys.each do |sku_h_choice_name|
-            - next if sku_h_choice_name.blank?
-            th = sku_h_choice_name
-        - if @product.has_sku_v_item_name?
-          - sku_v_choice_names.each_pair do |sku_v_choice_name, stocks|
-            - next if sku_v_choice_name.blank?
-            tr
-              th = sku_v_choice_name
-              - stocks.each do |stock|
-                td
-                  label
-                    = radio_button_tag(:stock_id, stock.id, checked=false, disabled: stock.soldout?)
-                    = stock.code
-        - else
-          th &nbsp;
-          - stocks.each do |stock|
-            td
-              label
-                = radio_button_tag(:stock_id, stock.id, checked=false, disabled: stock.soldout?)
-                = stock.code
+      = sku_table @product, border: 1
 
   - if @product.unsold?
     .add_cart
