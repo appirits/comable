@@ -10,12 +10,10 @@ module Comable
       if product.sku?
         stock = product.stocks.find_by(id: params[:stock_id])
         return redirect_by_product_not_found unless stock
-        # TODO: 在庫確認
-        current_customer.add_cart_item(stock)
-      else
-        # TODO: 在庫確認
-        current_customer.add_cart_item(product)
       end
+
+      # TODO: 在庫確認
+      current_customer.add_cart_item(stock || product)
 
       flash[:notice] = I18n.t('comable.carts.add_product')
       redirect_to cart_path
