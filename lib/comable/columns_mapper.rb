@@ -158,7 +158,7 @@ module Comable
         def opts_with_mapped_comable_column_name(opts)
           case opts
           when Hash
-            key_values = opts.map { |key, value| [mapped_comable_column_name(key.to_s), value] }.flatten
+            key_values = opts.map { |key, value| [mapped_comable_column_name(key.to_s), value] }.flatten(1)
             Hash[*key_values]
           when String, Symbol
             mapped_comable_column_names_for_string(opts.to_s)
