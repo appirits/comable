@@ -22,7 +22,7 @@ module Comable
     private
 
     def redirect_by_product_not_found
-      flash[:erorr] = I18n.t('comable.carts.product_not_found')
+      flash[:error] = I18n.t('comable.carts.product_not_found')
       redirect_to :back
     end
   end
