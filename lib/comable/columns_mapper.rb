@@ -261,27 +261,36 @@ module Comable
       #
       module Associations
         def belongs_to(name, scope = nil, options = {})
+          check_deplicated_association_warning(:has_many, name)
           comable_flag = scope.try(:delete, :comable)
           return super unless comable_flag
-          super(name, comable_association_scope(:belongs_to, name, scope), options)
+          super(name, comable_association_scope(:belongs_to, name, scope), options) unless method_defined?(name)
           define_comable_association_reader(name, comable_flag => true)
         end
 
         def has_one(name, scope = nil, options = {})
+          check_deplicated_association_warning(:has_many, name)
           comable_flag = scope.try(:delete, :comable)
           return super unless comable_flag
-          super(name, comable_association_scope(:has_one, name, scope), options)
+          super(name, comable_association_scope(:has_one, name, scope), options) unless method_defined?(name)
           define_comable_association_reader(name, comable_flag => true)
         end
 
         def has_many(name, scope = nil, options = {}, &extension)
+          check_deplicated_association_warning(:has_many, name)
           comable_flag = scope.try(:delete, :comable)
           return super unless comable_flag
-          super(name, comable_association_scope(:has_many, name, scope), options, &extension)
+          super(name, comable_association_scope(:has_many, name, scope), options, &extension) unless method_defined?(name)
           define_comable_association_reader(name, comable_flag => true)
         end
 
         private
+
+        def check_deplicated_association_warning(association_type, name)
+          return unless method_defined?(name)
+          return unless method_defined?("comable_#{name}")
+          Rails.logger.warn "[Comable:WARNING] \"#{association_type} :#{name}\" is duplicated in #{self.name}."
+        end
 
         def comable_association_scope(method_name, name, scope = {})
           association_model = "Comable::#{name.to_s.classify}".constantize
