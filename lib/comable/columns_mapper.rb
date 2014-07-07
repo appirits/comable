@@ -9,6 +9,7 @@ module Comable
         ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::Querying)
         ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::RelationMethod) if Rails::VERSION::MAJOR == 3
         ::ActiveRecord::Base.send(:prepend, ActiveRecord::Base)
+        ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::Associations)
       end
     end
 
@@ -243,6 +244,62 @@ module Comable
           comable_values = current_scope.try(:comable_values) || {}
           comable!(comable_values[:type]) if comable_values[:flag]
           super
+        end
+      end
+
+      # 用途
+      #   関連モデルにカラムマッパを継承する
+      #
+      # 使用例
+      #   class Product
+      #     has_many :stocks, comable: true
+      #     ...
+      #   end
+      #   stock = Product.comable(:product).stocks.first
+      #   stock.quantity
+      #   #=> 10 (= stocks.units)
+      #
+      module Associations
+        def belongs_to(name, scope = nil, options = {})
+          comable_flag = scope.try(:delete, :comable)
+          return super unless comable_flag
+          super(name, comable_association_scope(:belongs_to, name, scope), options)
+          define_comable_association_reader(name, comable_flag => true)
+        end
+
+        def has_one(name, scope = nil, options = {})
+          comable_flag = scope.try(:delete, :comable)
+          return super unless comable_flag
+          super(name, comable_association_scope(:has_one, name, scope), options)
+          define_comable_association_reader(name, comable_flag => true)
+        end
+
+        def has_many(name, scope = nil, options = {}, &extension)
+          comable_flag = scope.try(:delete, :comable)
+          return super unless comable_flag
+          super(name, comable_association_scope(:has_many, name, scope), options, &extension)
+          define_comable_association_reader(name, comable_flag => true)
+        end
+
+        private
+
+        def comable_association_scope(method_name, name, scope = {})
+          association_model = "Comable::#{name.to_s.classify}".constantize
+          default_scope = { class_name: association_model.model_name }
+          default_scope[:foreign_key] = association_model.foreign_key if method_name == :belongs_to
+          default_scope.merge(scope)
+        end
+
+        def define_comable_association_reader(name, options = {})
+          alias_method "comable_#{name}", name
+          define_method name do
+            comable_association = send("comable_#{name}")
+            return unless comable_association
+            comable_flag = comable_values[:flag] || options[:force]
+            return comable_association unless comable_flag
+            comable_association = comable_association.current_scope if Rails::VERSION::MAJOR == 4 && comable_association.respond_to?(:current_scope)
+            comable_association.comable(name.to_s.singularize.to_sym)
+          end
         end
       end
     end

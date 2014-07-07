@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_product
-          has_many :comable_stocks, class_name: Comable::Stock.model_name
+          has_many :stocks, comable: true
 
           after_create :create_stock
 
@@ -16,14 +16,6 @@ module Comable
       end
 
       module InstanceMethods
-        def stocks
-          return comable_stocks unless comable_values[:flag]
-          stocks = comable_stocks
-          return if stocks.nil?
-          stocks = stocks.current_scope if Rails::VERSION::MAJOR == 4
-          stocks.comable(:stock)
-        end
-
         def unsold?
           stocks.activated.unsold.exists?
         end

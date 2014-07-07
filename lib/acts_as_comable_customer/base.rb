@@ -67,7 +67,7 @@ module Comable
         class Cart < Array
           def price
             cart_item_ids = map(&:id)
-            Comable::CartItem.includes(comable_stock: :comable_product).where(id: cart_item_ids).to_a.sum(&:price)
+            Comable::CartItem.includes(stock: :product).where(id: cart_item_ids).to_a.sum(&:price)
           end
         end
 

@@ -4,7 +4,7 @@ describe Product do
   it { expect { described_class.new }.to_not raise_error }
 
   let(:title) { 'sample product' }
-  let(:product) { FactoryGirl.create(:product, title: title, comable_stocks: [stock]) }
+  let(:product) { FactoryGirl.create(:product, title: title, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock) }
 
   context 'attributes' do

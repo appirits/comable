@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Comable::OrdersController do
   render_views
 
-  let(:product) { FactoryGirl.create(:product, comable_stocks: [stock]) }
+  let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
   let(:add_to_cart) { customer.add_cart_item(product) }
   let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_order_deliveries_attributes: [family_name: 'hoge', first_name: 'piyo'] } } }
