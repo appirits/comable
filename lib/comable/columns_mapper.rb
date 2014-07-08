@@ -9,7 +9,8 @@ module Comable
         ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::Querying)
         ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::RelationMethod) if Rails::VERSION::MAJOR == 3
         ::ActiveRecord::Base.send(:prepend, ActiveRecord::Base)
-        ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::Associations)
+        ::ActiveRecord::Associations::HasManyAssociation.send(:prepend, ActiveRecord::Associations)
+        ::ActiveRecord::Base.class_eval { class << self; self; end }.send(:prepend, ActiveRecord::AssociationMethods)
       end
     end
 
@@ -260,35 +261,44 @@ module Comable
       #   #=> 10 (= stocks.units)
       #
       module Associations
+        def scope(*args)
+          comable_values = owner.comable_values
+          return super unless comable_values[:flag]
+          super.comable!(@reflection.name.to_s.singularize)
+        end
+      end
+
+      module AssociationMethods
         def belongs_to(name, scope = nil, options = {})
-          check_deplicated_association_warning(:has_many, name)
+          check_deplicated_association_warning(:belongs_to, name, scope)
           comable_flag = scope.try(:delete, :comable)
-          return super unless comable_flag
-          super(name, comable_association_scope(:belongs_to, name, scope), options) unless method_defined?(name)
+          scope = comable_association_scope(:belongs_to, name, scope) if comable_flag
+          super if !comable_flag || !method_defined?(name)
           define_comable_association_reader(name, comable_flag => true)
         end
 
         def has_one(name, scope = nil, options = {})
-          check_deplicated_association_warning(:has_many, name)
+          check_deplicated_association_warning(:has_one, name, scope)
           comable_flag = scope.try(:delete, :comable)
-          return super unless comable_flag
-          super(name, comable_association_scope(:has_one, name, scope), options) unless method_defined?(name)
+          scope = comable_association_scope(:has_one, name, scope) if comable_flag
+          super if !comable_flag || !method_defined?(name)
           define_comable_association_reader(name, comable_flag => true)
         end
 
         def has_many(name, scope = nil, options = {}, &extension)
-          check_deplicated_association_warning(:has_many, name)
+          check_deplicated_association_warning(:has_many, name, scope)
           comable_flag = scope.try(:delete, :comable)
-          return super unless comable_flag
-          super(name, comable_association_scope(:has_many, name, scope), options, &extension) unless method_defined?(name)
+          scope = comable_association_scope(:has_many, name, scope) if comable_flag
+          super if !comable_flag || !method_defined?(name)
           define_comable_association_reader(name, comable_flag => true)
         end
 
         private
 
-        def check_deplicated_association_warning(association_type, name)
+        def check_deplicated_association_warning(association_type, name, scope)
           return unless method_defined?(name)
-          return unless method_defined?("comable_#{name}")
+          return unless method_defined?("#{name}_with_comable")
+          return if scope.try(:[], :comable)
           Rails.logger.warn "[Comable:WARNING] \"#{association_type} :#{name}\" is duplicated in #{self.name}."
         end
 
@@ -300,15 +310,16 @@ module Comable
         end
 
         def define_comable_association_reader(name, options = {})
-          alias_method "comable_#{name}", name
-          define_method name do
-            comable_association = send("comable_#{name}")
+          return if method_defined?("#{name}_with_comable")
+          define_method "#{name}_with_comable" do |*args|
+            comable_association = send("#{name}_without_comable", *args)
             return unless comable_association
+            return comable_association unless comable_association.is_a? ActiveRecord::Base
             comable_flag = comable_values[:flag] || options[:force]
             return comable_association unless comable_flag
-            comable_association = comable_association.current_scope if Rails::VERSION::MAJOR == 4 && comable_association.respond_to?(:current_scope)
-            comable_association.comable(name.to_s.singularize.to_sym)
+            comable_association.comable!(name.to_s.singularize)
           end
+          alias_method_chain name, :comable
         end
       end
     end
