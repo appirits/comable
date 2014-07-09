@@ -6,7 +6,15 @@ module Comable
 
     # Bulletと競合するため、Bulletよりあとに有効になるよう初期化順序を調整
     initializer :comable_columns_mapper do
-      config.after_initialize { Comable::ColumnsMapper.enable }
+      enable_bullet
+      Comable::ColumnsMapper.enable
+    end
+
+    private
+
+    def enable_bullet
+      return unless Object.const_defined? :Bullet
+      Bullet.enable = true
     end
   end
 end
