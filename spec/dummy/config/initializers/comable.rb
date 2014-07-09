@@ -1,9 +1,17 @@
 module Comable
   class Engine < ::Rails::Engine
     config.product_table = :products
-    config.product_columns = { name: :title }
     config.customer_table = :customers
     config.stock_table = :stocks
-    config.stock_columns = { quantity: :units }
+
+    Utusemi.configure do
+      map :product do
+        name :title
+      end
+
+      map :stock do
+        quantity :units
+      end
+    end
   end
 end

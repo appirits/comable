@@ -1,6 +1,6 @@
 module Comable
   class OrderDetail < ActiveRecord::Base
-    belongs_to :stock, comable: :force
+    belongs_to :stock, utusemi: :force
     belongs_to :comable_order_deliveries, class_name: 'Comable::OrderDelivery'
 
     after_create :decrement_quantity!

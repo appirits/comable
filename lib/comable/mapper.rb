@@ -7,16 +7,16 @@ module Comable
       if Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR == 0
         case method_name
         when *EXCEPTION_FOR_RAILS_4_0_METHODS
-          return model.comable(comable_type)
+          return model.utusemi(comable_type)
         when *IGNORE_FOR_RAILS_4_0_METHODS
           return model.send(method_name, *args, &block)
         end
       end
-      model.comable(comable_type).send(method_name, *args, &block)
+      model.utusemi(comable_type).send(method_name, *args, &block)
     end
 
     def new(*args, &block)
-      model.comable(comable_type).new(*args, &block)
+      model.new(*args, &block).utusemi!(comable_type)
     end
 
     def model_name

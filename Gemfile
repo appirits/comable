@@ -23,4 +23,5 @@ group :development, :test do
   gem 'rspec-example_steps'
   gem 'rubocop'
   gem 'bullet'
+  gem 'utusemi'
 end

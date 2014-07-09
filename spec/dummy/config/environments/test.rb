@@ -1,3 +1,6 @@
+# Bulletと競合するため、Bulletよりあとに有効になるよう初期化順序を調整
+Bullet.enable = true
+
 Dummy::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -36,7 +39,6 @@ Dummy::Application.configure do
 
   # for Bullet
   config.after_initialize do
-    Bullet.enable = true
     Bullet.bullet_logger = true
     Bullet.raise = true
   end

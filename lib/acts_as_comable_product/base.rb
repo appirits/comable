@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_product
-          has_many :stocks, comable: true
+          has_many :stocks, utusemi: true
 
           after_create :create_stock
 
@@ -37,7 +37,7 @@ module Comable
         private
 
         def create_stock
-          product = comable(:product)
+          product = utusemi(:product)
           stocks = product.stocks
           stocks.create(code: product.code) unless stocks.exists?
         end

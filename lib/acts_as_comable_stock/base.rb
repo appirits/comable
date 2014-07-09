@@ -7,7 +7,7 @@ module Comable
 
       module ClassMethods
         def acts_as_comable_stock
-          belongs_to :product, comable: true
+          belongs_to :product, utusemi: true
 
           scope :activated, -> { where.not(product_id_num: nil) }
           scope :unsold, -> { where('quantity > ?', 0) }
