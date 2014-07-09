@@ -24,4 +24,5 @@ group :development, :test do
   gem 'rubocop'
   gem 'bullet'
   gem 'pry-rails'
+  gem 'byebug'
 end
