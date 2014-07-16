@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Product do
+describe DummyProduct do
   it { expect { described_class.new }.to_not raise_error }
 
   let(:title) { 'sample product' }
@@ -20,7 +20,7 @@ describe Product do
     end
 
     it 'name => title: fail' do
-      expect { Product.where(name: title).count }.to raise_error
+      expect { DummyProduct.where(name: title).count }.to raise_error
     end
   end
 

@@ -1,6 +1,6 @@
 module Comable
   class Engine < ::Rails::Engine
-    config.product_table = :products
+    config.product_table = :dummy_products
     config.customer_table = :customers
     config.stock_table = :stocks
 
