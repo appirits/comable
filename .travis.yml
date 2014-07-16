@@ -2,14 +2,19 @@ language:
   - ruby
 rvm:
   - 2.1.2
-env:
-  - RAILS_VERSION=
-  - RAILS_VERSION=4.0.0
-  - RAILS_VERSION=3.2.0
-before_install:
-  - sh -c '[ "$RAILS_VERSION" = "" ] || rm Gemfile.lock'
-  - sh -c '[ "$RAILS_VERSION" = "3.2.0" ] && echo "gem \"strong_parameters\"" >> Gemfile && echo "gem \"everywhere\"" >> Gemfile || :'
+  - ruby-head
+gemfile:
+  - gemfiles/active_record_32.gemfile
+  - gemfiles/active_record_41.gemfile
+  - gemfiles/active_record_edge.gemfile
 before_script:
   - psql -U postgres -c 'CREATE ROLE dummy WITH LOGIN CREATEDB;'
   - bundle exec rake db:create RAILS_ENV=test
   - bundle exec rake db:migrate RAILS_ENV=test
+matrix:
+  exclude:
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_32.gemfile
+  allow_failures:
+    - rvm: ruby-head
+    - gemfile: gemfiles/active_record_edge.gemfile

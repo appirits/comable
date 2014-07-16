@@ -4,8 +4,11 @@ ENV['RAILS_ENV'] ||= 'test'
 require 'coveralls'
 Coveralls.wear!('rails')
 
+require 'utusemi'
+
 require File.expand_path('../dummy/config/environment', __FILE__)
 require 'rspec/rails'
+require 'rspec/its'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
