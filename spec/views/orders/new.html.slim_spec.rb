@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'comable/orders/new.html.slim' do
   before { render }
 

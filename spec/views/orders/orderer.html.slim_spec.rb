@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'comable/orders/orderer.html.slim' do
   before { assign(:order, Comable::Order.new) }
   before { render }

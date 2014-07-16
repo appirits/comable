@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'comable/products/index.html.slim' do
   let(:products) { FactoryGirl.create_list(:product, 5, :many) }
   let(:product) { products.first }
