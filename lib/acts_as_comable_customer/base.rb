@@ -57,7 +57,7 @@ module Comable
 
         def cart_items
           return super unless self.logged_in?
-          Comable::CartItem.comable(comable_values[:flag]).where(Comable::Customer.foreign_key => id)
+          Comable::CartItem.utusemi(utusemi_values[:flag]).where(Comable::Customer.foreign_key => id)
         end
 
         def cart
@@ -67,7 +67,7 @@ module Comable
         class Cart < Array
           def price
             cart_item_ids = map(&:id)
-            Comable::CartItem.includes(comable_stock: :comable_product).where(id: cart_item_ids).to_a.sum(&:price)
+            Comable::CartItem.includes(stock: :product).where(id: cart_item_ids).to_a.sum(&:price)
           end
         end
 

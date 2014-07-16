@@ -10,6 +10,11 @@ Documentation:
 AsciiComments:
   Enabled: false
 
+# C: Rename <from> to <to>.
+PredicateName:
+  Exclude:
+    - lib/comable/columns_mapper.rb
+
 # Ignore files.
 AllCops:
   Exclude:

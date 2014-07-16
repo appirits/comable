@@ -10,13 +10,13 @@ FactoryGirl.define do
     end
 
     trait :with_stock do
-      comable_stocks { [FactoryGirl.create(:stock, :unsold)] }
+      stocks { [FactoryGirl.create(:stock, :unsold)] }
     end
 
     trait :sku do
       sku_h_item_name 'カラー'
       sku_v_item_name 'サイズ'
-      comable_stocks do
+      stocks do
         [
           FactoryGirl.create(:stock, :unsold, :many, sku_h_choice_name: 'レッド', sku_v_choice_name: 'S'),
           FactoryGirl.create(:stock, :unsold, :many, sku_h_choice_name: 'レッド', sku_v_choice_name: 'M'),
@@ -27,7 +27,7 @@ FactoryGirl.define do
 
     trait :sku_h do
       sku_h_item_name 'カラー'
-      comable_stocks { [FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド')] }
+      stocks { [FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド')] }
     end
   end
 end

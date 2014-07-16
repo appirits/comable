@@ -16,9 +16,7 @@ class AddColumnsToStocks < ActiveRecord::Migration
   end
 
   def add_column_safety_to_stocks(column_name, type_name, options = {})
-    if Comable::Engine.config.respond_to?(:stock_columns)
-      return if Comable::Engine.config.stock_columns[column_name]
-    end
+    return if Utusemi.config.map(:stock).attributes[column_name]
     add_column Comable::Engine.config.stock_table, column_name, type_name, options
   end
 end

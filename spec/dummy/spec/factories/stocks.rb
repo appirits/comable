@@ -5,7 +5,7 @@ FactoryGirl.define do
     quantity nil
 
     trait :with_product do
-      comable_product { FactoryGirl.create(:product) }
+      product { FactoryGirl.create(:product) }
     end
 
     trait :soldout do

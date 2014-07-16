@@ -1,5 +1,4 @@
 require 'comable/engine'
-require 'comable/columns_mapper'
 require 'comable/product'
 require 'comable/customer'
 require 'comable/stock'

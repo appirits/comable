@@ -25,4 +25,5 @@ group :development, :test do
   gem 'bullet'
   gem 'pry-rails'
   gem 'byebug'
+  gem 'utusemi'
 end
