@@ -1,4 +1,5 @@
 require 'slim'
+require 'utusemi'
 
 module Comable
   class Engine < ::Rails::Engine
