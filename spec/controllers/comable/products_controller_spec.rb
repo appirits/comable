@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Comable::ProductsController do
   render_views
 

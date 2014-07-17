@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe DummyProduct do
   it { expect { described_class.new }.to_not raise_error }
 

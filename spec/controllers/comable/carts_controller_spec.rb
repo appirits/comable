@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Comable::CartsController do
   render_views
 

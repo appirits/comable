@@ -1,4 +1,5 @@
 # Bulletと競合するため、Bulletよりあとに有効になるよう初期化順序を調整
+require 'bullet'
 Bullet.enable = true
 
 Dummy::Application.configure do

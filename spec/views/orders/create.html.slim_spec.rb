@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'comable/orders/create.html.slim' do
   let(:order) { FactoryGirl.create(:order) }
 

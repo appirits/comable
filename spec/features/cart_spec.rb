@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'rspec/example_steps'
 
 feature 'カート処理' do

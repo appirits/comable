@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'comable/products/show.html.slim' do
   let(:product) { FactoryGirl.build(:product) }
   let(:add_cart_button) { '.add_cart input[type=submit]' }

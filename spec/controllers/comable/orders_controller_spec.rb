@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Comable::OrdersController do
   render_views
 
