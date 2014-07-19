@@ -1,5 +1,7 @@
 module Comable
   class OrderDelivery < ActiveRecord::Base
+    utusemi!
+
     belongs_to :comable_order, class_name: 'Comable::Order'
     has_many :comable_order_details, dependent: :destroy, class_name: 'Comable::OrderDetail', foreign_key: 'comable_order_delivery_id'
 
