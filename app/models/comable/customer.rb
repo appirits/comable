@@ -1,6 +1,5 @@
 module Comable
   class Customer
-    require 'comable/mapper'
-    extend Comable::Mapper
+    extend Proxy
   end
 end

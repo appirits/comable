@@ -1,5 +1,5 @@
 module Comable
-  module Mapper
+  module Proxy
     DELEGATE_METHODS = %w( name === )
 
     EXCEPTION_FOR_RAILS_4_0_METHODS = %i( all )
