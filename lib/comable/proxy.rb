@@ -28,7 +28,9 @@ module Comable
     end
 
     def name
-      Comable::Engine.config.send("#{comable_type}_class").to_s
+      method_name = "#{comable_type}_class"
+      return comable_type.classify unless Comable::Engine.config.respond_to?(method_name)
+      Comable::Engine.config.send(method_name).to_s
     end
 
     private

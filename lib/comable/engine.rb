@@ -14,10 +14,13 @@ module Comable
         method_name = "#{type}_class"
         default_class_name = type.to_s.classify
 
-        config.send("#{method_name}=", default_class_name) unless config.respond_to?(method_name)
-
         initializer "comable.initializer.#{type}" do
-          config.send(method_name).to_s.constantize.send(:include, "Comable::Able::#{default_class_name}able".constantize)
+          class_name = config.send(method_name).to_s if config.respond_to?(method_name)
+          class_name ||= default_class_name
+
+          if class_name.safe_constantize
+            class_name.constantize.send(:include, "Comable::Able::#{default_class_name}able".constantize)
+          end
         end
       end
     end
