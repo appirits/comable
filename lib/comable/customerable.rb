@@ -49,7 +49,7 @@ module Comable
 
     def cart_items
       return super unless self.logged_in?
-      Comable::CartItem.utusemi(utusemi_values[:flag]).where(Comable::Customer.name.foreign_key => id)
+      Comable::CartItem.where(Comable::Customer.name.foreign_key => id)
     end
 
     def cart
