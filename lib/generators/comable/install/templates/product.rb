@@ -1,3 +1,2 @@
-class Product < ActiveRecord::Base
-  acts_as_comable_product
+class <%= Comable::Product.name %> < ActiveRecord::Base
 end

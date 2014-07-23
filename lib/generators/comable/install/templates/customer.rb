@@ -1,3 +1,2 @@
-class Customer < ActiveRecord::Base
-  acts_as_comable_customer
+class <%= Comable::Customer.name %> < ActiveRecord::Base
 end
