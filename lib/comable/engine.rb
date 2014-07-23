@@ -13,7 +13,7 @@ module Comable
     isolate_namespace Comable
 
     class << self
-      def include_comable_module_for(type)
+      def include_comable_able_module_for(type)
         method_name = "#{type}_class"
         default_class_name = type.to_s.classify
 
@@ -21,19 +21,20 @@ module Comable
           class_name = config.send(method_name).to_s if config.respond_to?(method_name)
           class_name ||= default_class_name
 
-          if class_name.safe_constantize
-            comable_able_module = "Comable::Able::#{default_class_name.gsub(/[ey]$/, '')}able".constantize
-            class_name.constantize.send(:include, comable_able_module)
-          end
+          klass = class_name.safe_constantize
+          next unless klass
+
+          comable_able_module = "Comable::Able::#{default_class_name.gsub(/[ey]$/, '')}able".constantize
+          klass.send(:include, comable_able_module)
         end
       end
     end
 
-    include_comable_module_for(:product)
-    include_comable_module_for(:stock)
-    include_comable_module_for(:customer)
-    include_comable_module_for(:order)
-    include_comable_module_for(:order_delivery)
-    include_comable_module_for(:order_detail)
+    include_comable_able_module_for(:product)
+    include_comable_able_module_for(:stock)
+    include_comable_able_module_for(:customer)
+    include_comable_able_module_for(:order)
+    include_comable_able_module_for(:order_delivery)
+    include_comable_able_module_for(:order_detail)
   end
 end
