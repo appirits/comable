@@ -1,6 +1,6 @@
 module Comable
   module Proxy
-    DELEGATE_METHODS = %w( name === )
+    DELEGATE_METHODS = %w( === )
 
     EXCEPTION_FOR_RAILS_4_0_METHODS = %i( all )
     IGNORE_FOR_RAILS_4_0_METHODS = %i( build_default_scope )
@@ -24,7 +24,11 @@ module Comable
     end
 
     def klass
-      "::#{Comable::Engine.config.send("#{comable_type}_class")}".constantize
+      "::#{name}".constantize
+    end
+
+    def name
+      Comable::Engine.config.send("#{comable_type}_class").to_s
     end
 
     private
