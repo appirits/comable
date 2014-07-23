@@ -12,6 +12,6 @@ class AddColumnsToProducts < ActiveRecord::Migration
 
   def add_column_safety_to_products(column_name, type_name, options = {})
     return if Utusemi.config.map(:product).attributes[column_name]
-    add_column Comable::Engine.config.product_table, column_name, type_name, options
+    add_column Comable::Product.table_name, column_name, type_name, options
   end
 end
