@@ -28,9 +28,9 @@ module Comable
     private
 
     def create_stock
-      product = utusemi(:product)
-      stocks = product.stocks
-      stocks.create(code: product.code) unless stocks.exists?
+      utusemi(:product).instance_eval do
+        stocks.create(code: code) unless stocks.exists?
+      end
     end
   end
 end
