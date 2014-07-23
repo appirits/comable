@@ -1,4 +1,4 @@
-describe Comable::ActsAsComableProduct do
+describe Comable::Productable do
   it { should be_truthy }
 
   it 'where' do

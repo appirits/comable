@@ -24,8 +24,7 @@ module Comable
     end
 
     def klass
-      # TODO: テーブル名とモデル名が異なるケースに対応できるよう検討
-      "::#{Comable::Engine.config.send("#{comable_type}_table").to_s.classify}".constantize
+      "::#{Comable::Engine.config.send("#{comable_type}_class")}".constantize
     end
 
     private

@@ -26,9 +26,9 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
   ```ruby
   module Comable
     class Engine < ::Rails::Engine
-      config.product_table = :products
-      config.customer_table = :customers
-      config.stock_table = :stocks
+      config.product_class = :DummyProduct
+      config.customer_class = :User
+      config.stock_class = :Stock
 
       Utusemi.configure do
         map :product do
