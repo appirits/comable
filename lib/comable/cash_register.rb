@@ -76,7 +76,7 @@ module Comable
     def assign_default_attributes_to_order_details(order_delivery)
       customer.cart.each do |cart_item|
         order_delivery.order_details.build(
-          Comable::Stock.foreign_key => cart_item.stock.id,
+          Comable::Stock.name.foreign_key => cart_item.stock.id,
           :quantity => cart_item.quantity,
           :price => cart_item.price
         )

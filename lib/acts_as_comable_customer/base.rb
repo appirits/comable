@@ -30,9 +30,9 @@ module Comable
 
         def add_cart_item(obj)
           case obj
-          when Comable::Product.model
+          when Comable::Product
             add_stock_to_cart(obj.stocks.first)
-          when Comable::Stock.model
+          when Comable::Stock
             add_stock_to_cart(obj)
           when Array
             obj.map { |item| add_cart_item(item) }
@@ -43,7 +43,7 @@ module Comable
 
         def remove_cart_item(obj)
           case obj
-          when Comable::Stock.model
+          when Comable::Stock
             remove_stock_from_cart(obj)
           else
             fail
@@ -57,7 +57,7 @@ module Comable
 
         def cart_items
           return super unless self.logged_in?
-          Comable::CartItem.utusemi(utusemi_values[:flag]).where(Comable::Customer.foreign_key => id)
+          Comable::CartItem.utusemi(utusemi_values[:flag]).where(Comable::Customer.name.foreign_key => id)
         end
 
         def cart
@@ -111,11 +111,11 @@ module Comable
         def find_cart_items_by(stock)
           return super unless self.logged_in?
 
-          fail unless stock.is_a?(Comable::Stock.model)
+          fail unless stock.is_a?(Comable::Stock.klass)
 
           Comable::CartItem
-            .where(Comable::Customer.foreign_key => id)
-            .where(Comable::Stock.foreign_key => stock.id)
+            .where(Comable::Customer.name.foreign_key => id)
+            .where(Comable::Stock.name.foreign_key => stock.id)
         end
       end
     end

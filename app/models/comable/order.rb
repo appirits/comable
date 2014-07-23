@@ -2,7 +2,7 @@ module Comable
   class Order < ActiveRecord::Base
     utusemi!
 
-    belongs_to :customer, class_name: Comable::Customer.model_name, foreign_key: Comable::Customer.foreign_key, autosave: false
+    belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.name.foreign_key, autosave: false
     has_many :comable_order_deliveries, dependent: :destroy, class_name: 'Comable::OrderDelivery', foreign_key: 'comable_order_id'
 
     accepts_nested_attributes_for :comable_order_deliveries
