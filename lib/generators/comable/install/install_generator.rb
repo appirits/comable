@@ -19,6 +19,12 @@ module Comable
         migration_template 'create_products.rb', 'db/migrate/create_products.rb'
       end
 
+      def create_stock_model
+        return if Comable::Engine.config.respond_to?(:stock_class)
+        template 'stock.rb', 'app/models/stock.rb'
+        migration_template 'create_stocks.rb', 'db/migrate/create_stocks.rb'
+      end
+
       def create_customer_model
         return if Comable::Engine.config.respond_to?(:customer_class)
         template 'customer.rb', 'app/models/customer.rb'
