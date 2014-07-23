@@ -102,7 +102,7 @@ describe Customer do
           order: {
             family_name: 'comable',
             first_name: 'orderer',
-            comable_order_deliveries_attributes: {
+            order_deliveries_attributes: {
               0 => {
                 family_name: 'comable',
                 first_name: 'one'
@@ -114,7 +114,7 @@ describe Customer do
               2 => {
                 family_name: 'comable',
                 first_name: 'three',
-                comable_order_details_attributes: {
+                order_details_attributes: {
                   0 => {
                     stock_id: stock.id,
                     quantity: 1,
@@ -128,8 +128,8 @@ describe Customer do
       end
 
       let(:invalid_params) do
-        params[:order][:comable_order_deliveries_attributes][1].update(
-          comable_order_details_attributes: {
+        params[:order][:order_deliveries_attributes][1].update(
+          order_details_attributes: {
             0 => {
               stock_id: stock.id,
               quantity: 1,

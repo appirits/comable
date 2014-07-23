@@ -31,6 +31,24 @@ module Comable
         migration_template 'migrations/create_customers.rb', 'db/migrate/create_customers.rb'
       end
 
+      def create_order_model
+        return if Comable::Engine.config.respond_to?(:order_class)
+        template 'models/order.rb', 'app/models/order.rb'
+        migration_template 'migrations/create_orders.rb', 'db/migrate/create_orders.rb'
+      end
+
+      def create_order_delivery_model
+        return if Comable::Engine.config.respond_to?(:order_delivery_class)
+        template 'models/order_delivery.rb', 'app/models/order_delivery.rb'
+        migration_template 'migrations/create_order_deliveries.rb', 'db/migrate/create_order_deliveries.rb'
+      end
+
+      def create_order_detail_model
+        return if Comable::Engine.config.respond_to?(:order_detail_class)
+        template 'models/order_detail.rb', 'app/models/order_detail.rb'
+        migration_template 'migrations/create_order_details.rb', 'db/migrate/create_order_details.rb'
+      end
+
       def copy_migrations
         rake 'comable:install:migrations'
       end

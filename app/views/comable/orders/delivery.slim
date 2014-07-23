@@ -2,7 +2,7 @@ h1 配送先情報入力
 
 .orderer
   = form_for @order, url: comable.delivery_order_path do |f|
-    = f.fields_for :comable_order_deliveries do |order_delivery|
+    = f.fields_for :order_deliveries do |order_delivery|
       = order_delivery.text_field :family_name, placeholder: '姓'
       = order_delivery.text_field :first_name, placeholder: '名'
     = f.submit

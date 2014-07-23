@@ -4,6 +4,9 @@ require 'utusemi'
 require 'comable/ables/productable'
 require 'comable/ables/stockable'
 require 'comable/ables/customerable'
+require 'comable/ables/orderable'
+require 'comable/ables/order_deliverable'
+require 'comable/ables/order_detailable'
 
 module Comable
   class Engine < ::Rails::Engine
@@ -19,7 +22,8 @@ module Comable
           class_name ||= default_class_name
 
           if class_name.safe_constantize
-            class_name.constantize.send(:include, "Comable::Able::#{default_class_name}able".constantize)
+            comable_able_module = "Comable::Able::#{default_class_name.gsub(/[ey]$/, '')}able".constantize
+            class_name.constantize.send(:include, comable_able_module)
           end
         end
       end
@@ -28,5 +32,8 @@ module Comable
     include_comable_module_for(:product)
     include_comable_module_for(:stock)
     include_comable_module_for(:customer)
+    include_comable_module_for(:order)
+    include_comable_module_for(:order_delivery)
+    include_comable_module_for(:order_detail)
   end
 end

@@ -4,7 +4,7 @@ describe Comable::OrdersController do
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
   let(:add_to_cart) { customer.add_cart_item(product) }
-  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_order_deliveries_attributes: [family_name: 'hoge', first_name: 'piyo'] } } }
+  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', order_deliveries_attributes: [family_name: 'hoge', first_name: 'piyo'] } } }
 
   context 'カートが空の場合' do
     before { request }

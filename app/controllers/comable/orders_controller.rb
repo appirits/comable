@@ -63,14 +63,14 @@ module Comable
 
     def build_order_nested_attributes
       @order.attributes.merge(
-        comable_order_deliveries_attributes: build_order_delivery_nested_attributes
+        order_deliveries_attributes: build_order_delivery_nested_attributes
       )
     end
 
     def build_order_delivery_nested_attributes
       @order.order_deliveries.map do |order_delivery|
         order_delivery.attributes.merge(
-          comable_order_details_attributes: order_delivery.order_details.map(&:attributes)
+          order_details_attributes: order_delivery.order_details.map(&:attributes)
         )
       end
     end
@@ -94,7 +94,7 @@ module Comable
 
     def order_params_for_delivery
       params.require(:order).permit(
-        comable_order_deliveries_attributes: [
+        order_deliveries_attributes: [
           :family_name,
           :first_name
         ]
