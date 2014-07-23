@@ -1,3 +1,5 @@
+# TODO: テストの作成
+#
 # refs:
 #   http://yuma300.hatenablog.com/entry/2013/08/15/221418
 #   http://old.thoughtsincomputation.com/posts/cgfr3-part-3-adding-a-generator
