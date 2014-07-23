@@ -1,9 +1,9 @@
 require 'slim'
 require 'utusemi'
 
-require 'comable/productable'
-require 'comable/stockable'
-require 'comable/customerable'
+require 'comable/ables/productable'
+require 'comable/ables/stockable'
+require 'comable/ables/customerable'
 
 module Comable
   class Engine < ::Rails::Engine
@@ -17,7 +17,7 @@ module Comable
         config.send("#{method_name}=", default_class_name) unless config.respond_to?(method_name)
 
         initializer "comable.initializer.#{type}" do
-          config.send(method_name).to_s.constantize.send(:include, "Comable::#{default_class_name}able".constantize)
+          config.send(method_name).to_s.constantize.send(:include, "Comable::Able::#{default_class_name}able".constantize)
         end
       end
     end

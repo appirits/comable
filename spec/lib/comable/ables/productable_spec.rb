@@ -1,4 +1,4 @@
-describe Comable::Productable do
+describe Comable::Able::Productable do
   it { should be_truthy }
 
   it 'where' do
