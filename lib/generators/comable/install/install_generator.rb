@@ -14,13 +14,13 @@ module Comable
       argument :name, default: 'migration'
 
       def create_product_model
-        return if Comable::Engine.config.respond_to?(:product_table)
+        return if Comable::Engine.config.respond_to?(:product_class)
         template 'product.rb', 'app/models/product.rb'
         migration_template 'create_products.rb', 'db/migrate/create_products.rb'
       end
 
       def create_customer_model
-        return if Comable::Engine.config.respond_to?(:customer_table)
+        return if Comable::Engine.config.respond_to?(:customer_class)
         template 'customer.rb', 'app/models/customer.rb'
         migration_template 'create_customers.rb', 'db/migrate/create_customers.rb'
       end
