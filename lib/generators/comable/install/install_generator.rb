@@ -15,20 +15,20 @@ module Comable
 
       def create_product_model
         return if Comable::Engine.config.respond_to?(:product_class)
-        template 'product.rb', 'app/models/product.rb'
-        migration_template 'create_products.rb', 'db/migrate/create_products.rb'
+        template 'models/product.rb', 'app/models/product.rb'
+        migration_template 'migrations/create_products.rb', 'db/migrate/create_products.rb'
       end
 
       def create_stock_model
         return if Comable::Engine.config.respond_to?(:stock_class)
-        template 'stock.rb', 'app/models/stock.rb'
-        migration_template 'create_stocks.rb', 'db/migrate/create_stocks.rb'
+        template 'models/stock.rb', 'app/models/stock.rb'
+        migration_template 'migrations/create_stocks.rb', 'db/migrate/create_stocks.rb'
       end
 
       def create_customer_model
         return if Comable::Engine.config.respond_to?(:customer_class)
-        template 'customer.rb', 'app/models/customer.rb'
-        migration_template 'create_customers.rb', 'db/migrate/create_customers.rb'
+        template 'models/customer.rb', 'app/models/customer.rb'
+        migration_template 'migrations/create_customers.rb', 'db/migrate/create_customers.rb'
       end
 
       def copy_migrations
