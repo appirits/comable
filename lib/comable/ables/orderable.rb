@@ -12,6 +12,7 @@ module Comable
           validates :first_name, presence: true
 
           before_create :generate_code
+          before_create :generate_ordered_at
         end
       end
 
@@ -23,6 +24,12 @@ module Comable
             random_token = SecureRandom.urlsafe_base64(nil, false)
             break random_token unless self.class.exists?(code: random_token)
           end
+        end
+      end
+
+      def generate_ordered_at
+        utusemi(:order).instance_eval do
+          self.ordered_at = Time.now
         end
       end
     end
