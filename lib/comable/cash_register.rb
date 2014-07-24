@@ -64,8 +64,8 @@ module Comable
     end
 
     def assign_default_attributes_to_order_delivery(order_delivery)
-      order_delivery.family_name ||= customer.family_name
-      order_delivery.first_name ||= customer.first_name
+      order_delivery.family_name ||= order.family_name
+      order_delivery.first_name ||= order.first_name
 
       assign_default_attributes_to_order_details(order_delivery) if first_order_detail?
     end
