@@ -10,7 +10,7 @@ describe Order do
     context '#save' do
       before { subject.save }
       its(:ordered_at) { should be }
-      its(:code) { should be }
+      its(:code) { should match(/^C\d{11}$/) }
     end
   end
 end

@@ -21,7 +21,7 @@ module Comable
       def generate_code
         utusemi(:order).instance_eval do
           self.code = loop do
-            random_token = SecureRandom.urlsafe_base64(nil, false)
+            random_token = "C#{Array.new(11) { rand(9) }.join}"
             break random_token unless self.class.exists?(code: random_token)
           end
         end
