@@ -69,6 +69,8 @@ module Comable
 
     def build_order_delivery_nested_attributes
       @order.order_deliveries.map do |order_delivery|
+        # TODO: order_details_attributes は session に保持してはいけない
+        #       理由：確認画面後に商品を追加した場合、カートの内容と齟齬がでてしまうため
         order_delivery.attributes.merge(
           order_details_attributes: order_delivery.order_details.map(&:attributes)
         )

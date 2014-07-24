@@ -2,6 +2,11 @@ module Comable
   class InvalidOrder < StandardError; end
 
   class CashRegister
+    include ActiveModel::Validations
+
+    validate :valid_cart
+    validate :valid_stock
+
     attr_accessor :customer
     attr_accessor :order
 
@@ -12,23 +17,15 @@ module Comable
 
     def build_order
       assign_default_attributes_to_order
-      fail Comable::InvalidOrder if invalid
+      fail Comable::InvalidOrder, errors.full_messages if invalid?
       order
     end
 
     def create_order
       order = build_order
-      order.save
+      order.save!
       customer.reset_cart
       order
-    end
-
-    def valid
-      valid_cart && valid_stock
-    end
-
-    def invalid
-      !valid
     end
 
     private
@@ -39,16 +36,16 @@ module Comable
       order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
         next unless order_detail.stock
         result = cart.reject! { |cart_item| cart_item.stock == order_detail.stock }
-        return false if result.nil?
+        return errors.add :base, "「#{order_detail.stock.name}」がカートに存在しませんでした。" if result.nil?
       end
 
-      cart.empty?
+      errors.add :base, 'カート内の商品が不正です。' if cart.any?
     end
 
     def valid_stock
       order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
         next unless order_detail.stock
-        return false unless order_detail.stock.unsold?
+        return errors.add :base, "「#{order_detail.stock.name}」の在庫が不足しています。" unless order_detail.stock.unsold?
       end
     end
 
