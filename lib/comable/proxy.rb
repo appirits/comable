@@ -24,13 +24,14 @@ module Comable
     end
 
     def klass
-      "::#{name}".constantize
+      name.constantize
     end
 
     def name
       method_name = "#{comable_type}_class"
-      return comable_type.classify unless Comable::Engine.config.respond_to?(method_name)
-      Comable::Engine.config.send(method_name).to_s
+      name = Comable::Engine.config.send(method_name) if Comable::Engine.config.respond_to?(method_name)
+      name ||= comable_type.classify
+      "::#{name}"
     end
 
     private
