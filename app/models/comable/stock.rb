@@ -1,5 +1,5 @@
 module Comable
-  class Stock
-    extend Proxy
+  class Stock < ActiveRecord::Base
+    include Comable::Able::Stockable
   end
 end

@@ -1,5 +1,5 @@
 module Comable
-  class OrderDetail
-    extend Proxy
+  class OrderDetail < ActiveRecord::Base
+    include Comable::Able::OrderDetailable
   end
 end

@@ -1,5 +1,5 @@
 module Comable
-  class Product
-    extend Proxy
+  class Product < ActiveRecord::Base
+    include Comable::Able::Productable
   end
 end

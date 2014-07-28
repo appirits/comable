@@ -1,5 +1,5 @@
 module Comable
-  class Customer
-    extend Proxy
+  class Customer < ActiveRecord::Base
+    include Comable::Able::Customerable
   end
 end

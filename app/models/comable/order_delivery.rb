@@ -1,5 +1,5 @@
 module Comable
-  class OrderDelivery
-    extend Proxy
+  class OrderDelivery < ActiveRecord::Base
+    include Comable::Able::OrderDeliverable
   end
 end

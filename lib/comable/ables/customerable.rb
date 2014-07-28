@@ -104,7 +104,7 @@ module Comable
       def find_cart_items_by(stock)
         return super unless self.logged_in?
 
-        fail unless stock.is_a?(Comable::Stock.klass)
+        fail unless stock.is_a?(Comable::Stock)
 
         Comable::CartItem
           .where(Comable::Customer.name.foreign_key => id)
