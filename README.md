@@ -42,7 +42,7 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 4. Get gem migrations:
 
   ```bash
-  bundle exec rails generate comable:install
+  bundle exec rake comable:install:migrations
   ```
 
 ## Requirements
