@@ -24,17 +24,9 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 3. Create a file named `comable.rb` in `config/initializers` and add names of tables and columns in this file.
 
   ```ruby
-  module Comable
-    class Engine < ::Rails::Engine
-      config.product_class = :DummyProduct
-      config.customer_class = :User
-      config.stock_class = :Stock
-
-      Utusemi.configure do
-        map :product do
-          name :title
-        end
-      end
+  Utusemi.configure do
+    map :product do
+      name :title
     end
   end
   ```
