@@ -3,7 +3,7 @@ module Comable
     module Stockable
       def self.included(base)
         base.instance_eval do
-          belongs_to :product, class_name: Comable::Product.name, foreign_key: Comable::Product.name.foreign_key
+          belongs_to :product, class_name: Comable::Product.name, foreign_key: Comable::Product.table_name.singularize.foreign_key
 
           scope :activated, -> { where.not(product_id_num: nil) }
           scope :unsold, -> { where('quantity > ?', 0) }

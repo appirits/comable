@@ -1,11 +1,11 @@
-describe Customer do
+describe Comable::Customer do
   it { expect { described_class.new }.to_not raise_error }
 
   context 'カート処理' do
     let(:stocks) { FactoryGirl.create_list(:stock, 5, :many, :unsold, :with_product) }
     let(:stock) { stocks.first }
 
-    subject { FactoryGirl.build_stubbed(described_class.name.underscore) }
+    subject { FactoryGirl.build_stubbed(:customer) }
 
     it '商品を投入できること' do
       subject.add_cart_item(stock)
@@ -52,7 +52,7 @@ describe Customer do
   context '注文処理' do
     let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
 
-    subject { FactoryGirl.create(described_class.name.underscore) }
+    subject { FactoryGirl.create(:customer) }
     before { subject.add_cart_item(stock) }
 
     it '商品を購入できること' do

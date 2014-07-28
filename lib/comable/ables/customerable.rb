@@ -3,7 +3,7 @@ module Comable
     module Customerable
       def self.included(base)
         base.instance_eval do
-          has_many :comable_orders, class_name: 'Comable::Order'
+          has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
           alias_method :orders, :comable_orders
         end
       end
@@ -50,7 +50,7 @@ module Comable
 
       def cart_items
         return super unless self.logged_in?
-        Comable::CartItem.where(Comable::Customer.name.foreign_key => id)
+        Comable::CartItem.where(Comable::Customer.table_name.singularize.foreign_key => id)
       end
 
       def cart
@@ -107,8 +107,8 @@ module Comable
         fail unless stock.is_a?(Comable::Stock)
 
         Comable::CartItem
-          .where(Comable::Customer.name.foreign_key => id)
-          .where(Comable::Stock.name.foreign_key => stock.id)
+          .where(Comable::Customer.table_name.singularize.foreign_key => id)
+          .where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
       end
     end
   end

@@ -3,7 +3,7 @@ module Comable
     module Productable
       def self.included(base)
         base.instance_eval do
-          has_many :stocks, class_name: Comable::Stock.name
+          has_many :stocks, class_name: Comable::Stock.name, foreign_key: table_name.singularize.foreign_key
           after_create :create_stock
         end
       end

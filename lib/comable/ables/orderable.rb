@@ -3,8 +3,8 @@ module Comable
     module Orderable
       def self.included(base)
         base.instance_eval do
-          belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.name.foreign_key, autosave: false
-          has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name
+          belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
+          has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key
 
           accepts_nested_attributes_for :order_deliveries
 
