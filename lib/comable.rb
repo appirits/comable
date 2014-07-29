@@ -1,6 +1,6 @@
 require 'comable/engine'
-require 'comable/proxy'
 require 'comable/migration'
+require 'comable/decoratable'
 
 module Comable
 end

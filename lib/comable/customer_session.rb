@@ -27,7 +27,7 @@ module Comable
         found_cart_item = found_cart_items.first
         found_cart_item.quantity = found_cart_item.quantity.next
       else
-        @cart_items << Comable::CartItem.new(Comable::Stock.name.foreign_key => stock.id)
+        @cart_items << Comable::CartItem.new(Comable::Stock.table_name.singularize.foreign_key => stock.id)
       end
       save_cart_to_session
     end

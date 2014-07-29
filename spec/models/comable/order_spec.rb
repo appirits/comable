@@ -1,4 +1,4 @@
-describe Order do
+describe Comable::Order do
   it { expect { described_class.new }.to_not raise_error }
 
   let(:title) { 'sample product' }

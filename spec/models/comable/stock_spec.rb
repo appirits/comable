@@ -1,4 +1,4 @@
-describe Stock do
+describe Comable::Stock do
   it { expect { described_class.new }.to_not raise_error }
 
   context 'belongs_to' do

@@ -1,11 +1,11 @@
 class CreateComableCartItems < ActiveRecord::Migration
   def change
     create_table :comable_cart_items do |t|
-      t.integer Comable::Customer.name.foreign_key, null: false
-      t.integer Comable::Stock.name.foreign_key, null: false
+      t.integer :comable_customer_id, null: false
+      t.integer :comable_stock_id, null: false
       t.integer :quantity, default: 1, null: false
     end
 
-    add_index :comable_cart_items, [Comable::Customer.name.foreign_key, Comable::Stock.name.foreign_key], unique: true
+    add_index :comable_cart_items, [:comable_customer_id, :comable_stock_id], unique: true, name: :comable_cart_items_idx_01
   end
 end
