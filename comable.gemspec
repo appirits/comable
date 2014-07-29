@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '>= 3.2.0'
-  s.add_dependency 'utusemi', '>= 0.0.3'
   s.add_dependency 'slim-rails'
 
   s.add_development_dependency 'pg'
@@ -30,4 +29,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bullet'
   s.add_development_dependency 'pry-rails'
   s.add_development_dependency 'byebug'
+  s.add_development_dependency 'utusemi', '>= 0.0.3'
 end
