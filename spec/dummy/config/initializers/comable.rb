@@ -1,9 +1,9 @@
 Utusemi.configure do
-  map :product do
+  map :comable_product do
     name :title
   end
 
-  map :stock do
+  map :comable_stock do
     quantity :units
   end
 end
