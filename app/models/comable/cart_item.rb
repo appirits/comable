@@ -26,7 +26,7 @@ module Comable
     private
 
     def generate_guest_token
-      return if customer
+      return if send(Comable::Customer.table_name.singularize.foreign_key)
       self.guest_token ||= loop do
         random_token = SecureRandom.urlsafe_base64(nil, false)
         break random_token unless self.class.exists?(guest_token: random_token)

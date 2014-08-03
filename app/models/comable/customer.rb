@@ -5,7 +5,16 @@ module Comable
     has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
     alias_method :orders, :comable_orders
 
-    include Comable::CustomerSession
+    def initialize(*args)
+      obj = args.first
+      case obj.class.name
+      when /Cookies/
+        @cookies = obj
+        super()
+      else
+        super
+      end
+    end
 
     def logged_in?
       !new_record?
@@ -38,13 +47,14 @@ module Comable
     end
 
     def reset_cart
-      return super unless self.logged_in?
       cart_items.destroy_all
     end
 
     def cart_items
-      return super unless self.logged_in?
-      Comable::CartItem.where(Comable::Customer.table_name.singularize.foreign_key => id)
+      Comable::CartItem.where(
+        Comable::Customer.table_name.singularize.foreign_key => id,
+        :guest_token => current_guest_token
+      )
     end
 
     def cart
@@ -68,9 +78,12 @@ module Comable
 
     private
 
-    def add_stock_to_cart(stock)
-      return super unless self.logged_in?
+    def current_guest_token
+      return if logged_in?
+      @cookies.signed[:guest_token]
+    end
 
+    def add_stock_to_cart(stock)
       fail if stock.soldout?
 
       cart_items = find_cart_items_by(stock)
@@ -78,13 +91,12 @@ module Comable
         cart_item = cart_items.first
         cart_item.increment!(:quantity)
       else
-        cart_items.create
+        cart_item = cart_items.create
+        @cookies.permanent.signed[:guest_token] = cart_item.guest_token if not_logged_in?
       end
     end
 
     def remove_stock_from_cart(stock)
-      return super unless self.logged_in?
-
       cart_item = find_cart_items_by(stock).first
       return false unless cart_item
 
@@ -96,13 +108,8 @@ module Comable
     end
 
     def find_cart_items_by(stock)
-      return super unless self.logged_in?
-
       fail unless stock.is_a?(Comable::Stock)
-
-      Comable::CartItem
-        .where(Comable::Customer.table_name.singularize.foreign_key => id)
-        .where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
+      cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
     end
   end
 end
