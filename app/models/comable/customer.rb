@@ -5,9 +5,6 @@ module Comable
     has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
     alias_method :orders, :comable_orders
 
-    require 'comable/customer_session'
-    require 'comable/cash_register'
-
     include Comable::CustomerSession
 
     def logged_in?
