@@ -22,9 +22,9 @@ module Comable
     end
 
     def decrement_quantity!
-      ActiveRecord::Base.transaction do
+      with_lock do
         # TODO: カラムマッピングのdecrementメソッドへの対応
-        update_attributes(quantity: quantity.pred)
+        update_attributes!(quantity: quantity.pred)
       end
     end
   end
