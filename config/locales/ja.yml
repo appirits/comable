@@ -3,6 +3,7 @@ ja:
     carts:
       add_product: '１つの商品がカートに入りしました'
       product_not_found: 'ご指定の商品は見つかりませんでした'
+      product_not_stocked: 'ご指定の商品は在庫がありません'
       empty: 'カートに商品が入っていません'
     orders:
       success: '注文が完了しました'
