@@ -12,7 +12,7 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 1. Add comable in the `Gemfile`:
 
   ```ruby
-  gem 'comable', github: 'hyoshida/comable'
+  gem 'comable'
   ```
 
 2. Download and install by running:
@@ -21,17 +21,7 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
   bundle install
   ```
 
-3. Create a file named `comable.rb` in `config/initializers` and add names of tables and columns in this file.
-
-  ```ruby
-  Utusemi.configure do
-    map :product do
-      name :title
-    end
-  end
-  ```
-
-4. Get gem migrations:
+3. Get gem migrations:
 
   ```bash
   bundle exec rake comable:install:migrations
@@ -50,7 +40,7 @@ To set up a development environment, simply do:
 
 ```bash
 bundle install
-bundle exec rake db:create RAILS_ENV=test
-bundle exec rake db:migrate RAILS_ENV=test
+bundle exec rake db:create
+bundle exec rake db:migrate
 bundle exec rake  # run the test suite
 ```
