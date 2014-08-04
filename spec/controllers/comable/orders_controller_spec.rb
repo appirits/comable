@@ -23,7 +23,7 @@ describe Comable::OrdersController do
     before { add_to_cart }
     before { request }
 
-    let(:customer) { Comable::Customer.new(session) }
+    let(:customer) { Comable::Customer.new(cookies) }
 
     describe "GET 'new'" do
       let(:request) { get :new }

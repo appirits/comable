@@ -8,7 +8,7 @@ describe Comable::CartsController do
 
   context 'ゲストの場合' do
     context '通常商品' do
-      let(:product) { FactoryGirl.create(:product) }
+      let(:product) { FactoryGirl.create(:product, :with_stock) }
 
       describe "GET 'show'" do
         let(:request) { get :show }
