@@ -8,6 +8,7 @@ require 'sprockets/railtie'
 
 Bundler.require(*Rails.groups)
 require 'comable'
+require 'utusemi'
 
 module Dummy
   class Application < Rails::Application
