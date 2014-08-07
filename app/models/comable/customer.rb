@@ -24,25 +24,21 @@ module Comable
       !logged_in?
     end
 
-    def add_cart_item(obj)
-      case obj
-      when Comable::Product
-        add_stock_to_cart(obj.stocks.first)
-      when Comable::Stock
-        add_stock_to_cart(obj)
-      when Array
-        obj.map { |item| add_cart_item(item) }
-      else
-        fail
+    def add_cart_item(obj, quantity = 1)
+      process_cart_item(obj) do |stock|
+        add_stock_to_cart(stock, quantity)
       end
     end
 
-    def remove_cart_item(obj)
-      case obj
-      when Comable::Stock
-        remove_stock_from_cart(obj)
-      else
-        fail
+    def remove_cart_item(obj, quantity = -1)
+      process_cart_item(obj) do |stock|
+        add_stock_to_cart(stock, quantity)
+      end
+    end
+
+    def reset_cart_item(obj, quantity = 0)
+      process_cart_item(obj) do |stock|
+        reset_stock_from_cart(stock, quantity)
       end
     end
 
@@ -83,26 +79,42 @@ module Comable
       @cookies.signed[:guest_token]
     end
 
-    def add_stock_to_cart(stock)
+    def process_cart_item(obj)
+      case obj
+      when Comable::Product
+        yield obj.stocks.first
+      when Comable::Stock
+        yield obj
+      when Array
+        obj.map { |item| yield item }
+      else
+        fail
+      end
+    end
+
+    def add_stock_to_cart(stock, quantity)
       fail I18n.t('comable.carts.product_not_stocked') if stock.soldout?
 
       cart_items = find_cart_items_by(stock)
       if cart_items.any?
         cart_item = cart_items.first
-        cart_item.increment!(:quantity)
+        cart_item.quantity += quantity
+        (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_item = cart_items.create
+        cart_item = cart_items.create(quantity: quantity)
         @cookies.permanent.signed[:guest_token] = cart_item.guest_token if not_logged_in?
       end
     end
 
-    def remove_stock_from_cart(stock)
-      cart_item = find_cart_items_by(stock).first
-      return false unless cart_item
-
-      if cart_item.quantity.pred.nonzero?
-        cart_item.decrement!(:quantity)
+    def reset_stock_from_cart(stock, quantity)
+      cart_items = find_cart_items_by(stock)
+      if quantity > 0
+        return add_stock_to_cart(stock, quantity) if cart_items.empty?
+        cart_item = cart_items.first
+        cart_item.quantity = quantity
+        cart_item.save
       else
+        return false if cart_items.empty?
         cart_item.destroy
       end
     end
