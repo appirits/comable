@@ -14,6 +14,7 @@
   - if @product.unsold?
     .add_cart
         = hidden_field_tag :product_id, @product.id
+        = select_tag :quantity, options_for_select(1.upto(10).to_a)
         = submit_tag 'カートに入れる'
   - else
     .sold_out

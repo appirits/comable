@@ -13,7 +13,7 @@ module Comable
       end
 
       # TODO: 在庫確認
-      current_customer.add_cart_item(stock || product)
+      current_customer.add_cart_item(stock || product, params[:quantity].to_i)
 
       flash[:notice] = I18n.t('comable.carts.add_product')
       redirect_to cart_path
