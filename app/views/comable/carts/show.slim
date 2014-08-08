@@ -2,22 +2,26 @@ h1 カート
 
 ul.cart
   - current_customer.cart.each do |cart_item|
-    - stock = cart_item.stock
-    - product = stock.product
-    li.product
-      h2.name
-        - if stock.sku?
-          - sku_name = stock.sku_h_choice_name
-          - sku_name += '/' + stock.sku_v_choice_name if stock.sku_v_choice_name.present?
-          = link_to product.name + "(#{sku_name})", comable.product_path(product)
-        - else
-          = link_to product.name, comable.product_path(product)
-      .caption
-        = product.caption
-      .price
-        = number_to_currency product.price
-      .quantity
-        = number_with_delimiter cart_item.quantity
+    = form_tag comable.cart_path, method: :put do
+      - stock = cart_item.stock
+      - product = stock.product
+      li.product
+        h2.name
+          - if stock.sku?
+            - sku_name = stock.sku_h_choice_name
+            - sku_name += '/' + stock.sku_v_choice_name if stock.sku_v_choice_name.present?
+            = link_to product.name + "(#{sku_name})", comable.product_path(product)
+          - else
+            = link_to product.name, comable.product_path(product)
+        .caption
+          = product.caption
+        .price
+          = number_to_currency product.price
+        .quantity
+          - selected = cart_item.quantity
+          = select_tag :quantity, options_for_select(1.upto([10, selected].max).to_a, selected)
+          = hidden_field_tag :stock_id, stock.id
+          = submit_tag '変更'
 
 .order
   = link_to '注文', comable.new_order_path
