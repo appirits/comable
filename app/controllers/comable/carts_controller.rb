@@ -19,6 +19,17 @@ module Comable
       redirect_to cart_path
     end
 
+    def update
+      stock = Comable::Stock.where(id: params[:stock_id]).first
+      return redirect_by_product_not_found unless stock
+
+      # TODO: 在庫確認
+      current_customer.reset_cart_item(stock, params[:quantity].to_i)
+
+      flash[:notice] = I18n.t('comable.carts.update')
+      redirect_to cart_path
+    end
+
     private
 
     def redirect_by_product_not_found
