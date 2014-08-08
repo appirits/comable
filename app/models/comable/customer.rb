@@ -24,19 +24,19 @@ module Comable
       !logged_in?
     end
 
-    def add_cart_item(obj, quantity = 1)
+    def add_cart_item(obj, quantity: 1)
       process_cart_item(obj) do |stock|
         add_stock_to_cart(stock, quantity)
       end
     end
 
-    def remove_cart_item(obj, quantity = -1)
+    def remove_cart_item(obj, quantity: -1)
       process_cart_item(obj) do |stock|
         add_stock_to_cart(stock, quantity)
       end
     end
 
-    def reset_cart_item(obj, quantity = 0)
+    def reset_cart_item(obj, quantity: 0)
       process_cart_item(obj) do |stock|
         reset_stock_from_cart(stock, quantity)
       end
