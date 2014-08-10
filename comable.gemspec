@@ -31,4 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'utusemi', '>= 0.0.6'
   s.add_development_dependency 'yard'
+  s.add_development_dependency 'inch'
 end
