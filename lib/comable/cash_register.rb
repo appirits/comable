@@ -16,7 +16,7 @@ module Comable
 
     def build_order
       assign_default_attributes_to_order
-      fail Comable::InvalidOrder, errors.full_messages if invalid?
+      fail Comable::InvalidOrder, errors.full_messages.join("\n") if invalid?
       order
     end
 
