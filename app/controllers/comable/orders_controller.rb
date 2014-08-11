@@ -106,12 +106,12 @@ module Comable
 
     def record_invalid
       flash[:alert] = I18n.t('comable.orders.failure')
-      redirect_to comable.confirm_order_path
+      redirect_to comable.cart_path
     end
 
     def order_invalid(exception)
       flash[:alert] = exception.message
-      redirect_to comable.confirm_order_path
+      redirect_to comable.cart_path
     end
   end
 end
