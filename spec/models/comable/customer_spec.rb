@@ -96,6 +96,22 @@ describe Comable::Customer do
       end
     end
 
+    context '在庫以上の注文がだった場合' do
+      before { subject.add_cart_item(stock, quantity: stock.quantity) }
+
+      it '商品を購入できないこと' do
+        expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      end
+    end
+
+    context '異常系' do
+      it '注文数０の場合にエラーが発生すること' do
+        subject.cart_items.first.update_attributes(quantity: 0)
+        expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      end
+    end
+
+    # TODO: 複数配送先の完全な実装 or 機能削除
     context '複数配送' do
       let(:params) do
         {
