@@ -6,8 +6,11 @@ module Comable
     belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key
 
     after_create :decrement_quantity!
-    delegate :decrement_quantity!, to: :stock
 
     delegate :product, to: :stock
+
+    def decrement_quantity!
+      stock.decrement_quantity!(quantity: quantity)
+    end
   end
 end

@@ -28,10 +28,11 @@ module Comable
       !unsold?
     end
 
-    def decrement_quantity!
+    def decrement_quantity!(quantity: 1)
       with_lock do
         # TODO: カラムマッピングのdecrementメソッドへの対応
-        update_attributes!(quantity: quantity.pred)
+        self.quantity -= quantity
+        save!
       end
     end
   end

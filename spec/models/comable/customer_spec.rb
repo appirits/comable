@@ -51,9 +51,10 @@ describe Comable::Customer do
 
   context '注文処理' do
     let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+    let(:order_quantity) { 10 }
 
     subject { FactoryGirl.create(:customer) }
-    before { subject.add_cart_item(stock) }
+    before { subject.add_cart_item(stock, quantity: order_quantity) }
 
     it '商品を購入できること' do
       subject.order
@@ -85,7 +86,7 @@ describe Comable::Customer do
     end
 
     it '在庫が減っていること' do
-      expect { subject.order }.to change { stock.reload.quantity }.by(-1)
+      expect { subject.order }.to change { stock.reload.quantity }.by(-order_quantity)
     end
 
     context '在庫がない場合' do
