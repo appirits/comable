@@ -5,12 +5,14 @@ module Comable
     belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key
     belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key
 
-    after_create :decrement_quantity!
+    after_create :decrement_stock
 
     delegate :product, to: :stock
 
-    def decrement_quantity!
-      stock.decrement_quantity!(quantity: quantity)
+    private
+
+    def decrement_stock
+      stock.decrement!(quantity: quantity)
     end
   end
 end

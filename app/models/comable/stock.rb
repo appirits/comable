@@ -28,7 +28,7 @@ module Comable
       !unsold?
     end
 
-    def decrement_quantity!(quantity: 1)
+    def decrement!(quantity: 1)
       with_lock do
         # TODO: カラムマッピングのdecrementメソッドへの対応
         self.quantity -= quantity
