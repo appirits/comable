@@ -2,6 +2,10 @@ module Comable
   class InvalidOrder < StandardError; end
 
   class CashRegister
+    include ActiveModel::Validations
+
+    validate :valid_stock
+
     attr_accessor :customer
     attr_accessor :order
 
@@ -12,43 +16,25 @@ module Comable
 
     def build_order
       assign_default_attributes_to_order
-      fail Comable::InvalidOrder if invalid
+      fail Comable::InvalidOrder, errors.full_messages.join("\n") if invalid?
       order
     end
 
     def create_order
+      # TODO: トランザクションの追加
       order = build_order
-      order.save
+      order.save!
       customer.reset_cart
       order
     end
 
-    def valid
-      valid_cart && valid_stock
-    end
-
-    def invalid
-      !valid
-    end
-
     private
-
-    def valid_cart
-      cart = customer.cart
-
-      order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
-        next unless order_detail.stock
-        result = cart.reject! { |cart_item| cart_item.stock == order_detail.stock }
-        return false if result.nil?
-      end
-
-      cart.empty?
-    end
 
     def valid_stock
       order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
-        next unless order_detail.stock
-        return false unless order_detail.stock.unsold?
+        return errors.add :base, "「#{order_detail.stock.name}」の注文数が不正です。" if order_detail.quantity <= 0
+        quantity = order_detail.stock.quantity - order_detail.quantity
+        return errors.add :base, "「#{order_detail.stock.name}」の在庫が不足しています。" if quantity < 0
       end
     end
 
@@ -67,8 +53,8 @@ module Comable
     end
 
     def assign_default_attributes_to_order_delivery(order_delivery)
-      order_delivery.family_name ||= customer.family_name
-      order_delivery.first_name ||= customer.first_name
+      order_delivery.family_name ||= order.family_name
+      order_delivery.first_name ||= order.first_name
 
       assign_default_attributes_to_order_details(order_delivery) if first_order_detail?
     end

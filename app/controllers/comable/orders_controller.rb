@@ -5,6 +5,9 @@ module Comable
     before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
     after_filter :save_order, except: :create
 
+    rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
+    rescue_from Comable::InvalidOrder, with: :order_invalid
+
     def new
     end
 
@@ -68,11 +71,7 @@ module Comable
     end
 
     def build_order_delivery_nested_attributes
-      @order.order_deliveries.map do |order_delivery|
-        order_delivery.attributes.merge(
-          order_details_attributes: order_delivery.order_details.map(&:attributes)
-        )
-      end
+      @order.order_deliveries.map(&:attributes)
     end
 
     def order_params
@@ -103,6 +102,16 @@ module Comable
 
     def redirect_for_logged_in_customer
       return redirect_to delivery_order_path if current_customer.logged_in?
+    end
+
+    def record_invalid
+      flash[:alert] = I18n.t('comable.orders.failure')
+      redirect_to comable.cart_path
+    end
+
+    def order_invalid(exception)
+      flash[:alert] = exception.message
+      redirect_to comable.cart_path
     end
   end
 end

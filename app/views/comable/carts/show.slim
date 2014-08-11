@@ -7,12 +7,7 @@ ul.cart
       - product = stock.product
       li.product
         h2.name
-          - if stock.sku?
-            - sku_name = stock.sku_h_choice_name
-            - sku_name += '/' + stock.sku_v_choice_name if stock.sku_v_choice_name.present?
-            = link_to product.name + "(#{sku_name})", comable.product_path(product)
-          - else
-            = link_to product.name, comable.product_path(product)
+          = link_to stock.name, comable.product_path(product)
         .caption
           = product.caption
         .price

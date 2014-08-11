@@ -74,11 +74,19 @@ describe Comable::OrdersController do
 
       context '不正な手順のリクエストの場合' do
         let(:request) { post :create, order_params }
-        its(:response) { should redirect_to(:confirm_order) }
+
+        its(:response) { should redirect_to(controller.comable.cart_path) }
 
         it 'flashにメッセージが格納されていること' do
           expect(flash[:alert]).to eq I18n.t('comable.orders.failure')
         end
+      end
+
+      context '在庫が不足している場合' do
+        let(:add_to_cart) { customer.add_cart_item(product, quantity: stock.quantity + 1) }
+        let(:request) { post :create, order_params }
+
+        its(:response) { should redirect_to(controller.comable.cart_path) }
       end
     end
   end

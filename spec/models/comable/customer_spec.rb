@@ -51,9 +51,10 @@ describe Comable::Customer do
 
   context '注文処理' do
     let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+    let(:order_quantity) { 10 }
 
     subject { FactoryGirl.create(:customer) }
-    before { subject.add_cart_item(stock) }
+    before { subject.add_cart_item(stock, quantity: order_quantity) }
 
     it '商品を購入できること' do
       subject.order
@@ -85,7 +86,7 @@ describe Comable::Customer do
     end
 
     it '在庫が減っていること' do
-      expect { subject.order }.to change { stock.reload.quantity }.by(-1)
+      expect { subject.order }.to change { stock.reload.quantity }.by(-order_quantity)
     end
 
     context '在庫がない場合' do
@@ -96,6 +97,22 @@ describe Comable::Customer do
       end
     end
 
+    context '在庫以上の注文がだった場合' do
+      before { subject.add_cart_item(stock, quantity: stock.quantity) }
+
+      it '商品を購入できないこと' do
+        expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      end
+    end
+
+    context '異常系' do
+      it '注文数０の場合にエラーが発生すること' do
+        subject.cart_items.first.update_attributes(quantity: 0)
+        expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      end
+    end
+
+    # TODO: 複数配送先の完全な実装 or 機能削除
     context '複数配送' do
       let(:params) do
         {
@@ -113,14 +130,7 @@ describe Comable::Customer do
               },
               2 => {
                 family_name: 'comable',
-                first_name: 'three',
-                order_details_attributes: {
-                  0 => {
-                    stock_id: stock.id,
-                    quantity: 1,
-                    price: stock.price
-                  }
-                }
+                first_name: 'three'
               }
             }
           }
@@ -151,7 +161,7 @@ describe Comable::Customer do
       end
 
       it '不正なパラメータが渡された場合にエラーが発生すること' do
-        expect { subject.order(invalid_params[:order]) }.to raise_error(Comable::InvalidOrder)
+        expect { subject.order(invalid_params[:order]) }.to raise_error(ActiveRecord::UnknownAttributeError)
       end
     end
   end

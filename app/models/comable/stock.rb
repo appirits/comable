@@ -11,6 +11,13 @@ module Comable
     delegate :price, to: :product
     delegate :sku?, to: :product
 
+    def name
+      return product.name unless product.sku?
+      sku_name = sku_h_choice_name
+      sku_name += '/' + sku_v_choice_name if sku_v_choice_name.present?
+      product.name + "(#{sku_name})"
+    end
+
     def unsold?
       return false if product_id_num.nil?
       return false if quantity.nil?
@@ -21,10 +28,11 @@ module Comable
       !unsold?
     end
 
-    def decrement_quantity!
+    def decrement!(quantity: 1)
       with_lock do
         # TODO: カラムマッピングのdecrementメソッドへの対応
-        update_attributes!(quantity: quantity.pred)
+        self.quantity -= quantity
+        save!
       end
     end
   end
