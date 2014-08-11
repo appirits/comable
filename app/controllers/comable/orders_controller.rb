@@ -110,7 +110,7 @@ module Comable
       return redirect_to delivery_order_path if current_customer.logged_in?
     end
 
-    def record_invalid(exception)
+    def record_invalid
       flash[:alert] = I18n.t('comable.orders.failure')
       redirect_to comable.confirm_order_path
     end
