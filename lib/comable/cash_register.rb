@@ -4,7 +4,6 @@ module Comable
   class CashRegister
     include ActiveModel::Validations
 
-    validate :valid_cart
     validate :valid_stock
 
     attr_accessor :customer
@@ -29,18 +28,6 @@ module Comable
     end
 
     private
-
-    def valid_cart
-      cart = customer.cart
-
-      order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
-        next unless order_detail.stock
-        result = cart.reject! { |cart_item| cart_item.stock == order_detail.stock }
-        return errors.add :base, "「#{order_detail.stock.name}」がカートに存在しませんでした。" if result.nil?
-      end
-
-      errors.add :base, 'カート内の商品が不正です。' if cart.any?
-    end
 
     def valid_stock
       order.order_deliveries.map(&:order_details).flatten.each do |order_detail|

@@ -113,14 +113,7 @@ describe Comable::Customer do
               },
               2 => {
                 family_name: 'comable',
-                first_name: 'three',
-                order_details_attributes: {
-                  0 => {
-                    stock_id: stock.id,
-                    quantity: 1,
-                    price: stock.price
-                  }
-                }
+                first_name: 'three'
               }
             }
           }
@@ -151,7 +144,7 @@ describe Comable::Customer do
       end
 
       it '不正なパラメータが渡された場合にエラーが発生すること' do
-        expect { subject.order(invalid_params[:order]) }.to raise_error(Comable::InvalidOrder)
+        expect { subject.order(invalid_params[:order]) }.to raise_error(ActiveRecord::UnknownAttributeError)
       end
     end
   end
