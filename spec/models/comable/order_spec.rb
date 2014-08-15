@@ -7,10 +7,18 @@ describe Comable::Order do
   describe 'attributes' do
     subject { order }
 
-    context '#save' do
-      before { subject.save }
-      its(:ordered_at) { should be }
-      its(:code) { should match(/^C\d{11}$/) }
+    describe '#save' do
+      context 'complete order' do
+        before { order.complete }
+        its(:completed_at) { should be }
+        its(:code) { should match(/^C\d{11}$/) }
+      end
+
+      context 'incomplete order' do
+        before { subject.save }
+        its(:completed_at) { should be_nil }
+        its(:code) { should be_nil }
+      end
     end
   end
 end

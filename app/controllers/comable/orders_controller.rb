@@ -28,14 +28,12 @@ module Comable
     end
 
     def confirm
-      @order = current_customer.preorder(build_order_nested_attributes)
+      @order.precomplete
     end
 
     def create
-      @order = current_customer.order(build_order_nested_attributes)
-      if @order.valid?
+      if @order.complete
         flash[:notice] = I18n.t('comable.orders.success')
-        reset_session
       else
         flash[:alert] = I18n.t('comable.orders.failure')
         redirect_to comable.confirm_order_path
@@ -44,10 +42,6 @@ module Comable
 
     private
 
-    def reset_session
-      session.delete('comable.order')
-    end
-
     def verify
       return if current_customer.cart.any?
       flash[:alert] = I18n.t('comable.carts.empty')
@@ -55,23 +49,13 @@ module Comable
     end
 
     def load_order
-      order_attributes = JSON.parse(session['comable.order'] || '{}')
-      order_attributes.update(order_params) if order_params
-      @order = Comable::Order.new(order_attributes)
+      @order = current_customer.incomplete_order
+      @order.attributes = order_params if order_params
+      @order
     end
 
     def save_order
-      session['comable.order'] = build_order_nested_attributes.to_json
-    end
-
-    def build_order_nested_attributes
-      @order.attributes.merge(
-        order_deliveries_attributes: build_order_delivery_nested_attributes
-      )
-    end
-
-    def build_order_delivery_nested_attributes
-      @order.order_deliveries.map(&:attributes)
+      @order.save
     end
 
     def order_params

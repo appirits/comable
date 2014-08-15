@@ -12,9 +12,9 @@ Comable::Engine.routes.draw do
   resource :order do
     collection do
       get :orderer
-      post :orderer
+      patch :orderer
       get :delivery
-      post :delivery
+      patch :delivery
       get :confirm
     end
   end

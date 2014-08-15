@@ -47,10 +47,7 @@ module Comable
     end
 
     def cart_items
-      Comable::CartItem.where(
-        Comable::Customer.table_name.singularize.foreign_key => id,
-        :guest_token => current_guest_token
-      )
+      init_cart
     end
 
     def cart
@@ -59,17 +56,45 @@ module Comable
 
     class Cart < Array
       def price
-        cart_item_ids = map(&:id)
-        Comable::CartItem.includes(stock: :product).where(id: cart_item_ids).to_a.sum(&:price)
+        sum(&:subtotal_price)
       end
     end
 
+    def init_cart
+      incomplete_order.order_deliveries.first.order_details
+    end
+
+    def load_cart
+      Comable::Order
+        .incomplete
+        .includes(order_deliveries: :order_details)
+        .where(
+          Comable::Customer.table_name.singularize.foreign_key => id,
+          :guest_token => current_guest_token
+        )
+        .limit(1)
+    end
+
+    def incomplete_order
+      @incomplete_order ||= init_incomplete_order
+    end
+
+    def init_incomplete_order
+      orders = load_cart
+      return orders.first if orders.exists?
+      orders.create!(family_name: family_name, first_name: first_name, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
+    end
+
     def preorder(order_params = {})
-      Comable::CashRegister.new(customer: self, order_attributes: order_params).build_order
+      incomplete_order.attributes = order_params
+      incomplete_order.precomplete
     end
 
     def order(order_params = {})
-      Comable::CashRegister.new(customer: self, order_attributes: order_params).create_order
+      incomplete_order.attributes = order_params
+      result = incomplete_order.complete
+      @incomplete_order = nil
+      result
     end
 
     private
@@ -102,7 +127,7 @@ module Comable
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
         cart_item = cart_items.create(quantity: quantity)
-        @cookies.permanent.signed[:guest_token] = cart_item.guest_token if not_logged_in?
+        @cookies.permanent.signed[:guest_token] = cart_item.guest_token if not_logged_in? && !current_guest_token
       end
     end
 
