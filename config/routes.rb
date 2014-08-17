@@ -15,6 +15,8 @@ Comable::Engine.routes.draw do
       put :orderer
       get :delivery
       put :delivery
+      get :payment
+      put :payment
       get :confirm
     end
   end

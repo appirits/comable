@@ -1,5 +1,7 @@
 module Comable
   class OrdersController < ApplicationController
+    include Decoratable
+
     before_filter :load_order
     before_filter :verify
     before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
@@ -19,6 +21,13 @@ module Comable
     end
 
     def delivery
+      case request.method_symbol
+      when :post
+        redirect_to comable.payment_order_path
+      end
+    end
+
+    def payment
       case request.method_symbol
       when :post
         redirect_to comable.confirm_order_path
@@ -61,6 +70,8 @@ module Comable
         order_params_for_orderer
       when :delivery
         order_params_for_delivery
+      when :payment
+        order_params_for_payment
       end
     end
 
@@ -78,6 +89,12 @@ module Comable
           :family_name,
           :first_name
         ]
+      )
+    end
+
+    def order_params_for_payment
+      params.require(:order).permit(
+        Comable::Payment.table_name.singularize.foreign_key.to_sym
       )
     end
 

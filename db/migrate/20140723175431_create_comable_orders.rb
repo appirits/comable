@@ -2,6 +2,7 @@ class CreateComableOrders < Comable::Migration
   def change
     create_table :comable_orders do |t|
       t.integer :comable_customer_id
+      t.integer :comable_payment_id
       t.string :guest_token
       t.string :code
       t.string :family_name

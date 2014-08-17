@@ -1,0 +1,12 @@
+h1 決済方法
+
+.order.payment
+  = form_for @order, as: :order, url: comable.payment_order_path, method: :put do |f|
+    ul
+      - Comable::Payment.all.each.with_index do |payment, index|
+        li
+          - payment_foreign_key = Comable::Payment.table_name.singularize.foreign_key.to_sym
+          - checked_flag = @order.payment ? (@order.payment.id == payment.id) : index.zero?
+          = f.radio_button payment_foreign_key, payment.id, checked: checked_flag
+          = f.label payment_foreign_key, payment.name, value: payment.id
+    = f.submit
