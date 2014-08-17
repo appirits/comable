@@ -28,11 +28,11 @@ module Comable
     end
 
     def confirm
-      @order.precomplete
     end
 
     def create
-      if @order.complete
+      order = current_customer.order
+      if order.complete?
         flash[:notice] = I18n.t('comable.orders.success')
       else
         flash[:alert] = I18n.t('comable.orders.failure')
@@ -49,9 +49,7 @@ module Comable
     end
 
     def load_order
-      @order = current_customer.incomplete_order
-      @order.attributes = order_params if order_params
-      @order
+      @order = current_customer.preorder(order_params || {})
     end
 
     def save_order

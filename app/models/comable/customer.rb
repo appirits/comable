@@ -41,11 +41,18 @@ module Comable
     end
 
     def reset_cart
-      cart_items.destroy_all
+      return unless @incomplete_order
+      if @incomplete_order.complete?
+        @incomplete_order = nil
+      else
+        # TODO: テストケースの作成
+        @incomplete_order.destroy
+        @incomplete_order = nil
+      end
     end
 
     def cart_items
-      init_cart
+      incomplete_order.order_deliveries.first.order_details
     end
 
     def cart
@@ -58,29 +65,8 @@ module Comable
       end
     end
 
-    def init_cart
-      incomplete_order.order_deliveries.first.order_details
-    end
-
-    def load_cart
-      Comable::Order
-        .incomplete
-        .includes(order_deliveries: :order_details)
-        .where(
-          Comable::Customer.table_name.singularize.foreign_key => id,
-          :guest_token => current_guest_token
-        )
-        .limit(1)
-    end
-
     def incomplete_order
-      @incomplete_order ||= init_incomplete_order
-    end
-
-    def init_incomplete_order
-      orders = load_cart
-      return orders.first if orders.exists?
-      orders.create!(family_name: family_name, first_name: first_name, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
+      @incomplete_order ||= initialize_incomplete_order
     end
 
     def preorder(order_params = {})
@@ -90,9 +76,7 @@ module Comable
 
     def order(order_params = {})
       incomplete_order.attributes = order_params
-      result = incomplete_order.complete
-      @incomplete_order = nil
-      result
+      incomplete_order.complete.tap { |completed_flag| reset_cart if completed_flag }
     end
 
     private
@@ -145,6 +129,23 @@ module Comable
     def find_cart_items_by(stock)
       fail I18n.t('comable.carts.product_not_found') unless stock.is_a?(Comable::Stock)
       cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
+    end
+
+    def initialize_incomplete_order
+      orders = find_incomplete_orders
+      return orders.first if orders.any?
+      orders.create!(family_name: family_name, first_name: first_name, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
+    end
+
+    def find_incomplete_orders
+      Comable::Order
+        .incomplete
+        .includes(order_deliveries: :order_details)
+        .where(
+          Comable::Customer.table_name.singularize.foreign_key => id,
+          :guest_token => current_guest_token
+        )
+        .limit(1)
     end
   end
 end
