@@ -24,8 +24,6 @@ module Comable
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
 
-    class InvalidOrder < StandardError; end
-
     def precomplete
       valid_stock
       fail Comable::InvalidOrder, errors.full_messages.join("\n") if errors.any?

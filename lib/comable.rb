@@ -1,8 +1,7 @@
 require 'comable/engine'
 require 'comable/migration'
 require 'comable/decoratable'
-
-require 'comable/cash_register'
+require 'comable/errors'
 
 module Comable
 end
