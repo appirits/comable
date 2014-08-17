@@ -108,8 +108,7 @@ module Comable
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_item = cart_items.create(quantity: quantity)
-        @cookies.permanent.signed[:guest_token] = cart_item.guest_token if not_logged_in? && !current_guest_token
+        cart_items.create(quantity: quantity)
       end
     end
 
@@ -134,7 +133,9 @@ module Comable
     def initialize_incomplete_order
       orders = find_incomplete_orders
       return orders.first if orders.any?
-      orders.create!(family_name: family_name, first_name: first_name, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
+      order = orders.create(family_name: family_name, first_name: first_name, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
+      @cookies.permanent.signed[:guest_token] = order.guest_token if not_logged_in?
+      order
     end
 
     def find_incomplete_orders
