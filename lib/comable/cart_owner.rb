@@ -73,7 +73,7 @@ module Comable
 
     def find_cart_items_by(stock)
       fail I18n.t('comable.carts.product_not_found') unless stock.is_a?(Comable::Stock)
-      cart_items.where(stock: stock)
+      cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
     end
   end
 end

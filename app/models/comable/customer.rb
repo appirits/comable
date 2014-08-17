@@ -74,8 +74,8 @@ module Comable
         .incomplete
         .includes(order_deliveries: :order_details)
         .where(
-          customer: self,
-          guest_token: current_guest_token
+          Comable::Customer.table_name.singularize.foreign_key => self,
+          :guest_token => current_guest_token
         )
         .limit(1)
     end
