@@ -53,6 +53,12 @@ module Comable
       completed_at.nil?
     end
 
+    # 時価合計を取得
+    def current_total_price
+      order_deliveries.map(&:order_details).flatten.each(&:current_subtotal_price)
+    end
+
+    # 売価合計を取得
     def total_price
       order_deliveries.map(&:order_details).flatten.each(&:subtotal_price)
     end

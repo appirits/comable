@@ -56,7 +56,7 @@ module Comable
 
     class Cart < Array
       def price
-        sum(&:subtotal_price)
+        sum(&:current_subtotal_price)
       end
     end
 

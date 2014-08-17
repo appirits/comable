@@ -31,7 +31,7 @@ describe Comable::Customer do
       subject.add_cart_item(stock)
       subject.add_cart_item(stock)
       subject.remove_cart_item(stock)
-      expect(subject.cart_items.first.price).to eq(stock.price)
+      expect(subject.cart_items.first.current_subtotal_price).to eq(stock.price)
     end
 
     it '商品を削除した際の合計金額が正しいこと' do

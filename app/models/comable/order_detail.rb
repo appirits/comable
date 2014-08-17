@@ -9,6 +9,17 @@ module Comable
     delegate :guest_token, to: :order_delivery
     delegate :complete?, to: :order_delivery
 
+    # 時価を取得
+    def current_price
+      stock.price
+    end
+
+    # 時価小計を取得
+    def current_subtotal_price
+      current_price * quantity
+    end
+
+    # 売価小計を取得
     def subtotal_price
       price * quantity
     end
@@ -16,14 +27,5 @@ module Comable
     def decrement_stock
       stock.decrement!(quantity: quantity)
     end
-
-    # TODO: stock.price or price な専用メソッドを用意する
-    module PriceMethodOverrider
-      def price
-        return super if complete?
-        stock.price
-      end
-    end
-    prepend PriceMethodOverrider
   end
 end
