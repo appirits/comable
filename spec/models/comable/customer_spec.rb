@@ -31,7 +31,7 @@ describe Comable::Customer do
       subject.add_cart_item(stock)
       subject.add_cart_item(stock)
       subject.remove_cart_item(stock)
-      expect(subject.cart_items.first.price).to eq(stock.price)
+      expect(subject.cart_items.first.current_subtotal_price).to eq(stock.price)
     end
 
     it '商品を削除した際の合計金額が正しいこと' do
@@ -77,7 +77,17 @@ describe Comable::Customer do
 
     it '受注配送レコードが正しく存在すること' do
       subject.order
+      expect(subject.orders.last.family_name).to eq(subject.family_name)
+    end
+
+    it '受注配送レコードが正しく存在すること' do
+      subject.order
       expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
+    end
+
+    it '受注詳細レコードが１つ存在すること' do
+      subject.order
+      expect(subject.orders.last.order_deliveries.last.order_details.count).to eq(1)
     end
 
     it '受注詳細レコードが１つ存在すること' do
@@ -113,7 +123,9 @@ describe Comable::Customer do
     end
 
     # TODO: 複数配送先の完全な実装 or 機能削除
-    context '複数配送' do
+    pending '複数配送' do
+      pending '複数配送先は削除予定'
+
       let(:params) do
         {
           order: {

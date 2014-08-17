@@ -39,19 +39,20 @@ feature 'カート処理' do
           fill_in :order_family_name, with: 'foo'
           fill_in :order_first_name, with: 'bar'
         end
-        click_button I18n.t('helpers.submit.create')
+        # TODO: ボタン名につかう翻訳パスを変更または作成
+        click_button I18n.t('helpers.submit.update')
         expect(page).to have_content '配送先情報入力'
       end
 
       When '注文情報確認画面に遷移して' do
         visit comable.delivery_order_path
-        click_button I18n.t('helpers.submit.create')
+        click_button I18n.t('helpers.submit.update')
         expect(page).to have_content '注文情報確認'
       end
 
       Then '注文できること' do
         visit comable.confirm_order_path
-        click_button I18n.t('helpers.submit.create')
+        click_button I18n.t('helpers.submit.update')
         expect(page).to have_content '注文完了'
       end
     end

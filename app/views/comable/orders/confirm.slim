@@ -16,10 +16,10 @@ h1 注文情報確認
         - order_delivery.order_details.each do |order_detail|
           .name
             = order_detail.product.name
-          .quantity
+          .price
             = order_detail.price
           .quantity
             = order_detail.quantity
 
-  = form_for @order, as: :order, url: comable.order_path do |f|
+  = form_for @order, as: :order, url: comable.order_path, method: :post do |f|
     = f.submit
