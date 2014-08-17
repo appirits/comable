@@ -56,7 +56,7 @@ describe Comable::Customer do
 
     subject { FactoryGirl.create(:customer) }
 
-    before { subject.incomplete_order.payment = payment }
+    before { subject.incomplete_order.update_attributes(payment: payment) }
     before { subject.add_cart_item(stock, quantity: order_quantity) }
 
     it '商品を購入できること' do
