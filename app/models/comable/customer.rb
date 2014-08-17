@@ -31,9 +31,7 @@ module Comable
     end
 
     def remove_cart_item(obj, quantity: -1)
-      process_cart_item(obj) do |stock|
-        add_stock_to_cart(stock, quantity)
-      end
+      add_cart_item(obj, quantity: quantity)
     end
 
     def reset_cart_item(obj, quantity: 0)
