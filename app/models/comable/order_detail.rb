@@ -9,6 +9,11 @@ module Comable
     delegate :guest_token, to: :order_delivery
     delegate :complete?, to: :order_delivery
 
+    def before_complete
+      save_price
+      decrement_stock
+    end
+
     # 時価を取得
     def current_price
       stock.price
@@ -26,6 +31,10 @@ module Comable
 
     def decrement_stock
       stock.decrement!(quantity: quantity)
+    end
+
+    def save_price
+      self.price = stock.price
     end
   end
 end

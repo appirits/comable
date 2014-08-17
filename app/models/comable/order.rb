@@ -33,14 +33,8 @@ module Comable
     def complete
       # TODO: トランザクションの追加
       precomplete
-
-      assign_default_attributes_to_order
-
-      self.completed_at = Time.now
-      generate_code
-      order_deliveries.map(&:order_details).flatten.each(&:decrement_stock)
+      before_complete
       save!
-
       self
     end
 
@@ -64,25 +58,10 @@ module Comable
 
     private
 
-    def assign_default_attributes_to_order
-      order_deliveries.build if order_deliveries.empty?
-      assign_default_attributes_to_order_deliveries
-    end
-
-    def assign_default_attributes_to_order_deliveries
-      order_deliveries.each do |order_delivery|
-        assign_default_attributes_to_order_delivery(order_delivery)
-      end
-    end
-
-    def assign_default_attributes_to_order_delivery(order_delivery)
-      assign_default_attributes_to_order_details(order_delivery)
-    end
-
-    def assign_default_attributes_to_order_details(order_delivery)
-      order_delivery.order_details.each do |order_detail|
-        order_detail.price = order_detail.stock.price
-      end
+    def before_complete
+      self.completed_at = Time.now
+      generate_code
+      order_deliveries.each(&:before_complete)
     end
 
     def valid_stock
