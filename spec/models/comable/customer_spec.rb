@@ -50,10 +50,13 @@ describe Comable::Customer do
   end
 
   context '注文処理' do
+    let(:payment) { FactoryGirl.create(:payment) }
     let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
     let(:order_quantity) { 10 }
 
     subject { FactoryGirl.create(:customer) }
+
+    before { subject.incomplete_order.update_attributes(payment: payment) }
     before { subject.add_cart_item(stock, quantity: order_quantity) }
 
     it '商品を購入できること' do

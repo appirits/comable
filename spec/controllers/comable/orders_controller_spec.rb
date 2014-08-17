@@ -1,10 +1,11 @@
 describe Comable::OrdersController do
   render_views
 
+  let(:payment) { FactoryGirl.create(:payment) }
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
   let(:add_to_cart) { customer.add_cart_item(product) }
-  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar' } } }
+  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_payment_id: payment.id } } }
 
   context 'カートが空の場合' do
     before { request }
@@ -19,6 +20,7 @@ describe Comable::OrdersController do
     end
   end
 
+  # TODO: ゲストの場合と会員の場合を共通化
   context 'ゲストの場合' do
     before { add_to_cart }
     before { request }
@@ -39,6 +41,7 @@ describe Comable::OrdersController do
       its(:response) { should be_success }
     end
 
+    # TODO: post => put
     describe "POST 'orderer'" do
       let(:request) { post :orderer, order_params }
       its(:response) { should redirect_to(:delivery_order) }
@@ -51,6 +54,16 @@ describe Comable::OrdersController do
 
     describe "POST 'delivery'" do
       let(:request) { post :delivery, order_params }
+      its(:response) { should redirect_to(:payment_order) }
+    end
+
+    describe "GET 'payment'" do
+      let(:request) { get :payment }
+      its(:response) { should be_success }
+    end
+
+    describe "POST 'payment'" do
+      let(:request) { post :payment, order_params }
       its(:response) { should redirect_to(:confirm_order) }
     end
 
@@ -61,9 +74,10 @@ describe Comable::OrdersController do
 
     describe "POST 'create'" do
       context '正常な手順のリクエストの場合' do
-        let(:request) { request_orderer && request_delivery && request_create }
+        let(:request) { request_orderer && request_delivery && request_payment && request_create }
         let(:request_orderer) { post :orderer, order_params }
         let(:request_delivery) { post :delivery, order_params }
+        let(:request_payment) { post :payment, order_params }
         let(:request_create) { post :create, order_params }
         let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
 
@@ -135,6 +149,16 @@ describe Comable::OrdersController do
 
     describe "POST 'delivery'" do
       let(:request) { post :delivery, order_params }
+      its(:response) { should redirect_to(:payment_order) }
+    end
+
+    describe "GET 'payment'" do
+      let(:request) { get :payment }
+      its(:response) { should be_success }
+    end
+
+    describe "POST 'payment'" do
+      let(:request) { post :payment, order_params }
       its(:response) { should redirect_to(:confirm_order) }
     end
 
@@ -144,7 +168,9 @@ describe Comable::OrdersController do
     end
 
     describe "POST 'create'" do
-      let(:request) { post :create, order_params }
+      let(:request) { payment_request && create_request }
+      let(:payment_request) { post :payment, order_params }
+      let(:create_request) { post :create, order_params }
       its(:response) { should be_success }
 
       it 'flashにメッセージが格納されていること' do

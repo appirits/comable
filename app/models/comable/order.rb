@@ -3,6 +3,7 @@ module Comable
     include Decoratable
 
     belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
+    belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
     has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key
 
     accepts_nested_attributes_for :order_deliveries
@@ -11,6 +12,7 @@ module Comable
       complete_order.validates :code, presence: true
       complete_order.validates :first_name, presence: true
       complete_order.validates :family_name, presence: true
+      complete_order.validates Comable::Payment.table_name.singularize.foreign_key, presence: true
     end
 
     with_options if: :incomplete? do |incomplete_order|
