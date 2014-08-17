@@ -2,6 +2,10 @@ module Comable
   module PaymentMethod
     class Base
       class << self
+        def name_symbol
+          name.demodulize.underscore.to_sym
+        end
+
         def display_name
           please_implement_method
         end

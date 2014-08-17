@@ -1,7 +1,5 @@
 module Comable
   class OrdersController < ApplicationController
-    include Decoratable
-
     before_filter :load_order
     before_filter :verify
     before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
@@ -9,6 +7,8 @@ module Comable
 
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
     rescue_from Comable::InvalidOrder, with: :order_invalid
+
+    include Decoratable
 
     def new
     end
