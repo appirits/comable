@@ -127,7 +127,7 @@ module Comable
 
     def find_cart_items_by(stock)
       fail I18n.t('comable.carts.product_not_found') unless stock.is_a?(Comable::Stock)
-      cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
+      cart_items.where(stock: stock)
     end
 
     def initialize_incomplete_order
@@ -143,8 +143,8 @@ module Comable
         .incomplete
         .includes(order_deliveries: :order_details)
         .where(
-          Comable::Customer.table_name.singularize.foreign_key => id,
-          :guest_token => current_guest_token
+          customer: self,
+          guest_token: current_guest_token
         )
         .limit(1)
     end

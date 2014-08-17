@@ -13,8 +13,9 @@ module Comable
       complete_order.validates :family_name, presence: true
     end
 
+    # TODO: テストの追加
     with_options if: :incomplete? do |incomplete_order|
-      incomplete_order.validates Comable::Customer.table_name.singularize.foreign_key, uniqueness: { scope: [Comable::Customer.table_name.singularize.foreign_key, :completed_at] }, if: :customer
+      incomplete_order.validates :customer, uniqueness: { scope: [:customer, :completed_at] }, if: :customer
       incomplete_order.validates :guest_token, uniqueness: { scope: [:guest_token, :completed_at] }, if: :guest_token
     end
 
@@ -102,7 +103,7 @@ module Comable
     end
 
     def generate_guest_token
-      return if send(Comable::Customer.table_name.singularize.foreign_key)
+      return if customer
       self.guest_token ||= loop do
         random_token = SecureRandom.urlsafe_base64(nil, false)
         break random_token unless self.class.exists?(guest_token: random_token)
