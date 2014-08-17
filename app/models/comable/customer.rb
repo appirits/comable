@@ -79,5 +79,19 @@ module Comable
         )
         .limit(1)
     end
+
+    # Rails 3.x だと has_many 先のインスタンスが追加されても
+    # 親インスタンスが感知できないので、いちいちリロードするように変更
+    if Rails::VERSION::MAJOR == 3
+      def add_stock_to_cart_with_reload(*args)
+        add_stock_to_cart_without_reload(*args).tap { @incomplete_order = nil }
+      end
+      alias_method_chain :add_stock_to_cart, :reload
+
+      def reset_stock_from_cart_with_reload(*args)
+        reset_stock_from_cart_without_reload(*args).tap { @incomplete_order = nil }
+      end
+      alias_method_chain :reset_stock_from_cart, :reload
+    end
   end
 end
