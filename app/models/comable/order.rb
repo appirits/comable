@@ -33,6 +33,8 @@ module Comable
     def complete
       # TODO: トランザクションの追加
       precomplete
+      # TODO: コールバック化
+      # define_model_callbacks :complete
       before_complete
       save!
       self
