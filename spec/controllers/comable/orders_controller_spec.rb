@@ -4,7 +4,7 @@ describe Comable::OrdersController do
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
   let(:add_to_cart) { customer.add_cart_item(product) }
-  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', order_deliveries_attributes: [family_name: 'hoge', first_name: 'piyo'] } } }
+  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar' } } }
 
   context 'カートが空の場合' do
     before { request }
@@ -65,10 +65,24 @@ describe Comable::OrdersController do
         let(:request_orderer) { post :orderer, order_params }
         let(:request_delivery) { post :delivery, order_params }
         let(:request_create) { post :create, order_params }
+        let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
+
         its(:response) { should be_success }
 
         it 'flashにメッセージが格納されていること' do
           expect(flash[:notice]).to eq I18n.t('comable.orders.success')
+        end
+
+        it '注文が１つ存在すること' do
+          expect(complete_orders.count).to eq(1)
+        end
+
+        it '注文に紐づく配送情報が１つ存在すること' do
+          expect(complete_orders.first.order_deliveries.count).to eq(1)
+        end
+
+        it '注文に紐づく明細情報が１つ存在すること' do
+          expect(complete_orders.first.order_deliveries.first.order_details.count).to eq(1)
         end
       end
 

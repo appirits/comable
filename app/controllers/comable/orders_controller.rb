@@ -22,8 +22,6 @@ module Comable
       case request.method_symbol
       when :post
         redirect_to comable.confirm_order_path
-      when :get
-        @order.order_deliveries.build if @order.order_deliveries.empty?
       end
     end
 
@@ -76,6 +74,7 @@ module Comable
     def order_params_for_delivery
       params.require(:order).permit(
         order_deliveries_attributes: [
+          :id,
           :family_name,
           :first_name
         ]

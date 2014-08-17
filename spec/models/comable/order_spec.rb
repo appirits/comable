@@ -9,7 +9,7 @@ describe Comable::Order do
 
     describe '#save' do
       context 'complete order' do
-        before { order.complete }
+        before { subject.complete }
         its(:completed_at) { should be }
         its(:code) { should match(/^C\d{11}$/) }
       end
