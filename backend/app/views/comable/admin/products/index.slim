@@ -1,2 +1,6 @@
 h1 Admin::Products#index
-p Find me in app/views/comable/admin/products/index.html.erb
+
+- if @products.any?
+  ul
+    - @products.each do |product|
+      li = product.name
