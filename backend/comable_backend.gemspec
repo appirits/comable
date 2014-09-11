@@ -1,20 +1,20 @@
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 # Maintain your gem's version:
-require 'comable_backend/version'
+require 'comable/backend/version'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = 'comable_backend'
-  s.version     = ComableBackend::VERSION
-  s.authors     = ['TODO: Your name']
-  s.email       = ['TODO: Your email']
-  s.homepage    = 'TODO'
-  s.summary     = 'TODO: Summary of ComableBackend.'
-  s.description = 'TODO: Description of ComableBackend.'
+  s.version     = Comable::Backend::VERSION
+  s.authors     = ['YOSHIDA Hiroki']
+  s.email       = ['hyoshida@appirits.com']
+  s.homepage    = 'https://github.com/hyoshida/comable#comable'
+  s.summary     = 'Provide backend functions for Comable.'
+  s.description = 'Provide backend functions for Comable.'
   s.license     = 'MIT'
 
-  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
+  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile']
 
   s.add_dependency 'rails', '~> 4.1.4'
 
