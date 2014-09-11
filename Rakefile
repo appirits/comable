@@ -27,6 +27,11 @@ end
 
 namespace :app do
   namespace :spec do
+    desc 'Run the code examples'
+    RSpec::Core::RakeTask.new(:all) do |t|
+      t.pattern << ',backend/spec/**{,/*/**}/*_spec.rb'
+    end
+
     desc 'Run the code examples in backend/spec'
     RSpec::Core::RakeTask.new(:backend) do |t|
       t.pattern = '../backend/spec/**{,/*/**}/*_spec.rb'
@@ -34,4 +39,4 @@ namespace :app do
   end
 end
 
-task default: ['app:spec', 'app:spec:backend', 'rubocop']
+task default: ['app:spec:all', 'rubocop']
