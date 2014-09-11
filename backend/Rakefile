@@ -13,4 +13,16 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
+APP_RAKEFILE = File.expand_path('../spec/dummy/Rakefile', __FILE__)
+load 'rails/tasks/engine.rake'
+
 Bundler::GemHelper.install_tasks
+
+# from https://github.com/rspec/rspec-rails/issues/936
+task 'test:prepare'
+
+task :rubocop do
+  exec 'rubocop'
+end
+
+task default: ['app:spec', 'rubocop']
