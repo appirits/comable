@@ -25,4 +25,13 @@ task :rubocop do
   exec 'rubocop'
 end
 
-task default: ['app:spec', 'rubocop']
+namespace :app do
+  namespace :spec do
+    desc 'Run the code examples in backend/spec'
+    RSpec::Core::RakeTask.new(:backend) do |t|
+      t.pattern = '../backend/spec/**{,/*/**}/*_spec.rb'
+    end
+  end
+end
+
+task default: ['app:spec', 'app:spec:backend', 'rubocop']
