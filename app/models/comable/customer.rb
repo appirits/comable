@@ -26,14 +26,12 @@ module Comable
     end
 
     def reset_cart
-      return unless @incomplete_order
-      if @incomplete_order.complete?
-        @incomplete_order = nil
-      else
-        # TODO: テストケースの作成
-        @incomplete_order.destroy
-        @incomplete_order = nil
-      end
+      return unless incomplete_order
+
+      # TODO: テストケースの作成
+      incomplete_order.destroy if incomplete_order.incomplete?
+
+      @incomplete_order = nil
     end
 
     def cart_items
