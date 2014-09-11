@@ -67,7 +67,7 @@ module Comable
         cart_item.save
       else
         return false if cart_items.empty?
-        cart_item.destroy
+        cart_items.first.destroy
       end
     end
 

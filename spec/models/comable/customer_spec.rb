@@ -40,6 +40,12 @@ describe Comable::Customer do
       expect(subject.cart.price).to eq(stocks.sum(&:price) - stock.price)
     end
 
+    it '商品を初期化できること' do
+      subject.add_cart_item(stock)
+      subject.reset_cart_item(stock)
+      expect(subject.cart.count).to eq(0)
+    end
+
     context '在庫がない場合' do
       let(:stocks) { FactoryGirl.create_list(:stock, 5, :many, :soldout, :with_product) }
 
