@@ -5,5 +5,7 @@ require 'comable/errors'
 require 'comable/cart_owner'
 require 'comable/payment_method'
 
+require 'comable_backend'
+
 module Comable
 end
