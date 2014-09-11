@@ -1,4 +1,4 @@
-require "comable_backend/engine"
+require 'comable_backend/engine'
 
 module ComableBackend
 end

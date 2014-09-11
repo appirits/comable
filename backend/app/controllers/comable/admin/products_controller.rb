@@ -1,9 +1,11 @@
-require_dependency "comable/application_controller"
+require_dependency 'comable/application_controller'
 
 module Comable
-  class Admin::ProductsController < ApplicationController
-    def index
-      @products = Comable::Product.all
+  module Admin
+    class ProductsController < ApplicationController
+      def index
+        @products = Comable::Product.all
+      end
     end
   end
 end
