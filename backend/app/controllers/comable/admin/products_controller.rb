@@ -1,4 +1,4 @@
-require_dependency 'comable/application_controller'
+require_dependency 'comable/admin/application_controller'
 
 module Comable
   module Admin

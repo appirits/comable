@@ -18,4 +18,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 3.2.0'
   s.add_dependency 'comable'
+
+  s.add_dependency 'slim-rails'
 end
