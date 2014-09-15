@@ -1,9 +1,52 @@
 doctype html
 html
   head
-    title ComableBackend
+    title
+      | Comable
     = stylesheet_link_tag 'comable/admin/application', media: 'all'
     = javascript_include_tag 'comable/admin/application'
     = csrf_meta_tags
   body
-    = yield
+    #wrapper
+      .sidebar
+        .logo
+          = link_to 'Comable', admin_root_path
+
+        .vnavigation
+          ul
+            li.active
+              = link_to '#' do
+                i.fa.fa-shopping-cart
+                | 注文
+            li
+              = link_to '#' do
+                i.fa.fa-cubes
+                | 商品
+              ul
+                li
+                  = link_to '一覧', '#'
+                li
+                  = link_to 'カテゴリ', '#'
+            li
+              = link_to '#' do
+                i.fa.fa-bar-chart
+                | 解析
+            li
+              = link_to '#' do
+                i.fa.fa-bullhorn
+                | プロモーション
+              ul
+                li
+                  = link_to '特集', '#'
+                li
+                  = link_to 'フリースペース', '#'
+            li
+              = link_to '#' do
+                i.fa.fa-cog
+                | 一般設定
+            li
+              = link_to '#' do
+                i.fa.fa-user
+                | ユーザー
+      .container-fluid
+        = yield

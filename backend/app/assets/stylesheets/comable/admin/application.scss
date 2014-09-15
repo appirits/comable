@@ -1,0 +1,212 @@
+//= require_self
+//= require normalize-rails
+//= require_tree .
+
+@import 'compass';
+@import 'compass/css3';
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@import 'font-awesome';
+
+// ---
+// mixins
+// ---
+
+// from https://github.com/FortAwesome/Font-Awesome/issues/213
+@mixin glyphicon($name, $float: none) {
+  &:before {
+    float: $float;
+  @extend .glyphicon;
+  }
+  @extend .glyphicon-#{$name};
+}
+
+@mixin fa($name, $float: none) {
+  &:before {
+    float: $float;
+    @extend .fa;
+  }
+  @extend .fa-#{$name};
+}
+
+// ---
+// common
+// ---
+
+body {
+  font-size: 12px;
+  font-family: Verdana, '游ゴシック', YuGothic, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+}
+
+#wrapper {
+  display: table;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+
+  body.animated & {
+    opacity: 0;
+    margin-left: -20px;
+    transition: margin-left 600ms ease, opacity 600ms;
+  }
+}
+
+.container {
+  &.right {
+    display: table-cell;
+    vertical-align: top;
+
+    margin-left: 216px;
+    position: relative;
+  }
+
+padding: 0;
+overflow: hidden;
+
+margin-right: auto;
+}
+
+.sidebar {
+  display: table-cell;
+  position: relative;
+  vertical-align: top;
+  padding-bottom: 200px;
+
+  & {
+    background: #272930;
+    width: 280px;
+    z-index: 2;
+  }
+  &.small {
+  }
+}
+
+.logo {
+  padding: 0 20px;
+  height: 64px;
+  line-height: 64px;
+  background-color: #fc796b;
+  background-color: #e55466;
+  background-color: #7761a7;
+
+  a {
+    font-size: x-large;
+    text-decoration: none;
+
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      color: #fff;
+    }
+  }
+}
+
+.vnavigation {
+  background-color: #272930;
+
+  a {
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      color: #aaa;
+      text-decoration: none;
+
+    }
+
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  & > ul {
+    & > li > a {
+      border-top: 1px solid #2f3137;
+      display: block;
+      padding: 12px 25px;
+      font-size: 13px;
+      font-weight: 400;
+      white-space: nowrap;
+      @include transition(color 250ms ease);
+
+      border-left: 2px solid transparent;
+    }
+
+    &> li.active > a {
+      color: #fff;
+      border-left: 2px solid #7761a7;
+      background-color: rgba(255, 255, 255, 0.05);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        @include transition(background-color 250ms ease);
+      }
+
+      i {
+        text-align: center;
+        width: 20px;
+        font-size: 14px;
+        margin-right: 7px;
+      }
+    }
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  & > ul > li > a {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      @include transition(background-color 250ms ease);
+    }
+
+    i {
+      text-align: center;
+      width: 20px;
+      font-size: 14px;
+      margin-right: 7px;
+    }
+  }
+
+  li.parent {
+    & > a {
+      //@include glyphicon(chevron-right, $float: right);
+      @include fa(angle-right, $float: right);
+    }
+
+    & > ul {
+      padding: 14px 0;
+      background-color: #1d1f26;
+      display: none;
+
+      a {
+        display: block;
+        padding: 7px 42px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.2);
+          @include transition(background-color 250ms ease);
+        }
+        border-left: 2px solid transparent;
+      }
+
+      .active > a {
+        color: #fff;
+        border-left: 2px solid #7761a7;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+    }
+  }
+}
