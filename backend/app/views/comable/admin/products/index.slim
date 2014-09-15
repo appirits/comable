@@ -1,0 +1,6 @@
+h1 Admin::Products#index
+
+- if @products.any?
+  ul
+    - @products.each do |product|
+      li = product.name
