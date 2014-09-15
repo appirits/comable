@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+eval File.read(File.expand_path('../../Gemfile.common', __FILE__))
 
 git 'git://github.com/rails/rails.git' do
   gem 'railties'
@@ -6,7 +6,5 @@ git 'git://github.com/rails/rails.git' do
 end
 
 gem 'arel', github: 'rails/arel'
-
-gem 'rspec-rails'
 
 gemspec path: '../'

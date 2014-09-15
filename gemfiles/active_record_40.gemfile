@@ -1,7 +1,6 @@
-source 'https://rubygems.org'
+eval File.read(File.expand_path('../../Gemfile.common', __FILE__))
 
 gem 'railties', '~> 4.0.8'
 gem 'activerecord', '~> 4.0.8', require: 'active_record'
-gem 'rspec-rails', '>= 3.1.0'
 
 gemspec path: '../'
