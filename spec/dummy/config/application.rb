@@ -6,8 +6,15 @@ require 'action_controller/railtie'
 require 'action_mailer/railtie'
 require 'sprockets/railtie'
 
+begin
+  $LOAD_PATH.push File.expand_path('../../lib', File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__)
+  require 'comable'
+rescue LoadError
+  STDERR.puts '[Comable][WARNING] Hack for test each gems.'
+end
+
 Bundler.require(*Rails.groups)
-require 'comable'
+
 require 'utusemi'
 
 module Dummy
