@@ -29,13 +29,7 @@ namespace :app do
   namespace :spec do
     desc 'Run the code examples'
     RSpec::Core::RakeTask.new(:all) do |t|
-      t.pattern << ',core/spec/**{,/*/**}/*_spec.rb'
       t.pattern << ',backend/spec/**{,/*/**}/*_spec.rb'
-    end
-
-    desc 'Run the code examples in core/spec'
-    RSpec::Core::RakeTask.new(:core) do |t|
-      t.pattern = '../core/spec/**{,/*/**}/*_spec.rb'
     end
 
     desc 'Run the code examples in backend/spec'
