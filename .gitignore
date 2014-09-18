@@ -12,3 +12,6 @@ gemfiles/*.lock
 Gemfile.lock
 .yardoc/
 doc/
+vendor/
+tags
+.ruby-version
