@@ -27,6 +27,14 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
   bundle exec rake comable:install:migrations
   ```
 
+4. Add routes in the `config/routes.rb`
+
+  ```bash
+  Rails.application.routes.draw do
+    mount Comable::Core::Engine => '/comable'
+  end
+  ```
+
 ## Requirements
 
 * Ruby on Rails 3.2, 4.1
