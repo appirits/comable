@@ -2,7 +2,7 @@ class CreateStocks < ActiveRecord::Migration
   def change
     create_table :stocks do |t|
       t.integer :dummy_product_id
-      t.integer :units, nil: false
+      t.integer :quantity, nil: false
 
       t.integer :product_id_num
       t.string :code, null: false

@@ -1,4 +1,4 @@
-class CreateComableStocks < Comable::Migration
+class CreateComableStocks < ActiveRecord::Migration
   def change
     create_table :comable_stocks do |t|
       t.integer :comable_product_id

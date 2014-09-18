@@ -1,4 +1,4 @@
-class CreateComableOrderDetails < Comable::Migration
+class CreateComableOrderDetails < ActiveRecord::Migration
   def change
     create_table :comable_order_details do |t|
       t.integer :comable_order_delivery_id, null: false
