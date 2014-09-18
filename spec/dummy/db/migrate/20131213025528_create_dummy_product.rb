@@ -1,7 +1,7 @@
 class CreateDummyProduct < ActiveRecord::Migration
   def change
     create_table :dummy_products do |t|
-      t.string :title, nil: false
+      t.string :name, nil: false
       t.string :code, null: false
       t.integer :price, null: false
       t.text :caption

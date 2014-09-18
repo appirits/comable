@@ -11,6 +11,5 @@ gem 'rubocop', require: false
 gem 'bullet', require: false
 gem 'pry-rails', require: false
 gem 'byebug', require: false
-gem 'utusemi', '>= 0.0.6', require: false
 gem 'yard', require: false
 gem 'inch', require: false
