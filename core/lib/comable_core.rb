@@ -1,6 +1,5 @@
 require 'comable/core/engine'
 
-require 'comable/migration'
 require 'comable/decoratable'
 require 'comable/errors'
 require 'comable/cart_owner'

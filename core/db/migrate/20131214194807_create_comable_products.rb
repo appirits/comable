@@ -1,4 +1,4 @@
-class CreateComableProducts < Comable::Migration
+class CreateComableProducts < ActiveRecord::Migration
   def change
     create_table :comable_products do |t|
       t.string :name, null: false

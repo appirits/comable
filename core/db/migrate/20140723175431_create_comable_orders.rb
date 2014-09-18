@@ -1,4 +1,4 @@
-class CreateComableOrders < Comable::Migration
+class CreateComableOrders < ActiveRecord::Migration
   def change
     create_table :comable_orders do |t|
       t.integer :comable_customer_id

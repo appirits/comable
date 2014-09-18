@@ -1,4 +1,4 @@
-class CreateComableCustomers < Comable::Migration
+class CreateComableCustomers < ActiveRecord::Migration
   def change
     create_table :comable_customers do |t|
       t.string :family_name, null: false
