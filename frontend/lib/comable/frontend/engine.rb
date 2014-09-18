@@ -12,6 +12,9 @@ module Comable
         g.test_framework :rspec, fixture: true
         g.fixture_replacement :factory_girl, dir: 'spec/factories'
       end
+
+      # XXX: a code below to delegate comable:install:migrations to comable_core
+      config.paths['db/migrate'] = []
     end
   end
 end
