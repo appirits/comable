@@ -6,9 +6,6 @@ end
 
 require 'rdoc/task'
 
-$LOAD_PATH.unshift File.expand_path('..', __FILE__)
-require 'tasks/release'
-
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'Comable'
@@ -16,11 +13,12 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-if ENV['COMABLE_NESTED']
-  task default: ['app:spec', 'rubocop']
-else
-  APP_RAKEFILE = File.expand_path('../spec/dummy/Rakefile', __FILE__)
-  load 'rails/tasks/engine.rake'
+APP_RAKEFILE = File.expand_path('../spec/dummy/Rakefile', __FILE__)
+load 'rails/tasks/engine.rake'
+
+if File.exist?('comable.gemspec')
+  $LOAD_PATH.unshift File.expand_path('..', __FILE__)
+  require 'tasks/release'
 
   namespace :app do
     namespace :spec do
@@ -47,7 +45,7 @@ else
     namespace :migrate do
       task :all do
         FRAMEWORKS.each do |framework|
-          command = "cd #{framework} && test -d db && bundle exec rake db:migrate RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
+          command = "cd #{framework} && test -d db && bundle exec rake db:migrate RAILS_ENV=#{Rails.env}"
           puts command
           system command
         end
@@ -62,7 +60,7 @@ else
       namespace :reset do
         task :all do
           FRAMEWORKS.each do |framework|
-            command = "cd #{framework} && test -d db && bundle exec rake db:migrate:reset RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
+            command = "cd #{framework} && test -d db && bundle exec rake db:migrate:reset RAILS_ENV=#{Rails.env}"
             puts command
             system command
           end
@@ -73,6 +71,8 @@ else
 
   task default: ['app:spec:all', 'rubocop']
 end
+
+task default: ['app:spec', 'rubocop']
 
 Bundler::GemHelper.install_tasks
 
