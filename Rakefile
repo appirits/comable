@@ -26,24 +26,16 @@ else
     namespace :spec do
       desc 'Run the code examples'
       RSpec::Core::RakeTask.new(:all) do |t|
-        t.pattern << ',core/spec/**{,/*/**}/*_spec.rb'
-        t.pattern << ',frontend/spec/**{,/*/**}/*_spec.rb'
-        t.pattern << ',backend/spec/**{,/*/**}/*_spec.rb'
+        FRAMEWORKS.each do |framework|
+          t.pattern << ",#{framework}/spec/**{,/*/**}/*_spec.rb"
+        end
       end
 
-      desc 'Run the code examples in core/spec'
-      RSpec::Core::RakeTask.new(:core) do |t|
-        t.pattern = '../core/spec/**{,/*/**}/*_spec.rb'
-      end
-
-      desc 'Run the code examples in frontend/spec'
-      RSpec::Core::RakeTask.new(:backend) do |t|
-        t.pattern = '../frontend/spec/**{,/*/**}/*_spec.rb'
-      end
-
-      desc 'Run the code examples in backend/spec'
-      RSpec::Core::RakeTask.new(:backend) do |t|
-        t.pattern = '../backend/spec/**{,/*/**}/*_spec.rb'
+      FRAMEWORKS.each do |framework|
+        desc "Run the code examples in #{framework}/spec"
+        RSpec::Core::RakeTask.new(framework) do |t|
+          t.pattern = "../#{framework}/spec/**{,/*/**}/*_spec.rb"
+        end
       end
     end
   end
@@ -54,8 +46,8 @@ else
 
     namespace :migrate do
       task :all do
-        %w( core frontend backend ).each do |gem_name|
-          command = "cd #{gem_name} && test -d db && bundle exec rake db:migrate RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
+        FRAMEWORKS.each do |framework|
+          command = "cd #{framework} && test -d db && bundle exec rake db:migrate RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
           puts command
           system command
         end
@@ -69,8 +61,8 @@ else
 
       namespace :reset do
         task :all do
-          %w( core frontend backend ).each do |gem_name|
-            command = "cd #{gem_name} && test -d db && bundle exec rake db:migrate:reset RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
+          FRAMEWORKS.each do |framework|
+            command = "cd #{framework} && test -d db && bundle exec rake db:migrate:reset RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
             puts command
             system command
           end
