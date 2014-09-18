@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount Comable::Engine => '/comable'
+  mount Comable::Core::Engine => '/comable'
 end
