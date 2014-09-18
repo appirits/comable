@@ -20,6 +20,11 @@ Eval:
   Exclude:
     - '**/Gemfile'
 
+# C: Use the new Ruby 1.9 hash syntax.
+HashSyntax:
+  Exclude:
+    - 'tasks/*'
+
 # Ignore files.
 AllCops:
   Exclude:
