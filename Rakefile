@@ -24,12 +24,18 @@ else
       desc 'Run the code examples'
       RSpec::Core::RakeTask.new(:all) do |t|
         t.pattern << ',core/spec/**{,/*/**}/*_spec.rb'
+        t.pattern << ',frontend/spec/**{,/*/**}/*_spec.rb'
         t.pattern << ',backend/spec/**{,/*/**}/*_spec.rb'
       end
 
       desc 'Run the code examples in core/spec'
       RSpec::Core::RakeTask.new(:core) do |t|
         t.pattern = '../core/spec/**{,/*/**}/*_spec.rb'
+      end
+
+      desc 'Run the code examples in frontend/spec'
+      RSpec::Core::RakeTask.new(:backend) do |t|
+        t.pattern = '../frontend/spec/**{,/*/**}/*_spec.rb'
       end
 
       desc 'Run the code examples in backend/spec'
@@ -45,7 +51,7 @@ else
 
     namespace :migrate do
       task :all do
-        %w( core backend ).each do |gem_name|
+        %w( core frontend backend ).each do |gem_name|
           command = "cd #{gem_name} && test -d db && bundle exec rake db:migrate RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
           puts command
           system command
@@ -60,7 +66,7 @@ else
 
       namespace :reset do
         task :all do
-          %w( core backend ).each do |gem_name|
+          %w( core frontend backend ).each do |gem_name|
             command = "cd #{gem_name} && test -d db && bundle exec rake db:migrate:reset RAILS_ENV=#{Rails.env} COMABLE_NESTED=true"
             puts command
             system command

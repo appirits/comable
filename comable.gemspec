@@ -13,5 +13,6 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
   s.add_dependency 'comable_core', version
+  s.add_dependency 'comable_frontend', version
   s.add_dependency 'comable_backend', version
 end
