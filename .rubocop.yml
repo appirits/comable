@@ -23,7 +23,12 @@ Eval:
 # C: Use the new Ruby 1.9 hash syntax.
 HashSyntax:
   Exclude:
-    - 'tasks/*'
+    - tasks/*
+
+# C: Method has too many lines.
+MethodLength:
+  Exclude:
+    - '**/db/migrate/*'
 
 # Ignore files.
 AllCops:
