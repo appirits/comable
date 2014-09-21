@@ -8,8 +8,6 @@ module Comable
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
     rescue_from Comable::InvalidOrder, with: :order_invalid
 
-    include Decoratable
-
     def new
     end
 

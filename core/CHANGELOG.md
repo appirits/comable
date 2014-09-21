@@ -1,3 +1,9 @@
+*   Remove decorator. Because it can be controlled by the application.
+    Also, in order to simplify the gem.
+
+    *YOSHIDA Hiroki*
+
+
 ## Comable 0.1.0 (September 18, 2014) ##
 
 *   Change versioning.

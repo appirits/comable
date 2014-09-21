@@ -1,7 +1,5 @@
 module Comable
   class Product < ActiveRecord::Base
-    include Decoratable
-
     has_many :stocks, class_name: Comable::Stock.name, foreign_key: table_name.singularize.foreign_key
     after_create :create_stock
 

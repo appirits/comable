@@ -4,8 +4,6 @@ module Comable
   # 商品に複数紐付き、品数やSKU(Stock Keeping Unit)情報を保持する。
   #
   class Stock < ActiveRecord::Base
-    include Decoratable
-
     belongs_to :product, class_name: Comable::Product.name, foreign_key: Comable::Product.table_name.singularize.foreign_key
 
     #
