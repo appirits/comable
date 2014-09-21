@@ -1,6 +1,5 @@
 module Comable
   class Customer < ActiveRecord::Base
-    include Decoratable
     include CartOwner
 
     has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key

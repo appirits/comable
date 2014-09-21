@@ -1,7 +1,5 @@
 module Comable
   class Payment < ActiveRecord::Base
-    include Decoratable
-
     validates :name, presence: true
     validates :payment_method_type, presence: true
     validates :payment_method_kind, presence: true
