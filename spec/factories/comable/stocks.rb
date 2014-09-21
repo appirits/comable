@@ -4,8 +4,15 @@ FactoryGirl.define do
     code '1234567-001'
     quantity nil
 
+    trait :many do
+      sequence(:product_id_num) { |n| n.next }
+      sequence(:code) { |n| format('%07d', n.next) }
+    end
+
     trait :with_product do
-      product { FactoryGirl.create(:product) }
+      after(:create) do |stock|
+        FactoryGirl.create(:product, code: stock.code, stocks: [stock])
+      end
     end
 
     trait :soldout do
@@ -18,11 +25,6 @@ FactoryGirl.define do
 
     trait :inavtivated do
       product_id_num nil
-    end
-
-    trait :many do
-      sequence(:product_id_num) { |n| n.next }
-      sequence(:code) { |n| format('%07d', n.next) }
     end
   end
 end
