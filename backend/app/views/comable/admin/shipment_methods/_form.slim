@@ -1,0 +1,33 @@
+= form_for([comable, :admin, @shipment_method]) do |f|
+  - if @shipment_method.errors.any?
+    #error_explanation
+      h2
+        = pluralize(@shipment_method.errors.count, 'error')
+        | prohibited this shipment_method from being saved:
+
+      ul
+        - @shipment_method.errors.full_messages.each do |message|
+          li = message
+
+  .activate_flag
+    = f.label :activate_flag do
+      span = f.check_box :activate_flag
+      span = @shipment_method.class.human_attribute_name(:activate_flag)
+
+  .name
+    = f.label :name do
+      span = @shipment_method.class.human_attribute_name(:name)
+      span = f.text_field :name
+
+  .fee
+    = f.label :fee do
+      span = @shipment_method.class.human_attribute_name(:fee)
+      span = f.text_field :fee
+
+  .traking_url
+    = f.label :traking_url do
+      span = @shipment_method.class.human_attribute_name(:traking_url)
+      span = f.text_field :traking_url
+
+  .actions
+    = f.submit
