@@ -9,7 +9,7 @@ module Comable
     delegate :guest_token, to: :order_delivery
     delegate :complete?, to: :order_delivery
 
-    def before_complete
+    def save_to_complete
       save_price
       decrement_stock
     end

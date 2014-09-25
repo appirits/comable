@@ -1,3 +1,8 @@
+*   Implement the callback for the order to complete.
+    You can use `before_complete`, `around_complete` and `after_complete` callbacks.
+
+    *YOSHIDA Hiroki*
+
 *   Remove decorator. Because it can be controlled by the application.
     Also, in order to simplify the gem.
 

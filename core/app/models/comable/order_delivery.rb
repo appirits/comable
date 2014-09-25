@@ -7,8 +7,8 @@ module Comable
     delegate :guest_token, to: :order
     delegate :complete?, to: :order
 
-    def before_complete
-      order_details.each(&:before_complete)
+    def save_to_complete
+      order_details.each(&:save_to_complete)
     end
   end
 end

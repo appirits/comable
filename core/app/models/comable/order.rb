@@ -18,6 +18,8 @@ module Comable
       incomplete_order.validates :guest_token, uniqueness: { scope: [:guest_token, :completed_at] }, if: :guest_token
     end
 
+    define_model_callbacks :complete
+    before_complete :precomplete
     before_create :generate_guest_token
 
     scope :complete, -> { where.not(completed_at: nil) }
@@ -31,11 +33,9 @@ module Comable
 
     def complete
       # TODO: トランザクションの追加
-      precomplete
-      # TODO: コールバック化
-      # define_model_callbacks :complete
-      before_complete
-      save!
+      run_callbacks :complete do
+        save_to_complete!
+      end
       self
     end
 
@@ -59,10 +59,11 @@ module Comable
 
     private
 
-    def before_complete
+    def save_to_complete!
       self.completed_at = Time.now
       generate_code
-      order_deliveries.each(&:before_complete)
+      order_deliveries.each(&:save_to_complete)
+      save!
     end
 
     def valid_stock
