@@ -2,10 +2,11 @@ describe Comable::OrdersController do
   render_views
 
   let(:payment) { FactoryGirl.create(:payment) }
+  let(:shipment_method) { FactoryGirl.create(:shipment_method) }
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
   let(:add_to_cart) { customer.add_cart_item(product) }
-  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_payment_id: payment.id } } }
+  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_payment_id: payment.id, shipment_method_id: shipment_method.id } } }
 
   context 'カートが空の場合' do
     before { request }
@@ -54,6 +55,16 @@ describe Comable::OrdersController do
 
     describe "POST 'delivery'" do
       let(:request) { post :delivery, order_params }
+      its(:response) { should redirect_to(:shipment_order) }
+    end
+
+    describe "GET 'shipment'" do
+      let(:request) { get :shipment }
+      its(:response) { should be_success }
+    end
+
+    describe "POST 'shipment'" do
+      let(:request) { post :shipment, order_params }
       its(:response) { should redirect_to(:payment_order) }
     end
 
@@ -149,6 +160,16 @@ describe Comable::OrdersController do
 
     describe "POST 'delivery'" do
       let(:request) { post :delivery, order_params }
+      its(:response) { should redirect_to(:shipment_order) }
+    end
+
+    describe "GET 'shipment'" do
+      let(:request) { get :shipment }
+      its(:response) { should be_success }
+    end
+
+    describe "POST 'shipment'" do
+      let(:request) { post :shipment, order_params }
       its(:response) { should redirect_to(:payment_order) }
     end
 

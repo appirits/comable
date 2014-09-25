@@ -2,6 +2,7 @@ module Comable
   class Order < ActiveRecord::Base
     belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
     belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
+    belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key
 
     accepts_nested_attributes_for :order_deliveries
@@ -57,10 +58,16 @@ module Comable
       order_deliveries.map(&:order_details).flatten.each(&:subtotal_price)
     end
 
+    # 時価送料を取得
+    def current_shipment_fee
+      shipment_method.try(:fee) || 0
+    end
+
     private
 
     def save_to_complete!
       self.completed_at = Time.now
+      self.shipment_fee = current_shipment_fee
       generate_code
       order_deliveries.each(&:save_to_complete)
       save!

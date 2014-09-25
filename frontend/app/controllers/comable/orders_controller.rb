@@ -21,7 +21,17 @@ module Comable
     def delivery
       case request.method_symbol
       when :post
-        redirect_to comable.payment_order_path
+        return redirect_to comable.shipment_order_path if Comable::ShipmentMethod.activated.exists?
+        return redirect_to comable.payment_order_path if Comable::Payment.exists?
+        redirect_to comable.confirm_order_path
+      end
+    end
+
+    def shipment
+      case request.method_symbol
+      when :post
+        return redirect_to comable.payment_order_path if Comable::Payment.exists?
+        redirect_to comable.confirm_order_path
       end
     end
 
@@ -68,6 +78,8 @@ module Comable
         order_params_for_orderer
       when :delivery
         order_params_for_delivery
+      when :shipment
+        order_params_for_shipment
       when :payment
         order_params_for_payment
       end
@@ -87,6 +99,12 @@ module Comable
           :family_name,
           :first_name
         ]
+      )
+    end
+
+    def order_params_for_shipment
+      params.require(:order).permit(
+        :shipment_method_id
       )
     end
 

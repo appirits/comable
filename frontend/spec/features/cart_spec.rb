@@ -2,6 +2,7 @@ require 'rspec/example_steps'
 
 feature 'カート処理' do
   let!(:payment) { FactoryGirl.create(:payment) }
+  let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
 
   background { product }
 
@@ -46,8 +47,14 @@ feature 'カート処理' do
         expect(page).to have_content '配送先情報入力'
       end
 
-      When '注文方法選択画面に遷移して' do
+      When '発送方法選択画面に遷移して' do
         visit comable.delivery_order_path
+        click_button I18n.t('helpers.submit.update')
+        expect(page).to have_content '発送方法'
+      end
+
+      When '決済方法選択画面に遷移して' do
+        visit comable.shipment_order_path
         click_button I18n.t('helpers.submit.update')
         expect(page).to have_content '決済方法'
       end
