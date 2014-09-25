@@ -11,7 +11,8 @@ module Comable
       complete_order.validates :code, presence: true
       complete_order.validates :first_name, presence: true
       complete_order.validates :family_name, presence: true
-      complete_order.validates Comable::Payment.table_name.singularize.foreign_key, presence: true
+      complete_order.validates :shipment_fee, presence: true
+      complete_order.validates :total_price, presence: true
     end
 
     with_options if: :incomplete? do |incomplete_order|
