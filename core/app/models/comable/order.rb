@@ -68,16 +68,12 @@ module Comable
       current_item_total_price + current_shipment_fee
     end
 
-    # 売価合計を取得
-    def total_price
-      item_total_price + shipment_fee
-    end
-
     private
 
     def save_to_complete!
       self.completed_at = Time.now
       self.shipment_fee = current_shipment_fee
+      self.total_price = current_total_price
       generate_code
       order_deliveries.each(&:save_to_complete)
       save!
