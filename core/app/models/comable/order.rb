@@ -48,19 +48,29 @@ module Comable
       completed_at.nil?
     end
 
-    # 時価合計を取得
-    def current_total_price
+    # 時価商品合計を取得
+    def current_item_total_price
       order_deliveries.map(&:order_details).flatten.sum(&:current_subtotal_price)
     end
 
-    # 売価合計を取得
-    def total_price
+    # 売価商品合計を取得
+    def item_total_price
       order_deliveries.map(&:order_details).flatten.sum(&:subtotal_price)
     end
 
     # 時価送料を取得
     def current_shipment_fee
       shipment_method.try(:fee) || 0
+    end
+
+    # 時価合計を取得
+    def current_total_price
+      current_item_total_price + current_shipment_fee
+    end
+
+    # 売価合計を取得
+    def total_price
+      item_total_price + shipment_fee
     end
 
     private
