@@ -1,3 +1,7 @@
+*   Implement feature for shipments.
+
+    *YOSHIDA Hiroki*
+
 *   Implement the callback for the order to complete.
     You can use `before_complete`, `around_complete` and `after_complete` callbacks.
 

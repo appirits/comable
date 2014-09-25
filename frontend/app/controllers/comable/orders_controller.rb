@@ -1,5 +1,8 @@
 module Comable
   class OrdersController < ApplicationController
+    prepend Comable::ShipmentAction
+    prepend Comable::PaymentAction
+
     before_filter :load_order
     before_filter :verify
     before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
@@ -21,14 +24,7 @@ module Comable
     def delivery
       case request.method_symbol
       when :post
-        redirect_to comable.payment_order_path
-      end
-    end
-
-    def payment
-      case request.method_symbol
-      when :post
-        redirect_to comable.confirm_order_path
+        redirect_to next_order_path
       end
     end
 
@@ -46,6 +42,17 @@ module Comable
     end
 
     private
+
+    def next_order_path(target_action_name = nil)
+      case (target_action_name || action_name).to_sym
+      when :delivery
+        shipment_required? ? comable.shipment_order_path : next_order_path(:shipment)
+      when :shipment
+        payment_required? ? comable.payment_order_path : next_order_path(:payment)
+      else
+        comable.confirm_order_path
+      end
+    end
 
     def verify
       return if current_customer.cart.any?
@@ -68,8 +75,6 @@ module Comable
         order_params_for_orderer
       when :delivery
         order_params_for_delivery
-      when :payment
-        order_params_for_payment
       end
     end
 
@@ -87,12 +92,6 @@ module Comable
           :family_name,
           :first_name
         ]
-      )
-    end
-
-    def order_params_for_payment
-      params.require(:order).permit(
-        Comable::Payment.table_name.singularize.foreign_key.to_sym
       )
     end
 

@@ -1,0 +1,17 @@
+h1 Listing shipment_methods
+
+table
+  thead
+    tr
+      th colspan="3"
+
+  tbody
+    - @shipment_methods.each do |shipment_method|
+      tr
+        td = link_to 'Show', comable.admin_shipment_method_path(shipment_method)
+        td = link_to 'Edit', comable.edit_admin_shipment_method_path(shipment_method)
+        td = link_to 'Destroy', comable.admin_shipment_method_path(shipment_method), method: :delete, data: { confirm: 'Are you sure?' }
+
+br
+
+= link_to 'New Shipment method', comable.new_admin_shipment_method_path

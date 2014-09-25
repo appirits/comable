@@ -13,6 +13,8 @@ module Comable
 
       # XXX: a code below to delegate comable:install:migrations to comable_core
       config.paths['db/migrate'] = []
+
+      config.autoload_paths << "#{config.root}/app/controllers/concerns" if Rails::VERSION::MAJOR == 3
     end
   end
 end
