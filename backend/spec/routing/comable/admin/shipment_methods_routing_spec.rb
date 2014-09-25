@@ -19,7 +19,7 @@ describe Comable::Admin::ShipmentMethodsController do
     end
 
     it 'routes to #create' do
-      expect(post: "/admin/shipment_methods").to route_to('comable/admin/shipment_methods#create')
+      expect(post: '/admin/shipment_methods').to route_to('comable/admin/shipment_methods#create')
     end
 
     it 'routes to #update' do

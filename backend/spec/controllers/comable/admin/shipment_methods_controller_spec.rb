@@ -21,13 +21,9 @@ describe Comable::Admin::ShipmentMethodsController do
   # This should return the minimal set of attributes required to create a valid
   # Comable::ShipmentMethod. As you add validations to Comable::ShipmentMethod, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip('Add a hash of attributes valid for your model')
-  }
+  let(:valid_attributes) { skip('Add a hash of attributes valid for your model') }
 
-  let(:invalid_attributes) {
-    skip('Add a hash of attributes invalid for your model')
-  }
+  let(:invalid_attributes) { skip('Add a hash of attributes invalid for your model') }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -68,9 +64,7 @@ describe Comable::Admin::ShipmentMethodsController do
   describe 'POST create' do
     describe 'with valid params' do
       it 'creates a new Comable::ShipmentMethod' do
-        expect {
-          post :create, { shipment_method: valid_attributes }, valid_session
-        }.to change(Comable::ShipmentMethod, :count).by(1)
+        expect { post :create, { shipment_method: valid_attributes }, valid_session }.to change(Comable::ShipmentMethod, :count).by(1)
       end
 
       it 'assigns a newly created shipment_method as @shipment_method' do
@@ -100,9 +94,7 @@ describe Comable::Admin::ShipmentMethodsController do
 
   describe 'PUT update' do
     describe 'with valid params' do
-      let(:new_attributes) {
-        skip('Add a hash of attributes valid for your model')
-      }
+      let(:new_attributes) { skip('Add a hash of attributes valid for your model') }
 
       it 'updates the requested shipment_method' do
         shipment_method = Comable::ShipmentMethod.create! valid_attributes
@@ -142,9 +134,7 @@ describe Comable::Admin::ShipmentMethodsController do
   describe 'DELETE destroy' do
     it 'destroys the requested shipment_method' do
       shipment_method = Comable::ShipmentMethod.create! valid_attributes
-      expect {
-        delete :destroy, { id: shipment_method.to_param }, valid_session
-      }.to change(Comable::ShipmentMethod, :count).by(-1)
+      expect { delete :destroy, { id: shipment_method.to_param }, valid_session }.to change(Comable::ShipmentMethod, :count).by(-1)
     end
 
     it 'redirects to the shipment_methods list' do
