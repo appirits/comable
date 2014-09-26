@@ -140,6 +140,7 @@ describe Comable::Customer do
           order: {
             family_name: 'comable',
             first_name: 'orderer',
+            first_name: 'comable@example.com',
             order_deliveries_attributes: {
               0 => {
                 family_name: 'comable',

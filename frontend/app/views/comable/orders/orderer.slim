@@ -4,4 +4,5 @@ h1 注文者情報入力
   = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
     = f.text_field :family_name, placeholder: '姓'
     = f.text_field :first_name, placeholder: '名'
+    = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
     = f.submit

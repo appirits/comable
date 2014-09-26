@@ -11,6 +11,7 @@ module Comable
       complete_order.validates :code, presence: true
       complete_order.validates :first_name, presence: true
       complete_order.validates :family_name, presence: true
+      complete_order.validates :email, presence: true
       complete_order.validates :shipment_fee, presence: true
       complete_order.validates :total_price, presence: true
     end

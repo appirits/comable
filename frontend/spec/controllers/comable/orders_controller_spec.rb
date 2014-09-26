@@ -6,7 +6,8 @@ describe Comable::OrdersController do
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
   let(:add_to_cart) { customer.add_cart_item(product) }
-  let(:order_params) { { order: { family_name: 'foo', first_name: 'bar', comable_payment_id: payment.id, shipment_method_id: shipment_method.id } } }
+  let(:default_order_attributes) { FactoryGirl.attributes_for(:order) }
+  let(:order_params) { { order: default_order_attributes.merge(comable_payment_id: payment.id, shipment_method_id: shipment_method.id) } }
 
   context 'カートが空の場合' do
     before { request }

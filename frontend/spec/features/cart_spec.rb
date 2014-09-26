@@ -41,6 +41,7 @@ feature 'カート処理' do
         within('form') do
           fill_in :order_family_name, with: 'foo'
           fill_in :order_first_name, with: 'bar'
+          fill_in :order_email, with: 'comable@example.com'
         end
         # TODO: ボタン名につかう翻訳パスを変更または作成
         click_button I18n.t('helpers.submit.update')

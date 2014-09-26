@@ -81,7 +81,8 @@ module Comable
     def order_params_for_orderer
       params.require(:order).permit(
         :family_name,
-        :first_name
+        :first_name,
+        :email
       )
     end
 

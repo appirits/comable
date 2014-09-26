@@ -61,7 +61,7 @@ module Comable
     def initialize_incomplete_order
       orders = find_incomplete_orders
       return orders.first if orders.any?
-      order = orders.create(family_name: family_name, first_name: first_name, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
+      order = orders.create(family_name: family_name, first_name: first_name, email: email, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
       @cookies.permanent.signed[:guest_token] = order.guest_token if not_logged_in?
       order
     end
