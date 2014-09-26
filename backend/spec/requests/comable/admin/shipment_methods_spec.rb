@@ -1,4 +1,4 @@
-describe 'ComableShipmentMethods' do
+describe 'ShipmentMethods' do
   describe 'GET /comable/admin/shipment_methods' do
     it 'works! (now write some real specs)' do
       get comable.admin_shipment_methods_path

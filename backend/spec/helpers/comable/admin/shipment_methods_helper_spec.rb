@@ -1,7 +1,7 @@
 # Specs in this file have access to a helper object that includes
-# the ComableShipmentMethodsHelper. For example:
+# the Comable::Admin::ShipmentMethodsHelper. For example:
 #
-# describe ComableShipmentMethodsHelper do
+# describe Comable::Admin::ShipmentMethodsHelper do
 #   describe "string concat" do
 #     it "concats two strings with spaces" do
 #       expect(helper.concat_strings("this","that")).to eq("this that")
