@@ -1,0 +1,17 @@
+h1 Listing stores
+
+table
+  thead
+    tr
+      th colspan="3"
+
+  tbody
+    - @stores.each do |store|
+      tr
+        td = link_to 'Show', comable.admin_store_path(store)
+        td = link_to 'Edit', comable.edit_admin_store_path(store)
+        td = link_to 'Destroy', comable.admin_store_path(store), method: :delete, data: { confirm: 'Are you sure?' }
+
+br
+
+= link_to 'New Store', comable.new_admin_store_path
