@@ -28,7 +28,7 @@ module Comable
         @shipment_method = Comable::ShipmentMethod.new(shipment_method_params)
 
         if @shipment_method.save
-          redirect_to comable.admin_shipment_methods_url(@shipment_method), notice: 'Shipment method was successfully created.'
+          redirect_to comable.admin_shipment_method_url(@shipment_method), notice: 'Shipment method was successfully created.'
         else
           render :new
         end
@@ -38,7 +38,7 @@ module Comable
       def update
         @shipment_method = Comable::ShipmentMethod.find(params[:id])
         if @shipment_method.update(shipment_method_params)
-          redirect_to comable.admin_shipment_methods_url(@shipment_method), notice: 'Shipment method was successfully updated.'
+          redirect_to comable.admin_shipment_method_url(@shipment_method), notice: 'Shipment method was successfully updated.'
         else
           render :edit
         end
