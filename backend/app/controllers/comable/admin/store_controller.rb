@@ -2,28 +2,24 @@ require_dependency 'comable/admin/application_controller'
 
 module Comable
   module Admin
-    class StoresController < ApplicationController
-      # GET /admin/stores
-      def index
-        @stores = Comable::Store.all
-      end
-
-      # GET /admin/stores/1
+    class StoreController < ApplicationController
+      # GET /admin/store
       def show
-        @store = Comable::Store.find(params[:id])
+        @store = Comable::Store.first
+        return redirect_to action: :new unless @store
       end
 
-      # GET /admin/stores/new
+      # GET /admin/store/new
       def new
         @store = Comable::Store.new
       end
 
-      # GET /admin/stores/1/edit
+      # GET /admin/store/edit
       def edit
-        @store = Comable::Store.find(params[:id])
+        @store = Comable::Store.first
       end
 
-      # POST /admin/stores
+      # POST /admin/store
       def create
         @store = Comable::Store.new(store_params)
 
@@ -34,21 +30,14 @@ module Comable
         end
       end
 
-      # PATCH/PUT /admin/stores/1
+      # PATCH/PUT /admin/store
       def update
-        @store = Comable::Store.find(params[:id])
+        @store = Comable::Store.first
         if @store.update(store_params)
           redirect_to comable.admin_store_url(@store), notice: 'Store was successfully updated.'
         else
           render :edit
         end
-      end
-
-      # DELETE /admin/stores/1
-      def destroy
-        @store = Comable::Store.find(params[:id])
-        @store.destroy
-        redirect_to comable.admin_stores_url, notice: 'Store was successfully destroyed.'
       end
 
       private

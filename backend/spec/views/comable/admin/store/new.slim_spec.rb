@@ -1,4 +1,4 @@
-describe 'comable/admin/stores/new' do
+describe 'comable/admin/store/new' do
   before(:each) do
     assign(:store, Comable::Store.new)
   end
@@ -6,6 +6,6 @@ describe 'comable/admin/stores/new' do
   it 'renders new store form' do
     render
 
-    assert_select 'form[action=?][method=?]', comable.admin_stores_path, 'post'
+    assert_select 'form[action=?][method=?]', comable.admin_store_path, 'post'
   end
 end

@@ -16,7 +16,7 @@
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-describe Comable::Admin::StoresController, type: :controller do
+describe Comable::Admin::StoreController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Comable::Store. As you add validations to Comable::Store, be sure to
@@ -29,14 +29,6 @@ describe Comable::Admin::StoresController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # Comable::Admin::StoresController. Be sure to keep this updated too.
   let(:valid_session) { {} }
-
-  describe 'GET index' do
-    it 'assigns all stores as @stores' do
-      store = Comable::Store.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:stores)).to eq([store])
-    end
-  end
 
   describe 'GET show' do
     it 'assigns the requested store as @store' do
@@ -128,19 +120,6 @@ describe Comable::Admin::StoresController, type: :controller do
         put :update, { id: store.to_param, store: invalid_attributes }, valid_session
         expect(response).to render_template('edit')
       end
-    end
-  end
-
-  describe 'DELETE destroy' do
-    it 'destroys the requested store' do
-      store = Comable::Store.create! valid_attributes
-      expect { delete :destroy, { id: store.to_param }, valid_session }.to change(Comable::Store, :count).by(-1)
-    end
-
-    it 'redirects to the stores list' do
-      store = Comable::Store.create! valid_attributes
-      delete :destroy, { id: store.to_param }, valid_session
-      expect(response).to redirect_to(stores_url)
     end
   end
 

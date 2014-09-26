@@ -1,4 +1,4 @@
-describe 'comable/admin/stores/edit' do
+describe 'comable/admin/store/edit' do
   before(:each) do
     @store = assign(:store, FactoryGirl.create(:store))
   end
