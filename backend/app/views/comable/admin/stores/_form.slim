@@ -9,5 +9,30 @@
         - @store.errors.full_messages.each do |message|
           li = message
 
+  .name
+    = f.label :name do
+      span = @store.class.human_attribute_name(:name)
+      span = f.text_field :name
+
+  .meta_keyword
+    = f.label :meta_keyword do
+      span = @store.class.human_attribute_name(:meta_keyword)
+      span = f.text_field :meta_keyword
+
+  .meta_description
+    = f.label :meta_description do
+      span = @store.class.human_attribute_name(:meta_description)
+      span = f.text_field :meta_description
+
+  .email_sender
+    = f.label :email_sender do
+      span = @store.class.human_attribute_name(:email_sender)
+      span = f.email_field :email_sender
+
+  .email_activate_flag
+    = f.label :email_activate_flag do
+      span = f.check_box :email_activate_flag
+      span = @store.class.human_attribute_name(:email_activate_flag)
+
   .actions
     = f.submit
