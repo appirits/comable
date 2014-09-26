@@ -10,6 +10,7 @@ class CreateComableOrders < ActiveRecord::Migration
       t.integer :shipment_fee, null: false, default: 0
       t.string :shipment_tracking_number
       t.integer :shipment_method_id
+      t.integer :total_price
       t.datetime :completed_at
     end
 

@@ -1,3 +1,7 @@
+*   Improve calculation at checkout.
+
+    *YOSHIDA Hiroki*
+
 *   Implement feature for shipments.
 
     *YOSHIDA Hiroki*

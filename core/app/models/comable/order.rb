@@ -11,7 +11,8 @@ module Comable
       complete_order.validates :code, presence: true
       complete_order.validates :first_name, presence: true
       complete_order.validates :family_name, presence: true
-      complete_order.validates Comable::Payment.table_name.singularize.foreign_key, presence: true
+      complete_order.validates :shipment_fee, presence: true
+      complete_order.validates :total_price, presence: true
     end
 
     with_options if: :incomplete? do |incomplete_order|
@@ -48,14 +49,14 @@ module Comable
       completed_at.nil?
     end
 
-    # 時価合計を取得
-    def current_total_price
-      order_deliveries.map(&:order_details).flatten.each(&:current_subtotal_price)
+    # 時価商品合計を取得
+    def current_item_total_price
+      order_deliveries.map(&:order_details).flatten.sum(&:current_subtotal_price)
     end
 
-    # 売価合計を取得
-    def total_price
-      order_deliveries.map(&:order_details).flatten.each(&:subtotal_price)
+    # 売価商品合計を取得
+    def item_total_price
+      order_deliveries.map(&:order_details).flatten.sum(&:subtotal_price)
     end
 
     # 時価送料を取得
@@ -63,11 +64,17 @@ module Comable
       shipment_method.try(:fee) || 0
     end
 
+    # 時価合計を取得
+    def current_total_price
+      current_item_total_price + current_shipment_fee
+    end
+
     private
 
     def save_to_complete!
       self.completed_at = Time.now
       self.shipment_fee = current_shipment_fee
+      self.total_price = current_total_price
       generate_code
       order_deliveries.each(&:save_to_complete)
       save!

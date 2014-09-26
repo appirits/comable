@@ -2,12 +2,15 @@ h1 注文情報確認
 
 .order
   .orderer
+    h2 注文者
     .family_name
       = @order.family_name
     .first_name
       = @order.first_name
+
   .deliveries
-    - @order.order_deliveries.each do |order_delivery|
+    - @order.order_deliveries.each.with_index(1) do |order_delivery, index|
+      h2 = "配送先[#{index}]"
       .first_name
         = order_delivery.family_name
       .first_name
@@ -20,6 +23,15 @@ h1 注文情報確認
             = order_detail.price
           .quantity
             = order_detail.quantity
+
+  .total
+    h2 お会計
+    .item_total_price
+      = @order.current_item_total_price
+    .shipment_fee
+      = @order.current_shipment_fee
+    .total_price
+      = @order.current_total_price
 
   = form_for @order, as: :order, url: comable.order_path, method: :post do |f|
     = f.submit
