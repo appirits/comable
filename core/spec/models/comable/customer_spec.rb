@@ -133,26 +133,29 @@ describe Comable::Customer do
 
     # TODO: 複数配送先の完全な実装 or 機能削除
     pending '複数配送' do
+      let(:order) { FactoryGirl.build(:order) }
+      let(:order_delivery) { FactoryGirl.build(:order_delivery) }
+
       pending '複数配送先は削除予定'
 
       let(:params) do
         {
           order: {
-            family_name: 'comable',
-            first_name: 'orderer',
-            first_name: 'comable@example.com',
+            family_name: order.family_name,
+            first_name: order.first_name,
+            email: order.email,
             order_deliveries_attributes: {
               0 => {
-                family_name: 'comable',
-                first_name: 'one'
+                family_name: order_delivery.family_name,
+                first_name: order_delivery.first_name + '_one'
               },
               1 => {
-                family_name: 'comable',
-                first_name: 'two'
+                family_name: order_delivery.family_name,
+                first_name: order_delivery.first_name + '_two'
               },
               2 => {
-                family_name: 'comable',
-                first_name: 'three'
+                family_name: order_delivery.family_name,
+                first_name: order_delivery.first_name + '_three'
               }
             }
           }

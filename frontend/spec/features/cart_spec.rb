@@ -3,6 +3,7 @@ require 'rspec/example_steps'
 feature 'カート処理' do
   let!(:payment) { FactoryGirl.create(:payment) }
   let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
+  let(:order) { FactoryGirl.build(:order) }
 
   background { product }
 
@@ -39,9 +40,9 @@ feature 'カート処理' do
       When '配送先情報入力画面に遷移して' do
         visit comable.orderer_order_path
         within('form') do
-          fill_in :order_family_name, with: 'foo'
-          fill_in :order_first_name, with: 'bar'
-          fill_in :order_email, with: 'comable@example.com'
+          fill_in :order_family_name, with: order.family_name
+          fill_in :order_first_name, with: order.first_name
+          fill_in :order_email, with: order.email
         end
         # TODO: ボタン名につかう翻訳パスを変更または作成
         click_button I18n.t('helpers.submit.update')
