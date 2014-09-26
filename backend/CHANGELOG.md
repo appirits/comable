@@ -1,3 +1,7 @@
+*   Implement feature for store settings.
+
+    *YOSHIDA Hiroki*
+
 *   Implement feature for shipments.
 
     *YOSHIDA Hiroki*
