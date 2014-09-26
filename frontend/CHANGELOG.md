@@ -1,3 +1,7 @@
+*   Implement feature for store settings.
+
+    *YOSHIDA Hiroki*
+
 *   Improve calculation at checkout.
 
     *YOSHIDA Hiroki*

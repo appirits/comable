@@ -1,7 +1,14 @@
 doctype html
 html
   head
-    title Comable
+    title = current_store.name
+
+    - if current_store.meta_keyword.present?
+      meta name="keywords" content="#{current_store.meta_keyword}"
+
+    - if current_store.meta_description.present?
+      meta name="description" content="#{current_store.meta_description}"
+
     = stylesheet_link_tag "comable/application", media: "all"
     = javascript_include_tag "comable/application"
     = csrf_meta_tags

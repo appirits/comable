@@ -1,10 +1,18 @@
 module Comable
   module ApplicationHelper
+    def current_store
+      @current_store || load_store
+    end
+
     def current_customer
       @current_customer || load_customer
     end
 
     private
+
+    def load_store
+      @current_store = Comable::Store.instance
+    end
 
     def load_customer
       @current_customer = logged_in_customer
