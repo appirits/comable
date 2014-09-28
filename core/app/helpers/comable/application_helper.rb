@@ -8,6 +8,10 @@ module Comable
       @current_customer || load_customer
     end
 
+    def current_order
+      current_customer.incomplete_order
+    end
+
     def name_with_honorific(name)
       I18n.t('comable.honorific', name: name)
     end
