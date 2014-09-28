@@ -1,18 +1,10 @@
 *   Implement feature for store settings.
 
-    *YOSHIDA Hiroki*
-
 *   Implement feature for shipments.
-
-    *YOSHIDA Hiroki*
 
 
 ## Comable 0.1.0 (September 18, 2014) ##
 
 *   Change versioning.
 
-    *YOSHIDA Hiroki*
-
 *   Initialize gem.
-
-    *YOSHIDA Hiroki*
