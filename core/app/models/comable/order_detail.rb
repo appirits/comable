@@ -6,6 +6,7 @@ module Comable
     # TODO: バリデーションの追加
 
     delegate :product, to: :stock
+    delegate :name, to: :stock
     delegate :guest_token, to: :order_delivery
     delegate :complete?, to: :order_delivery
 

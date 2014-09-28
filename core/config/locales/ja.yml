@@ -1,5 +1,8 @@
 ja:
   comable:
+    honorific: &honorific
+      '%{name} 様'
+
     carts:
       add_product: '１つの商品がカートに入りしました'
       product_not_found: 'ご指定の商品は見つかりませんでした'
@@ -9,3 +12,22 @@ ja:
     orders:
       success: '注文が完了しました'
       failure: '注文に失敗しました。入力項目を見直してください。'
+
+    order_mailer:
+      complete:
+        subject: '注文完了メール'
+        dear: *honorific
+        introductions: |-
+          %{store_name} をご利用いただきましてありがとうございます。
+          ご注文内容は下記のとおりです。
+        outroductions: |-
+          またのご利用をお待ちしております。
+          %{store_name}
+        order: 'ご注文内容'
+        order_delivery: 'お届け先'
+
+  activerecord:
+    models:
+      comable/order: ご注文
+      comable/order_delivery: お届け先
+      comable/order_details: ご注文明細

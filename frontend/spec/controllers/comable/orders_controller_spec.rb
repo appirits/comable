@@ -27,6 +27,7 @@ describe Comable::OrdersController do
     before { add_to_cart }
     before { request }
 
+    let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil) }
     let(:customer) { Comable::Customer.new(cookies) }
 
     describe "GET 'new'" do
@@ -197,6 +198,38 @@ describe Comable::OrdersController do
 
       it 'flashにメッセージが格納されていること' do
         expect(flash[:notice]).to eq I18n.t('comable.orders.success')
+      end
+    end
+  end
+
+  describe 'order mailer' do
+    let!(:store) { FactoryGirl.create(:store, :email_activate) }
+    let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil) }
+    let(:customer) { Comable::Customer.new(cookies) }
+    let(:order) { customer.incomplete_order }
+    let(:request) { post :create }
+
+    before { allow(controller).to receive(:current_customer) { customer } }
+    before { order.update_attributes(order_params[:order]) }
+    before { add_to_cart }
+
+    it 'sent a mail' do
+      expect { request }.to change { ActionMailer::Base.deliveries.length }.by(1)
+    end
+
+    context 'No email sender' do
+      let!(:store) { FactoryGirl.create(:store, :email_activate, email_sender: nil) }
+
+      it 'not sent a mail' do
+        expect { request }.to change { ActionMailer::Base.deliveries.length }.by(0)
+      end
+    end
+
+    context 'No email activate' do
+      let!(:store) { FactoryGirl.create(:store, :email_activate, email_activate_flag: false) }
+
+      it 'not sent a mail' do
+        expect { request }.to change { ActionMailer::Base.deliveries.length }.by(0)
       end
     end
   end

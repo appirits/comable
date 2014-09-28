@@ -10,6 +10,8 @@ FactoryGirl.define do
     end
 
     trait :with_product do
+      product { build_stubbed(:product, code: code) }
+
       after(:create) do |stock|
         FactoryGirl.create(:product, code: stock.code, stocks: [stock])
       end

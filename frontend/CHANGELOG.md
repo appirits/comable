@@ -1,3 +1,7 @@
+*   Implement the order completion mail.
+
+    *YOSHIDA Hiroki*
+
 *   Implement feature for store settings.
 
     *YOSHIDA Hiroki*
