@@ -34,6 +34,7 @@ module Comable
     def create
       order = current_customer.order
       if order.complete?
+        Comable::OrderMailer.complete(order).deliver if current_store.email_activate?
         flash[:notice] = I18n.t('comable.orders.success')
       else
         flash[:alert] = I18n.t('comable.orders.failure')
