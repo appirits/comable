@@ -25,7 +25,7 @@
 <%= "#{@order.class.human_attribute_name(:completed_at)}: #{I18n.l @order.completed_at.to_date}" %>
 
 <%- @order.order_deliveries.map(&:order_details).flatten.each do |order_detail| %>
-            <%= name_with_quantity order_detail.name, order_detail.quantity %>
+            <%= name_with_quantity order_detail.name_with_sku, order_detail.quantity %>
             <%= number_to_currency order_detail.subtotal_price %>
 
 <%- end %>

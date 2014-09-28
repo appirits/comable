@@ -3,7 +3,7 @@ describe Comable::OrderMailer do
     let!(:store) { FactoryGirl.create(:store, :email_activate) }
     let(:order) { FactoryGirl.build(:order, order_deliveries: [order_delivery]) }
     let(:order_delivery) { FactoryGirl.build(:order_delivery, order_details: [order_detail]) }
-    let(:order_detail) { FactoryGirl.build(:order_detail, quantity: 2) }
+    let(:order_detail) { FactoryGirl.build(:order_detail, :sku, quantity: 2) }
     let(:mail) { described_class.complete(order) }
 
     before { order.complete }
@@ -20,8 +20,12 @@ describe Comable::OrderMailer do
       expect(mail.from).to eq([store.email_sender])
     end
 
-    it 'assigns @order.name' do
-      expect(mail.body.encoded).to match(order.full_name)
+    it 'assigns @order' do
+      expect(mail.body.encoded).to include(order.full_name)
+    end
+
+    it 'renders the product name with sku' do
+      expect(mail.body.encoded).to include(order_detail.stock.name)
     end
   end
 end
