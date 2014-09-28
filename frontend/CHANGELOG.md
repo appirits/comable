@@ -1,3 +1,5 @@
+## Comable 0.2.0 (September 29, 2014) ##
+
 *   Implement the order completion mail.
 
 *   Implement feature for store settings.
