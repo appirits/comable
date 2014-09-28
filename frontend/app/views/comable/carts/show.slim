@@ -7,7 +7,7 @@ ul.cart
       - product = stock.product
       li.product
         h2.name
-          = link_to stock.name, comable.product_path(product)
+          = link_to stock.name_with_sku, comable.product_path(product)
         .caption
           = product.caption
         .price

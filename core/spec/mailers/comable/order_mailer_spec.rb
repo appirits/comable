@@ -25,7 +25,7 @@ describe Comable::OrderMailer do
     end
 
     it 'renders the product name with sku' do
-      expect(mail.body.encoded).to include(order_detail.stock.name)
+      expect(mail.body.encoded).to include(order_detail.stock.name_with_sku)
     end
   end
 end

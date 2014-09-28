@@ -88,9 +88,9 @@ module Comable
 
     def valid_stock
       order_deliveries.map(&:order_details).flatten.each do |order_detail|
-        return errors.add :base, "「#{order_detail.stock.name}」の注文数が不正です。" if order_detail.quantity <= 0
+        return errors.add :base, "「#{order_detail.stock.name_with_sku}」の注文数が不正です。" if order_detail.quantity <= 0
         quantity = order_detail.stock.quantity - order_detail.quantity
-        return errors.add :base, "「#{order_detail.stock.name}」の在庫が不足しています。" if quantity < 0
+        return errors.add :base, "「#{order_detail.stock.name_with_sku}」の在庫が不足しています。" if quantity < 0
       end
     end
 

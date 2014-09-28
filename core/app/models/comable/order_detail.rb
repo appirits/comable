@@ -1,5 +1,8 @@
 module Comable
   class OrderDetail < ActiveRecord::Base
+    include Comable::SkuItem
+    include Comable::SkuChoice
+
     belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key
     belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key
 
@@ -35,24 +38,6 @@ module Comable
     def subtotal_price
       price * quantity
     end
-
-    # SKU情報を含めた商品名を取得
-    def name_with_sku
-      return name unless sku?
-      sku_name = sku_h_choice_name
-      sku_name += '/' + sku_v_choice_name if sku_v?
-      product.name + "(#{sku_name})"
-    end
-
-    def sku_h?
-      sku_h_item_name.present?
-    end
-
-    def sku_v?
-      sku_v_item_name.present?
-    end
-
-    alias_method :sku?, :sku_h?
 
     private
 

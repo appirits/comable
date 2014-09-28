@@ -4,6 +4,8 @@ module Comable
   # 商品に複数紐付き、品数やSKU(Stock Keeping Unit)情報を保持する。
   #
   class Stock < ActiveRecord::Base
+    include Comable::SkuChoice
+
     belongs_to :product, class_name: Comable::Product.name, foreign_key: Comable::Product.table_name.singularize.foreign_key
 
     #
@@ -26,15 +28,9 @@ module Comable
     # @!endgroup
     #
 
+    delegate :name, to: :product
     delegate :price, to: :product
     delegate :sku?, to: :product
-
-    def name
-      return product.name unless product.sku?
-      sku_name = sku_h_choice_name
-      sku_name += '/' + sku_v_choice_name if sku_v_choice_name.present?
-      product.name + "(#{sku_name})"
-    end
 
     # 在庫の有無を取得する
     #
