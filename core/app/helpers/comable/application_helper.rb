@@ -8,6 +8,19 @@ module Comable
       @current_customer || load_customer
     end
 
+    def name_with_honorific(name)
+      I18n.t('comable.honorific', name: name)
+    end
+
+    def name_with_quantity(name, quantity)
+      return name unless quantity
+      return name if quantity <= 1
+      [
+        name,
+        "x#{quantity}"
+      ].join(' ')
+    end
+
     private
 
     def load_store

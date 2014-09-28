@@ -9,5 +9,9 @@ module Comable
         'Comable store'
       end
     end
+
+    def email_activate?
+      email_activate_flag && email_sender.present?
+    end
   end
 end

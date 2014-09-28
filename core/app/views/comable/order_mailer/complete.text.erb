@@ -1,0 +1,43 @@
+<%= subject_for(@order) %>
+<%= "#{@order.class.human_attribute_name(:code)}: #{@order.code}" %>
+----------------------------------------------------------------------
+
+<%= I18n.t('comable.order_mailer.complete.dear', name: @order.full_name) %>
+
+<%= I18n.t('comable.order_mailer.complete.introductions', store_name: current_store.name) %>
+
+    <%- shipment_method = @order.shipment_method %>
+    <%- if shipment_method %>
+    <%= shipment_method.class.model_name.human %>:
+            <%= shipment_method.name %>
+    <%- end %>
+
+    <%= Comable::OrderDelivery.model_name.human %>:
+<%- @order.order_deliveries.each do |order_delivery| %>
+            <%= name_with_honorific order_delivery.full_name %>
+<%- end %>
+
+======================================================================
+
+<%= Comable::Order.model_name.human %>
+
+<%= "#{@order.class.human_attribute_name(:code)}: #{@order.code}" %>
+<%= "#{@order.class.human_attribute_name(:completed_at)}: #{I18n.l @order.completed_at.to_date}" %>
+
+<%- @order.order_deliveries.map(&:order_details).flatten.each do |order_detail| %>
+            <%= name_with_quantity order_detail.name, order_detail.quantity %>
+            <%= number_to_currency order_detail.subtotal_price %>
+
+<%- end %>
+----------------------------------------------------------------------
+
+            <%= "#{@order.class.human_attribute_name(:item_total_price)}: #{number_to_currency @order.item_total_price}" %>
+            <%= "#{@order.class.human_attribute_name(:shipment_fee)}: #{number_to_currency @order.shipment_fee}" %>
+
+            <%= "#{@order.class.human_attribute_name(:total_price)}: #{number_to_currency @order.total_price}" %>
+
+            <%= "#{@order.class.human_attribute_name(:payment)}: #{@order.payment.name}\n" if @order.payment -%>
+
+======================================================================
+
+<%= I18n.t('comable.order_mailer.complete.outroductions', store_name: current_store.name) %>

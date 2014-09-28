@@ -50,6 +50,11 @@ module Comable
       completed_at.nil?
     end
 
+    # 氏名を取得
+    def full_name
+      [family_name, first_name].join(' ')
+    end
+
     # 時価商品合計を取得
     def current_item_total_price
       order_deliveries.map(&:order_details).flatten.sum(&:current_subtotal_price)

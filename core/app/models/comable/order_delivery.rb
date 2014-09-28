@@ -10,5 +10,10 @@ module Comable
     def save_to_complete
       order_details.each(&:save_to_complete)
     end
+
+    # 氏名を取得
+    def full_name
+      [family_name, first_name].join(' ')
+    end
   end
 end
