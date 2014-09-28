@@ -1,3 +1,7 @@
+*   Add columns to order details.
+
+    *YOSHIDA Hiroki*
+
 *   Implement the order completion mail.
 
     *YOSHIDA Hiroki*
