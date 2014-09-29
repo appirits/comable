@@ -1,5 +1,6 @@
 module Comable
   class OrderMailer < ActionMailer::Base
+    include Comable::ApplicationHelper
     helper Comable::ApplicationHelper
     helper_method :subject_for
 
@@ -9,10 +10,6 @@ module Comable
     end
 
     private
-
-    def current_store
-      Comable::Store.instance
-    end
 
     def subject_for(order)
       [
