@@ -14,7 +14,10 @@ module Comable
         return redirect_by_product_not_found unless stock
       end
 
-      current_customer.add_cart_item(stock || product, quantity: params[:quantity].to_i)
+      options = {}
+      options.update(quantity: params[:quantity].to_i) if params[:quantity]
+
+      current_customer.add_cart_item(stock || product, options)
 
       flash[:notice] = I18n.t('comable.carts.add_product')
       redirect_to cart_path
@@ -24,7 +27,10 @@ module Comable
       stock = Comable::Stock.where(id: params[:stock_id]).first
       return redirect_by_product_not_found unless stock
 
-      current_customer.reset_cart_item(stock, quantity: params[:quantity].to_i)
+      options = {}
+      options.update(quantity: params[:quantity].to_i) if params[:quantity]
+
+      current_customer.reset_cart_item(stock, options)
 
       flash[:notice] = I18n.t('comable.carts.update')
       redirect_to cart_path
