@@ -33,7 +33,7 @@ module Comable
     end
 
     def precomplete!
-      fail Comable::InvalidOrder, errors.full_messages.join("\n") unless precomplete
+      fail Comable::InvalidOrder unless precomplete
       self
     end
 
@@ -45,7 +45,7 @@ module Comable
     end
 
     def complete!
-      fail Comable::InvalidOrder, errors.full_messages.join("\n") unless complete
+      fail Comable::InvalidOrder unless complete
       self
     end
 

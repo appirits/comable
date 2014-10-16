@@ -104,8 +104,8 @@ module Comable
       redirect_to comable.cart_path
     end
 
-    def order_invalid(exception)
-      flash[:alert] = exception.message
+    def order_invalid
+      flash[:alert] = I18n.t('comable.orders.failure')
       redirect_to comable.cart_path
     end
   end
