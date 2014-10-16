@@ -6,6 +6,8 @@ module Comable
     belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key
     belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key
 
+    accepts_nested_attributes_for :stock
+
     # TODO: バリデーションの追加
 
     delegate :product, to: :stock
@@ -58,7 +60,9 @@ module Comable
     private
 
     def decrement_stock
-      stock.decrement!(quantity: quantity)
+      return unless quantity
+      return unless stock.quantity
+      stock.quantity -= quantity
     end
 
     def verify_quantity
