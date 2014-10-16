@@ -37,12 +37,13 @@ module Comable
     # @example
     #   stock.unsold? #=> true
     #
+    # @param quantity [Fixnum] 減算する在庫数を指定する
     # @return [Boolean] 在庫があれば true を返す
     # @see #soldout?
-    def unsold?
+    def unsold?(quantity: 1)
       return false if product_id_num.nil?
-      return false if quantity.nil?
-      quantity > 0
+      return false if self.quantity.nil?
+      (self.quantity - quantity) >= 0
     end
 
     # 在庫の有無を取得する
@@ -50,10 +51,11 @@ module Comable
     # @example
     #   stock.soldout? #=> false
     #
+    # @param quantity [Fixnum] 減算する在庫数を指定する
     # @return [Boolean] {#unsold?} の逆。在庫がなければ true を返す
     # @see #unsold?
-    def soldout?
-      !unsold?
+    def soldout?(quantity: 1)
+      !unsold?(quantity: quantity)
     end
 
     # 在庫減算を行う
