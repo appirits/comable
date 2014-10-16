@@ -50,7 +50,7 @@ describe Comable::Customer do
       let(:stocks) { FactoryGirl.create_list(:stock, 5, :many, :soldout, :with_product) }
 
       it '商品を投入できないこと' do
-        expect { subject.add_cart_item(stock) }.to raise_error
+        expect { subject.add_cart_item(stock) }.to raise_error(Comable::NoStock)
       end
     end
   end

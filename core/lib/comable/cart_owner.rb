@@ -46,7 +46,7 @@ module Comable
     end
 
     def add_stock_to_cart(stock, quantity)
-      fail I18n.t('comable.carts.product_not_stocked') if stock.soldout?
+      fail Comable::NoStock if stock.soldout?
 
       cart_items = find_cart_items_by(stock)
       if cart_items.any?
@@ -72,7 +72,8 @@ module Comable
     end
 
     def find_cart_items_by(stock)
-      fail I18n.t('comable.carts.product_not_found') unless stock.is_a?(Comable::Stock)
+      # TODO: Refactoring
+      fail unless stock.is_a?(Comable::Stock)
       cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
     end
   end
