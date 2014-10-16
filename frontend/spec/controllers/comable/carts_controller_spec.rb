@@ -30,6 +30,17 @@ describe Comable::CartsController do
         it 'flashにメッセージが格納されていること' do
           expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
         end
+
+        context 'when no stock' do
+          let(:stock) { FactoryGirl.create(:stock, :soldout) }
+          let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+
+          its(:response) { should redirect_to(:cart) }
+
+          it 'shows the error' do
+            expect(flash[:error]).to eq I18n.t('comable.carts.product_not_stocked')
+          end
+        end
       end
     end
 
