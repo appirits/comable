@@ -6,18 +6,12 @@ module Comable
     end
 
     def add
-      product = Comable::Product.where(id: params[:product_id]).first
-      return redirect_by_product_not_found unless product
+      cart_item = Comable::Stock.where(id: params[:stock_id]).first
+      cart_item ||= Comable::Product.where(id: params[:product_id]).first
+      return redirect_by_product_not_found unless cart_item
+      return redirect_by_product_not_found if cart_item.is_a?(Comable::Product) && cart_item.sku?
 
-      if product.sku?
-        stock = product.stocks.where(id: params[:stock_id]).first
-        return redirect_by_product_not_found unless stock
-      end
-
-      options = {}
-      options.update(quantity: params[:quantity].to_i) if params[:quantity]
-
-      current_customer.add_cart_item(stock || product, options)
+      current_customer.add_cart_item(cart_item, cart_item_options)
 
       flash[:notice] = I18n.t('comable.carts.add_product')
       redirect_to cart_path
@@ -27,10 +21,7 @@ module Comable
       stock = Comable::Stock.where(id: params[:stock_id]).first
       return redirect_by_product_not_found unless stock
 
-      options = {}
-      options.update(quantity: params[:quantity].to_i) if params[:quantity]
-
-      current_customer.reset_cart_item(stock, options)
+      current_customer.reset_cart_item(stock, cart_item_options)
 
       flash[:notice] = I18n.t('comable.carts.update')
       redirect_to cart_path
@@ -46,6 +37,12 @@ module Comable
     def no_stock
       flash[:error] = I18n.t('comable.errors.messages.products_soldout')
       redirect_to cart_path
+    end
+
+    def cart_item_options
+      options = {}
+      options.update(quantity: params[:quantity].to_i) if params[:quantity]
+      options
     end
   end
 end

@@ -64,9 +64,7 @@ module Comable
       cart_items = find_cart_items_by(stock)
       if quantity > 0
         return add_stock_to_cart(stock, quantity) if cart_items.empty?
-        cart_item = cart_items.first
-        cart_item.quantity = quantity
-        cart_item.save
+        cart_items.first.update_attributes(quantity: quantity)
       else
         return false if cart_items.empty?
         cart_items.first.destroy
