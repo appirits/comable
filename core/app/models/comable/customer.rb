@@ -5,6 +5,11 @@ module Comable
     has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
     alias_method :orders, :comable_orders
 
+    # Include default devise modules. Others available are:
+    # :validatable,
+    # :confirmable, :lockable, :timeoutable and :omniauthable
+    devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable
+
     def initialize(*args)
       obj = args.first
       case obj.class.name

@@ -32,12 +32,8 @@ module Comable
     end
 
     def load_customer
-      @current_customer = logged_in_customer
+      @current_customer = warden.authenticate(scope: :member) if warden
       @current_customer ||= Comable::Customer.new(cookies)
-    end
-
-    def logged_in_customer
-      # Please override this method for logged in customer
     end
   end
 end
