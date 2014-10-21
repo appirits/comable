@@ -3,10 +3,15 @@ ja:
     honorific: &honorific
       '%{name} 様'
 
+    errors:
+      messages:
+        product_soldout: '%{name}は在庫が不足しています。'
+        products_soldout: 'ご指定の商品は在庫が不足しています。'
+        product_not_found: '%{name}は存在しないか削除された可能性があります。'
+        products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
+
     carts:
-      add_product: '１つの商品がカートに入りしました'
-      product_not_found: 'ご指定の商品は見つかりませんでした'
-      product_not_stocked: 'ご指定の商品は在庫がありません'
+      add_product: '１つの商品がカートに入りました'
       empty: 'カートに商品が入っていません'
       update: 'カートの内容が変更されました'
     orders:

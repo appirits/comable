@@ -39,12 +39,12 @@ module Comable
     private
 
     def redirect_by_product_not_found
-      flash[:error] = I18n.t('comable.carts.product_not_found')
+      flash[:error] = I18n.t('comable.errors.messages.products_not_found')
       redirect_to :back
     end
 
     def no_stock
-      flash[:error] = I18n.t('comable.carts.product_not_stocked')
+      flash[:error] = I18n.t('comable.errors.messages.products_soldout')
       redirect_to cart_path
     end
   end
