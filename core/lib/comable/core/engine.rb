@@ -1,5 +1,3 @@
-require 'devise'
-
 module Comable
   module Core
     class Engine < ::Rails::Engine
@@ -11,6 +9,11 @@ module Comable
       end
 
       config.autoload_paths << "#{config.root}/app/models/concerns" if Rails::VERSION::MAJOR == 3
+
+      initializer 'comable.congiguration', before: :load_config_initializers do |app|
+        app.config.comable = Comable::Core::Configuration
+        Comable::Config = app.config.comable
+      end
 
       # refs: https://github.com/plataformatec/devise/wiki/How-To:-Use-devise-inside-a-mountable-engine
       initializer 'comable.devise.setup', before: :load_config_initializers do
