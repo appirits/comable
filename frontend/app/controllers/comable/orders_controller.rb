@@ -5,7 +5,6 @@ module Comable
 
     before_filter :load_order
     before_filter :verify
-    before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
     after_filter :save_order, except: :create
 
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
@@ -95,10 +94,6 @@ module Comable
           :first_name
         ]
       )
-    end
-
-    def redirect_for_logged_in_customer
-      return redirect_to delivery_order_path if current_customer.logged_in?
     end
 
     def record_invalid

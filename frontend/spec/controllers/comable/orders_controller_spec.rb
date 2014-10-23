@@ -142,12 +142,12 @@ describe Comable::OrdersController do
 
     describe "GET 'new'" do
       let(:request) { get :new }
-      its(:response) { should redirect_to(:delivery_order) }
+      its(:response) { should be_success }
     end
 
     describe "GET 'orderer'" do
       let(:request) { get :orderer }
-      its(:response) { should redirect_to(:delivery_order) }
+      its(:response) { should be_success }
     end
 
     describe "POST 'orderer'" do
