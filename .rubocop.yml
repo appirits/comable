@@ -10,11 +10,6 @@ Documentation:
 AsciiComments:
   Enabled: false
 
-# C: Rename <from> to <to>.
-PredicateName:
-  Exclude:
-    - lib/comable/columns_mapper.rb
-
 # W: The use of eval is a serious security risk.
 Eval:
   Exclude:
@@ -34,5 +29,4 @@ MethodLength:
 AllCops:
   Exclude:
     - vendor/**/*
-    - lib/generators/comable/install/templates/**/*
     - spec/dummy/db/schema.rb
