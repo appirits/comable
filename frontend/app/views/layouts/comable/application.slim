@@ -17,4 +17,11 @@ html
     - flash.each do |name, msg|
       = content_tag(:div, msg, id: "flash_#{name}")
 
+    nav
+      ul
+        - if member_signed_in?
+          li = link_to 'Logout', comable.destroy_member_session_path, method: :delete
+        - else
+          li = link_to 'Login', comable.new_member_session_path
+
     == yield
