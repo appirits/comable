@@ -1,4 +1,5 @@
 require 'devise'
+require 'jquery-rails'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'
