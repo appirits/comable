@@ -5,6 +5,9 @@ module Comable
     has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
     alias_method :orders, :comable_orders
 
+    has_many :comable_addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+    alias_method :addresses, :comable_addresses
+
     devise(*Comable::Config.devise_strategies[:customer])
 
     def initialize(*args)
