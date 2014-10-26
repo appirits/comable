@@ -17,12 +17,6 @@ module Comable
 
       # refs: https://github.com/plataformatec/devise/wiki/How-To:-Use-devise-inside-a-mountable-engine
       initializer 'comable.devise.setup', before: :load_config_initializers do
-        class CustomFailure < Devise::FailureApp
-          def redirect_url
-            comable.new_member_session_url
-          end
-        end
-
         Devise.setup do |config|
           config.mailer_sender = 'comable@example.com'
 
@@ -36,11 +30,6 @@ module Comable
           config.password_length = 8..128
           config.reset_password_within = 6.hours
           config.sign_out_via = :delete
-
-          # ==> Warden configuration
-          config.warden do |manager|
-            manager.failure_app = CustomFailure
-          end
 
           # ==> Mountable engine configurations
           config.router_name = :comable
