@@ -1,5 +1,5 @@
 module Comable
-  class CartsController < ApplicationController
+  class CartsController < Comable::ApplicationController
     def show
     end
 
