@@ -32,7 +32,7 @@ module Comable
     end
 
     def load_customer
-      @current_customer = warden.authenticate(scope: :member) if warden
+      @current_customer = warden.authenticate(scope: :customer) if warden
       @current_customer ||= Comable::Customer.new(cookies)
     end
   end

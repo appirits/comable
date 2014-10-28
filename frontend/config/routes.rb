@@ -23,7 +23,7 @@ Comable::Core::Engine.routes.draw do
     end
   end
 
-  devise_for :member, class_name: Comable::Customer.name, module: :devise
+  devise_for :customer, path: :member, class_name: Comable::Customer.name, module: :devise
 
   resource :customer, path: :member
 end
