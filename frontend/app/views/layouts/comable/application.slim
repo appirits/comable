@@ -19,7 +19,7 @@ html
 
     nav
       ul
-        - if customer_signed_in?
+        - if current_customer.signed_in?
           li = link_to 'Logout', comable.destroy_customer_session_path, method: :delete
         - else
           li = link_to 'Login', comable.new_customer_session_path

@@ -21,12 +21,12 @@ module Comable
       end
     end
 
-    def logged_in?
+    def signed_in?
       !new_record?
     end
 
-    def not_logged_in?
-      !logged_in?
+    def not_signed_in?
+      !signed_in?
     end
 
     def reset_cart
@@ -59,7 +59,7 @@ module Comable
     private
 
     def current_guest_token
-      return if logged_in?
+      return if signed_in?
       @cookies.signed[:guest_token]
     end
 
@@ -67,7 +67,7 @@ module Comable
       orders = find_incomplete_orders
       return orders.first if orders.any?
       order = orders.create(family_name: family_name, first_name: first_name, email: email, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
-      @cookies.permanent.signed[:guest_token] = order.guest_token if not_logged_in?
+      @cookies.permanent.signed[:guest_token] = order.guest_token if not_signed_in?
       order
     end
 
