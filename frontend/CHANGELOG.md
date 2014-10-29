@@ -1,3 +1,7 @@
+## Comable 0.2.1 (October 29, 2014) ##
+
+*   Fix a bug that app side namespace is used.
+
 *   Improve the error for no stock.
 
 
