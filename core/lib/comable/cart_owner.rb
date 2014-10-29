@@ -46,25 +46,25 @@ module Comable
     end
 
     def add_stock_to_cart(stock, quantity)
-      fail I18n.t('comable.carts.product_not_stocked') if stock.soldout?
-
       cart_items = find_cart_items_by(stock)
       if cart_items.any?
         cart_item = cart_items.first
+        fail Comable::NoStock if stock.soldout?(quantity: quantity + cart_item.quantity)
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
+        fail Comable::NoStock if stock.soldout?(quantity: quantity)
         cart_items.create(quantity: quantity)
       end
     end
 
     def reset_stock_from_cart(stock, quantity)
+      fail Comable::NoStock if stock.soldout?(quantity: quantity)
+
       cart_items = find_cart_items_by(stock)
       if quantity > 0
         return add_stock_to_cart(stock, quantity) if cart_items.empty?
-        cart_item = cart_items.first
-        cart_item.quantity = quantity
-        cart_item.save
+        cart_items.first.update_attributes(quantity: quantity)
       else
         return false if cart_items.empty?
         cart_items.first.destroy
@@ -72,7 +72,8 @@ module Comable
     end
 
     def find_cart_items_by(stock)
-      fail I18n.t('comable.carts.product_not_found') unless stock.is_a?(Comable::Stock)
+      # TODO: Refactoring
+      fail unless stock.is_a?(Comable::Stock)
       cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
     end
   end
