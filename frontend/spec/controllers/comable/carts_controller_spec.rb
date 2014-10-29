@@ -38,7 +38,7 @@ describe Comable::CartsController do
           its(:response) { should redirect_to(:cart) }
 
           it 'shows the error' do
-            expect(flash[:error]).to eq I18n.t('comable.errors.messages.products_soldout')
+            expect(flash[:alert]).to eq I18n.t('comable.errors.messages.products_soldout')
           end
         end
       end
@@ -76,7 +76,7 @@ describe Comable::CartsController do
           end
 
           it 'flashにメッセージが格納されていること' do
-            expect(flash[:error]).to eq I18n.t('comable.errors.messages.products_not_found')
+            expect(flash[:alert]).to eq I18n.t('comable.errors.messages.products_not_found')
           end
         end
       end
