@@ -1,5 +1,5 @@
 module Comable
-  class CartsController < ApplicationController
+  class CartsController < Comable::ApplicationController
     rescue_from Comable::NoStock, with: :no_stock
 
     def show

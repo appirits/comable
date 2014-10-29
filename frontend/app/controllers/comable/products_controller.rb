@@ -1,5 +1,5 @@
 module Comable
-  class ProductsController < ApplicationController
+  class ProductsController < Comable::ApplicationController
     def index
       @products = Comable::Product.all
     end

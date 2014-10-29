@@ -1,5 +1,5 @@
 module Comable
-  class OrdersController < ApplicationController
+  class OrdersController < Comable::ApplicationController
     prepend Comable::ShipmentAction
     prepend Comable::PaymentAction
 

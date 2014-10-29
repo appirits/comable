@@ -2,7 +2,7 @@ require_dependency 'comable/admin/application_controller'
 
 module Comable
   module Admin
-    class ShipmentMethodsController < ApplicationController
+    class ShipmentMethodsController < Comable::Admin::ApplicationController
       # GET /admin/shipment_methods
       def index
         @shipment_methods = Comable::ShipmentMethod.all

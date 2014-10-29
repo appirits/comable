@@ -2,7 +2,7 @@ require_dependency 'comable/admin/application_controller'
 
 module Comable
   module Admin
-    class StoreController < ApplicationController
+    class StoreController < Comable::Admin::ApplicationController
       # GET /admin/store
       def show
         @store = Comable::Store.first
