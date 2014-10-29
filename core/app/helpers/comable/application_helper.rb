@@ -4,9 +4,12 @@ module Comable
       @current_store || load_store
     end
 
-    def current_customer
-      @current_customer || load_customer
-    end
+    # Override the devise method.
+    # The below codes move to core/lib/comable/core/engine.rb:
+    #
+    # def current_customer
+    #   ...
+    # end
 
     def current_order
       current_customer.incomplete_order
@@ -29,11 +32,6 @@ module Comable
 
     def load_store
       @current_store = Comable::Store.instance
-    end
-
-    def load_customer
-      @current_customer = warden.authenticate(scope: :customer) if warden
-      @current_customer ||= Comable::Customer.new(cookies)
     end
   end
 end

@@ -36,6 +36,26 @@ module Comable
           config.parent_controller = 'Comable::ApplicationController'
         end
       end
+
+      initializer 'comable.devise.helpers' do
+        module DeviseHelperPrepender
+          def define_helpers(mapping)
+            super.tap do
+              mapping = mapping.name
+              return if mapping.to_sym != :customer
+
+              class_eval <<-METHODS, __FILE__, __LINE__ + 1
+                alias_method :devise_current_#{mapping}, :current_#{mapping}
+                def current_#{mapping}
+                  @current_#{mapping} ||= devise_current_#{mapping} || Comable::Customer.new(cookies)
+                end
+              METHODS
+            end
+          end
+        end
+
+        Devise::Controllers::Helpers.singleton_class.send(:prepend, DeviseHelperPrepender)
+      end
     end
   end
 end
