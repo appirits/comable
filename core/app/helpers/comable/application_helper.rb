@@ -1,7 +1,7 @@
 module Comable
   module ApplicationHelper
     def current_store
-      @current_store || load_store
+      @current_store ||= Comable::Store.instance
     end
 
     # Override the devise method.
@@ -26,12 +26,6 @@ module Comable
         name,
         "x#{quantity}"
       ].join(' ')
-    end
-
-    private
-
-    def load_store
-      @current_store = Comable::Store.instance
     end
   end
 end
