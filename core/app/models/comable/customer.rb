@@ -2,7 +2,7 @@ module Comable
   class Customer < ActiveRecord::Base
     include CartOwner
 
-    has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
+    has_many :comable_orders, -> { complete }, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
     alias_method :orders, :comable_orders
 
     has_many :comable_addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
