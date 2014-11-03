@@ -11,9 +11,6 @@ module Comable
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
     rescue_from Comable::InvalidOrder, with: :order_invalid
 
-    def new
-    end
-
     def orderer
       case request.method_symbol
       when :post
@@ -26,9 +23,6 @@ module Comable
       when :post
         redirect_to next_order_path
       end
-    end
-
-    def confirm
     end
 
     def create
