@@ -1,3 +1,6 @@
+*   Improve the order completion.
+
+
 ## Comable 0.2.1 (October 29, 2014) ##
 
 *   Improve the error for no stock.
