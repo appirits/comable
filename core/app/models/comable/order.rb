@@ -3,7 +3,7 @@ module Comable
     belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
     belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
-    has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key
+    has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order
 
     accepts_nested_attributes_for :order_deliveries
 
@@ -29,16 +29,23 @@ module Comable
     scope :incomplete, -> { where(completed_at: nil) }
 
     def precomplete
-      valid_stock
-      fail Comable::InvalidOrder, errors.full_messages.join("\n") if errors.any?
+      valid_order_quantity?
+    end
+
+    def precomplete!
+      fail Comable::InvalidOrder unless precomplete
       self
     end
 
     def complete
       # TODO: トランザクションの追加
       run_callbacks :complete do
-        save_to_complete!
+        save_to_complete
       end
+    end
+
+    def complete!
+      fail Comable::InvalidOrder unless complete
       self
     end
 
@@ -77,21 +84,17 @@ module Comable
 
     private
 
-    def save_to_complete!
+    def save_to_complete
       self.completed_at = Time.now
       self.shipment_fee = current_shipment_fee
       self.total_price = current_total_price
       generate_code
       order_deliveries.each(&:save_to_complete)
-      save!
+      save
     end
 
-    def valid_stock
-      order_deliveries.map(&:order_details).flatten.each do |order_detail|
-        return errors.add :base, "「#{order_detail.stock.name_with_sku}」の注文数が不正です。" if order_detail.quantity <= 0
-        quantity = order_detail.stock.quantity - order_detail.quantity
-        return errors.add :base, "「#{order_detail.stock.name_with_sku}」の在庫が不足しています。" if quantity < 0
-      end
+    def valid_order_quantity?
+      order_deliveries.map(&:order_details).flatten.map(&:valid_order_quantity?).all?
     end
 
     def generate_code

@@ -48,12 +48,14 @@ module Comable
 
     def preorder(order_params = {})
       incomplete_order.attributes = order_params
-      incomplete_order.precomplete
+      incomplete_order.precomplete!
+      incomplete_order
     end
 
     def order(order_params = {})
       incomplete_order.attributes = order_params
-      incomplete_order.complete.tap { |completed_flag| reset_cart if completed_flag }
+      incomplete_order.complete!
+      incomplete_order.tap { |completed_flag| reset_cart if completed_flag }
     end
 
     private

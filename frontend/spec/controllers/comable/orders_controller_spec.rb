@@ -111,6 +111,15 @@ describe Comable::OrdersController do
         it '注文に紐づく明細情報が１つ存在すること' do
           expect(complete_orders.first.order_deliveries.first.order_details.count).to eq(1)
         end
+
+        context '在庫が不足している場合' do
+          let(:add_to_cart) do
+            customer.reset_cart_item(product, quantity: stock.quantity)
+            stock.update_attributes(quantity: 0)
+          end
+
+          its(:response) { should redirect_to(controller.comable.cart_path) }
+        end
       end
 
       context '不正な手順のリクエストの場合' do
@@ -121,13 +130,6 @@ describe Comable::OrdersController do
         it 'flashにメッセージが格納されていること' do
           expect(flash[:alert]).to eq I18n.t('comable.orders.failure')
         end
-      end
-
-      context '在庫が不足している場合' do
-        let(:add_to_cart) { customer.add_cart_item(product, quantity: stock.quantity + 1) }
-        let(:request) { post :create, order_params }
-
-        its(:response) { should redirect_to(controller.comable.cart_path) }
       end
     end
   end

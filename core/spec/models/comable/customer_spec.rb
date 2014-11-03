@@ -50,7 +50,7 @@ describe Comable::Customer do
       let(:stocks) { FactoryGirl.create_list(:stock, 5, :many, :soldout, :with_product) }
 
       it '商品を投入できないこと' do
-        expect { subject.add_cart_item(stock) }.to raise_error
+        expect { subject.add_cart_item(stock) }.to raise_error(Comable::NoStock)
       end
     end
   end
@@ -110,14 +110,6 @@ describe Comable::Customer do
 
     context '在庫がない場合' do
       before { stock.update_attributes(quantity: 0) }
-
-      it '商品を購入できないこと' do
-        expect { subject.order }.to raise_error(Comable::InvalidOrder)
-      end
-    end
-
-    context '在庫以上の注文がだった場合' do
-      before { subject.add_cart_item(stock, quantity: stock.quantity) }
 
       it '商品を購入できないこと' do
         expect { subject.order }.to raise_error(Comable::InvalidOrder)
