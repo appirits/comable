@@ -4,7 +4,7 @@ FactoryGirl.define do
     code '1234567-001'
     quantity nil
 
-    ignore { sku_flag false }
+    transient { sku_flag false }
 
     trait :many do
       sequence(:product_id_num) { |n| n.next }
@@ -12,7 +12,7 @@ FactoryGirl.define do
     end
 
     trait :sku do
-      ignore { sku_flag true }
+      transient { sku_flag true }
       sku_h_choice_name 'レッド'
       sku_v_choice_name 'S'
     end
