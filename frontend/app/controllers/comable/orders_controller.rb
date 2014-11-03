@@ -11,9 +11,6 @@ module Comable
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
     rescue_from Comable::InvalidOrder, with: :order_invalid
 
-    def new
-    end
-
     def orderer
       case request.method_symbol
       when :post
@@ -28,14 +25,11 @@ module Comable
       end
     end
 
-    def confirm
-    end
-
     def create
       order = current_customer.order
       if order.complete?
-        Comable::OrderMailer.complete(order).deliver if current_store.email_activate?
         flash[:notice] = I18n.t('comable.orders.success')
+        send_order_complete_mail
       else
         flash[:alert] = I18n.t('comable.orders.failure')
         redirect_to comable.confirm_order_path
@@ -43,6 +37,10 @@ module Comable
     end
 
     private
+
+    def send_order_complete_mail
+      Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
+    end
 
     def next_order_path(target_action_name = nil)
       case (target_action_name || action_name).to_sym

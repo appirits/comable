@@ -1,7 +1,7 @@
 module Comable
   class OrderDelivery < ActiveRecord::Base
     belongs_to :order, class_name: Comable::Order.name, foreign_key: Comable::Order.table_name.singularize.foreign_key
-    has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, foreign_key: table_name.singularize.foreign_key
+    has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order_delivery
 
     delegate :customer, to: :order
     delegate :guest_token, to: :order
