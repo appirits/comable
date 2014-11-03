@@ -13,6 +13,7 @@ module Comable
     delegate :complete?, to: :order_delivery
 
     before_save :save_to_add_cart, unless: :complete?
+    before_save :verify_quantity, unless: :complete?
 
     def save_to_complete
       self.attributes = current_attributes
@@ -43,6 +44,10 @@ module Comable
 
     def decrement_stock
       stock.decrement!(quantity: quantity)
+    end
+
+    def verify_quantity
+      fail Comable::NoStock if stock.soldout?(quantity: quantity)
     end
 
     def current_attributes
