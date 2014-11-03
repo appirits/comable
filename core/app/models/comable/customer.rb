@@ -2,8 +2,7 @@ module Comable
   class Customer < ActiveRecord::Base
     include CartOwner
 
-    has_many :comable_orders, -> { complete }, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
-    alias_method :orders, :comable_orders
+    has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
 
     has_many :comable_addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
     alias_method :addresses, :comable_addresses
@@ -19,6 +18,12 @@ module Comable
       else
         super
       end
+    end
+
+    # Add conditions for the orders association.
+    # Override method of the orders association to support Rails 3.x.
+    def orders
+      super.complete
     end
 
     def signed_in?
