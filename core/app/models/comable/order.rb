@@ -30,15 +30,22 @@ module Comable
 
     def precomplete
       valid_order_quantity?
-      fail Comable::InvalidOrder, errors.full_messages.join("\n") if errors.any?
+    end
+
+    def precomplete!
+      fail Comable::InvalidOrder unless precomplete
       self
     end
 
     def complete
       # TODO: トランザクションの追加
       run_callbacks :complete do
-        save_to_complete!
+        save_to_complete
       end
+    end
+
+    def complete!
+      fail Comable::InvalidOrder unless complete
       self
     end
 
@@ -77,13 +84,13 @@ module Comable
 
     private
 
-    def save_to_complete!
+    def save_to_complete
       self.completed_at = Time.now
       self.shipment_fee = current_shipment_fee
       self.total_price = current_total_price
       generate_code
       order_deliveries.each(&:save_to_complete)
-      save!
+      save
     end
 
     def valid_order_quantity?

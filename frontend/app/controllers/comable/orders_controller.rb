@@ -8,7 +8,6 @@ module Comable
     before_filter :redirect_for_logged_in_customer, only: [:new, :orderer]
     after_filter :save_order, except: :create
 
-    rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
     rescue_from Comable::InvalidOrder, with: :order_invalid
 
     def orderer
@@ -99,13 +98,8 @@ module Comable
       return redirect_to delivery_order_path if current_customer.logged_in?
     end
 
-    def record_invalid
+    def order_invalid
       flash[:alert] = I18n.t('comable.orders.failure')
-      redirect_to comable.cart_path
-    end
-
-    def order_invalid(exception)
-      flash[:alert] = exception.message
       redirect_to comable.cart_path
     end
   end
