@@ -11,6 +11,7 @@ module Comable
     delegate :product, to: :stock
     delegate :guest_token, to: :order_delivery
     delegate :complete?, to: :order_delivery
+    delegate :order, to: :order_delivery
 
     before_save :save_to_add_cart, unless: :complete?
     before_save :verify_quantity, unless: :complete?
@@ -40,6 +41,20 @@ module Comable
       price * quantity
     end
 
+    def valid_order_quantity?
+      if quantity <= 0
+        add_order_quantity_invalid_error_to_order
+        return false
+      end
+
+      if stock.soldout?(quantity: quantity)
+        add_product_soldout_error_to_order
+        return false
+      end
+
+      true
+    end
+
     private
 
     def decrement_stock
@@ -60,6 +75,14 @@ module Comable
         sku_h_choice_name: stock.sku_h_choice_name,
         sku_v_choice_name: stock.sku_v_choice_name
       }
+    end
+
+    def add_order_quantity_invalid_error_to_order
+      order.errors.add :base, I18n.t('comable.errors.messages.order_quantity_invalid', name: stock.name_with_sku)
+    end
+
+    def add_product_soldout_error_to_order
+      order.errors.add :base, I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku)
     end
   end
 end

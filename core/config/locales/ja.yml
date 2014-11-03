@@ -9,6 +9,7 @@ ja:
         products_soldout: 'ご指定の商品は在庫が不足しています。'
         product_not_found: '%{name}は存在しないか削除された可能性があります。'
         products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
+        order_quantity_invalid: '%{name}の注文数が不正です。'
 
     carts:
       add_product: '１つの商品がカートに入りました'
