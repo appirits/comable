@@ -1,3 +1,7 @@
+## Comable 0.2.2 (November 04, 2014) ##
+
+*   Implement the members feature.
+
 *   Improve the order completion.
 
 

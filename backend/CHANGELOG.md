@@ -1,3 +1,8 @@
+## Comable 0.2.2 (November 04, 2014) ##
+
+*   No changes.
+
+
 ## Comable 0.2.1 (October 29, 2014) ##
 
 *   No changes.
