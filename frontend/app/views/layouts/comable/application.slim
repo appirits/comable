@@ -12,7 +12,16 @@ html
     = stylesheet_link_tag "comable/application", media: "all"
     = javascript_include_tag "comable/application"
     = csrf_meta_tags
+
   body
     - flash.each do |name, msg|
       = content_tag(:div, msg, id: "flash_#{name}")
+
+    nav
+      ul
+        - if current_customer.signed_in?
+          li = link_to 'Logout', comable.destroy_customer_session_path, method: :delete
+        - else
+          li = link_to 'Login', comable.new_customer_session_path
+
     == yield

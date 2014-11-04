@@ -140,16 +140,16 @@ describe Comable::OrdersController do
     before { request }
 
     let(:customer) { FactoryGirl.create(:customer) }
-    let(:login) { allow(controller).to receive(:logged_in_customer).and_return(customer) }
+    let(:login) { allow(controller).to receive(:current_customer).and_return(customer) }
 
     describe "GET 'new'" do
       let(:request) { get :new }
-      its(:response) { should redirect_to(:delivery_order) }
+      its(:response) { should be_success }
     end
 
     describe "GET 'orderer'" do
       let(:request) { get :orderer }
-      its(:response) { should redirect_to(:delivery_order) }
+      its(:response) { should be_success }
     end
 
     describe "POST 'orderer'" do

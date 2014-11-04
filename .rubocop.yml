@@ -25,6 +25,11 @@ MethodLength:
   Exclude:
     - '**/db/migrate/*'
 
+# C: Replace class var @@_ with a class instance var.
+ClassVars:
+  Exclude:
+    - core/lib/comable/core/configuration.rb
+
 # Ignore files.
 AllCops:
   Exclude:

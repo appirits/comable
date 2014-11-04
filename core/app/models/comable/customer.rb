@@ -2,8 +2,12 @@ module Comable
   class Customer < ActiveRecord::Base
     include CartOwner
 
-    has_many :comable_orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
-    alias_method :orders, :comable_orders
+    has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
+
+    has_many :comable_addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+    alias_method :addresses, :comable_addresses
+
+    devise(*Comable::Config.devise_strategies[:customer])
 
     def initialize(*args)
       obj = args.first
@@ -16,12 +20,18 @@ module Comable
       end
     end
 
-    def logged_in?
+    # Add conditions for the orders association.
+    # Override method of the orders association to support Rails 3.x.
+    def orders
+      super.complete
+    end
+
+    def signed_in?
       !new_record?
     end
 
-    def not_logged_in?
-      !logged_in?
+    def not_signed_in?
+      !signed_in?
     end
 
     def reset_cart
@@ -56,7 +66,7 @@ module Comable
     private
 
     def current_guest_token
-      return if logged_in?
+      return if signed_in?
       @cookies.signed[:guest_token]
     end
 
@@ -64,7 +74,7 @@ module Comable
       orders = find_incomplete_orders
       return orders.first if orders.any?
       order = orders.create(family_name: family_name, first_name: first_name, email: email, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
-      @cookies.permanent.signed[:guest_token] = order.guest_token if not_logged_in?
+      @cookies.permanent.signed[:guest_token] = order.guest_token if not_signed_in?
       order
     end
 
