@@ -10,6 +10,6 @@ gem 'coveralls', require: false
 gem 'rubocop', require: false
 gem 'bullet', require: false
 gem 'pry-rails', require: false
-gem 'byebug', require: false
+gem 'byebug'
 gem 'yard', require: false
 gem 'inch', require: false
