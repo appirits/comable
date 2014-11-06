@@ -37,7 +37,7 @@ module Comable
     scope :by_customer, -> (customer) { where(Comable::Customer.table_name.singularize.foreign_key => customer) }
 
     def precomplete
-      valid_order_quantity?
+      valid_quantity? && valid?
     end
 
     def precomplete!
@@ -101,8 +101,8 @@ module Comable
       save
     end
 
-    def valid_order_quantity?
-      order_deliveries.map(&:order_details).flatten.map(&:valid_order_quantity?).all?
+    def valid_quantity?
+      order_deliveries.map(&:order_details).flatten.map(&:valid_quantity?).all?
     end
 
     def generate_code

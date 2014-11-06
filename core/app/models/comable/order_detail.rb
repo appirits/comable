@@ -4,19 +4,21 @@ module Comable
     include Comable::SkuChoice
 
     belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key
-    belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key
+    belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key, inverse_of: :order_details
 
     accepts_nested_attributes_for :stock
 
-    # TODO: バリデーションの追加
+    validates :quantity, numericality: { greater_than: 0 }
 
     delegate :product, to: :stock
     delegate :guest_token, to: :order_delivery
     delegate :complete?, to: :order_delivery
     delegate :order, to: :order_delivery
 
-    before_save :save_to_add_cart, unless: :complete?
-    before_save :verify_quantity, unless: :complete?
+    with_options if: :order_delivery, unless: :complete? do |incomplete|
+      incomplete.before_save :save_to_add_cart
+      incomplete.after_validation :verify_stock_quantity
+    end
 
     def save_to_complete
       self.attributes = current_attributes
@@ -43,7 +45,7 @@ module Comable
       price * quantity
     end
 
-    def valid_order_quantity?
+    def valid_quantity?
       if quantity <= 0
         add_order_quantity_invalid_error_to_order
         return false
@@ -65,7 +67,7 @@ module Comable
       stock.quantity -= quantity
     end
 
-    def verify_quantity
+    def verify_stock_quantity
       fail Comable::NoStock if stock.soldout?(quantity: quantity)
     end
 

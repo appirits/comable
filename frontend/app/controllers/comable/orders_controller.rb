@@ -86,7 +86,8 @@ module Comable
     end
 
     def load_order
-      @order = current_customer.preorder(order_params || {})
+      @order = current_order
+      @order.attributes = order_params if order_params
     end
 
     def save_order

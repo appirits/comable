@@ -118,13 +118,6 @@ describe Comable::Customer do
       end
     end
 
-    context '異常系' do
-      it '注文数０の場合にエラーが発生すること' do
-        subject.cart_items.first.update_attributes(quantity: 0)
-        expect { subject.order }.to raise_error(Comable::InvalidOrder)
-      end
-    end
-
     # TODO: 複数配送先の完全な実装 or 機能削除
     pending '複数配送' do
       let(:order) { FactoryGirl.build(:order) }
