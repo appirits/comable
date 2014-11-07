@@ -98,7 +98,7 @@ module Comable
       return orders.first if orders.any?
       order = orders.create(incomplete_order_attributes)
       @cookies.permanent.signed[:guest_token] = order.guest_token if @cookies
-      # enable includes
+      # enable preload
       find_incomplete_orders.first
     end
 
@@ -117,7 +117,7 @@ module Comable
       guest_token = current_guest_token unless signed_in?
       Comable::Order
         .incomplete
-        .includes(order_deliveries: :order_details)
+        .preload(order_deliveries: :order_details)
         .where(guest_token: guest_token)
         .by_customer(self)
         .limit(1)
