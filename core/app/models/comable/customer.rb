@@ -98,7 +98,8 @@ module Comable
       return orders.first if orders.any?
       order = orders.create(incomplete_order_attributes)
       @cookies.permanent.signed[:guest_token] = order.guest_token if @cookies
-      order
+      # enable includes
+      find_incomplete_orders.first
     end
 
     def incomplete_order_attributes

@@ -3,6 +3,23 @@ describe Comable::Customer do
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
+  describe 'incomplete order' do
+    context 'when guest' do
+      let(:cookies) { OpenStruct.new(signed: { guest_token: nil }, permanent: nil) }
+
+      before { allow(cookies).to receive(:permanent) { cookies } }
+      before { allow(cookies.class).to receive(:name) { 'Cookies' } }
+
+      subject { described_class.new(cookies) }
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        order_delivery = order.order_deliveries.first
+        expect(order_delivery.object_id).to eq(order.order_deliveries.first.object_id)
+      end
+    end
+  end
+
   context 'カート処理' do
     let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
     let(:stock) { stocks.first }
