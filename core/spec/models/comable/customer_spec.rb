@@ -6,6 +6,7 @@ describe Comable::Customer do
   describe 'incomplete order' do
     context 'when guest' do
       let(:cookies) { OpenStruct.new(signed: { guest_token: nil }, permanent: nil) }
+      let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
 
       before { allow(cookies).to receive(:permanent) { cookies } }
       before { allow(cookies.class).to receive(:name) { 'Cookies' } }
@@ -16,6 +17,43 @@ describe Comable::Customer do
         order = subject.incomplete_order
         order_delivery = order.order_deliveries.first
         expect(order_delivery.object_id).to eq(order.order_deliveries.first.object_id)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        expect(order.order_deliveries.size).to eq(1)
+        order.order_deliveries.build
+        order.save
+        expect(order.order_deliveries.size).to eq(2)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        order_delivery = order.order_deliveries.first
+        expect(order_delivery.order_details.size).to eq(0)
+
+        order_delivery.order_details.build
+        expect(order_delivery.order_details.size).to eq(1)
+        expect(order.order_deliveries.first.order_details.size).to eq(1)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        order_delivery = order.order_deliveries.first
+        expect(order_delivery.order_details.size).to eq(0)
+
+        order_delivery.order_details.create(stock: stock, quantity: 1)
+        expect(order_delivery.order_details.size).to eq(1)
+        expect(order.order_deliveries.first.order_details.size).to eq(1)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        expect(subject.cart.size).to eq(0)
+
+        subject.add_cart_item(stock)
+        expect(order.order_deliveries.first.order_details.size).to eq(1)
+        expect(subject.cart.size).to eq(1)
       end
     end
   end
