@@ -46,9 +46,10 @@ module Comable
     end
 
     def complete
-      # TODO: トランザクションの追加
-      run_callbacks :complete do
-        save_to_complete
+      ActiveRecord::Base.transaction do
+        run_callbacks :complete do
+          save_to_complete
+        end
       end
     end
 

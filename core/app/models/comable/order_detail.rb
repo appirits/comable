@@ -64,6 +64,7 @@ module Comable
     def decrement_stock
       return unless quantity
       return unless stock.quantity
+      stock.lock!
       stock.quantity -= quantity
     end
 
