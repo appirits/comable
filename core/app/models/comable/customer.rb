@@ -72,7 +72,7 @@ module Comable
     end
 
     def incomplete_order
-      @incomplete_order ||= initialize_incomplete_order
+      @incomplete_order ||= find_or_initialize_incomplete_order
     end
 
     def preorder(order_params = {})
@@ -93,13 +93,15 @@ module Comable
       @cookies.signed[:guest_token] if @cookies
     end
 
+    def find_or_initialize_incomplete_order
+      find_incomplete_order || initialize_incomplete_order
+    end
+
     def initialize_incomplete_order
-      orders = find_incomplete_orders
-      return orders.first if orders.any?
-      order = orders.create(incomplete_order_attributes)
+      order = Comable::Order.create(incomplete_order_attributes)
       @cookies.permanent.signed[:guest_token] = order.guest_token if @cookies
       # enable preload
-      find_incomplete_orders.first
+      find_incomplete_order
     end
 
     def incomplete_order_attributes
@@ -113,14 +115,14 @@ module Comable
       }
     end
 
-    def find_incomplete_orders
-      guest_token = current_guest_token unless signed_in?
+    def find_incomplete_order
+      guest_token ||= current_guest_token unless signed_in?
       Comable::Order
         .incomplete
         .preload(order_deliveries: :order_details)
         .where(guest_token: guest_token)
         .by_customer(self)
-        .limit(1)
+        .first
     end
 
     def inherit_cart_items
