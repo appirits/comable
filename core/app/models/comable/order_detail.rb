@@ -16,8 +16,8 @@ module Comable
     delegate :order, to: :order_delivery
 
     with_options if: :order_delivery, unless: :complete? do |incomplete|
-      incomplete.before_save :save_to_add_cart
-      incomplete.after_validation :verify_stock_quantity
+      incomplete.before_validation :save_to_add_cart
+      incomplete.before_validation :verify_stock_quantity
     end
 
     def save_to_complete
