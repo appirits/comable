@@ -97,7 +97,7 @@ module Comable
       self.shipment_fee = current_shipment_fee
       self.total_price = current_total_price
       generate_code
-      order_deliveries.each(&:save_to_complete)
+      order_deliveries.each(&:complete)
       save
     end
 

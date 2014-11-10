@@ -9,8 +9,8 @@ module Comable
     delegate :guest_token, to: :order
     delegate :complete?, to: :order
 
-    def save_to_complete
-      order_details.each(&:save_to_complete)
+    def complete
+      order_details.each(&:complete)
     end
 
     # 氏名を取得

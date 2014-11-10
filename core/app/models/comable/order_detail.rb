@@ -16,17 +16,17 @@ module Comable
     delegate :order, to: :order_delivery
 
     with_options if: :order_delivery, unless: :complete? do |incomplete|
-      incomplete.before_validation :save_to_add_cart
+      incomplete.before_validation :copy_attributes
       incomplete.before_validation :verify_stock_quantity
     end
 
-    def save_to_complete
-      self.attributes = current_attributes
+    def complete
+      copy_attributes
       decrement_stock
     end
 
     # TODO: カート投入時との差額表示
-    def save_to_add_cart
+    def copy_attributes
       self.attributes = current_attributes
     end
 
