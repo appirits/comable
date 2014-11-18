@@ -9,22 +9,30 @@ html
     - if current_store.meta_description.present?
       meta name="description" content="#{current_store.meta_description}"
 
-    = stylesheet_link_tag "comable/application", media: "all"
-    = javascript_include_tag "comable/application"
+    = stylesheet_link_tag "comable/frontend/application", media: "all"
+    = javascript_include_tag "comable/frontend/application"
     = csrf_meta_tags
 
     css:
       .hidden { display: none; }
 
-  body
-    - flash.each do |name, msg|
-      = content_tag(:div, msg, id: "flash_#{name}")
+    javascript:
+      jQuery(document).ready(function() {
+        $(".dropdown").hover(
+          function() { $('.dropdown-menu', this).stop().delay(500).queue(function() { $(this).show().parent().addClass('open').dequeue(); }) },
+          function() { $('.dropdown-menu', this).stop().hide().parent().removeClass('open'); });
+      });
 
-    nav
-      ul
-        - if current_customer.signed_in?
-          li = link_to 'Logout', comable.destroy_customer_session_path, method: :delete
-        - else
-          li = link_to 'Login', comable.new_customer_session_path
+  body class="#{'comable-checkout-layout' if controller_name == 'orders'}"
+    - if controller_name == 'orders'
+      = render 'comable/shared/header_for_checkout'
+    - else
+      = render 'comable/shared/header'
 
-    == yield
+    main.container
+      - flash.each do |name, msg|
+        = content_tag(:div, msg, id: "flash_#{name}")
+
+      == yield
+
+    = render 'comable/shared/footer'

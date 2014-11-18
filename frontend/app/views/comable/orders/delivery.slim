@@ -1,7 +1,7 @@
-.order
-  .ship_address
+#comable-order
+  .comable-ship_address
     h1
-      | Shipping address
+      = @order.class.human_state_name(:delivery)
 
     - if @order.ship_address.try(:persisted?)
       = render 'comable/shared/address', address: @order.ship_address

@@ -1,6 +1,12 @@
 require 'comable_core'
 
 require 'slim'
+require 'jquery-rails'
+require 'bootstrap-sass'
+
+# TODO: Enable after solve the issue.
+# refs https://github.com/Compass/compass-rails/issues/155
+# require 'compass-rails'
 
 module Comable
   module Frontend

@@ -1,5 +1,5 @@
 Comable::Core::Engine.routes.draw do
-  get '/' => 'products#index'
+  root to: 'products#index'
 
   resources :products
 

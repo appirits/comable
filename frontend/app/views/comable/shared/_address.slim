@@ -1,23 +1,13 @@
-dl
-  .name
-    dt = address.class.human_attribute_name(:family_name)
-    dd = address.family_name
-    dt = address.class.human_attribute_name(:first_name)
-    dd = address.first_name
-  .address
-    .state
-      dt = address.class.human_attribute_name(:state_name)
-      dd = address.state_name
-    .zip_code
-      dt = address.class.human_attribute_name(:zip_code)
-      dd = address.zip_code
-    .city
-      dt = address.class.human_attribute_name(:city)
-      dd = address.city
-    .detail
-      dt = address.class.human_attribute_name(:detail)
-      dd = address.detail
-  .other
-    .phone_number
-      dt = address.class.human_attribute_name(:phone_number)
-      dd = address.phone_number
+.comable-name
+  strong
+    = address.full_name
+.comable-zip_code
+  = address.zip_code
+.comable-address1
+  = address.state_name
+  = address.city
+.comable-address2
+  = address.detail
+.comable-phone_number
+  = "#{address.class.human_attribute_name(:phone_number)}: "
+  = address.phone_number
