@@ -103,18 +103,24 @@ describe Comable::Customer do
       expect(subject.cart.count).to eq(0)
     end
 
-    context '在庫がない場合' do
+    context 'when soldout' do
       let(:stocks) { FactoryGirl.create_list(:stock, 5, :soldout, :with_product) }
 
-      it '商品を投入できないこと' do
-        expect { subject.add_cart_item(stock) }.to raise_error(Comable::NoStock)
+      it 'has a error in cart' do
+        subject.add_cart_item(stock)
+        expect(subject.cart.errors.count).to eq(1)
+      end
+
+      it 'has a error message in cart' do
+        subject.add_cart_item(stock)
+        expect(subject.cart.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
       end
     end
   end
 
   context '注文処理' do
     let(:payment) { FactoryGirl.create(:payment) }
-    let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+    let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product, quantity: order_quantity) }
     let(:order_quantity) { 10 }
 
     subject { FactoryGirl.create(:customer) }
@@ -170,6 +176,12 @@ describe Comable::Customer do
 
       it '商品を購入できないこと' do
         expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      end
+
+      it '商品を購入できないこと' do
+        order = subject.incomplete_order
+        order.complete
+        expect(order.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
       end
     end
 

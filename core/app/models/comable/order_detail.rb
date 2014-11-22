@@ -3,21 +3,20 @@ module Comable
     include Comable::SkuItem
     include Comable::SkuChoice
 
-    belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key
+    belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key, autosave: true
     belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key, inverse_of: :order_details
 
-    accepts_nested_attributes_for :stock
-
     validates :quantity, numericality: { greater_than: 0 }
+    validate :valid_stock_quantity
 
     delegate :product, to: :stock
     delegate :guest_token, to: :order_delivery
-    delegate :complete?, to: :order_delivery
-    delegate :order, to: :order_delivery
+    delegate :order, to: :order_delivery, allow_nil: true
+    delegate :incompleted?, to: :order, allow_nil: true
+    delegate :completing?, to: :order, allow_nil: true
 
-    with_options if: :order_delivery, unless: :complete? do |incomplete|
+    with_options if: -> { incompleted? || completing? } do |incomplete|
       incomplete.before_validation :copy_attributes
-      incomplete.before_validation :verify_stock_quantity
     end
 
     def complete
@@ -45,31 +44,30 @@ module Comable
       price * quantity
     end
 
-    def valid_quantity?
-      if quantity <= 0
-        add_order_quantity_invalid_error_to_order
-        return false
+    def soldout_stock?
+      stock_with_clean_quantity do |stock|
+        stock.soldout?(quantity: quantity)
       end
+    end
 
-      if stock.soldout?(quantity: quantity)
-        add_product_soldout_error_to_order
-        return false
-      end
-
-      true
+    def valid_stock_quantity
+      return unless soldout_stock?
+      errors.add :quantity, I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku)
     end
 
     private
 
-    def decrement_stock
-      return unless quantity
-      return unless stock.quantity
-      stock.lock!
-      stock.quantity -= quantity
+    def stock_with_clean_quantity
+      quantity_will = stock.quantity
+      stock.quantity = stock.quantity_was if stock.quantity_was
+      yield stock
+    ensure
+      stock.quantity = quantity_will
     end
 
-    def verify_stock_quantity
-      fail Comable::NoStock if stock.soldout?(quantity: quantity)
+    def decrement_stock
+      stock.lock!
+      stock.quantity -= quantity
     end
 
     def current_attributes
@@ -82,14 +80,6 @@ module Comable
         sku_h_choice_name: stock.sku_h_choice_name,
         sku_v_choice_name: stock.sku_v_choice_name
       }
-    end
-
-    def add_order_quantity_invalid_error_to_order
-      order.errors.add :base, I18n.t('comable.errors.messages.order_quantity_invalid', name: stock.name_with_sku)
-    end
-
-    def add_product_soldout_error_to_order
-      order.errors.add :base, I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku)
     end
   end
 end

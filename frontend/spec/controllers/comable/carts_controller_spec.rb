@@ -95,14 +95,14 @@ describe Comable::CartsController do
           expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
         end
 
-        context 'when no stock' do
+        context 'when soldout' do
           let(:stock) { FactoryGirl.create(:stock, :soldout) }
           let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
 
-          its(:response) { should redirect_to(:cart) }
+          its(:response) { is_expected.to render_template(:show) }
 
           it 'shows the error' do
-            expect(flash[:alert]).to eq I18n.t('comable.errors.messages.products_soldout')
+            expect(flash.now[:alert]).to eq I18n.t('comable.carts.invalid')
           end
         end
       end

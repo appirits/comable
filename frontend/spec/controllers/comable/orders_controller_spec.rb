@@ -149,7 +149,7 @@ describe Comable::OrdersController do
       context '不正な手順のリクエストの場合' do
         let(:request) { post :create, order_params }
 
-        its(:response) { should redirect_to(controller.comable.cart_path) }
+        its(:response) { should redirect_to(controller.comable.confirm_order_path) }
 
         it 'flashにメッセージが格納されていること' do
           expect(flash[:alert]).to eq I18n.t('comable.orders.failure')

@@ -32,6 +32,15 @@ module Comable
       def price
         sum(&:current_subtotal_price)
       end
+
+      # TODO: Refactoring
+      def errors
+        ActiveModel::Errors.new(self).tap do |obj|
+          map(&:errors).map(&:full_messages).each do |full_message|
+            obj[:base] << full_message if full_message.any?
+          end
+        end
+      end
     end
 
     private
@@ -55,7 +64,7 @@ module Comable
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_items.create(Comable::Stock.table_name.singularize.foreign_key => stock.id, quantity: quantity)
+        cart_items.build(Comable::Stock.table_name.singularize.foreign_key => stock.id, quantity: quantity).save
       end
     end
 

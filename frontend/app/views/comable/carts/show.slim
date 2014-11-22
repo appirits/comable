@@ -2,6 +2,12 @@ h1 カート
 
 ul.cart
   - current_customer.cart.each do |cart_item|
+    - if current_customer.cart.errors.any?
+      .errors
+        ul
+          - current_customer.cart.errors.full_messages.each do |message|
+            li = message
+
     = form_tag comable.cart_path, method: :put do
       - stock = cart_item.stock
       - product = stock.product
@@ -17,6 +23,8 @@ ul.cart
           = select_tag :quantity, options_for_select(1.upto([10, selected].max).to_a, selected)
           = hidden_field_tag :stock_id, stock.id
           = submit_tag '変更'
+        - if cart_item.soldout_stock?
+          .error.soldout = I18n.t('comable.carts.soldout')
 
 .order
   = link_to '注文', comable.new_order_path

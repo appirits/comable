@@ -27,7 +27,6 @@ module Comable
     end
 
     define_model_callbacks :complete
-    before_complete :precomplete
     before_validation :generate_guest_token, on: :create
     before_validation :clone_addresses_from_customer, on: :create
     after_complete :clone_addresses_to_customer
@@ -36,19 +35,10 @@ module Comable
     scope :incomplete, -> { where(completed_at: nil) }
     scope :by_customer, -> (customer) { where(Comable::Customer.table_name.singularize.foreign_key => customer) }
 
-    def precomplete
-      valid_quantity? && valid?
-    end
-
-    def precomplete!
-      fail Comable::InvalidOrder unless precomplete
-      self
-    end
-
     def complete
       ActiveRecord::Base.transaction do
         run_callbacks :complete do
-          save_to_complete
+          save_to_complete.tap { |completed| self.completed_at = nil unless completed }
         end
       end
     end
@@ -59,11 +49,35 @@ module Comable
     end
 
     def complete?
-      !incomplete?
+      Rails.logger.debug '[DEPRECATED] Comable::Customer#complete? is deprecated. Please use the #completed? method.'
+      completed?
     end
 
     def incomplete?
+      Rails.logger.debug '[DEPRECATED] Comable::Customer#incomplete? is deprecated. Please use the #incompleted? method.'
+      incompleted?
+    end
+
+    def completed?
+      !incompleted?
+    end
+
+    def incompleted?
       completed_at.nil?
+    end
+
+    # TODO: switch to state_machine
+    def completing?
+      completed_at && completed_at_was.nil?
+    end
+
+    # TODO: change to has_many method
+    def order_details
+      order_deliveries.map(&:order_details).flatten
+    end
+
+    def soldout_stocks
+      order_details.flatten.select(&:soldout_stock?)
     end
 
     # 氏名を取得
@@ -73,12 +87,12 @@ module Comable
 
     # 時価商品合計を取得
     def current_item_total_price
-      order_deliveries.map(&:order_details).flatten.sum(&:current_subtotal_price)
+      order_details.sum(&:current_subtotal_price)
     end
 
     # 売価商品合計を取得
     def item_total_price
-      order_deliveries.map(&:order_details).flatten.sum(&:subtotal_price)
+      order_details.sum(&:subtotal_price)
     end
 
     # 時価送料を取得
@@ -98,12 +112,11 @@ module Comable
       self.shipment_fee = current_shipment_fee
       self.total_price = current_total_price
       generate_code
-      order_deliveries.each(&:complete)
-      save
-    end
 
-    def valid_quantity?
-      order_deliveries.map(&:order_details).flatten.map(&:valid_quantity?).all?
+      order_deliveries.each(&:complete)
+
+      mark_for_validation_to_order_details
+      save
     end
 
     def generate_code
@@ -132,6 +145,11 @@ module Comable
       # TODO: Remove conditions for compatibility.
       customer.update_bill_address_by bill_address if bill_address
       customer.update_ship_address_by ship_address if ship_address
+    end
+
+    # HACK: to validate forced for nested attributes
+    def mark_for_validation_to_order_details
+      order_details.each(&:id_will_change!)
     end
   end
 end

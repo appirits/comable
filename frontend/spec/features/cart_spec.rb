@@ -1,11 +1,10 @@
 require 'rspec/example_steps'
 
 feature 'カート処理' do
-  let!(:payment) { FactoryGirl.create(:payment) }
-  let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
-  let(:order) { FactoryGirl.build(:order) }
-
-  background { product }
+  given!(:payment) { FactoryGirl.create(:payment) }
+  given!(:shipment_method) { FactoryGirl.create(:shipment_method) }
+  given(:order) { FactoryGirl.build(:order) }
+  given(:stock) { product.stocks.first }
 
   shared_examples '商品が購入できること' do
     # refs:
@@ -76,7 +75,7 @@ feature 'カート処理' do
   end
 
   shared_examples '商品を数量指定でカート投入できること' do
-    let(:quantity) { 7.to_s }
+    let(:quantity) { stock.quantity.to_s }
 
     Steps 'ゲスト購入' do
       Given '商品が存在するとき' do
@@ -101,7 +100,7 @@ feature 'カート処理' do
   end
 
   shared_examples '商品の数量変更ができること' do
-    let(:quantity) { 7.to_s }
+    let(:quantity) { stock.quantity.to_s }
 
     Steps 'ゲスト購入' do
       Given '商品が存在するとき' do
@@ -132,16 +131,14 @@ feature 'カート処理' do
   end
 
   context '通常商品' do
-    given(:product) { FactoryGirl.create(:product, :with_stock) }
-    subject { product }
+    subject!(:product) { FactoryGirl.create(:product, :with_stock) }
     it_behaves_like '商品が購入できること'
     it_behaves_like '商品を数量指定でカート投入できること'
     it_behaves_like '商品の数量変更ができること'
   end
 
   context 'SKU商品' do
-    given(:product) { FactoryGirl.create(:product, :sku) }
-    subject { product }
+    subject!(:product) { FactoryGirl.create(:product, :sku) }
     it_behaves_like '商品が購入できること'
     it_behaves_like '商品を数量指定でカート投入できること'
     it_behaves_like '商品の数量変更ができること'
