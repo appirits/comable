@@ -64,11 +64,12 @@ module Comable
       # TODO: テストケースの作成
       incomplete_order.destroy if incomplete_order.incomplete?
 
+      @cart_items = nil
       @incomplete_order = nil
     end
 
     def cart_items
-      incomplete_order.order_deliveries.first.order_details
+      @cart_items ||= incomplete_order.order_deliveries.first.order_details
     end
 
     def incomplete_order
