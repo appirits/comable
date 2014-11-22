@@ -85,14 +85,15 @@ describe Comable::CartsController do
 
       describe "POST 'add'" do
         let(:request) { post :add, product_id: product.id }
-        its(:response) { should redirect_to(:cart) }
+
+        its(:response) { is_expected.to render_template(:show) }
 
         it 'カートに１つの商品が投入されていること' do
           expect(current_customer.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
-          expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
+          expect(flash.now[:notice]).to eq I18n.t('comable.carts.add_product')
         end
 
         context 'when soldout' do
@@ -122,14 +123,15 @@ describe Comable::CartsController do
 
       describe "POST 'add'" do
         let(:request) { post :add, product_id: product.id, stock_id: product.stocks.first.id }
-        its(:response) { should redirect_to(:cart) }
+
+        its(:response) { is_expected.to render_template(:show) }
 
         it 'カートに１つの商品が投入されていること' do
           expect(current_customer.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
-          expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
+          expect(flash.now[:notice]).to eq I18n.t('comable.carts.add_product')
         end
 
         context 'SKUが選択されていない場合' do
