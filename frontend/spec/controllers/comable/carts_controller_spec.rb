@@ -3,8 +3,51 @@ describe Comable::CartsController do
 
   let(:current_customer) { controller.current_customer }
 
+  before { @request.env['devise.mapping'] = Devise.mappings[:customer] }
   before { controller.request.env['HTTP_REFERER'] = controller.comable.product_path(product) }
   before { request }
+
+  context 'when sign-in after it has added to cart' do
+    let(:product) { FactoryGirl.create(:product, :with_stock) }
+    let(:customer) { FactoryGirl.create(:customer) }
+
+    let(:request) do
+      post :add, product_id: product.id
+      sign_in :customer, customer
+      get :show
+    end
+
+    subject { current_customer }
+
+    it 'is signed-in customer' do
+      expect(subject.signed_in?).to be true
+    end
+
+    it 'inherit cart items' do
+      expect(subject.cart.count).to eq(1)
+    end
+  end
+
+  context 'when sign-out after it has added to cart' do
+    let(:product) { FactoryGirl.create(:product, :with_stock) }
+    let(:customer) { FactoryGirl.create(:customer) }
+
+    let(:request) do
+      sign_in customer
+      post :add, product_id: product.id
+      sign_out customer
+    end
+
+    subject { current_customer }
+
+    it 'is guest' do
+      expect(subject.signed_in?).to be false
+    end
+
+    it 'do not inherit cart items' do
+      expect(subject.cart.count).to eq(0)
+    end
+  end
 
   context 'ゲストの場合' do
     context '通常商品' do

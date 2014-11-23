@@ -47,7 +47,9 @@ module Comable
               class_eval <<-METHODS, __FILE__, __LINE__ + 1
                 alias_method :devise_current_#{mapping}, :current_#{mapping}
                 def current_#{mapping}
-                  @current_#{mapping} ||= devise_current_#{mapping} || Comable::Customer.new(cookies)
+                  @current_#{mapping}_guest ||= Comable::Customer.new
+                  #{mapping} = devise_current_#{mapping} || @current_#{mapping}_guest
+                  #{mapping}.with_cookies(cookies)
                 end
               METHODS
             end

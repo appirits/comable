@@ -13,11 +13,17 @@ module Comable
       obj = args.first
       case obj.class.name
       when /Cookies/
+        Rails.logger.debug '[DEPRECATED] Comable::Customer#new(cookies) is deprecated. Please use Comable::Customer#with_cookies(cookies) method.'
         @cookies = obj
         super()
       else
         super
       end
+    end
+
+    def with_cookies(cookies)
+      @cookies = cookies
+      self
     end
 
     # Add conditions for the orders association.
@@ -66,26 +72,34 @@ module Comable
     private
 
     def current_guest_token
-      return if signed_in?
-      @cookies.signed[:guest_token]
+      @cookies.signed[:guest_token] if @cookies
     end
 
     def initialize_incomplete_order
       orders = find_incomplete_orders
       return orders.first if orders.any?
-      order = orders.create(family_name: family_name, first_name: first_name, email: email, order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }])
-      @cookies.permanent.signed[:guest_token] = order.guest_token if not_signed_in?
+      order = orders.create(incomplete_order_attributes)
+      @cookies.permanent.signed[:guest_token] = order.guest_token if @cookies
       order
+    end
+
+    def incomplete_order_attributes
+      {
+        self.class.table_name.singularize.foreign_key => id,
+        guest_token: current_guest_token,
+        family_name: family_name,
+        first_name: first_name,
+        email: email,
+        order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }]
+      }
     end
 
     def find_incomplete_orders
       Comable::Order
         .incomplete
         .includes(order_deliveries: :order_details)
-        .where(
-          Comable::Customer.table_name.singularize.foreign_key => self,
-          :guest_token => current_guest_token
-        )
+        .where(guest_token: current_guest_token)
+        .by_customer([self, nil])
         .limit(1)
     end
 
