@@ -3,9 +3,20 @@ module Comable
     include CartOwner
 
     has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
+    has_many :addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
 
-    has_many :comable_addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-    alias_method :addresses, :comable_addresses
+    case Rails::VERSION::MAJOR
+    when 3
+      has_one :bill_address, conditions: { assign_key: Comable::Address.assign_key.find_value(:bill).value }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+      has_one :ship_address, conditions: { assign_key: Comable::Address.assign_key.find_value(:ship).value }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+    when 4
+      has_one :bill_address, -> { with_assign_key(:bill) }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+      has_one :ship_address, -> { with_assign_key(:ship) }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+    end
+
+    accepts_nested_attributes_for :addresses
+    accepts_nested_attributes_for :bill_address
+    accepts_nested_attributes_for :ship_address
 
     devise(*Comable::Config.devise_strategies[:customer])
 

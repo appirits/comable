@@ -8,6 +8,6 @@ module Comable
       nothing: nil,
       bill: 1,
       ship: 2
-    }
+    }, scope: true
   end
 end
