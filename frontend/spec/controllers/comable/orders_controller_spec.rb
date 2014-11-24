@@ -28,7 +28,7 @@ describe Comable::OrdersController do
     before { request }
 
     let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil) }
-    let(:customer) { Comable::Customer.new(cookies) }
+    let(:customer) { Comable::Customer.new.with_cookies(cookies) }
 
     describe "GET 'new'" do
       let(:request) { get :new }
@@ -207,7 +207,7 @@ describe Comable::OrdersController do
   describe 'order mailer' do
     let!(:store) { FactoryGirl.create(:store, :email_activate) }
     let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil) }
-    let(:customer) { Comable::Customer.new(cookies) }
+    let(:customer) { Comable::Customer.new.with_cookies(cookies) }
     let(:order) { customer.incomplete_order }
     let(:request) { post :create }
 
