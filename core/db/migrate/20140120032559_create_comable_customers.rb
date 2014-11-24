@@ -31,6 +31,10 @@ class CreateComableCustomers < ActiveRecord::Migration
       # t.datetime :locked_at
 
       ## Others
+      t.references :bill_address
+      t.references :ship_address
+
+      # TODO: Remove
       t.string :family_name
       t.string :first_name
     end

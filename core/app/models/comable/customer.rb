@@ -4,15 +4,8 @@ module Comable
 
     has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
     has_many :addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-
-    case Rails::VERSION::MAJOR
-    when 3
-      has_one :bill_address, conditions: { assign_key: Comable::Address.assign_key.find_value(:bill).value }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-      has_one :ship_address, conditions: { assign_key: Comable::Address.assign_key.find_value(:ship).value }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-    when 4
-      has_one :bill_address, -> { with_assign_key(:bill) }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-      has_one :ship_address, -> { with_assign_key(:ship) }, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-    end
+    belongs_to :bill_address, class_name: Comable::Address.name
+    belongs_to :ship_address, class_name: Comable::Address.name
 
     accepts_nested_attributes_for :addresses
     accepts_nested_attributes_for :bill_address
@@ -41,6 +34,10 @@ module Comable
     # Override method of the orders association to support Rails 3.x.
     def orders
       super.complete
+    end
+
+    def other_addresses
+      addresses - [bill_address] - [ship_address]
     end
 
     def signed_in?

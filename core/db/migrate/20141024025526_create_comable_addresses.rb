@@ -1,8 +1,7 @@
 class CreateComableAddresses < ActiveRecord::Migration
   def change
     create_table :comable_addresses do |t|
-      t.integer :comable_customer_id, null: false
-      t.integer :assign_key
+      t.integer :comable_customer_id
       t.string :family_name, null: false
       t.string :first_name, null: false
       t.string :zip_code, null: false, limit: 8
@@ -13,7 +12,5 @@ class CreateComableAddresses < ActiveRecord::Migration
       t.string :phone_number, null: false, limit: 18
       t.datetime :last_used_at
     end
-
-    add_index :comable_addresses, [:comable_customer_id, :assign_key], unique: true, name: :comable_addresses_idx_01
   end
 end

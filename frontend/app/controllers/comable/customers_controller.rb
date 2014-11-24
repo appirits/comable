@@ -15,6 +15,8 @@ module Comable
 
     def customer_params
       params.require(:customer).permit(
+        :bill_address_id,
+        :ship_address_id,
         addresses_attributes: [
           :family_name,
           :first_name,
