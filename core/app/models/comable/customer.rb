@@ -95,9 +95,10 @@ module Comable
       {
         self.class.table_name.singularize.foreign_key => id,
         guest_token: current_guest_token,
+        email: email,
+        # TODO: Remove
         family_name: family_name,
         first_name: first_name,
-        email: email,
         order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }]
       }
     end
