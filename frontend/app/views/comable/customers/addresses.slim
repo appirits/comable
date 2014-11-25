@@ -46,31 +46,7 @@
     h2
       | New Address
     = form_for current_customer, as: :customer, url: comable.addresses_customer_url, method: :put do |f|
-      - current_customer.addresses.build
-      = f.fields_for :addresses do |address|
-        - next unless address.object.new_record?
-
-        .name
-          = address.label :family_name
-          = address.text_field :family_name
-          = address.label :first_name
-          = address.text_field :first_name
-
-        .address
-          .state
-            = address.label :state_name
-            = address.text_field :state_name
-          .zip_code
-            = address.label :zip_code
-            = address.text_field :zip_code, max_length: 8
-          .city
-            = address.label :city
-            = address.text_field :city
-
-        .other
-          .phone_number
-            = address.label :phone_number
-            = address.text_field :phone_number, max_length: 18
-
+      = f.fields_for :addresses, current_customer.addresses.build do |ff|
+        = render 'comable/shared/address_form', address: ff
       .submit
         = f.submit

@@ -3,8 +3,12 @@ module Comable
     prepend Comable::ShipmentAction
     prepend Comable::PaymentAction
 
+    helper_method :next_order_path
+
+    # TODO: Change the method name to load_order_with_params
     before_filter :load_order
     before_filter :verify
+    # TODO: Remove
     after_filter :save_order, except: :create
 
     rescue_from Comable::InvalidOrder, with: :order_invalid
@@ -19,7 +23,7 @@ module Comable
     def delivery
       case request.method_symbol
       when :post
-        redirect_to next_order_path
+        redirect_to next_order_path if @order.save
       end
     end
 
@@ -85,10 +89,15 @@ module Comable
 
     def order_params_for_delivery
       params.require(:order).permit(
-        order_deliveries_attributes: [
-          :id,
+        ship_address_attributes: [
+          # TODO: Standardize
           :family_name,
-          :first_name
+          :first_name,
+          :zip_code,
+          :state_name,
+          :city,
+          :detail,
+          :phone_number
         ]
       )
     end
