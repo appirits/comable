@@ -16,7 +16,7 @@ module Comable
     def orderer
       case request.method_symbol
       when :post
-        redirect_to comable.delivery_order_path
+        redirect_to comable.delivery_order_path if @order.save
       end
     end
 
@@ -81,9 +81,10 @@ module Comable
 
     def order_params_for_orderer
       params.require(:order).permit(
-        :family_name,
-        :first_name,
-        :email
+        :family_name, # TODO: Remove
+        :first_name,  # TODO: Remove
+        :email,
+        bill_address_attributes: address_attributes
       )
     end
 
