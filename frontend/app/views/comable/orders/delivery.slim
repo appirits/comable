@@ -5,7 +5,7 @@
 
     - if @order.ship_address
       = render 'comable/shared/address', address: @order.ship_address
-      = link_to 'Next step', comable.delivery_order_path
+      = link_to 'Next step', next_order_path
 
       - if current_customer.other_addresses.any?
         .other_addresses

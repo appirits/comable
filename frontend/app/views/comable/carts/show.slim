@@ -19,6 +19,4 @@ ul.cart
           = submit_tag '変更'
 
 .order
-  - next_path = comable.delivery_order_path if current_customer.signed_in?
-  - next_path ||= comable.new_order_path
-  = link_to '注文', next_path
+  = link_to '注文', comable.new_order_path
