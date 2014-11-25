@@ -7,7 +7,21 @@
       = render 'comable/shared/address', address: @order.ship_address
       = link_to 'Next step', next_order_path(:delivery)
 
-      / TODO: Add selectable addresses
+      - if current_customer.other_addresses.any?
+        .other_addresses
+          h2
+            | Other addresses
+          ul
+            - current_customer.addresses.each do |address|
+              - next if @order.ship_address.same_as? address
+              li
+                = render 'comable/shared/address', address: address
+                = form_for @order, as: :order, url: comable.delivery_order_path, method: :put do |f|
+                  .hidden
+                    = f.fields_for :ship_address, address.clone do |ff|
+                      = render 'comable/shared/address_form', address: ff
+                  = f.submit 'Use this'
+
     - else
       / TODO: Standardize
       - if @order.errors.any?

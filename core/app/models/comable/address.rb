@@ -9,5 +9,17 @@ module Comable
     validates :city, presence: true, length: { maximum: 255 }
     validates :detail, length: { maximum: 255 }
     validates :phone_number, length: { maximum: 18 }
+
+    def same_as?(address)
+      attributes_without_id == address.attributes_without_id
+    end
+
+    def clone
+      self.class.new(attributes_without_id)
+    end
+
+    def attributes_without_id
+      attributes.except('id', Comable::Customer.table_name.singularize.foreign_key.to_s)
+    end
   end
 end
