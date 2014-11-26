@@ -8,8 +8,11 @@ module Comable
     def addresses
       return unless request.put?
 
-      if current_customer.update_attributes(customer_params)
+      current_customer.attributes = customer_params
+      if current_customer.save
         flash.now[:notice] = 'Success'
+      else
+        flash.now[:alert] = 'Error'
       end
     end
 
@@ -17,16 +20,20 @@ module Comable
       params.require(:customer).permit(
         :bill_address_id,
         :ship_address_id,
-        addresses_attributes: [
-          :family_name,
-          :first_name,
-          :zip_code,
-          :state_name,
-          :city,
-          :detail,
-          :phone_number
-        ]
+        addresses_attributes: address_attributes
       )
+    end
+
+    def address_attributes
+      [
+        :family_name,
+        :first_name,
+        :zip_code,
+        :state_name,
+        :city,
+        :detail,
+        :phone_number
+      ]
     end
   end
 end
