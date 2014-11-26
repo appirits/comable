@@ -2,6 +2,7 @@ module Comable
   class OrdersController < Comable::ApplicationController
     prepend Comable::ShipmentAction
     prepend Comable::PaymentAction
+    include Comable::PermittedAttributes
 
     helper_method :next_order_path
 
@@ -48,6 +49,8 @@ module Comable
       Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
     end
 
+    # TODO: Switch to state_machine
+    # rubocop:disable all
     def next_order_path(target_action_name = nil)
       case (target_action_name || action_name).to_sym
       when :new
@@ -62,6 +65,7 @@ module Comable
         comable.confirm_order_path
       end
     end
+    # rubocop:enable all
 
     def agreement_required?
       @order.customer.nil?
@@ -104,26 +108,14 @@ module Comable
         :family_name, # TODO: Remove
         :first_name,  # TODO: Remove
         :email,
-        bill_address_attributes: address_attributes
+        bill_address_attributes: permitted_address_attributes
       )
     end
 
     def order_params_for_delivery
       params.require(:order).permit(
-        ship_address_attributes: address_attributes
+        ship_address_attributes: permitted_address_attributes
       )
-    end
-
-    def address_attributes
-      [
-        :family_name,
-        :first_name,
-        :zip_code,
-        :state_name,
-        :city,
-        :detail,
-        :phone_number
-      ]
     end
 
     def order_invalid

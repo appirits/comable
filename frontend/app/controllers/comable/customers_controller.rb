@@ -1,5 +1,7 @@
 module Comable
   class CustomersController < Comable::ApplicationController
+    include Comable::PermittedAttributes
+
     before_filter :authenticate_customer!
 
     def show
@@ -20,20 +22,8 @@ module Comable
       params.require(:customer).permit(
         :bill_address_id,
         :ship_address_id,
-        addresses_attributes: address_attributes
+        addresses_attributes: permitted_address_attributes
       )
-    end
-
-    def address_attributes
-      [
-        :family_name,
-        :first_name,
-        :zip_code,
-        :state_name,
-        :city,
-        :detail,
-        :phone_number
-      ]
     end
   end
 end
