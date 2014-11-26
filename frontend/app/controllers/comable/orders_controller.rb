@@ -89,17 +89,20 @@ module Comable
 
     def order_params_for_delivery
       params.require(:order).permit(
-        ship_address_attributes: [
-          # TODO: Standardize
-          :family_name,
-          :first_name,
-          :zip_code,
-          :state_name,
-          :city,
-          :detail,
-          :phone_number
-        ]
+        ship_address_attributes: address_attributes
       )
+    end
+
+    def address_attributes
+      [
+        :family_name,
+        :first_name,
+        :zip_code,
+        :state_name,
+        :city,
+        :detail,
+        :phone_number
+      ]
     end
 
     def order_invalid
