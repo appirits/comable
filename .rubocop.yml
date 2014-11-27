@@ -40,3 +40,9 @@ AllCops:
   Exclude:
     - vendor/**/*
     - spec/dummy/db/schema.rb
+
+# TODO: Remove after refactoring.
+ClassLength:
+  Exclude:
+    - core/app/models/comable/order.rb
+    - core/app/models/comable/customer.rb

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :address, class: 'Comable::Address' do
-    family_name 'foo'
-    first_name 'bar'
+    sequence(:family_name) { |n| "foo#{n.next}" }
+    sequence(:first_name) { |n| "bar#{n.next}" }
     zip_code '123-4567'
     state_name '東京都'
     city '渋谷区'

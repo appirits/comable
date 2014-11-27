@@ -25,6 +25,30 @@ describe Comable::Order do
           its(:shipment_fee) { is_expected.to eq(shipment_method.fee) }
           its(:total_price) { should eq(item_total_price + shipment_method.fee) }
         end
+
+        context 'with customer' do
+          subject(:order) { FactoryGirl.build(:order, customer: customer, bill_address: address, ship_address: address) }
+
+          let(:address) { FactoryGirl.create(:address) }
+
+          context 'has addresses used in order' do
+            let(:customer) { FactoryGirl.create(:customer, addresses: [address]) }
+
+            it 'has copied address from order to customer' do
+              expect(customer.bill_address).to eq(address)
+              expect(customer.ship_address).to eq(address)
+            end
+          end
+
+          context 'has addresses not used in order' do
+            let(:customer) { FactoryGirl.create(:customer, :with_addresses) }
+
+            it 'has cloned address from order to customer' do
+              expect(customer.bill_address.attributes_without_id).to eq(address.attributes_without_id)
+              expect(customer.ship_address.attributes_without_id).to eq(address.attributes_without_id)
+            end
+          end
+        end
       end
 
       context 'incomplete order' do
