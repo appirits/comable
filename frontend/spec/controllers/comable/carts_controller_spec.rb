@@ -7,45 +7,66 @@ describe Comable::CartsController do
   before { controller.request.env['HTTP_REFERER'] = controller.comable.product_path(product) }
   before { request }
 
-  context 'when sign-in after it has added to cart' do
+  describe 'inherit cart items' do
     let(:product) { FactoryGirl.create(:product, :with_stock) }
     let(:customer) { FactoryGirl.create(:customer) }
 
-    let(:request) do
-      post :add, product_id: product.id
-      sign_in :customer, customer
-      get :show
-    end
-
     subject { current_customer }
 
-    it 'is signed-in customer' do
-      expect(subject.signed_in?).to be true
+    context 'when sign in' do
+      let(:request) do
+        post :add, product_id: product.id
+        sign_in :customer, customer
+        get :show
+      end
+
+      it 'is signed in customer' do
+        expect(subject.signed_in?).to be true
+      end
+
+      it 'inherit cart items' do
+        expect(subject.cart.count).to eq(1)
+      end
     end
 
-    it 'inherit cart items' do
-      expect(subject.cart.count).to eq(1)
-    end
-  end
+    context 'when sign out' do
+      let(:request) do
+        sign_in customer
+        post :add, product_id: product.id
+        sign_out customer
+      end
 
-  context 'when sign-out after it has added to cart' do
-    let(:product) { FactoryGirl.create(:product, :with_stock) }
-    let(:customer) { FactoryGirl.create(:customer) }
+      it 'is guest' do
+        expect(subject.signed_in?).to be false
+      end
 
-    let(:request) do
-      sign_in customer
-      post :add, product_id: product.id
-      sign_out customer
-    end
-
-    subject { current_customer }
-
-    it 'is guest' do
-      expect(subject.signed_in?).to be false
+      it 'do not inherit cart items' do
+        expect(subject.cart.count).to eq(0)
+      end
     end
 
-    it 'do not inherit cart items' do
-      expect(subject.cart.count).to eq(0)
+    context 'when sign in and already existed a cart' do
+      let(:products) { FactoryGirl.create_list(:product, 2, :with_stock) }
+      let(:product) { products.first }
+
+      let(:request) do
+        sign_in customer
+        post :add, product_id: products.first.id
+
+        sign_out customer
+        post :add, product_id: products.last.id
+
+        sign_in customer
+        get :show
+      end
+
+      it 'is signed in customer' do
+        expect(subject.signed_in?).to be true
+      end
+
+      it 'inherit cart items' do
+        expect(subject.cart.count).to eq(2)
+      end
     end
   end
 
@@ -124,5 +145,13 @@ describe Comable::CartsController do
         end
       end
     end
+  end
+
+  private
+
+  # TODO: Move to the support directory.
+  # HACK: for calling Comable::Customer#inherit_cart_items method.
+  def sign_in(*_)
+    super.tap { controller.current_customer.update_attributes(current_sign_in_at: Time.now) }
   end
 end

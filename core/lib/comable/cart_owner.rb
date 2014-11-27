@@ -16,6 +16,10 @@ module Comable
       end
     end
 
+    def move_cart_item(cart_item)
+      add_cart_item(cart_item.stock, quantity: cart_item.quantity) && cart_item.destroy
+    end
+
     def cart_items
       fail 'You should implement cart_items method.'
     end
