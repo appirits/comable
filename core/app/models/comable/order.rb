@@ -3,8 +3,8 @@ module Comable
     belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
     belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
-    belongs_to :bill_address, class_name: Comable::Address.name
-    belongs_to :ship_address, class_name: Comable::Address.name
+    belongs_to :bill_address, class_name: Comable::Address.name, dependent: :destroy
+    belongs_to :ship_address, class_name: Comable::Address.name, dependent: :destroy
     has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
