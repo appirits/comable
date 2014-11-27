@@ -1,9 +1,10 @@
 describe Comable::Order do
-  it { expect { described_class.new }.to_not raise_error }
-
   subject(:order) { FactoryGirl.build(:order) }
 
   subject { order }
+
+  it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
+  it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
   describe 'attributes' do
     describe '#save' do

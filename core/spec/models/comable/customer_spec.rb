@@ -1,5 +1,7 @@
 describe Comable::Customer do
-  it { expect { described_class.new }.to_not raise_error }
+  it { is_expected.to have_many(:addresses).class_name(Comable::Address.name).with_foreign_key(described_class.table_name.singularize.foreign_key).dependent(:destroy) }
+  it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
+  it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
   context 'カート処理' do
     let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
