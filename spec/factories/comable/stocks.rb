@@ -1,14 +1,13 @@
 FactoryGirl.define do
   factory :stock, class: 'Comable::Stock' do
-    product_id_num 1
-    code '1234567-001'
+    sequence(:product_id_num) { |n| n.next }
+    sequence(:code) { |n| format('%07d', n.next) }
     quantity nil
 
     transient { sku_flag false }
 
+    # for compatibility
     trait :many do
-      sequence(:product_id_num) { |n| n.next }
-      sequence(:code) { |n| format('%07d', n.next) }
     end
 
     trait :sku do

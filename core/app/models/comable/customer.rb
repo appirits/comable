@@ -13,6 +13,8 @@ module Comable
 
     devise(*Comable::Config.devise_strategies[:customer])
 
+    before_save :inherit_cart_items, if: :current_sign_in_at_changed?
+
     def initialize(*args)
       obj = args.first
       case obj.class.name
@@ -94,7 +96,6 @@ module Comable
     def incomplete_order_attributes
       {
         self.class.table_name.singularize.foreign_key => id,
-        guest_token: current_guest_token,
         email: email,
         # TODO: Remove
         family_name: family_name,
@@ -104,12 +105,24 @@ module Comable
     end
 
     def find_incomplete_orders
+      guest_token = current_guest_token unless signed_in?
       Comable::Order
         .incomplete
         .includes(order_deliveries: :order_details)
-        .where(guest_token: current_guest_token)
-        .by_customer([self, nil])
+        .where(guest_token: guest_token)
+        .by_customer(self)
         .limit(1)
+    end
+
+    def inherit_cart_items
+      return unless current_guest_token
+      guest_order = Comable::Order.incomplete.includes(order_deliveries: :order_details).where(guest_token: current_guest_token).first
+      return unless guest_order
+      guest_order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
+        move_cart_item(order_detail)
+      end
+      # TODO: Remove?
+      cart_items.reload
     end
   end
 end

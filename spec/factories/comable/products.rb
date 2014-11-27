@@ -1,12 +1,11 @@
 FactoryGirl.define do
   factory :product, class: 'Comable::Product' do
-    name 'test_product'
-    code '1234567'
+    sequence(:name) { |n| "test_product#{n.next}" }
+    sequence(:code) { |n| format('%07d', n.next) }
     price 100
 
+    # for compatibility
     trait :many do
-      sequence(:name) { |n| "test_product#{n.next}" }
-      sequence(:code) { |n| format('%07d', n.next) }
     end
 
     trait :with_stock do
