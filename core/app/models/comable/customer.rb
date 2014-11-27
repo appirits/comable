@@ -3,9 +3,9 @@ module Comable
     include CartOwner
 
     has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
-    has_many :addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-    belongs_to :bill_address, class_name: Comable::Address.name
-    belongs_to :ship_address, class_name: Comable::Address.name
+    has_many :addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key, dependent: :destroy
+    belongs_to :bill_address, class_name: Comable::Address.name, dependent: :destroy
+    belongs_to :ship_address, class_name: Comable::Address.name, dependent: :destroy
 
     accepts_nested_attributes_for :addresses
     accepts_nested_attributes_for :bill_address
