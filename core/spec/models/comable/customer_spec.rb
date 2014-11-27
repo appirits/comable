@@ -2,7 +2,7 @@ describe Comable::Customer do
   it { expect { described_class.new }.to_not raise_error }
 
   context 'カート処理' do
-    let(:stocks) { FactoryGirl.create_list(:stock, 5, :many, :unsold, :with_product) }
+    let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
     let(:stock) { stocks.first }
 
     subject { FactoryGirl.build_stubbed(:customer) }
@@ -47,7 +47,7 @@ describe Comable::Customer do
     end
 
     context '在庫がない場合' do
-      let(:stocks) { FactoryGirl.create_list(:stock, 5, :many, :soldout, :with_product) }
+      let(:stocks) { FactoryGirl.create_list(:stock, 5, :soldout, :with_product) }
 
       it '商品を投入できないこと' do
         expect { subject.add_cart_item(stock) }.to raise_error(Comable::NoStock)

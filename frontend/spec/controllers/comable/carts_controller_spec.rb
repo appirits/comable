@@ -46,7 +46,7 @@ describe Comable::CartsController do
     end
 
     context 'when sign in and already existed a cart' do
-      let(:products) { FactoryGirl.create_list(:product, 2, :with_stock, :many) }
+      let(:products) { FactoryGirl.create_list(:product, 2, :with_stock) }
       let(:product) { products.first }
 
       let(:request) do

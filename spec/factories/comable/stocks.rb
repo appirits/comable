@@ -6,10 +6,6 @@ FactoryGirl.define do
 
     transient { sku_flag false }
 
-    # for compatibility
-    trait :many do
-    end
-
     trait :sku do
       transient { sku_flag true }
       sku_h_choice_name 'レッド'

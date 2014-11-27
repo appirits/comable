@@ -4,10 +4,6 @@ FactoryGirl.define do
     sequence(:code) { |n| format('%07d', n.next) }
     price 100
 
-    # for compatibility
-    trait :many do
-    end
-
     trait :with_stock do
       stocks { [FactoryGirl.create(:stock, :unsold)] }
     end
@@ -17,9 +13,9 @@ FactoryGirl.define do
       sku_v_item_name 'サイズ'
       stocks do
         [
-          FactoryGirl.create(:stock, :unsold, :many, sku_h_choice_name: 'レッド', sku_v_choice_name: 'S'),
-          FactoryGirl.create(:stock, :unsold, :many, sku_h_choice_name: 'レッド', sku_v_choice_name: 'M'),
-          FactoryGirl.create(:stock, :unsold, :many, sku_h_choice_name: 'レッド', sku_v_choice_name: 'L')
+          FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド', sku_v_choice_name: 'S'),
+          FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド', sku_v_choice_name: 'M'),
+          FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド', sku_v_choice_name: 'L')
         ]
       end
     end
