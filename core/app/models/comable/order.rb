@@ -30,6 +30,7 @@ module Comable
     before_complete :precomplete
     before_create :generate_guest_token
     before_create :clone_addresses_from_customer
+    after_complete :clone_addresses_to_customer
 
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
@@ -121,8 +122,15 @@ module Comable
 
     def clone_addresses_from_customer
       return unless customer
-      self.bill_address = customer.bill_address.try(:clone)
-      self.ship_address = customer.ship_address.try(:clone)
+      self.bill_address ||= customer.bill_address.try(:clone)
+      self.ship_address ||= customer.ship_address.try(:clone)
+    end
+
+    def clone_addresses_to_customer
+      return unless customer
+      # TODO: Remove conditions for compatibility.
+      customer.update_bill_address_by bill_address if bill_address
+      customer.update_ship_address_by ship_address if ship_address
     end
   end
 end

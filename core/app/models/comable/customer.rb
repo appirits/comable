@@ -42,6 +42,14 @@ module Comable
       addresses - [bill_address] - [ship_address]
     end
 
+    def update_bill_address_by(bill_address)
+      self.bill_address = addresses.find { |address| address.same_as? bill_address } || bill_address.clone
+    end
+
+    def update_ship_address_by(ship_address)
+      self.ship_address = addresses.find { |address| address.same_as? ship_address } || ship_address.clone
+    end
+
     def signed_in?
       !new_record?
     end
