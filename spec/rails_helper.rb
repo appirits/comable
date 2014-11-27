@@ -9,6 +9,7 @@ require File.expand_path('../dummy/config/environment', __FILE__)
 require 'rspec/rails'
 require 'rspec/its'
 require 'rspec/example_steps'
+require 'shoulda/matchers'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
