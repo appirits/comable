@@ -3,9 +3,13 @@ module Comable
     include CartOwner
 
     has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
+    has_many :addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
+    belongs_to :bill_address, class_name: Comable::Address.name
+    belongs_to :ship_address, class_name: Comable::Address.name
 
-    has_many :comable_addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key
-    alias_method :addresses, :comable_addresses
+    accepts_nested_attributes_for :addresses
+    accepts_nested_attributes_for :bill_address
+    accepts_nested_attributes_for :ship_address
 
     devise(*Comable::Config.devise_strategies[:customer])
 
@@ -30,6 +34,10 @@ module Comable
     # Override method of the orders association to support Rails 3.x.
     def orders
       super.complete
+    end
+
+    def other_addresses
+      addresses - [bill_address] - [ship_address]
     end
 
     def signed_in?
@@ -87,9 +95,10 @@ module Comable
       {
         self.class.table_name.singularize.foreign_key => id,
         guest_token: current_guest_token,
+        email: email,
+        # TODO: Remove
         family_name: family_name,
         first_name: first_name,
-        email: email,
         order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }]
       }
     end

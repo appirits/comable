@@ -182,4 +182,18 @@ describe Comable::Customer do
       end
     end
   end
+
+  describe 'Associations' do
+    subject { FactoryGirl.build_stubbed(:customer) }
+
+    it 'has one bill_address' do
+      subject.build_bill_address
+      expect(subject.bill_address).to be
+    end
+
+    it 'has one bill_address' do
+      subject.build_ship_address
+      expect(subject.ship_address).to be
+    end
+  end
 end

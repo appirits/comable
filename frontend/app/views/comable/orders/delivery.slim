@@ -1,8 +1,39 @@
-h1 配送先情報入力
+.order
+  .ship_address
+    h1
+      | Shipping address
 
-.orderer
-  = form_for @order, as: :order, url: comable.delivery_order_path, method: :put do |f|
-    = f.fields_for :order_deliveries do |order_delivery|
-      = order_delivery.text_field :family_name, placeholder: '姓'
-      = order_delivery.text_field :first_name, placeholder: '名'
-    = f.submit
+    - if @order.ship_address
+      = render 'comable/shared/address', address: @order.ship_address
+      = link_to 'Next step', next_order_path
+
+      - if current_customer.other_addresses.any?
+        .other_addresses
+          h2
+            | Other addresses
+          ul
+            - current_customer.addresses.each do |address|
+              - next if @order.ship_address.same_as? address
+              li
+                = render 'comable/shared/address', address: address
+                = form_for @order, as: :order, url: comable.delivery_order_path, method: :put do |f|
+                  .hidden
+                    = f.fields_for :ship_address, address.clone do |ff|
+                      = render 'comable/shared/address_form', address: ff
+                  = f.submit 'Use this'
+
+    - else
+      / TODO: Standardize
+      - if @order.errors.any?
+        .error_messages
+          ul
+            - @order.errors.full_messages.each do |full_message|
+              li = full_message
+
+      .new
+        h2
+          | New shipping address
+        = form_for @order, as: :order, url: comable.delivery_order_path, method: :put do |f|
+          = f.fields_for :ship_address do |ff|
+            = render 'comable/shared/address_form', address: ff
+          = f.submit

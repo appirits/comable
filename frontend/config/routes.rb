@@ -25,5 +25,10 @@ Comable::Core::Engine.routes.draw do
 
   devise_for :customer, path: :member, class_name: Comable::Customer.name, module: :devise
 
-  resource :customer, path: :member
+  resource :customer, path: :member do
+    member do
+      get :addresses
+      put :addresses
+    end
+  end
 end

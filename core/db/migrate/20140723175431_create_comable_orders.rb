@@ -12,6 +12,8 @@ class CreateComableOrders < ActiveRecord::Migration
       t.string :shipment_tracking_number
       t.integer :shipment_method_id
       t.integer :total_price
+      t.references :bill_address
+      t.references :ship_address
       t.datetime :completed_at
     end
 

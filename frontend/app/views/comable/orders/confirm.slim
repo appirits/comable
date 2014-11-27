@@ -1,37 +1,35 @@
 h1 注文情報確認
 
 .order
-  .orderer
-    h2 注文者
-    .family_name
-      = @order.family_name
-    .first_name
-      = @order.first_name
+  .bill_address
+    h2
+      | Billing address
+    = render 'comable/shared/address', address: @order.bill_address if @order.bill_address
 
-  .deliveries
-    - @order.order_deliveries.each.with_index(1) do |order_delivery, index|
-      h2 = "配送先[#{index}]"
-      .first_name
-        = order_delivery.family_name
-      .first_name
-        = order_delivery.first_name
-      .details
-        - order_delivery.order_details.each do |order_detail|
-          .name
-            = order_detail.product.name
-          .price
-            = order_detail.price
-          .quantity
-            = order_detail.quantity
+  .ship_address
+    h2
+      | Shipping address
+    = render 'comable/shared/address', address: @order.ship_address if @order.ship_address
+
+  .details
+    h2
+      | Order details
+    - @order.order_deliveries.first.order_details.each do |order_detail|
+      .name
+        = order_detail.stock.name
+      .price
+        = order_detail.price
+      .quantity
+        = order_detail.quantity
 
   .total
     h2 お会計
     .item_total_price
-      = @order.current_item_total_price
+      = number_to_currency @order.current_item_total_price
     .shipment_fee
-      = @order.current_shipment_fee
+      = number_to_currency @order.current_shipment_fee
     .total_price
-      = @order.current_total_price
+      = number_to_currency @order.current_total_price
 
   = form_for @order, as: :order, url: comable.order_path, method: :post do |f|
     = f.submit

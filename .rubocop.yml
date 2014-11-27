@@ -25,6 +25,11 @@ MethodLength:
   Exclude:
     - '**/db/migrate/*'
 
+# C: Assignment Branch Condition size for change is too high.
+AbcSize:
+  Exclude:
+    - '**/db/migrate/*'
+
 # C: Replace class var @@_ with a class instance var.
 ClassVars:
   Exclude:

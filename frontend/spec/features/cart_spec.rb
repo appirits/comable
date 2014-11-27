@@ -34,7 +34,7 @@ feature 'カート処理' do
       When '注文者情報入力画面に遷移して' do
         visit comable.new_order_path
         click_link '規約に同意して注文'
-        expect(page).to have_content '注文者情報入力'
+        expect(page).to have_content 'Billing address'
       end
 
       When '配送先情報入力画面に遷移して' do
@@ -46,7 +46,7 @@ feature 'カート処理' do
         end
         # TODO: ボタン名につかう翻訳パスを変更または作成
         click_button I18n.t('helpers.submit.update')
-        expect(page).to have_content '配送先情報入力'
+        expect(page).to have_content 'Shipping address'
       end
 
       When '発送方法選択画面に遷移して' do

@@ -1,0 +1,21 @@
+.name
+  = address.label :family_name
+  = address.text_field :family_name
+  = address.label :first_name
+  = address.text_field :first_name
+
+.address
+  .state
+    = address.label :state_name
+    = address.text_field :state_name
+  .zip_code
+    = address.label :zip_code
+    = address.text_field :zip_code, max_length: 8
+  .city
+    = address.label :city
+    = address.text_field :city
+
+.other
+  .phone_number
+    = address.label :phone_number
+    = address.text_field :phone_number, max_length: 18

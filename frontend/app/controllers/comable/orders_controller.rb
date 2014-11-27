@@ -2,24 +2,33 @@ module Comable
   class OrdersController < Comable::ApplicationController
     prepend Comable::ShipmentAction
     prepend Comable::PaymentAction
+    include Comable::PermittedAttributes
 
+    helper_method :next_order_path
+
+    # TODO: Change the method name to load_order_with_params
     before_filter :load_order
     before_filter :verify
+    # TODO: Remove
     after_filter :save_order, except: :create
 
     rescue_from Comable::InvalidOrder, with: :order_invalid
 
+    def new
+      redirect_to next_order_path unless agreement_required?
+    end
+
     def orderer
       case request.method_symbol
       when :post
-        redirect_to comable.delivery_order_path
+        redirect_to next_order_path if @order.save
       end
     end
 
     def delivery
       case request.method_symbol
       when :post
-        redirect_to next_order_path
+        redirect_to next_order_path if @order.save
       end
     end
 
@@ -40,8 +49,14 @@ module Comable
       Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
     end
 
+    # TODO: Switch to state_machine
+    # rubocop:disable all
     def next_order_path(target_action_name = nil)
       case (target_action_name || action_name).to_sym
+      when :new
+        orderer_required? ? comable.orderer_order_path : next_order_path(:orderer)
+      when :orderer
+        delivery_required? ? comable.delivery_order_path : next_order_path(:delivery)
       when :delivery
         shipment_required? ? comable.shipment_order_path : next_order_path(:shipment)
       when :shipment
@@ -49,6 +64,19 @@ module Comable
       else
         comable.confirm_order_path
       end
+    end
+    # rubocop:enable all
+
+    def agreement_required?
+      @order.customer.nil?
+    end
+
+    def orderer_required?
+      @order.bill_address.nil?
+    end
+
+    def delivery_required?
+      @order.ship_address.nil?
     end
 
     def verify
@@ -77,19 +105,16 @@ module Comable
 
     def order_params_for_orderer
       params.require(:order).permit(
-        :family_name,
-        :first_name,
-        :email
+        :family_name, # TODO: Remove
+        :first_name,  # TODO: Remove
+        :email,
+        bill_address_attributes: permitted_address_attributes
       )
     end
 
     def order_params_for_delivery
       params.require(:order).permit(
-        order_deliveries_attributes: [
-          :id,
-          :family_name,
-          :first_name
-        ]
+        ship_address_attributes: permitted_address_attributes
       )
     end
 

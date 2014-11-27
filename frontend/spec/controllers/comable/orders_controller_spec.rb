@@ -48,6 +48,18 @@ describe Comable::OrdersController do
     describe "POST 'orderer'" do
       let(:request) { post :orderer, order_params }
       its(:response) { should redirect_to(:delivery_order) }
+
+      context 'when new shipping address page' do
+        let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil).merge(bill_address_attributes: bill_address_attributes) }
+        let(:bill_address_attributes) { FactoryGirl.attributes_for(:address) }
+
+        its(:response) { is_expected.to redirect_to(:delivery_order) }
+
+        it 'has assigned @order with bill address' do
+          expect(assigns(:order).bill_address).to be
+          expect(assigns(:order).bill_address.attributes).to include(bill_address_attributes.stringify_keys)
+        end
+      end
     end
 
     describe "GET 'delivery'" do
@@ -58,6 +70,18 @@ describe Comable::OrdersController do
     describe "POST 'delivery'" do
       let(:request) { post :delivery, order_params }
       its(:response) { should redirect_to(:shipment_order) }
+
+      context 'when new shipping address page' do
+        let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil).merge(ship_address_attributes: ship_address_attributes) }
+        let(:ship_address_attributes) { FactoryGirl.attributes_for(:address) }
+
+        its(:response) { is_expected.to redirect_to(:shipment_order) }
+
+        it 'has assigned @order with ship address' do
+          expect(assigns(:order).ship_address).to be
+          expect(assigns(:order).ship_address.attributes).to include(ship_address_attributes.stringify_keys)
+        end
+      end
     end
 
     describe "GET 'shipment'" do
@@ -144,7 +168,7 @@ describe Comable::OrdersController do
 
     describe "GET 'new'" do
       let(:request) { get :new }
-      its(:response) { should be_success }
+      its(:response) { should redirect_to(:orderer_order) }
     end
 
     describe "GET 'orderer'" do
@@ -232,6 +256,58 @@ describe Comable::OrdersController do
 
       it 'not sent a mail' do
         expect { request }.to change { ActionMailer::Base.deliveries.length }.by(0)
+      end
+    end
+  end
+
+  describe '#next_order_path' do
+    context 'when signed-in customer' do
+      let(:order) { FactoryGirl.build_stubbed(:order, customer: customer) }
+      let(:customer) { FactoryGirl.build(:customer) }
+      let(:address) { FactoryGirl.build(:address) }
+
+      before { controller.instance_variable_set(:@order, order) }
+
+      describe "call by 'new'" do
+        subject { controller.view_context.next_order_path(:new) }
+
+        it "return to 'orderer' path" do
+          is_expected.to eq(controller.comable.orderer_order_path)
+        end
+
+        it "return to 'delivery' path if bill address is selected" do
+          order.bill_address = address
+          is_expected.to eq(controller.comable.delivery_order_path)
+        end
+
+        it "return to 'confirm' path if bill and ship address is selected" do
+          order.bill_address = address
+          order.ship_address = address
+          is_expected.to eq(controller.comable.confirm_order_path)
+        end
+
+        # TODO: Add test cases for 'shipment' and 'payment' actions
+      end
+
+      describe "call by 'orderer'" do
+        subject { controller.view_context.next_order_path(:orderer) }
+
+        it "return to 'delivery' path" do
+          is_expected.to eq(controller.comable.delivery_order_path)
+        end
+
+        it "return to 'confirm' path if ship address is selected" do
+          order.ship_address = address
+          is_expected.to eq(controller.comable.confirm_order_path)
+        end
+      end
+
+      describe "call by 'delivery'" do
+        subject { controller.view_context.next_order_path(:delivery) }
+
+        it "return to 'confirm' path" do
+          is_expected.to eq(controller.comable.confirm_order_path)
+        end
       end
     end
   end

@@ -1,8 +1,46 @@
-h1 注文者情報入力
+.order
+  .bill_address
+    h1
+      | Billing address
 
-.orderer
-  = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
-    = f.text_field :family_name, placeholder: '姓'
-    = f.text_field :first_name, placeholder: '名'
-    = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
-    = f.submit
+    - if @order.bill_address
+      = render 'comable/shared/address', address: @order.bill_address
+      = link_to 'Next step', next_order_path
+
+      - if current_customer.other_addresses.any?
+        .other_addresses
+          h2
+            | Other addresses
+          ul
+            - current_customer.addresses.each do |address|
+              - next if @order.bill_address.same_as? address
+              li
+                = render 'comable/shared/address', address: address
+                = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
+                  .hidden
+                    = f.fields_for :bill_address, address.clone do |ff|
+                      = render 'comable/shared/address_form', address: ff
+                  = f.submit 'Use this'
+
+    - else
+      / TODO: Standardize
+      - if @order.errors.any?
+        .error_messages
+          ul
+            - @order.errors.full_messages.each do |full_message|
+              li = full_message
+
+      .new
+        h2
+          | New billing address
+        = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
+          = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
+          = f.fields_for :bill_address do |ff|
+            = render 'comable/shared/address_form', address: ff
+          = f.submit
+
+          / for old spec
+          / TODO: Remove
+          .hidden
+            = f.text_field :family_name, placeholder: '姓'
+            = f.text_field :first_name, placeholder: '名'
