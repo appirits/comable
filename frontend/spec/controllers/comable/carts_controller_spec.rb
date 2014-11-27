@@ -7,73 +7,66 @@ describe Comable::CartsController do
   before { controller.request.env['HTTP_REFERER'] = controller.comable.product_path(product) }
   before { request }
 
-  context 'when sign-in after it has created a cart' do
+  describe 'inherit cart items' do
     let(:product) { FactoryGirl.create(:product, :with_stock) }
     let(:customer) { FactoryGirl.create(:customer) }
 
-    let(:request) do
-      post :add, product_id: product.id
-      sign_in :customer, customer
-      get :show
-    end
-
     subject { current_customer }
 
-    it 'is signed-in customer' do
-      expect(subject.signed_in?).to be true
+    context 'when sign in' do
+      let(:request) do
+        post :add, product_id: product.id
+        sign_in :customer, customer
+        get :show
+      end
+
+      it 'is signed in customer' do
+        expect(subject.signed_in?).to be true
+      end
+
+      it 'inherit cart items' do
+        expect(subject.cart.count).to eq(1)
+      end
     end
 
-    it 'inherit cart items' do
-      expect(subject.cart.count).to eq(1)
-    end
-  end
+    context 'when sign out' do
+      let(:request) do
+        sign_in customer
+        post :add, product_id: product.id
+        sign_out customer
+      end
 
-  context 'when sign-out after it has created a cart' do
-    let(:product) { FactoryGirl.create(:product, :with_stock) }
-    let(:customer) { FactoryGirl.create(:customer) }
+      it 'is guest' do
+        expect(subject.signed_in?).to be false
+      end
 
-    let(:request) do
-      sign_in customer
-      post :add, product_id: product.id
-      sign_out customer
-    end
-
-    subject { current_customer }
-
-    it 'is guest' do
-      expect(subject.signed_in?).to be false
+      it 'do not inherit cart items' do
+        expect(subject.cart.count).to eq(0)
+      end
     end
 
-    it 'do not inherit cart items' do
-      expect(subject.cart.count).to eq(0)
-    end
-  end
+    context 'when sign in and already existed a cart' do
+      let(:products) { FactoryGirl.create_list(:product, 2, :with_stock, :many) }
+      let(:product) { products.first }
 
-  context 'when sign-in after it has added cart items' do
-    let(:products) { FactoryGirl.create_list(:product, 2, :with_stock, :many) }
-    let(:product) { products.first }
-    let(:customer) { FactoryGirl.create(:customer) }
+      let(:request) do
+        sign_in customer
+        post :add, product_id: products.first.id
 
-    let(:request) do
-      sign_in customer
-      post :add, product_id: products.first.id
+        sign_out customer
+        post :add, product_id: products.last.id
 
-      sign_out customer
-      post :add, product_id: products.last.id
+        sign_in customer
+        get :show
+      end
 
-      sign_in customer
+      it 'is signed in customer' do
+        expect(subject.signed_in?).to be true
+      end
 
-      get :show
-    end
-
-    subject { current_customer }
-
-    it 'is signed-in customer' do
-      expect(subject.signed_in?).to be true
-    end
-
-    it 'inherit cart items' do
-      expect(subject.cart.count).to eq(2)
+      it 'inherit cart items' do
+        expect(subject.cart.count).to eq(2)
+      end
     end
   end
 
