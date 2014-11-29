@@ -61,8 +61,11 @@ describe Comable::Customer do
   context 'カート処理' do
     let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
     let(:stock) { stocks.first }
+    let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
+    let(:signed_cookies) { Hash.new }
 
-    subject { FactoryGirl.build_stubbed(:customer) }
+    # when guest
+    subject { FactoryGirl.build(:customer).with_cookies(cookies) }
 
     it '商品を投入できること' do
       subject.add_cart_item(stock)
