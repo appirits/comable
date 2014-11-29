@@ -10,6 +10,12 @@ module Comable
     validates :detail, length: { maximum: 255 }
     validates :phone_number, length: { maximum: 18 }
 
+    class << self
+      def find_or_clone(address)
+        find { |obj| obj.same_as? address } || address.clone
+      end
+    end
+
     def same_as?(address)
       attributes_without_id == address.attributes_without_id
     end

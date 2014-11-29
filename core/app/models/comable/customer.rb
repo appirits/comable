@@ -43,11 +43,11 @@ module Comable
     end
 
     def update_bill_address_by(bill_address)
-      self.bill_address = addresses.find { |address| address.same_as? bill_address } || bill_address.clone
+      update_attributes(bill_address: addresses.find_or_clone(bill_address))
     end
 
     def update_ship_address_by(ship_address)
-      self.ship_address = addresses.find { |address| address.same_as? ship_address } || ship_address.clone
+      update_attributes(ship_address: addresses.find_or_clone(ship_address))
     end
 
     def signed_in?

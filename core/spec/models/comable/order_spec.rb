@@ -13,6 +13,7 @@ describe Comable::Order do
 
         before { allow(subject).to receive(:current_item_total_price) { item_total_price } }
         before { subject.complete }
+        before { subject.reload }
 
         its(:completed_at) { should be }
         its(:code) { should match(/^C\d{11}$/) }
@@ -36,6 +37,7 @@ describe Comable::Order do
             let(:customer) { FactoryGirl.create(:customer, addresses: [address]) }
 
             it 'has copied address from order to customer' do
+              customer.reload
               expect(customer.bill_address).to eq(address)
               expect(customer.ship_address).to eq(address)
             end
@@ -45,6 +47,7 @@ describe Comable::Order do
             let(:customer) { FactoryGirl.create(:customer, :with_addresses) }
 
             it 'has cloned address from order to customer' do
+              customer.reload
               expect(customer.bill_address.attributes_without_id).to eq(address.attributes_without_id)
               expect(customer.ship_address.attributes_without_id).to eq(address.attributes_without_id)
             end
