@@ -3,8 +3,8 @@ module Comable
     belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
     belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
-    belongs_to :bill_address, class_name: Comable::Address.name, dependent: :destroy
-    belongs_to :ship_address, class_name: Comable::Address.name, dependent: :destroy
+    belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
+    belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
@@ -28,8 +28,8 @@ module Comable
 
     define_model_callbacks :complete
     before_complete :precomplete
-    before_create :generate_guest_token
-    before_create :clone_addresses_from_customer
+    before_validation :generate_guest_token, on: :create
+    before_validation :clone_addresses_from_customer, on: :create
     after_complete :clone_addresses_to_customer
 
     scope :complete, -> { where.not(completed_at: nil) }

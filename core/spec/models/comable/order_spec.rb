@@ -57,6 +57,7 @@ describe Comable::Order do
 
       context 'incomplete order' do
         before { subject.save }
+        before { subject.reload }
 
         its(:completed_at) { should be_nil }
         its(:code) { should be_nil }
