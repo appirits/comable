@@ -1,3 +1,10 @@
+## Comable 0.2.3 (November 30, 2014) ##
+
+* Refactor the order flow.
+
+* Implement billing and shipping addresses for the order and customer.
+
+
 ## Comable 0.2.2 (November 04, 2014) ##
 
 *   Implement the members feature.

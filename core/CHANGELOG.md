@@ -1,3 +1,14 @@
+## Comable 0.2.3 (November 30, 2014) ##
+
+* Destroy the address when destroy the order or customer.
+
+* Copy new addresses from the order to the customer.
+
+* Fix to inherit cart items when guest to sign in.
+
+* Implement billing and shipping addresses for the order and customer.
+
+
 ## Comable 0.2.2 (November 04, 2014) ##
 
 *   Implement the members feature.
