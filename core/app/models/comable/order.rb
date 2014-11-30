@@ -91,7 +91,6 @@ module Comable
 
       order_details.each(&:complete)
 
-      mark_for_validation_to_order_details
       save
     end
 
@@ -121,11 +120,6 @@ module Comable
       # TODO: Remove conditions for compatibility.
       customer.update_bill_address_by bill_address if bill_address
       customer.update_ship_address_by ship_address if ship_address
-    end
-
-    # HACK: to validate forced for nested attributes
-    def mark_for_validation_to_order_details
-      order_details.each(&:id_will_change!)
     end
   end
 end
