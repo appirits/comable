@@ -3,11 +3,69 @@ describe Comable::Customer do
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
+  describe 'incomplete order' do
+    context 'when guest' do
+      let(:cookies) { OpenStruct.new(signed: { guest_token: nil }, permanent: nil) }
+      let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+
+      before { allow(cookies).to receive(:permanent) { cookies } }
+      before { allow(cookies.class).to receive(:name) { 'Cookies' } }
+
+      subject { described_class.new(cookies) }
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        order_delivery = order.order_deliveries.first
+        expect(order_delivery.object_id).to eq(order.order_deliveries.first.object_id)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        expect(order.order_deliveries.size).to eq(1)
+        order.order_deliveries.build
+        order.save
+        expect(order.order_deliveries.size).to eq(2)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        order_delivery = order.order_deliveries.first
+        expect(order_delivery.order_details.size).to eq(0)
+
+        order_delivery.order_details.build
+        expect(order_delivery.order_details.size).to eq(1)
+        expect(order.order_deliveries.first.order_details.size).to eq(1)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        order_delivery = order.order_deliveries.first
+        expect(order_delivery.order_details.size).to eq(0)
+
+        order_delivery.order_details.create(stock: stock, quantity: 1)
+        expect(order_delivery.order_details.size).to eq(1)
+        expect(order.order_deliveries.first.order_details.size).to eq(1)
+      end
+
+      it 'has the order delivery that is same object in different accesses' do
+        order = subject.incomplete_order
+        expect(subject.cart.size).to eq(0)
+
+        subject.add_cart_item(stock)
+        expect(order.order_deliveries.first.order_details.size).to eq(1)
+        expect(subject.cart.size).to eq(1)
+      end
+    end
+  end
+
   context 'カート処理' do
     let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
     let(:stock) { stocks.first }
+    let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
+    let(:signed_cookies) { Hash.new }
 
-    subject { FactoryGirl.build_stubbed(:customer) }
+    # when guest
+    subject { FactoryGirl.build(:customer).with_cookies(cookies) }
 
     it '商品を投入できること' do
       subject.add_cart_item(stock)
@@ -48,18 +106,24 @@ describe Comable::Customer do
       expect(subject.cart.count).to eq(0)
     end
 
-    context '在庫がない場合' do
+    context 'when soldout' do
       let(:stocks) { FactoryGirl.create_list(:stock, 5, :soldout, :with_product) }
 
-      it '商品を投入できないこと' do
-        expect { subject.add_cart_item(stock) }.to raise_error(Comable::NoStock)
+      it 'has a error in cart' do
+        subject.add_cart_item(stock)
+        expect(subject.cart.errors.count).to eq(1)
+      end
+
+      it 'has a error message in cart' do
+        subject.add_cart_item(stock)
+        expect(subject.cart.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
       end
     end
   end
 
   context '注文処理' do
     let(:payment) { FactoryGirl.create(:payment) }
-    let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+    let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product, quantity: order_quantity) }
     let(:order_quantity) { 10 }
 
     subject { FactoryGirl.create(:customer) }
@@ -116,12 +180,11 @@ describe Comable::Customer do
       it '商品を購入できないこと' do
         expect { subject.order }.to raise_error(Comable::InvalidOrder)
       end
-    end
 
-    context '異常系' do
-      it '注文数０の場合にエラーが発生すること' do
-        subject.cart_items.first.update_attributes(quantity: 0)
-        expect { subject.order }.to raise_error(Comable::InvalidOrder)
+      it '商品を購入できないこと' do
+        order = subject.incomplete_order
+        order.complete
+        expect(order.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
       end
     end
 

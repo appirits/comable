@@ -8,11 +8,10 @@ module Comable
 
     # TODO: Change the method name to load_order_with_params
     before_filter :load_order
-    before_filter :verify
+    before_filter :ensure_cart_not_empty
+    before_filter :ensure_saleable_stocks
     # TODO: Remove
     after_filter :save_order, except: :create
-
-    rescue_from Comable::InvalidOrder, with: :order_invalid
 
     def new
       redirect_to next_order_path unless agreement_required?
@@ -33,8 +32,9 @@ module Comable
     end
 
     def create
-      order = current_customer.order
-      if order.complete?
+      @order.complete
+
+      if @order.completed?
         flash[:notice] = I18n.t('comable.orders.success')
         send_order_complete_mail
       else
@@ -79,14 +79,21 @@ module Comable
       @order.ship_address.nil?
     end
 
-    def verify
+    def ensure_cart_not_empty
       return if current_customer.cart.any?
       flash[:alert] = I18n.t('comable.carts.empty')
       redirect_to comable.cart_path
     end
 
+    def ensure_saleable_stocks
+      return if current_order.soldout_stocks.empty?
+      flash[:alert] = I18n.t('comable.errors.messages.products_soldout')
+      redirect_to comable.cart_path
+    end
+
     def load_order
-      @order = current_customer.preorder(order_params || {})
+      @order = current_order
+      @order.attributes = order_params if order_params
     end
 
     def save_order
@@ -116,11 +123,6 @@ module Comable
       params.require(:order).permit(
         ship_address_attributes: permitted_address_attributes
       )
-    end
-
-    def order_invalid
-      flash[:alert] = I18n.t('comable.orders.failure')
-      redirect_to comable.cart_path
     end
   end
 end

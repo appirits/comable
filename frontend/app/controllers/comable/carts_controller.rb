@@ -1,25 +1,29 @@
 module Comable
   class CartsController < Comable::ApplicationController
-    rescue_from Comable::NoStock, with: :no_stock
-
     def add
       cart_item = find_cart_item
       return redirect_by_product_not_found unless cart_item
 
-      current_customer.add_cart_item(cart_item, cart_item_options)
+      if current_customer.add_cart_item(cart_item, cart_item_options)
+        flash.now[:notice] = I18n.t('comable.carts.add_product')
+      else
+        flash.now[:alert] = I18n.t('comable.carts.invalid')
+      end
 
-      flash[:notice] = I18n.t('comable.carts.add_product')
-      redirect_to cart_path
+      render :show
     end
 
     def update
       cart_item = find_cart_item
       return redirect_by_product_not_found unless cart_item
 
-      current_customer.reset_cart_item(cart_item, cart_item_options)
+      if current_customer.reset_cart_item(cart_item, cart_item_options)
+        flash.now[:notice] = I18n.t('comable.carts.update')
+      else
+        flash.now[:alert] = I18n.t('comable.carts.invalid')
+      end
 
-      flash[:notice] = I18n.t('comable.carts.update')
-      redirect_to cart_path
+      render :show
     end
 
     private
@@ -27,11 +31,6 @@ module Comable
     def redirect_by_product_not_found
       flash[:alert] = I18n.t('comable.errors.messages.products_not_found')
       redirect_to :back
-    end
-
-    def no_stock
-      flash[:alert] = I18n.t('comable.errors.messages.products_soldout')
-      redirect_to cart_path
     end
 
     def find_cart_item

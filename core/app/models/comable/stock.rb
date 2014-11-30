@@ -28,6 +28,9 @@ module Comable
     # @!endgroup
     #
 
+    # TODO: add conditions (by limitless flag, backoder flag and etc..)
+    validates :quantity, numericality: { greater_than_or_equal_to: 0 }
+
     delegate :name, to: :product
     delegate :price, to: :product
     delegate :sku?, to: :product

@@ -10,4 +10,25 @@ describe Comable::Stock do
       its(:name) { should be }
     end
   end
+
+  describe 'Validations' do
+    subject { described_class.new }
+
+    describe '#quantity' do
+      it 'is valid with greater than 0' do
+        subject.quantity = 1
+        is_expected.to be_valid
+      end
+
+      it 'is valid with equal 0' do
+        subject.quantity = 0
+        is_expected.to be_valid
+      end
+
+      it 'is invalid with less than 0' do
+        subject.quantity = -1
+        is_expected.to be_invalid
+      end
+    end
+  end
 end

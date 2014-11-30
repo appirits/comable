@@ -1,6 +1,6 @@
 module Comable
   class OrderDelivery < ActiveRecord::Base
-    belongs_to :order, class_name: Comable::Order.name, foreign_key: Comable::Order.table_name.singularize.foreign_key
+    belongs_to :order, class_name: Comable::Order.name, foreign_key: Comable::Order.table_name.singularize.foreign_key, inverse_of: :order_deliveries
     has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order_delivery
 
     accepts_nested_attributes_for :order_details
@@ -9,8 +9,8 @@ module Comable
     delegate :guest_token, to: :order
     delegate :complete?, to: :order
 
-    def save_to_complete
-      order_details.each(&:save_to_complete)
+    def complete
+      order_details.each(&:complete)
     end
 
     # 氏名を取得

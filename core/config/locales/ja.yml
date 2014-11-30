@@ -5,16 +5,17 @@ ja:
 
     errors:
       messages:
-        product_soldout: '%{name}は在庫が不足しています。'
-        products_soldout: 'ご指定の商品は在庫が不足しています。'
+        product_soldout: '(%{name})が不足しています。'
+        products_soldout: 'が不足しています。'
         product_not_found: '%{name}は存在しないか削除された可能性があります。'
         products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
-        order_quantity_invalid: '%{name}の注文数が不正です。'
 
     carts:
       add_product: '１つの商品がカートに入りました'
       empty: 'カートに商品が入っていません'
       update: 'カートの内容が変更されました'
+      invalid: 'カートにいくつかのエラーがあります'
+      soldout: '在庫切れ'
     orders:
       success: '注文が完了しました'
       failure: '注文に失敗しました。入力項目を見直してください。'
@@ -37,3 +38,9 @@ ja:
       comable/order: ご注文
       comable/order_delivery: お届け先
       comable/order_details: ご注文明細
+
+    attributes:
+      comable/order_detail: &comable_order_detail
+        quantity: 在庫
+      comable/order/order_deliveries/order_details:
+        <<: *comable_order_detail

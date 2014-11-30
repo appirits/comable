@@ -32,6 +32,15 @@ module Comable
       def price
         sum(&:current_subtotal_price)
       end
+
+      # TODO: Refactoring
+      def errors
+        ActiveModel::Errors.new(self).tap do |obj|
+          map(&:errors).map(&:full_messages).each do |full_message|
+            obj[:base] << full_message if full_message.any?
+          end
+        end
+      end
     end
 
     private
@@ -50,31 +59,30 @@ module Comable
     end
 
     def add_stock_to_cart(stock, quantity)
-      cart_items = find_cart_items_by(stock)
-      if cart_items.any?
-        cart_item = cart_items.first
+      cart_item = find_cart_item_by(stock)
+      if cart_item
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_items.create(quantity: quantity)
+        cart_items.build(Comable::Stock.table_name.singularize.foreign_key => stock.id, quantity: quantity).save
       end
     end
 
     def reset_stock_from_cart(stock, quantity)
-      cart_items = find_cart_items_by(stock)
+      cart_item = find_cart_item_by(stock)
       if quantity > 0
-        return add_stock_to_cart(stock, quantity) if cart_items.empty?
-        cart_items.first.update_attributes(quantity: quantity)
+        return add_stock_to_cart(stock, quantity) unless cart_item
+        cart_item.update_attributes(quantity: quantity)
       else
-        return false if cart_items.empty?
-        cart_items.first.destroy
+        return false unless cart_item
+        cart_items.destroy(cart_item)
       end
     end
 
-    def find_cart_items_by(stock)
+    def find_cart_item_by(stock)
       # TODO: Refactoring
       fail unless stock.is_a?(Comable::Stock)
-      cart_items.where(Comable::Stock.table_name.singularize.foreign_key => stock.id)
+      cart_items.find { |cart_item| cart_item.stock.id == stock.id }
     end
   end
 end

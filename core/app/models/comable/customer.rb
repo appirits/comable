@@ -64,20 +64,22 @@ module Comable
       # TODO: テストケースの作成
       incomplete_order.destroy if incomplete_order.incomplete?
 
+      @cart_items = nil
       @incomplete_order = nil
     end
 
     def cart_items
-      incomplete_order.order_deliveries.first.order_details
+      @cart_items ||= incomplete_order.order_deliveries.first.order_details
     end
 
     def incomplete_order
-      @incomplete_order ||= initialize_incomplete_order
+      @incomplete_order ||= find_or_initialize_incomplete_order
     end
 
     def preorder(order_params = {})
+      Rails.logger.debug '[DEPRECATED] Comable::Customer#preorder is deprecated. Please use #incomplete_order and #valid? methods.'
       incomplete_order.attributes = order_params
-      incomplete_order.precomplete!
+      fail Comable::InvalidOrder if incomplete_order.invalid?
       incomplete_order
     end
 
@@ -93,12 +95,15 @@ module Comable
       @cookies.signed[:guest_token] if @cookies
     end
 
+    def find_or_initialize_incomplete_order
+      find_incomplete_order || initialize_incomplete_order
+    end
+
     def initialize_incomplete_order
-      orders = find_incomplete_orders
-      return orders.first if orders.any?
-      order = orders.create(incomplete_order_attributes)
+      order = Comable::Order.create(incomplete_order_attributes)
       @cookies.permanent.signed[:guest_token] = order.guest_token if @cookies
-      order
+      # enable preload
+      find_incomplete_order
     end
 
     def incomplete_order_attributes
@@ -112,14 +117,14 @@ module Comable
       }
     end
 
-    def find_incomplete_orders
-      guest_token = current_guest_token unless signed_in?
+    def find_incomplete_order
+      guest_token ||= current_guest_token unless signed_in?
       Comable::Order
         .incomplete
-        .includes(order_deliveries: :order_details)
+        .preload(order_deliveries: :order_details)
         .where(guest_token: guest_token)
         .by_customer(self)
-        .limit(1)
+        .first
     end
 
     def inherit_cart_items

@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :stock, class: 'Comable::Stock' do
     sequence(:product_id_num) { |n| n.next }
     sequence(:code) { |n| format('%07d', n.next) }
-    quantity nil
+    quantity 0
 
     transient { sku_flag false }
 
