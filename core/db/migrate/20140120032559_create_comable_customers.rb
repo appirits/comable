@@ -33,10 +33,6 @@ class CreateComableCustomers < ActiveRecord::Migration
       ## Others
       t.references :bill_address
       t.references :ship_address
-
-      # TODO: Remove
-      t.string :family_name
-      t.string :first_name
     end
 
     add_index :comable_customers, :email, unique: true

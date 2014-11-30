@@ -27,5 +27,9 @@ module Comable
     def attributes_without_id
       attributes.except('id', Comable::Customer.table_name.singularize.foreign_key.to_s)
     end
+
+    def full_name
+      "#{family_name} #{first_name}"
+    end
   end
 end

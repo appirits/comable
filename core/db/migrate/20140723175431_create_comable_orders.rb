@@ -5,8 +5,6 @@ class CreateComableOrders < ActiveRecord::Migration
       t.integer :comable_payment_id
       t.string :guest_token
       t.string :code
-      t.string :family_name
-      t.string :first_name
       t.string :email
       t.integer :shipment_fee, null: false, default: 0
       t.string :shipment_tracking_number

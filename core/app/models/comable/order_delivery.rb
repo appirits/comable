@@ -7,7 +7,7 @@ module Comable
 
     delegate :customer, to: :order
     delegate :guest_token, to: :order
-    delegate :complete?, to: :order
+    delegate :completed?, to: :order
 
     def complete
       order_details.each(&:complete)

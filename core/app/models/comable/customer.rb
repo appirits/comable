@@ -15,18 +15,6 @@ module Comable
 
     before_save :inherit_cart_items, if: :current_sign_in_at_changed?
 
-    def initialize(*args)
-      obj = args.first
-      case obj.class.name
-      when /Cookies/
-        Rails.logger.debug '[DEPRECATED] Comable::Customer#new(cookies) is deprecated. Please use Comable::Customer#with_cookies(cookies) method.'
-        @cookies = obj
-        super()
-      else
-        super
-      end
-    end
-
     def with_cookies(cookies)
       @cookies = cookies
       self
@@ -58,14 +46,12 @@ module Comable
       !signed_in?
     end
 
-    def reset_cart
-      return unless incomplete_order
-
-      # TODO: テストケースの作成
-      incomplete_order.destroy if incomplete_order.incomplete?
-
-      @cart_items = nil
-      @incomplete_order = nil
+    # TODO: Add a test case
+    def reload(*_)
+      super.tap do
+        @cart_items = nil
+        @incomplete_order = nil
+      end
     end
 
     def cart_items
@@ -76,17 +62,10 @@ module Comable
       @incomplete_order ||= find_or_initialize_incomplete_order
     end
 
-    def preorder(order_params = {})
-      Rails.logger.debug '[DEPRECATED] Comable::Customer#preorder is deprecated. Please use #incomplete_order and #valid? methods.'
-      incomplete_order.attributes = order_params
-      fail Comable::InvalidOrder if incomplete_order.invalid?
-      incomplete_order
-    end
-
     def order(order_params = {})
       incomplete_order.attributes = order_params
       incomplete_order.complete!
-      incomplete_order.tap { |completed_flag| reset_cart if completed_flag }
+      incomplete_order.tap { reload }
     end
 
     private
@@ -111,9 +90,7 @@ module Comable
         self.class.table_name.singularize.foreign_key => id,
         email: email,
         # TODO: Remove
-        family_name: family_name,
-        first_name: first_name,
-        order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }]
+        order_deliveries_attributes: [{ id: nil }]
       }
     end
 

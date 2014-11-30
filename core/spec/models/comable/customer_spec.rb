@@ -1,17 +1,16 @@
 describe Comable::Customer do
+  let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
+  let(:signed_cookies) { Hash.new }
+
   it { is_expected.to have_many(:addresses).class_name(Comable::Address.name).with_foreign_key(described_class.table_name.singularize.foreign_key).dependent(:destroy) }
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
   describe 'incomplete order' do
     context 'when guest' do
-      let(:cookies) { OpenStruct.new(signed: { guest_token: nil }, permanent: nil) }
       let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
 
-      before { allow(cookies).to receive(:permanent) { cookies } }
-      before { allow(cookies.class).to receive(:name) { 'Cookies' } }
-
-      subject { described_class.new(cookies) }
+      subject { described_class.new.with_cookies(cookies) }
 
       it 'has the order delivery that is same object in different accesses' do
         order = subject.incomplete_order
@@ -61,8 +60,6 @@ describe Comable::Customer do
   context 'カート処理' do
     let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
     let(:stock) { stocks.first }
-    let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
-    let(:signed_cookies) { Hash.new }
 
     # when guest
     subject { FactoryGirl.build(:customer).with_cookies(cookies) }
@@ -152,10 +149,10 @@ describe Comable::Customer do
 
     it '受注配送レコードが正しく存在すること' do
       subject.order
-      expect(subject.orders.last.family_name).to eq(subject.family_name)
+      expect(subject.orders.last.email).to eq(subject.email)
     end
 
-    it '受注配送レコードが正しく存在すること' do
+    pending '受注配送レコードが正しく存在すること' do
       subject.order
       expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
     end
@@ -198,8 +195,6 @@ describe Comable::Customer do
       let(:params) do
         {
           order: {
-            family_name: order.family_name,
-            first_name: order.first_name,
             email: order.email,
             order_deliveries_attributes: {
               0 => {
