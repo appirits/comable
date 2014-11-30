@@ -12,6 +12,7 @@ class CreateComableOrders < ActiveRecord::Migration
       t.integer :total_price
       t.references :bill_address
       t.references :ship_address
+      t.string :state
       t.datetime :completed_at
     end
 
