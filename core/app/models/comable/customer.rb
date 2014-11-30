@@ -55,7 +55,7 @@ module Comable
     end
 
     def cart_items
-      @cart_items ||= incomplete_order.order_deliveries.first.order_details
+      @cart_items ||= incomplete_order.order_details
     end
 
     def incomplete_order
@@ -88,9 +88,7 @@ module Comable
     def incomplete_order_attributes
       {
         self.class.table_name.singularize.foreign_key => id,
-        email: email,
-        # TODO: Remove
-        order_deliveries_attributes: [{ id: nil }]
+        email: email
       }
     end
 
@@ -98,7 +96,7 @@ module Comable
       guest_token ||= current_guest_token unless signed_in?
       Comable::Order
         .incomplete
-        .preload(order_deliveries: :order_details)
+        .preload(:order_details)
         .where(guest_token: guest_token)
         .by_customer(self)
         .first
@@ -106,9 +104,9 @@ module Comable
 
     def inherit_cart_items
       return unless current_guest_token
-      guest_order = Comable::Order.incomplete.includes(order_deliveries: :order_details).where(guest_token: current_guest_token).first
+      guest_order = Comable::Order.incomplete.preload(:order_details).where(guest_token: current_guest_token).first
       return unless guest_order
-      guest_order.order_deliveries.map(&:order_details).flatten.each do |order_detail|
+      guest_order.order_details.each do |order_detail|
         move_cart_item(order_detail)
       end
       # TODO: Remove?

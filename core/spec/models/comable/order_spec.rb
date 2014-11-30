@@ -6,6 +6,22 @@ describe Comable::Order do
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
+  describe 'validations' do
+    describe 'for order details' do
+      let!(:order_detail) { FactoryGirl.create(:order_detail, stock: stock, order: order) }
+
+      context 'when out of stock' do
+        let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+
+        it 'has errors' do
+          stock.update_attributes(quantity: 0)
+          order.complete
+          expect(order.errors['order_details.quantity'].any?).to be
+        end
+      end
+    end
+  end
+
   describe 'attributes' do
     describe '#save' do
       context 'complete order' do

@@ -1,8 +1,7 @@
 describe Comable::OrderMailer do
   describe 'instructions' do
     let!(:store) { FactoryGirl.create(:store, :email_activate) }
-    let(:order) { FactoryGirl.build(:order, :with_addresses, order_deliveries: [order_delivery]) }
-    let(:order_delivery) { FactoryGirl.build(:order_delivery, order_details: [order_detail]) }
+    let(:order) { FactoryGirl.build(:order, :with_addresses, order_details: [order_detail]) }
     let(:order_detail) { FactoryGirl.build(:order_detail, :sku, quantity: 2) }
     let(:mail) { described_class.complete(order) }
 

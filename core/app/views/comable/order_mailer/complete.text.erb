@@ -12,10 +12,8 @@
             <%= shipment_method.name %>
     <%- end %>
 
-    <%= Comable::OrderDelivery.model_name.human %>:
-<%- @order.order_deliveries.each do |order_delivery| %>
-            <%= name_with_honorific order_delivery.full_name %>
-<%- end %>
+    <%= @order.class.human_attribute_name(:ship_address) %>:
+            <%= name_with_honorific @order.ship_full_name %>
 
 ======================================================================
 
@@ -24,7 +22,7 @@
 <%= "#{@order.class.human_attribute_name(:code)}: #{@order.code}" %>
 <%= "#{@order.class.human_attribute_name(:completed_at)}: #{I18n.l @order.completed_at.to_date}" %>
 
-<%- @order.order_deliveries.map(&:order_details).flatten.each do |order_detail| %>
+<%- @order.order_details.each do |order_detail| %>
             <%= name_with_quantity order_detail.name_with_sku, order_detail.quantity %>
             <%= number_to_currency order_detail.subtotal_price %>
 

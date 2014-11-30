@@ -5,7 +5,7 @@ FactoryGirl.define do
     quantity 10
     price 100
     stock { build(:stock, :unsold, :with_product) }
-    order_delivery { FactoryGirl.build_stubbed(:order_delivery) }
+    order { build_stubbed(:order) }
 
     trait :sku do
       sku_h_item_name 'カラー'

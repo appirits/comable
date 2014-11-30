@@ -30,17 +30,17 @@ ja:
         outroductions: |-
           またのご利用をお待ちしております。
           %{store_name}
-        order: 'ご注文内容'
-        order_delivery: 'お届け先'
 
   activerecord:
     models:
       comable/order: ご注文
-      comable/order_delivery: お届け先
       comable/order_details: ご注文明細
 
     attributes:
+      comable/order:
+        bill_address: 請求先
+        ship_address: 配送先
       comable/order_detail: &comable_order_detail
         quantity: 在庫
-      comable/order/order_deliveries/order_details:
+      comable/order/order_details:
         <<: *comable_order_detail

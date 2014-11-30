@@ -14,7 +14,7 @@ h1 注文情報確認
   .details
     h2
       | Order details
-    - @order.order_deliveries.first.order_details.each do |order_detail|
+    - @order.order_details.each do |order_detail|
       .name
         = order_detail.stock.name
       .price
