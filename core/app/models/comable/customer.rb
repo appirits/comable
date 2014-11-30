@@ -64,13 +64,6 @@ module Comable
       @incomplete_order ||= find_or_initialize_incomplete_order
     end
 
-    def preorder(order_params = {})
-      Rails.logger.debug '[DEPRECATED] Comable::Customer#preorder is deprecated. Please use #incomplete_order and #valid? methods.'
-      incomplete_order.attributes = order_params
-      fail Comable::InvalidOrder if incomplete_order.invalid?
-      incomplete_order
-    end
-
     def order(order_params = {})
       incomplete_order.attributes = order_params
       incomplete_order.complete!
