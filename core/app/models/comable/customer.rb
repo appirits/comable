@@ -50,7 +50,7 @@ module Comable
       return unless incomplete_order
 
       # TODO: テストケースの作成
-      incomplete_order.destroy if incomplete_order.incomplete?
+      incomplete_order.destroy unless incomplete_order.completed?
 
       @cart_items = nil
       @incomplete_order = nil

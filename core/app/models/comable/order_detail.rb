@@ -12,10 +12,10 @@ module Comable
     delegate :product, to: :stock
     delegate :guest_token, to: :order_delivery
     delegate :order, to: :order_delivery, allow_nil: true
-    delegate :incompleted?, to: :order, allow_nil: true
+    delegate :completed?, to: :order, allow_nil: true
     delegate :completing?, to: :order, allow_nil: true
 
-    with_options if: -> { incompleted? || completing? } do |incomplete|
+    with_options if: -> { !completed? || completing? } do |incomplete|
       incomplete.before_validation :copy_attributes
     end
 

@@ -12,16 +12,16 @@ module Comable
     # TODO: Remove
     accepts_nested_attributes_for :order_deliveries
 
-    with_options if: :complete? do |complete_order|
-      complete_order.validates :code, presence: true
-      complete_order.validates :first_name, presence: true
-      complete_order.validates :family_name, presence: true
-      complete_order.validates :email, presence: true
-      complete_order.validates :shipment_fee, presence: true
-      complete_order.validates :total_price, presence: true
+    with_options if: :completed? do |completed_order|
+      completed_order.validates :code, presence: true
+      completed_order.validates :first_name, presence: true
+      completed_order.validates :family_name, presence: true
+      completed_order.validates :email, presence: true
+      completed_order.validates :shipment_fee, presence: true
+      completed_order.validates :total_price, presence: true
     end
 
-    with_options unless: :complete? do |incomplete_order|
+    with_options unless: :completed? do |incomplete_order|
       incomplete_order.validates Comable::Customer.table_name.singularize.foreign_key, uniqueness: { scope: [Comable::Customer.table_name.singularize.foreign_key, :completed_at] }, if: :customer
       incomplete_order.validates :guest_token, uniqueness: { scope: [:guest_token, :completed_at] }, if: :guest_token
     end
@@ -48,22 +48,8 @@ module Comable
       self
     end
 
-    def complete?
-      Rails.logger.debug '[DEPRECATED] Comable::Customer#complete? is deprecated. Please use the #completed? method.'
-      completed?
-    end
-
-    def incomplete?
-      Rails.logger.debug '[DEPRECATED] Comable::Customer#incomplete? is deprecated. Please use the #incompleted? method.'
-      incompleted?
-    end
-
     def completed?
-      !incompleted?
-    end
-
-    def incompleted?
-      completed_at.nil?
+      !completed_at.nil?
     end
 
     # TODO: switch to state_machine
