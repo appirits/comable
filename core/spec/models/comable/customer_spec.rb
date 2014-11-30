@@ -11,7 +11,7 @@ describe Comable::Customer do
       before { allow(cookies).to receive(:permanent) { cookies } }
       before { allow(cookies.class).to receive(:name) { 'Cookies' } }
 
-      subject { described_class.new(cookies) }
+      subject { described_class.new.with_cookies(cookies) }
 
       it 'has the order delivery that is same object in different accesses' do
         order = subject.incomplete_order

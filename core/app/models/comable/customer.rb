@@ -15,18 +15,6 @@ module Comable
 
     before_save :inherit_cart_items, if: :current_sign_in_at_changed?
 
-    def initialize(*args)
-      obj = args.first
-      case obj.class.name
-      when /Cookies/
-        Rails.logger.debug '[DEPRECATED] Comable::Customer#new(cookies) is deprecated. Please use Comable::Customer#with_cookies(cookies) method.'
-        @cookies = obj
-        super()
-      else
-        super
-      end
-    end
-
     def with_cookies(cookies)
       @cookies = cookies
       self
