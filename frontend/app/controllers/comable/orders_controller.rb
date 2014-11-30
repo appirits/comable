@@ -112,8 +112,6 @@ module Comable
 
     def order_params_for_orderer
       params.require(:order).permit(
-        :family_name, # TODO: Remove
-        :first_name,  # TODO: Remove
         :email,
         bill_address_attributes: permitted_address_attributes
       )

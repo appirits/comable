@@ -2,7 +2,7 @@
 <%= "#{@order.class.human_attribute_name(:code)}: #{@order.code}" %>
 ----------------------------------------------------------------------
 
-<%= I18n.t('comable.order_mailer.complete.dear', name: @order.full_name) %>
+<%= I18n.t('comable.order_mailer.complete.dear', name: @order.bill_full_name) %>
 
 <%= I18n.t('comable.order_mailer.complete.introductions', store_name: current_store.name) %>
 

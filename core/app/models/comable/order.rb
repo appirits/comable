@@ -14,8 +14,6 @@ module Comable
 
     with_options if: :completed? do |completed_order|
       completed_order.validates :code, presence: true
-      completed_order.validates :first_name, presence: true
-      completed_order.validates :family_name, presence: true
       completed_order.validates :email, presence: true
       completed_order.validates :shipment_fee, presence: true
       completed_order.validates :total_price, presence: true
@@ -34,6 +32,9 @@ module Comable
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
     scope :by_customer, -> (customer) { where(Comable::Customer.table_name.singularize.foreign_key => customer) }
+
+    delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
+    delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
     def complete
       ActiveRecord::Base.transaction do
@@ -64,11 +65,6 @@ module Comable
 
     def soldout_stocks
       order_details.flatten.select(&:soldout_stock?)
-    end
-
-    # 氏名を取得
-    def full_name
-      [family_name, first_name].join(' ')
     end
 
     # 時価商品合計を取得

@@ -4,6 +4,7 @@ feature 'カート処理' do
   given!(:payment) { FactoryGirl.create(:payment) }
   given!(:shipment_method) { FactoryGirl.create(:shipment_method) }
   given(:order) { FactoryGirl.build(:order) }
+  given(:address) { FactoryGirl.build(:address) }
   given(:stock) { product.stocks.first }
 
   shared_examples '商品が購入できること' do
@@ -39,9 +40,13 @@ feature 'カート処理' do
       When '配送先情報入力画面に遷移して' do
         visit comable.orderer_order_path
         within('form') do
-          fill_in :order_family_name, with: order.family_name
-          fill_in :order_first_name, with: order.first_name
           fill_in :order_email, with: order.email
+          fill_in :order_bill_address_attributes_family_name, with: address.family_name
+          fill_in :order_bill_address_attributes_first_name, with: address.first_name
+          fill_in :order_bill_address_attributes_state_name, with: address.state_name
+          fill_in :order_bill_address_attributes_zip_code, with: address.zip_code
+          fill_in :order_bill_address_attributes_city, with: address.city
+          fill_in :order_bill_address_attributes_phone_number, with: address.phone_number
         end
         # TODO: ボタン名につかう翻訳パスを変更または作成
         click_button I18n.t('helpers.submit.update')
@@ -50,6 +55,14 @@ feature 'カート処理' do
 
       When '発送方法選択画面に遷移して' do
         visit comable.delivery_order_path
+        within('form') do
+          fill_in :order_ship_address_attributes_family_name, with: address.family_name
+          fill_in :order_ship_address_attributes_first_name, with: address.first_name
+          fill_in :order_ship_address_attributes_state_name, with: address.state_name
+          fill_in :order_ship_address_attributes_zip_code, with: address.zip_code
+          fill_in :order_ship_address_attributes_city, with: address.city
+          fill_in :order_ship_address_attributes_phone_number, with: address.phone_number
+        end
         click_button I18n.t('helpers.submit.update')
         expect(page).to have_content '発送方法'
       end
