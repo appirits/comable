@@ -9,6 +9,7 @@ require 'comable/core/engine'
 require 'comable/errors'
 require 'comable/cart_owner'
 require 'comable/payment_method'
+require 'comable/state_machine_patch'
 
 module Comable
   class << self
