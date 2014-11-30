@@ -21,6 +21,8 @@ module Comable
       case request.method_symbol
       when :post
         redirect_to next_order_path if @order.save
+      when :get
+        @order.bill_address ||= @order.build_bill_address
       end
     end
 
@@ -28,6 +30,8 @@ module Comable
       case request.method_symbol
       when :post
         redirect_to next_order_path if @order.save
+      when :get
+        @order.ship_address ||= @order.build_ship_address
       end
     end
 

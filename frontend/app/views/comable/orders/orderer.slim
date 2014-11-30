@@ -3,9 +3,21 @@
     h1
       | Billing address
 
-    - if @order.bill_address
+    - if @order.bill_address.try(:persisted?)
+      dl
+        dt = @order.class.human_attribute_name(:email)
+        dd = @order.email
       = render 'comable/shared/address', address: @order.bill_address
       = link_to 'Next step', next_order_path
+
+      .edit
+        h2
+          | Edit billing address
+        = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
+          = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
+          = f.fields_for :bill_address do |ff|
+            = render 'comable/shared/address_form', address: ff
+          = f.submit
 
       - if current_customer.other_addresses.any?
         .other_addresses
@@ -35,6 +47,6 @@
           | New billing address
         = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
           = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
-          = f.fields_for :bill_address, @order.build_bill_address do |ff|
+          = f.fields_for :bill_address do |ff|
             = render 'comable/shared/address_form', address: ff
           = f.submit
