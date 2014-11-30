@@ -46,14 +46,12 @@ module Comable
       !signed_in?
     end
 
-    def reset_cart
-      return unless incomplete_order
-
-      # TODO: テストケースの作成
-      incomplete_order.destroy unless incomplete_order.completed?
-
-      @cart_items = nil
-      @incomplete_order = nil
+    # TODO: Add a test case
+    def reload(*_)
+      super.tap do
+        @cart_items = nil
+        @incomplete_order = nil
+      end
     end
 
     def cart_items
@@ -67,7 +65,7 @@ module Comable
     def order(order_params = {})
       incomplete_order.attributes = order_params
       incomplete_order.complete!
-      incomplete_order.tap { |completed_flag| reset_cart if completed_flag }
+      incomplete_order.tap { reload }
     end
 
     private
