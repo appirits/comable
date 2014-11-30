@@ -149,10 +149,10 @@ describe Comable::Customer do
 
     it '受注配送レコードが正しく存在すること' do
       subject.order
-      expect(subject.orders.last.family_name).to eq(subject.family_name)
+      expect(subject.orders.last.email).to eq(subject.email)
     end
 
-    it '受注配送レコードが正しく存在すること' do
+    pending '受注配送レコードが正しく存在すること' do
       subject.order
       expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
     end
@@ -195,8 +195,6 @@ describe Comable::Customer do
       let(:params) do
         {
           order: {
-            family_name: order.family_name,
-            first_name: order.first_name,
             email: order.email,
             order_deliveries_attributes: {
               0 => {

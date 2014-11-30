@@ -90,9 +90,7 @@ module Comable
         self.class.table_name.singularize.foreign_key => id,
         email: email,
         # TODO: Remove
-        family_name: family_name,
-        first_name: first_name,
-        order_deliveries_attributes: [{ family_name: family_name, first_name: first_name }]
+        order_deliveries_attributes: [{ id: nil }]
       }
     end
 
