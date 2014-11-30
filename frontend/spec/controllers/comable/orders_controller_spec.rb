@@ -128,12 +128,8 @@ describe Comable::OrdersController do
           expect(complete_orders.count).to eq(1)
         end
 
-        it '注文に紐づく配送情報が１つ存在すること' do
-          expect(complete_orders.first.order_deliveries.count).to eq(1)
-        end
-
         it '注文に紐づく明細情報が１つ存在すること' do
-          expect(complete_orders.first.order_deliveries.first.order_details.count).to eq(1)
+          expect(complete_orders.first.order_details.count).to eq(1)
         end
 
         context '在庫が不足している場合' do

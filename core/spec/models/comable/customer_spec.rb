@@ -12,46 +12,28 @@ describe Comable::Customer do
 
       subject { described_class.new.with_cookies(cookies) }
 
-      it 'has the order delivery that is same object in different accesses' do
+      # TODO: Refactoring
+      it 'has the order detail that is same object in different accesses' do
         order = subject.incomplete_order
-        order_delivery = order.order_deliveries.first
-        expect(order_delivery.object_id).to eq(order.order_deliveries.first.object_id)
+        order_detail = order.order_details.first
+        expect(order_detail.object_id).to eq(order.order_details.first.object_id)
       end
 
-      it 'has the order delivery that is same object in different accesses' do
+      it 'has the order detail that is same object in different accesses' do
         order = subject.incomplete_order
-        expect(order.order_deliveries.size).to eq(1)
-        order.order_deliveries.build
-        order.save
-        expect(order.order_deliveries.size).to eq(2)
+        expect(order.order_details.size).to eq(0)
+
+        order.order_details.create(stock: stock, quantity: 1)
+        expect(order.order_details.size).to eq(1)
+        expect(order.reload.order_details.size).to eq(1)
       end
 
-      it 'has the order delivery that is same object in different accesses' do
-        order = subject.incomplete_order
-        order_delivery = order.order_deliveries.first
-        expect(order_delivery.order_details.size).to eq(0)
-
-        order_delivery.order_details.build
-        expect(order_delivery.order_details.size).to eq(1)
-        expect(order.order_deliveries.first.order_details.size).to eq(1)
-      end
-
-      it 'has the order delivery that is same object in different accesses' do
-        order = subject.incomplete_order
-        order_delivery = order.order_deliveries.first
-        expect(order_delivery.order_details.size).to eq(0)
-
-        order_delivery.order_details.create(stock: stock, quantity: 1)
-        expect(order_delivery.order_details.size).to eq(1)
-        expect(order.order_deliveries.first.order_details.size).to eq(1)
-      end
-
-      it 'has the order delivery that is same object in different accesses' do
+      it 'has the order detail that is same object in different accesses' do
         order = subject.incomplete_order
         expect(subject.cart.size).to eq(0)
 
         subject.add_cart_item(stock)
-        expect(order.order_deliveries.first.order_details.size).to eq(1)
+        expect(order.order_details.size).to eq(1)
         expect(subject.cart.size).to eq(1)
       end
     end
@@ -142,29 +124,14 @@ describe Comable::Customer do
       expect(subject.orders.last).to be
     end
 
-    it '受注配送レコードが１つ存在すること' do
+    it '受注詳細レコードが１つ存在すること' do
       subject.order
-      expect(subject.orders.last.order_deliveries.count).to eq(1)
-    end
-
-    it '受注配送レコードが正しく存在すること' do
-      subject.order
-      expect(subject.orders.last.email).to eq(subject.email)
-    end
-
-    pending '受注配送レコードが正しく存在すること' do
-      subject.order
-      expect(subject.orders.last.order_deliveries.last.family_name).to eq(subject.family_name)
+      expect(subject.orders.last.order_details.count).to eq(1)
     end
 
     it '受注詳細レコードが１つ存在すること' do
       subject.order
-      expect(subject.orders.last.order_deliveries.last.order_details.count).to eq(1)
-    end
-
-    it '受注詳細レコードが１つ存在すること' do
-      subject.order
-      expect(subject.orders.last.order_deliveries.last.order_details.last.stock).to eq(stock)
+      expect(subject.orders.last.order_details.last.stock).to eq(stock)
     end
 
     it '在庫が減っていること' do
@@ -182,63 +149,6 @@ describe Comable::Customer do
         order = subject.incomplete_order
         order.complete
         expect(order.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
-      end
-    end
-
-    # TODO: 複数配送先の完全な実装 or 機能削除
-    pending '複数配送' do
-      let(:order) { FactoryGirl.build(:order) }
-      let(:order_delivery) { FactoryGirl.build(:order_delivery) }
-
-      pending '複数配送先は削除予定'
-
-      let(:params) do
-        {
-          order: {
-            email: order.email,
-            order_deliveries_attributes: {
-              0 => {
-                family_name: order_delivery.family_name,
-                first_name: order_delivery.first_name + '_one'
-              },
-              1 => {
-                family_name: order_delivery.family_name,
-                first_name: order_delivery.first_name + '_two'
-              },
-              2 => {
-                family_name: order_delivery.family_name,
-                first_name: order_delivery.first_name + '_three'
-              }
-            }
-          }
-        }
-      end
-
-      let(:invalid_params) do
-        params[:order][:order_deliveries_attributes][1].update(
-          order_details_attributes: {
-            0 => {
-              stock_id: stock.id,
-              quantity: 1,
-              price: stock.price
-            }
-          }
-        )
-        params
-      end
-
-      it '受注配送レコードが複数個存在すること' do
-        subject.order(params[:order])
-        expect(subject.orders.last.order_deliveries.count).to eq(3)
-      end
-
-      it '１つの受注レコードに受注詳細レコードが１つだけ紐づくこと' do
-        subject.order(params[:order])
-        expect(subject.orders.last.order_deliveries.map { |order_delivery| order_delivery.order_details.count }.sum).to eq(1)
-      end
-
-      it '不正なパラメータが渡された場合にエラーが発生すること' do
-        expect { subject.order(invalid_params[:order]) }.to raise_error(ActiveRecord::UnknownAttributeError)
       end
     end
   end

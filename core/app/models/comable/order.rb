@@ -5,12 +5,11 @@ module Comable
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
-    has_many :order_deliveries, dependent: :destroy, class_name: Comable::OrderDelivery.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order
+    has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
-    # TODO: Remove
-    accepts_nested_attributes_for :order_deliveries
+    accepts_nested_attributes_for :order_details
 
     with_options if: :completed? do |completed_order|
       completed_order.validates :code, presence: true
@@ -58,23 +57,18 @@ module Comable
       completed_at && completed_at_was.nil?
     end
 
-    # TODO: change to has_many method
-    def order_details
-      order_deliveries.map(&:order_details).flatten
-    end
-
     def soldout_stocks
-      order_details.flatten.select(&:soldout_stock?)
+      order_details.to_a.select(&:soldout_stock?)
     end
 
     # 時価商品合計を取得
     def current_item_total_price
-      order_details.sum(&:current_subtotal_price)
+      order_details.to_a.sum(&:current_subtotal_price)
     end
 
     # 売価商品合計を取得
     def item_total_price
-      order_details.sum(&:subtotal_price)
+      order_details.to_a.sum(&:subtotal_price)
     end
 
     # 時価送料を取得
@@ -95,7 +89,7 @@ module Comable
       self.total_price = current_total_price
       generate_code
 
-      order_deliveries.each(&:complete)
+      order_details.each(&:complete)
 
       mark_for_validation_to_order_details
       save

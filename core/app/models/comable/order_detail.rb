@@ -4,14 +4,13 @@ module Comable
     include Comable::SkuChoice
 
     belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key, autosave: true
-    belongs_to :order_delivery, class_name: Comable::OrderDelivery.name, foreign_key: Comable::OrderDelivery.table_name.singularize.foreign_key, inverse_of: :order_details
+    belongs_to :order, class_name: Comable::Order.name, foreign_key: Comable::Order.table_name.singularize.foreign_key, inverse_of: :order_details
 
     validates :quantity, numericality: { greater_than: 0 }
     validate :valid_stock_quantity
 
     delegate :product, to: :stock
-    delegate :guest_token, to: :order_delivery
-    delegate :order, to: :order_delivery, allow_nil: true
+    delegate :guest_token, to: :order
     delegate :completed?, to: :order, allow_nil: true
     delegate :completing?, to: :order, allow_nil: true
 
