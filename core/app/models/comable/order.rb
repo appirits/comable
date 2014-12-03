@@ -13,18 +13,6 @@ module Comable
     accepts_nested_attributes_for :ship_address
     accepts_nested_attributes_for :order_details
 
-    with_options if: :completed? do |completed_order|
-      completed_order.validates :code, presence: true
-      completed_order.validates :email, presence: true
-      completed_order.validates :shipment_fee, presence: true
-      completed_order.validates :total_price, presence: true
-    end
-
-    with_options unless: :completed? do |incomplete_order|
-      incomplete_order.validates Comable::Customer.table_name.singularize.foreign_key, uniqueness: { scope: [Comable::Customer.table_name.singularize.foreign_key, :completed_at] }, if: :customer
-      incomplete_order.validates :guest_token, uniqueness: { scope: [:guest_token, :completed_at] }, if: :guest_token
-    end
-
     define_model_callbacks :complete
     before_validation :generate_guest_token, on: :create
     before_validation :clone_addresses_from_customer, on: :create

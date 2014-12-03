@@ -24,12 +24,24 @@ module Comable
         before_transition to: :complete, do: :complete
       end
 
+      with_options if: -> { state?(:cart) } do |context|
+        context.validates :customer, presence: true, uniqueness: { scope: [:customer, :completed_at] }, unless: :guest_token
+        context.validates :guest_token, presence: true, uniqueness: { scope: [:guest_token, :completed_at] }, unless: :customer
+      end
+
       with_options if: -> { stated?(:orderer) } do |context|
+        context.validates :email, presence: true
         context.validates :bill_address, presence: true
       end
 
       with_options if: -> { stated?(:delivery) } do |context|
         context.validates :ship_address, presence: true
+      end
+
+      with_options if: -> { stated?(:complete) } do |context|
+        context.validates :code, presence: true
+        context.validates :shipment_fee, presence: true
+        context.validates :total_price, presence: true
       end
     end
 
