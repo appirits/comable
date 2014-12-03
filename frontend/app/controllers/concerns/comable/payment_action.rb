@@ -14,10 +14,6 @@ module Comable
       (action_name.to_sym == :payment) ? order_params_for_payment : super
     end
 
-    def payment_required?
-      Comable::Payment.exists?
-    end
-
     def order_params_for_payment
       params.fetch(:order, {}).permit(
         :comable_payment_id

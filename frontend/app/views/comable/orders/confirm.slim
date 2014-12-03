@@ -4,12 +4,12 @@ h1 注文情報確認
   .bill_address
     h2
       | Billing address
-    = render 'comable/shared/address', address: @order.bill_address if @order.bill_address
+    = render 'comable/shared/address', address: @order.bill_address
 
   .ship_address
     h2
       | Shipping address
-    = render 'comable/shared/address', address: @order.ship_address if @order.ship_address
+    = render 'comable/shared/address', address: @order.ship_address
 
   .details
     h2

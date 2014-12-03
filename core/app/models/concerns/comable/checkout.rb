@@ -13,11 +13,11 @@ module Comable
         state :complete
 
         event :next_state do
-          transition :cart => :orderer
-          transition :orderer => :delivery
-          transition :delivery => :payment
-          transition :payment => :shipment
-          transition :shipment => :confirm
+          transition :cart => :orderer, if: :orderer_required?
+          transition [:cart, :orderer] => :delivery, if: :delivery_required?
+          transition [:cart, :orderer, :delivery] => :shipment, if: :shipment_required?
+          transition [:cart, :orderer, :delivery, :shipment] => :payment, if: :payment_required?
+          transition all - [:confirm, :complete] => :confirm
           transition :confirm => :complete
         end
 
@@ -55,6 +55,22 @@ module Comable
       target_state_index = self.class.state_names.index(target_state.to_sym)
       current_state_index = self.class.state_names.index(state_name)
       target_state_index < current_state_index
+    end
+
+    def orderer_required?
+      bill_address.nil? || bill_address.new_record?
+    end
+
+    def delivery_required?
+      ship_address.nil? || ship_address.new_record?
+    end
+
+    def payment_required?
+      Comable::Payment.exists?
+    end
+
+    def shipment_required?
+      Comable::ShipmentMethod.activated.exists?
     end
   end
 end

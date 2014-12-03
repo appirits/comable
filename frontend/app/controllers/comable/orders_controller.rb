@@ -14,36 +14,31 @@ module Comable
     after_filter :save_order, except: :create
 
     def new
-      redirect_to next_order_path unless agreement_required?
     end
 
-    def orderer
-      case request.method_symbol
-      when :post
-        redirect_to next_order_path if @order.save
-      when :get
-        @order.bill_address ||= @order.build_bill_address
+    def edit
+      if @order.state == params[:state]
+        render @order.state_name
+      else
+        redirect_to next_order_path
       end
     end
 
-    def delivery
-      case request.method_symbol
-      when :post
-        redirect_to next_order_path if @order.save
-      when :get
-        @order.ship_address ||= @order.build_ship_address
+    def update
+      if @order.next_state
+        redirect_to next_order_path
+      else
+        render @order.state
       end
     end
 
     def create
-      @order.complete
-
-      if @order.completed?
+      if @order.next_state
         flash[:notice] = I18n.t('comable.orders.success')
         send_order_complete_mail
       else
         flash[:alert] = I18n.t('comable.orders.failure')
-        redirect_to comable.confirm_order_path
+        redirect_to next_order_path
       end
     end
 
@@ -53,23 +48,10 @@ module Comable
       Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
     end
 
-    # TODO: Switch to state_machine
-    # rubocop:disable all
-    def next_order_path(target_action_name = nil)
-      case (target_action_name || action_name).to_sym
-      when :new
-        orderer_required? ? comable.orderer_order_path : next_order_path(:orderer)
-      when :orderer
-        delivery_required? ? comable.delivery_order_path : next_order_path(:delivery)
-      when :delivery
-        shipment_required? ? comable.shipment_order_path : next_order_path(:shipment)
-      when :shipment
-        payment_required? ? comable.payment_order_path : next_order_path(:payment)
-      else
-        comable.confirm_order_path
-      end
+    def next_order_path
+      return comable.next_order_path(state: :orderer) if @order.state?(:cart)
+      comable.next_order_path(state: @order.state)
     end
-    # rubocop:enable all
 
     def agreement_required?
       @order.customer.nil?
@@ -106,7 +88,7 @@ module Comable
 
     def order_params
       return unless params[:order]
-      case action_name.to_sym
+      case @order.state_name
       when :orderer
         order_params_for_orderer
       when :delivery
