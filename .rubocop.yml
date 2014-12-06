@@ -19,6 +19,7 @@ Eval:
 HashSyntax:
   Exclude:
     - tasks/*
+    - core/app/models/concerns/comable/checkout.rb
 
 # C: Method has too many lines.
 MethodLength:
@@ -34,6 +35,11 @@ AbcSize:
 ClassVars:
   Exclude:
     - core/lib/comable/core/configuration.rb
+
+# C: Use nested module/class definitions instead of compact style.
+ClassAndModuleChildren:
+  Exclude:
+    - core/lib/comable/state_machine_patch.rb
 
 # Ignore files.
 AllCops:

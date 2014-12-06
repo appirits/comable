@@ -9,17 +9,11 @@ Comable::Core::Engine.routes.draw do
     end
   end
 
-  resource :order do
+  resource :order, only: [:create] do
     collection do
-      get :orderer
-      put :orderer
-      get :delivery
-      put :delivery
-      get :shipment
-      put :shipment
-      get :payment
-      put :payment
-      get :confirm
+      get 'new', as: :new
+      get ':state', action: :edit, as: :next
+      put ':state', action: :update
     end
   end
 

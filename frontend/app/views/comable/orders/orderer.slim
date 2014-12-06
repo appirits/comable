@@ -13,7 +13,7 @@
       .edit
         h2
           | Edit billing address
-        = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
+        = form_for @order, as: :order, url: next_order_path, method: :put do |f|
           = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
           = f.fields_for :bill_address do |ff|
             = render 'comable/shared/address_form', address: ff
@@ -28,7 +28,7 @@
               - next if @order.bill_address.same_as? address
               li
                 = render 'comable/shared/address', address: address
-                = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
+                = form_for @order, as: :order, url: next_order_path, method: :put do |f|
                   .hidden
                     = f.fields_for :bill_address, address.clone do |ff|
                       = render 'comable/shared/address_form', address: ff
@@ -45,7 +45,8 @@
       .new
         h2
           | New billing address
-        = form_for @order, as: :order, url: comable.orderer_order_path, method: :put do |f|
+        - @order.bill_address ||= @order.build_bill_address
+        = form_for @order, as: :order, url: next_order_path, method: :put do |f|
           = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
           = f.fields_for :bill_address do |ff|
             = render 'comable/shared/address_form', address: ff

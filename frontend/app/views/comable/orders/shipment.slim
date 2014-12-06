@@ -1,7 +1,7 @@
 h1 発送方法
 
 .order.shipment
-  = form_for @order, as: :order, url: comable.shipment_order_path, method: :put do |f|
+  = form_for @order, as: :order, url: next_order_path, method: :put do |f|
     ul
       - Comable::ShipmentMethod.activated.each.with_index do |shipment_method, index|
         li

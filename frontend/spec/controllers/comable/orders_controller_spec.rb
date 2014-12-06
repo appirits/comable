@@ -1,249 +1,243 @@
 describe Comable::OrdersController do
   render_views
 
-  let(:payment) { FactoryGirl.create(:payment) }
-  let(:shipment_method) { FactoryGirl.create(:shipment_method) }
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
   let(:stock) { FactoryGirl.create(:stock, :unsold) }
-  let(:add_to_cart) { customer.add_cart_item(product) }
-  let(:default_order_attributes) { FactoryGirl.attributes_for(:order) }
-  let(:order_params) { { order: default_order_attributes.merge(comable_payment_id: payment.id, shipment_method_id: shipment_method.id) } }
+  let(:address_attributes) { FactoryGirl.attributes_for(:address) }
+  let(:current_order) { controller.current_order }
 
-  context 'カートが空の場合' do
-    before { request }
+  describe "GET 'new'" do
+    before { get :new }
 
-    describe "GET 'new'" do
-      let(:request) { get :new }
-      its(:response) { should redirect_to(:cart) }
+    context 'when empty cart' do
+      its(:response) { is_expected.to redirect_to(:cart) }
 
-      it 'flashにメッセージが格納されていること' do
+      it 'has flash messages' do
         expect(flash[:alert]).to eq I18n.t('comable.carts.empty')
       end
     end
   end
 
-  # TODO: ゲストの場合と会員の場合を共通化
-  context 'ゲストの場合' do
-    before { add_to_cart }
-    before { request }
+  shared_examples 'checkout' do
+    let!(:payment) { FactoryGirl.create(:payment) }
+    let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
 
-    let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil) }
-    let(:customer) { Comable::Customer.new.with_cookies(cookies) }
+    let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+    let(:stock) { FactoryGirl.create(:stock, :unsold) }
+    let(:address_attributes) { FactoryGirl.attributes_for(:address) }
+    let(:current_order) { controller.current_order }
+
+    before { allow(controller).to receive(:current_customer).and_return(customer) }
+    before { customer.add_cart_item(product) }
 
     describe "GET 'new'" do
-      let(:request) { get :new }
-      its(:response) { should be_success }
+      before { get :new }
 
-      it 'カートが空でないこと' do
+      its(:response) { is_expected.to render_template(:new) }
+      its(:response) { is_expected.not_to be_redirect }
+
+      it 'cart has any items' do
         expect(customer.cart.count).to be_nonzero
       end
     end
 
-    describe "GET 'orderer'" do
-      let(:request) { get :orderer }
-      its(:response) { should be_success }
+    describe "GET 'edit' with state 'orderer'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { get :edit, state: :orderer }
+
+      its(:response) { is_expected.to render_template(:orderer) }
+      its(:response) { is_expected.not_to be_redirect }
     end
 
-    # TODO: post => put
-    describe "POST 'orderer'" do
-      let(:request) { post :orderer, order_params }
-      its(:response) { should redirect_to(:delivery_order) }
+    describe "PUT 'update' with state 'orderer'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
 
-      context 'when new shipping address page' do
-        let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil).merge(bill_address_attributes: bill_address_attributes) }
-        let(:bill_address_attributes) { FactoryGirl.attributes_for(:address) }
+      before { current_order.update_attributes(order_attributes) }
 
-        its(:response) { is_expected.to redirect_to(:delivery_order) }
+      context 'when not exist bill address' do
+        before { put :update, order: { state: :orderer } }
+
+        its(:response) { is_expected.to render_template(:orderer) }
+        its(:response) { is_expected.not_to be_redirect }
+
+        it 'has assigned @order with errors' do
+          expect(assigns(:order).errors.any?).to be true
+          expect(assigns(:order).errors[:bill_address]).to be
+        end
+      end
+
+      context 'when input new bill address' do
+        before { put :update, order: { state: :orderer, bill_address_attributes: address_attributes } }
+
+        its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :delivery)) }
 
         it 'has assigned @order with bill address' do
           expect(assigns(:order).bill_address).to be
-          expect(assigns(:order).bill_address.attributes).to include(bill_address_attributes.stringify_keys)
+          expect(assigns(:order).bill_address.attributes).to include(address_attributes.stringify_keys)
         end
       end
     end
 
-    describe "GET 'delivery'" do
-      let(:request) { get :delivery }
-      its(:response) { should be_success }
+    describe "GET 'edit' with state 'delivery'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_delivery) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { get :edit, state: :delivery }
+
+      its(:response) { is_expected.to render_template(:delivery) }
+      its(:response) { is_expected.not_to be_redirect }
     end
 
-    describe "POST 'delivery'" do
-      let(:request) { post :delivery, order_params }
-      its(:response) { should redirect_to(:shipment_order) }
+    describe "PUT 'update' with state 'delivery'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_delivery) }
 
-      context 'when new shipping address page' do
-        let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil).merge(ship_address_attributes: ship_address_attributes) }
-        let(:ship_address_attributes) { FactoryGirl.attributes_for(:address) }
+      before { current_order.update_attributes(order_attributes) }
 
-        its(:response) { is_expected.to redirect_to(:shipment_order) }
+      context 'when not exist ship address' do
+        before { put :update, order: { state: :delivery } }
+
+        its(:response) { is_expected.to render_template(:delivery) }
+        its(:response) { is_expected.not_to be_redirect }
+
+        it 'has assigned @order with errors' do
+          expect(assigns(:order).errors.any?).to be true
+          expect(assigns(:order).errors[:ship_address]).to be
+        end
+      end
+
+      context 'when input new shipping address' do
+        before { put :update, order: { state: :delivery, ship_address_attributes: address_attributes } }
+
+        its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :shipment)) }
 
         it 'has assigned @order with ship address' do
           expect(assigns(:order).ship_address).to be
-          expect(assigns(:order).ship_address.attributes).to include(ship_address_attributes.stringify_keys)
+          expect(assigns(:order).ship_address.attributes).to include(address_attributes.stringify_keys)
         end
       end
     end
 
-    describe "GET 'shipment'" do
-      let(:request) { get :shipment }
-      its(:response) { should be_success }
+    describe "GET 'edit' with state 'shipment'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { get :edit, state: :shipment }
+
+      its(:response) { is_expected.to render_template(:shipment) }
+      its(:response) { is_expected.not_to be_redirect }
     end
 
-    describe "POST 'shipment'" do
-      let(:request) { post :shipment, order_params }
-      its(:response) { should redirect_to(:payment_order) }
+    describe "PUT 'update' with state 'shipment'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { put :update, order: { state: :shipment, shipment_method_id: shipment_method.id } }
+
+      its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :payment)) }
     end
 
-    describe "GET 'payment'" do
-      let(:request) { get :payment }
-      its(:response) { should be_success }
+    describe "GET 'edit' with state 'payment'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { get :edit, state: :payment }
+
+      its(:response) { is_expected.to render_template(:payment) }
+      its(:response) { is_expected.not_to be_redirect }
     end
 
-    describe "POST 'payment'" do
-      let(:request) { post :payment, order_params }
-      its(:response) { should redirect_to(:confirm_order) }
+    describe "PUT 'update' with state 'payment'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { put :update, order: { state: :shipment, shipment_method_id: shipment_method.id } }
+
+      its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :confirm)) }
     end
 
-    describe "GET 'confirm'" do
-      let(:request) { get :confirm }
-      its(:response) { should be_success }
+    describe "GET 'edit' with state 'confirm'" do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
+
+      before { current_order.update_attributes(order_attributes) }
+      before { get :edit, state: :confirm }
+
+      its(:response) { is_expected.to render_template(:confirm) }
+      its(:response) { is_expected.not_to be_redirect }
     end
 
     describe "POST 'create'" do
-      context '正常な手順のリクエストの場合' do
-        let(:request) { request_orderer && request_delivery && request_payment && request_create }
-        let(:request_orderer) { post :orderer, order_params }
-        let(:request_delivery) { post :delivery, order_params }
-        let(:request_payment) { post :payment, order_params }
-        let(:request_create) { post :create, order_params }
-        let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
 
-        its(:response) { should be_success }
+      before { current_order.update_attributes(order_attributes) }
+      before { post :create }
 
-        it 'flashにメッセージが格納されていること' do
-          expect(flash[:notice]).to eq I18n.t('comable.orders.success')
-        end
+      let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
 
-        it '注文が１つ存在すること' do
-          expect(complete_orders.count).to eq(1)
-        end
+      its(:response) { should be_success }
 
-        it '注文に紐づく明細情報が１つ存在すること' do
-          expect(complete_orders.first.order_details.count).to eq(1)
-        end
-
-        context '在庫が不足している場合' do
-          let(:add_to_cart) do
-            customer.reset_cart_item(product, quantity: stock.quantity)
-            stock.update_attributes(quantity: 0)
-          end
-
-          its(:response) { should redirect_to(controller.comable.cart_path) }
-        end
+      it 'has flash messages' do
+        expect(flash[:notice]).to eq I18n.t('comable.orders.success')
       end
 
-      context '不正な手順のリクエストの場合' do
-        let(:request) { post :create, order_params }
+      it 'has assigned completed @order' do
+        expect(assigns(:order).completed?).to be true
+      end
 
-        its(:response) { should redirect_to(controller.comable.confirm_order_path) }
+      it 'has assigned completed @order with a detail' do
+        expect(assigns(:order).order_details.count).to eq(1)
+      end
 
-        it 'flashにメッセージが格納されていること' do
-          expect(flash[:alert]).to eq I18n.t('comable.orders.failure')
-        end
+      context 'when out of stock' do
+        let(:stock) { FactoryGirl.create(:stock, :soldout) }
+
+        its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
+      end
+    end
+
+    context 'when order invalid' do
+      before { post :create }
+
+      its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :orderer)) }
+
+      it 'has flash messages' do
+        expect(flash[:alert]).to eq I18n.t('comable.orders.failure')
       end
     end
   end
 
-  context '会員の場合' do
-    before { login }
-    before { add_to_cart }
-    before { request }
-
-    let(:customer) { FactoryGirl.create(:customer) }
-    let(:login) { allow(controller).to receive(:current_customer).and_return(customer) }
-
-    describe "GET 'new'" do
-      let(:request) { get :new }
-      its(:response) { should redirect_to(:orderer_order) }
+  context 'when guest' do
+    it_behaves_like 'checkout' do
+      let(:customer) { Comable::Customer.new.with_cookies(cookies) }
     end
+  end
 
-    describe "GET 'orderer'" do
-      let(:request) { get :orderer }
-      its(:response) { should be_success }
-    end
-
-    describe "POST 'orderer'" do
-      let(:request) { post :orderer, order_params }
-      its(:response) { should redirect_to(:delivery_order) }
-    end
-
-    describe "GET 'delivery'" do
-      let(:request) { get :delivery }
-      its(:response) { should be_success }
-    end
-
-    describe "POST 'delivery'" do
-      let(:request) { post :delivery, order_params }
-      its(:response) { should redirect_to(:shipment_order) }
-    end
-
-    describe "GET 'shipment'" do
-      let(:request) { get :shipment }
-      its(:response) { should be_success }
-    end
-
-    describe "POST 'shipment'" do
-      let(:request) { post :shipment, order_params }
-      its(:response) { should redirect_to(:payment_order) }
-    end
-
-    describe "GET 'payment'" do
-      let(:request) { get :payment }
-      its(:response) { should be_success }
-    end
-
-    describe "POST 'payment'" do
-      let(:request) { post :payment, order_params }
-      its(:response) { should redirect_to(:confirm_order) }
-    end
-
-    describe "GET 'confirm'" do
-      let(:request) { get :confirm }
-      its(:response) { should be_success }
-    end
-
-    describe "POST 'create'" do
-      let(:request) { payment_request && create_request }
-      let(:payment_request) { post :payment, order_params }
-      let(:create_request) { post :create, order_params }
-      its(:response) { should be_success }
-
-      it 'flashにメッセージが格納されていること' do
-        expect(flash[:notice]).to eq I18n.t('comable.orders.success')
-      end
+  context 'when customer is signed in' do
+    it_behaves_like 'checkout' do
+      let(:customer) { FactoryGirl.create(:customer) }
     end
   end
 
   describe 'order mailer' do
     let!(:store) { FactoryGirl.create(:store, :email_activate) }
-    let(:default_order_attributes) { FactoryGirl.attributes_for(:order, customer: nil) }
-    let(:customer) { Comable::Customer.new.with_cookies(cookies) }
-    let(:order) { customer.incomplete_order }
-    let(:request) { post :create }
 
-    before { allow(controller).to receive(:current_customer) { customer } }
-    before { order.update_attributes(order_params[:order]) }
-    before { add_to_cart }
+    let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
+    let(:customer) { Comable::Customer.new.with_cookies(cookies) }
+
+    before { controller.current_order.update_attributes(order_attributes) }
+    before { allow(controller).to receive(:current_customer).and_return(customer) }
+    before { customer.add_cart_item(product) }
 
     it 'sent a mail' do
-      expect { request }.to change { ActionMailer::Base.deliveries.length }.by(1)
+      expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(1)
     end
 
     context 'No email sender' do
       let!(:store) { FactoryGirl.create(:store, :email_activate, email_sender: nil) }
 
       it 'not sent a mail' do
-        expect { request }.to change { ActionMailer::Base.deliveries.length }.by(0)
+        expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
       end
     end
 
@@ -251,59 +245,7 @@ describe Comable::OrdersController do
       let!(:store) { FactoryGirl.create(:store, :email_activate, email_activate_flag: false) }
 
       it 'not sent a mail' do
-        expect { request }.to change { ActionMailer::Base.deliveries.length }.by(0)
-      end
-    end
-  end
-
-  describe '#next_order_path' do
-    context 'when signed-in customer' do
-      let(:order) { FactoryGirl.build_stubbed(:order, customer: customer) }
-      let(:customer) { FactoryGirl.build(:customer) }
-      let(:address) { FactoryGirl.build(:address) }
-
-      before { controller.instance_variable_set(:@order, order) }
-
-      describe "call by 'new'" do
-        subject { controller.view_context.next_order_path(:new) }
-
-        it "return to 'orderer' path" do
-          is_expected.to eq(controller.comable.orderer_order_path)
-        end
-
-        it "return to 'delivery' path if bill address is selected" do
-          order.bill_address = address
-          is_expected.to eq(controller.comable.delivery_order_path)
-        end
-
-        it "return to 'confirm' path if bill and ship address is selected" do
-          order.bill_address = address
-          order.ship_address = address
-          is_expected.to eq(controller.comable.confirm_order_path)
-        end
-
-        # TODO: Add test cases for 'shipment' and 'payment' actions
-      end
-
-      describe "call by 'orderer'" do
-        subject { controller.view_context.next_order_path(:orderer) }
-
-        it "return to 'delivery' path" do
-          is_expected.to eq(controller.comable.delivery_order_path)
-        end
-
-        it "return to 'confirm' path if ship address is selected" do
-          order.ship_address = address
-          is_expected.to eq(controller.comable.confirm_order_path)
-        end
-      end
-
-      describe "call by 'delivery'" do
-        subject { controller.view_context.next_order_path(:delivery) }
-
-        it "return to 'confirm' path" do
-          is_expected.to eq(controller.comable.confirm_order_path)
-        end
+        expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
       end
     end
   end

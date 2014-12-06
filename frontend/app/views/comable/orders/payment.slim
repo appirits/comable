@@ -1,7 +1,7 @@
 h1 決済方法
 
 .order.payment
-  = form_for @order, as: :order, url: comable.payment_order_path, method: :put do |f|
+  = form_for @order, as: :order, url: next_order_path, method: :put do |f|
     ul
       - Comable::Payment.all.each.with_index do |payment, index|
         li

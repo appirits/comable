@@ -1,4 +1,5 @@
 h1 注文
 
 .order
-  = link_to '規約に同意して注文', next_order_path
+  = form_for @order, as: :order, url: next_order_path, method: :put do |f|
+    = f.submit '規約に同意して注文'
