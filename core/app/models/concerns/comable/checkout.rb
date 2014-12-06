@@ -7,8 +7,8 @@ module Comable
         state :cart
         state :orderer
         state :delivery
-        state :payment
         state :shipment
+        state :payment
         state :confirm
         state :complete
 
@@ -21,7 +21,9 @@ module Comable
           transition :confirm => :complete
         end
 
-        before_transition to: :complete, do: :complete
+        before_transition to: :complete do |order, _transition|
+          order.complete
+        end
       end
 
       with_options if: -> { state?(:cart) } do |context|
