@@ -1,11 +1,13 @@
 describe 'comable/orders/delivery.html.slim' do
-  let(:path_to_shipment) { comable.next_order_path(state: :shipment) }
+  helper Comable::ApplicationHelper
 
-  before { assign(:order, Comable::Order.new) }
-  before { allow(view).to receive(:next_order_path).and_return(path_to_shipment)  }
-  before { render }
+  let(:ship_address_attributes) { FactoryGirl.attributes_for(:address) }
+  let(:order) { FactoryGirl.build(:order, :for_delivery, ship_address_attributes: ship_address_attributes) }
 
-  it '配送先情報入力画面が表示されること' do
-    expect(rendered).to match(comable.delivery_order_path)
+  before { allow(view).to receive(:current_order).and_return(order) }
+  before { assign(:order, order) }
+
+  it 'render the page to input shipping address' do
+    expect { render }.to change { rendered }.to include(*ship_address_attributes.values)
   end
 end

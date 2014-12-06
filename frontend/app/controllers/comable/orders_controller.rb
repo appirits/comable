@@ -4,8 +4,6 @@ module Comable
     prepend Comable::PaymentAction
     include Comable::PermittedAttributes
 
-    helper_method :next_order_path
-
     # TODO: Change the method name to load_order_with_params
     before_filter :load_order
     before_filter :ensure_cart_not_empty
@@ -46,11 +44,6 @@ module Comable
 
     def send_order_complete_mail
       Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
-    end
-
-    def next_order_path
-      return comable.next_order_path(state: :orderer) if @order.state?(:cart)
-      comable.next_order_path(state: @order.state)
     end
 
     def agreement_required?

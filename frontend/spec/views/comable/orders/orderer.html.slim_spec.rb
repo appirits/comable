@@ -1,8 +1,13 @@
 describe 'comable/orders/orderer.html.slim' do
-  before { assign(:order, Comable::Order.new) }
-  before { render }
+  helper Comable::ApplicationHelper
 
-  it '注文者情報入力画面が表示されること' do
-    expect(rendered).to match(comable.orderer_order_path)
+  let(:bill_address_attributes) { FactoryGirl.attributes_for(:address) }
+  let(:order) { FactoryGirl.build(:order, :for_delivery, bill_address_attributes: bill_address_attributes) }
+
+  before { allow(view).to receive(:current_order).and_return(order) }
+  before { assign(:order, order) }
+
+  it 'render the page to input billing address' do
+    expect { render }.to change { rendered }.to include(*bill_address_attributes.values)
   end
 end

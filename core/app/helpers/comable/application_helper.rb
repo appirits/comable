@@ -15,6 +15,11 @@ module Comable
       current_customer.incomplete_order
     end
 
+    def next_order_path
+      return comable.next_order_path(state: :orderer) if current_order.state?(:cart)
+      comable.next_order_path(state: current_order.state)
+    end
+
     def name_with_honorific(name)
       I18n.t('comable.honorific', name: name)
     end
