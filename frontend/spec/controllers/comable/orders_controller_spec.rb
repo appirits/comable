@@ -44,7 +44,7 @@ describe Comable::OrdersController do
     describe "GET 'edit' with state 'orderer'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :orderer }
 
       its(:response) { is_expected.to render_template(:orderer) }
@@ -54,7 +54,7 @@ describe Comable::OrdersController do
     describe "PUT 'update' with state 'orderer'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
 
       context 'when not exist bill address' do
         before { put :update, order: { state: :orderer } }
@@ -83,7 +83,7 @@ describe Comable::OrdersController do
     describe "GET 'edit' with state 'delivery'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_delivery) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :delivery }
 
       its(:response) { is_expected.to render_template(:delivery) }
@@ -93,7 +93,7 @@ describe Comable::OrdersController do
     describe "PUT 'update' with state 'delivery'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_delivery) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
 
       context 'when not exist ship address' do
         before { put :update, order: { state: :delivery } }
@@ -122,7 +122,7 @@ describe Comable::OrdersController do
     describe "GET 'edit' with state 'shipment'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :shipment }
 
       its(:response) { is_expected.to render_template(:shipment) }
@@ -132,7 +132,7 @@ describe Comable::OrdersController do
     describe "PUT 'update' with state 'shipment'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { put :update, order: { state: :shipment, shipment_method_id: shipment_method.id } }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :payment)) }
@@ -141,7 +141,7 @@ describe Comable::OrdersController do
     describe "GET 'edit' with state 'payment'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :payment }
 
       its(:response) { is_expected.to render_template(:payment) }
@@ -151,7 +151,7 @@ describe Comable::OrdersController do
     describe "PUT 'update' with state 'payment'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { put :update, order: { state: :shipment, shipment_method_id: shipment_method.id } }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :confirm)) }
@@ -160,7 +160,7 @@ describe Comable::OrdersController do
     describe "GET 'edit' with state 'confirm'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :confirm }
 
       its(:response) { is_expected.to render_template(:confirm) }
@@ -170,7 +170,7 @@ describe Comable::OrdersController do
     describe "POST 'create'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
 
-      before { current_order.update(order_attributes) }
+      before { current_order.update_attributes(order_attributes) }
       before { post :create }
 
       let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
