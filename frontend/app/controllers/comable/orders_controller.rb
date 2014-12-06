@@ -17,7 +17,7 @@ module Comable
     end
 
     def edit
-      if @order.state == params[:state]
+      if @order.state_name == params[:state].to_sym
         render @order.state_name
       else
         redirect_to next_order_path
@@ -33,7 +33,7 @@ module Comable
     end
 
     def create
-      if @order.next_state
+      if @order.state?(:confirm) && @order.next_state
         flash[:notice] = I18n.t('comable.orders.success')
         send_order_complete_mail
       else
