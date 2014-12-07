@@ -3,8 +3,8 @@ module Comable
     include Comable::SkuItem
     include Comable::SkuChoice
 
-    belongs_to :stock, class_name: Comable::Stock.name, foreign_key: Comable::Stock.table_name.singularize.foreign_key, autosave: true
-    belongs_to :order, class_name: Comable::Order.name, foreign_key: Comable::Order.table_name.singularize.foreign_key, inverse_of: :order_details
+    belongs_to :stock, class_name: Comable::Stock.name, autosave: true
+    belongs_to :order, class_name: Comable::Order.name, inverse_of: :order_details
 
     validates :quantity, numericality: { greater_than: 0 }
     validate :valid_stock_quantity

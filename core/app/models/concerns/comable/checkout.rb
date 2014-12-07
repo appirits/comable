@@ -27,7 +27,7 @@ module Comable
       end
 
       with_options if: -> { state?(:cart) } do |context|
-        context.validates Comable::Customer.table_name.singularize.foreign_key, presence: true, uniqueness: { scope: [Comable::Customer.table_name.singularize.foreign_key, :completed_at] }, unless: :guest_token
+        context.validates :customer_id, presence: true, uniqueness: { scope: [:customer_id, :completed_at] }, unless: :guest_token
         context.validates :guest_token, presence: true, uniqueness: { scope: [:guest_token, :completed_at] }, unless: :customer
       end
 

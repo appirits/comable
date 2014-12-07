@@ -2,7 +2,7 @@ module Comable
   class Product < ActiveRecord::Base
     include Comable::SkuItem
 
-    has_many :stocks, class_name: Comable::Stock.name, foreign_key: table_name.singularize.foreign_key
+    has_many :stocks, class_name: Comable::Stock.name
     after_create :create_stock
 
     def unsold?

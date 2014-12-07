@@ -2,7 +2,7 @@ describe Comable::Customer do
   let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
   let(:signed_cookies) { Hash.new }
 
-  it { is_expected.to have_many(:addresses).class_name(Comable::Address.name).with_foreign_key(described_class.table_name.singularize.foreign_key).dependent(:destroy) }
+  it { is_expected.to have_many(:addresses).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 

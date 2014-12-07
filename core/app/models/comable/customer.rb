@@ -2,8 +2,8 @@ module Comable
   class Customer < ActiveRecord::Base
     include CartOwner
 
-    has_many :orders, class_name: Comable::Order.name, foreign_key: table_name.singularize.foreign_key
-    has_many :addresses, class_name: Comable::Address.name, foreign_key: table_name.singularize.foreign_key, dependent: :destroy
+    has_many :orders, class_name: Comable::Order.name
+    has_many :addresses, class_name: Comable::Address.name, dependent: :destroy
     belongs_to :bill_address, class_name: Comable::Address.name, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, dependent: :destroy
 
@@ -87,7 +87,7 @@ module Comable
 
     def incomplete_order_attributes
       {
-        self.class.table_name.singularize.foreign_key => id,
+        customer_id: id,
         email: email
       }
     end

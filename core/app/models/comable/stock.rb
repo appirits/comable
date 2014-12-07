@@ -6,7 +6,7 @@ module Comable
   class Stock < ActiveRecord::Base
     include Comable::SkuChoice
 
-    belongs_to :product, class_name: Comable::Product.name, foreign_key: Comable::Product.table_name.singularize.foreign_key
+    belongs_to :product, class_name: Comable::Product.name
 
     #
     # @!group Scope
