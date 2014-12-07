@@ -34,6 +34,7 @@ module Comable
     end
 
     def complete!
+      Rails.logger.debug '[DEPRECATED] #complete! is deprecated. Please use #next_state method.'
       fail Comable::InvalidOrder unless complete
       self
     end

@@ -63,7 +63,9 @@ module Comable
     end
 
     def order(order_params = {})
+      Rails.logger.debug '[DEPRECATED] Comable::Customer#order is deprecated. Please use Comable::Order#next_state method.'
       incomplete_order.attributes = order_params
+      incomplete_order.state = 'complete'
       incomplete_order.complete!
       incomplete_order.tap { reload }
     end
