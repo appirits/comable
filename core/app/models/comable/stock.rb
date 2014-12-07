@@ -60,22 +60,5 @@ module Comable
     def soldout?(quantity: 1)
       !unsold?(quantity: quantity)
     end
-
-    # 在庫減算を行う
-    #
-    # @example
-    #   stock.quantity #=> 10
-    #   stock.decrement!(quantity: 1) #=> true
-    #   stock.quantity #=> 9
-    #
-    # @param quantity [Fixnum] 減算する在庫数を指定する
-    # @return [Boolean] レコードの保存に成功すると true を返す
-    def decrement!(quantity: 1)
-      with_lock do
-        # TODO: カラムマッピングのdecrementメソッドへの対応
-        self.quantity -= quantity
-        save!
-      end
-    end
   end
 end
