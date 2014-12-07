@@ -109,8 +109,6 @@ module Comable
       guest_order.order_details.each do |order_detail|
         move_cart_item(order_detail)
       end
-      # TODO: Remove?
-      cart_items.reload
     end
   end
 end
