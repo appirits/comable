@@ -3,8 +3,8 @@ html
   head
     title = current_store.name
 
-    - if current_store.meta_keyword.present?
-      meta name="keywords" content="#{current_store.meta_keyword}"
+    - if current_store.meta_keywords.present?
+      meta name="keywords" content="#{current_store.meta_keywords}"
 
     - if current_store.meta_description.present?
       meta name="description" content="#{current_store.meta_description}"
