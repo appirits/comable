@@ -40,7 +40,6 @@ module Comable
     # @return [Boolean] 在庫があれば true を返す
     # @see #soldout?
     def unsold?(quantity: 1)
-      return false if self.quantity.nil?
       (self.quantity - quantity) >= 0
     end
 

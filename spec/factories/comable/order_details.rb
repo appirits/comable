@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence(:code) { |n| format('%07d', n.next) }
     quantity 10
     price 100
-    stock { build(:stock, :unsold, :with_product) }
+    stock { create(:stock, :with_product, quantity: quantity) }
     order { build_stubbed(:order) }
 
     trait :sku do
@@ -12,7 +12,7 @@ FactoryGirl.define do
       sku_v_item_name 'サイズ'
       sku_h_choice_name 'レッド'
       sku_v_choice_name 'S'
-      stock { build(:stock, :sku, :unsold, :with_product) }
+      stock { create(:stock, :sku, :with_product, quantity: quantity) }
     end
   end
 end

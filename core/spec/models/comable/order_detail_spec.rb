@@ -2,10 +2,7 @@ describe Comable::OrderDetail do
   it { expect { described_class.new }.to_not raise_error }
 
   describe 'validations' do
-    let(:product) { FactoryGirl.build_stubbed(:product) }
-    let(:stock) { FactoryGirl.build_stubbed(:stock, product: product, quantity: 100) }
-
-    subject(:order_detail) { FactoryGirl.build(:order_detail, stock: stock) }
+    subject(:order_detail) { FactoryGirl.build(:order_detail) }
 
     describe 'for quantity' do
       it 'is valid with greater than 0' do
