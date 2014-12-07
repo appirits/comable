@@ -8,8 +8,6 @@ module Comable
     before_filter :load_order
     before_filter :ensure_cart_not_empty
     before_filter :ensure_saleable_stocks
-    # TODO: Remove
-    after_filter :save_order, except: :create
 
     def new
     end
@@ -73,10 +71,6 @@ module Comable
     def load_order
       @order = current_order
       @order.attributes = order_params if order_params
-    end
-
-    def save_order
-      @order.save
     end
 
     def order_params

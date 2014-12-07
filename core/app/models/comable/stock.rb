@@ -13,10 +13,6 @@ module Comable
     #
 
     # @!scope class
-    # 有効な在庫インスタンスを返す
-    scope :activated, -> { where.not(product_id_num: nil) }
-
-    # @!scope class
     # 品切れでない在庫インスタンスを返す
     scope :unsold, -> { where('quantity > ?', 0) }
 
@@ -44,8 +40,6 @@ module Comable
     # @return [Boolean] 在庫があれば true を返す
     # @see #soldout?
     def unsold?(quantity: 1)
-      return false if product_id_num.nil?
-      return false if self.quantity.nil?
       (self.quantity - quantity) >= 0
     end
 
@@ -59,23 +53,6 @@ module Comable
     # @see #unsold?
     def soldout?(quantity: 1)
       !unsold?(quantity: quantity)
-    end
-
-    # 在庫減算を行う
-    #
-    # @example
-    #   stock.quantity #=> 10
-    #   stock.decrement!(quantity: 1) #=> true
-    #   stock.quantity #=> 9
-    #
-    # @param quantity [Fixnum] 減算する在庫数を指定する
-    # @return [Boolean] レコードの保存に成功すると true を返す
-    def decrement!(quantity: 1)
-      with_lock do
-        # TODO: カラムマッピングのdecrementメソッドへの対応
-        self.quantity -= quantity
-        save!
-      end
     end
   end
 end

@@ -34,6 +34,7 @@ module Comable
     end
 
     def complete!
+      Rails.logger.debug '[DEPRECATED] #complete! is deprecated. Please use #next_state method.'
       fail Comable::InvalidOrder unless complete
       self
     end
@@ -107,9 +108,8 @@ module Comable
 
     def clone_addresses_to_customer
       return unless customer
-      # TODO: Remove conditions for compatibility.
-      customer.update_bill_address_by bill_address if bill_address
-      customer.update_ship_address_by ship_address if ship_address
+      customer.update_bill_address_by bill_address
+      customer.update_ship_address_by ship_address
     end
   end
 end

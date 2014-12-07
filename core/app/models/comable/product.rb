@@ -6,7 +6,7 @@ module Comable
     after_create :create_stock
 
     def unsold?
-      stocks.activated.unsold.exists?
+      stocks.unsold.exists?
     end
 
     def soldout?
