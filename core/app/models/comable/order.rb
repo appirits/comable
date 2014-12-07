@@ -2,12 +2,12 @@ module Comable
   class Order < ActiveRecord::Base
     include Comable::Checkout
 
-    belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
-    belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
+    belongs_to :customer, class_name: Comable::Customer.name, autosave: false
+    belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
-    has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, foreign_key: table_name.singularize.foreign_key, inverse_of: :order
+    has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
@@ -20,7 +20,7 @@ module Comable
 
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
-    scope :by_customer, -> (customer) { where(Comable::Customer.table_name.singularize.foreign_key => customer) }
+    scope :by_customer, -> (customer) { where(customer_id: customer) }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship

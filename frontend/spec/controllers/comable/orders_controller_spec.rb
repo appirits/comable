@@ -19,7 +19,7 @@ describe Comable::OrdersController do
   end
 
   shared_examples 'checkout' do
-    let!(:payment) { FactoryGirl.create(:payment) }
+    let!(:payment_method) { FactoryGirl.create(:payment_method) }
     let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
 
     let(:product) { FactoryGirl.create(:product, stocks: [stock]) }

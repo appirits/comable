@@ -46,7 +46,7 @@ module Comable
       def store_params
         params.require(:store).permit(
           :name,
-          :meta_keyword,
+          :meta_keywords,
           :meta_description,
           :email_sender,
           :email_activate_flag

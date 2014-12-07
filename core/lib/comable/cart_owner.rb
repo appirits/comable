@@ -64,7 +64,7 @@ module Comable
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_items.build(Comable::Stock.table_name.singularize.foreign_key => stock.id, quantity: quantity).save
+        cart_items.build(stock_id: stock.id, quantity: quantity).save
       end
     end
 

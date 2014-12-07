@@ -34,7 +34,7 @@
 
             <%= "#{@order.class.human_attribute_name(:total_price)}: #{number_to_currency @order.total_price}" %>
 
-            <%= "#{@order.class.human_attribute_name(:payment)}: #{@order.payment.name}\n" if @order.payment -%>
+            <%= "#{@order.class.human_attribute_name(:payment_method)}: #{@order.payment_method.name}\n" if @order.payment_method -%>
 
 ======================================================================
 

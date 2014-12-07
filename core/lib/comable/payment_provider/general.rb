@@ -1,5 +1,5 @@
 module Comable
-  module PaymentMethod
+  module PaymentProvider
     class General < Base
       class << self
         def display_name

@@ -38,7 +38,7 @@ FactoryGirl.define do
       bill_address { build(:address) }
       ship_address { build(:address) }
       shipment_method { build(:shipment_method) }
-      payment { build(:payment) }
+      payment_method { build(:payment_method) }
     end
   end
 end
