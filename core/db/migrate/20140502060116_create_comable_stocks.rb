@@ -2,7 +2,6 @@ class CreateComableStocks < ActiveRecord::Migration
   def change
     create_table :comable_stocks do |t|
       t.references :product
-      t.integer :product_id_num
       t.string :code, null: false
       t.integer :quantity
       t.string :sku_h_choice_name

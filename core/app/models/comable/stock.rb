@@ -13,10 +13,6 @@ module Comable
     #
 
     # @!scope class
-    # 有効な在庫インスタンスを返す
-    scope :activated, -> { where.not(product_id_num: nil) }
-
-    # @!scope class
     # 品切れでない在庫インスタンスを返す
     scope :unsold, -> { where('quantity > ?', 0) }
 
@@ -44,7 +40,6 @@ module Comable
     # @return [Boolean] 在庫があれば true を返す
     # @see #soldout?
     def unsold?(quantity: 1)
-      return false if product_id_num.nil?
       return false if self.quantity.nil?
       (self.quantity - quantity) >= 0
     end

@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :stock, class: 'Comable::Stock' do
-    sequence(:product_id_num) { |n| n.next }
     sequence(:code) { |n| format('%07d', n.next) }
     quantity 0
 
@@ -32,10 +31,6 @@ FactoryGirl.define do
 
     trait :unsold do
       quantity 10
-    end
-
-    trait :inavtivated do
-      product_id_num nil
     end
   end
 end
