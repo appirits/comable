@@ -68,7 +68,7 @@ module Comable
     end
 
     def payment_required?
-      Comable::Payment.exists?
+      Comable::PaymentMethod.exists?
     end
 
     def shipment_required?

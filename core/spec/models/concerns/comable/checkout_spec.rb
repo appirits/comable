@@ -27,7 +27,7 @@ describe Comable::Checkout do
   end
 
   shared_examples "next state is 'payment' if payment method is present" do
-    let!(:payment) { FactoryGirl.create(:payment) }
+    let!(:payment_method) { FactoryGirl.create(:payment_method) }
 
     it "state change to 'payment'" do
       expect { subject.next_state }.to change { subject.state }.to eq('payment')

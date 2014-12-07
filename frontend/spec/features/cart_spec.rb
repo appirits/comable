@@ -1,7 +1,7 @@
 require 'rspec/example_steps'
 
 feature 'カート処理' do
-  given!(:payment) { FactoryGirl.create(:payment) }
+  given!(:payment_method) { FactoryGirl.create(:payment_method) }
   given!(:shipment_method) { FactoryGirl.create(:shipment_method) }
   given(:order) { FactoryGirl.build(:order) }
   given(:address) { FactoryGirl.build(:address) }

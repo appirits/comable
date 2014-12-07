@@ -1,5 +1,5 @@
 module Comable
-  module PaymentMethod
+  module PaymentProvider
     class Base
       class << self
         def name_symbol

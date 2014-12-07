@@ -3,7 +3,7 @@ module Comable
     include Comable::Checkout
 
     belongs_to :customer, class_name: Comable::Customer.name, foreign_key: Comable::Customer.table_name.singularize.foreign_key, autosave: false
-    belongs_to :payment, class_name: Comable::Payment.name, foreign_key: Comable::Payment.table_name.singularize.foreign_key, autosave: false
+    belongs_to :payment_method, class_name: Comable::PaymentMethod.name, foreign_key: Comable::PaymentMethod.table_name.singularize.foreign_key, autosave: false
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy

@@ -1,8 +1,8 @@
-require 'comable/payment_method/base'
-require 'comable/payment_method/general'
+require 'comable/payment_provider/base'
+require 'comable/payment_provider/general'
 
 module Comable
-  module PaymentMethod
+  module PaymentProvider
     class << self
       def all
         (constants - [:Base]).map do |constant_name|
