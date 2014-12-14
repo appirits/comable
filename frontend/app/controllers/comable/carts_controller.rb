@@ -26,6 +26,19 @@ module Comable
       render :show
     end
 
+    def destroy
+      cart_item = find_cart_item
+      return redirect_by_product_not_found unless cart_item
+
+      if current_customer.reset_cart_item(cart_item)
+        flash.now[:notice] = I18n.t('comable.carts.update')
+      else
+        flash.now[:alert] = I18n.t('comable.carts.invalid')
+      end
+
+      redirect_to action: :show
+    end
+
     private
 
     def redirect_by_product_not_found
