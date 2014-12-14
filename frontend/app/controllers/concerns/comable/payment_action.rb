@@ -4,7 +4,8 @@ module Comable
 
     # orderride OrdersController#order_params
     def order_params
-      @order.state?(:payment) ? order_params_for_payment : super
+      return super unless params[:state] == 'payment'
+      order_params_for_payment
     end
 
     def order_params_for_payment

@@ -10,7 +10,7 @@
       .edit
         h2
           | Edit shipping address
-        = form_for @order, as: :order, url: next_order_path, method: :put do |f|
+        = form_for @order, as: :order, url: update_order_path, method: :put do |f|
           = f.fields_for :ship_address do |ff|
             = render 'comable/shared/address_form', address: ff
           = f.submit
@@ -24,7 +24,7 @@
               - next if @order.ship_address.same_as? address
               li
                 = render 'comable/shared/address', address: address
-                = form_for @order, as: :order, url: next_order_path, method: :put do |f|
+                = form_for @order, as: :order, url: update_order_path, method: :put do |f|
                   .hidden
                     = f.fields_for :ship_address, address.clone do |ff|
                       = render 'comable/shared/address_form', address: ff
@@ -42,7 +42,7 @@
         h2
           | New shipping address
         - @order.ship_address ||= @order.build_ship_address
-        = form_for @order, as: :order, url: next_order_path, method: :put do |f|
+        = form_for @order, as: :order, url: update_order_path, method: :put do |f|
           = f.fields_for :ship_address do |ff|
             = render 'comable/shared/address_form', address: ff
           = f.submit

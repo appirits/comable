@@ -57,7 +57,7 @@ describe Comable::OrdersController do
       before { current_order.update_attributes(order_attributes) }
 
       context 'when not exist bill address' do
-        before { put :update, order: { state: :orderer } }
+        before { put :update, state: :orderer }
 
         its(:response) { is_expected.to render_template(:orderer) }
         its(:response) { is_expected.not_to be_redirect }
@@ -69,7 +69,7 @@ describe Comable::OrdersController do
       end
 
       context 'when input new bill address' do
-        before { put :update, order: { state: :orderer, bill_address_attributes: address_attributes } }
+        before { put :update, state: :orderer, order: { bill_address_attributes: address_attributes } }
 
         its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :delivery)) }
 
@@ -96,7 +96,7 @@ describe Comable::OrdersController do
       before { current_order.update_attributes(order_attributes) }
 
       context 'when not exist ship address' do
-        before { put :update, order: { state: :delivery } }
+        before { put :update, state: :delivery }
 
         its(:response) { is_expected.to render_template(:delivery) }
         its(:response) { is_expected.not_to be_redirect }
@@ -108,7 +108,7 @@ describe Comable::OrdersController do
       end
 
       context 'when input new shipping address' do
-        before { put :update, order: { state: :delivery, ship_address_attributes: address_attributes } }
+        before { put :update, state: :delivery, order: { ship_address_attributes: address_attributes } }
 
         its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :shipment)) }
 
@@ -133,9 +133,13 @@ describe Comable::OrdersController do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
 
       before { current_order.update_attributes(order_attributes) }
-      before { put :update, order: { state: :shipment, shipment_method_id: shipment_method.id } }
+      before { put :update, state: :shipment, order: { shipment_method_id: shipment_method.id } }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :payment)) }
+
+      it 'has assigned @order with ship address' do
+        expect(assigns(:order).shipment_method).to eq(shipment_method)
+      end
     end
 
     describe "GET 'edit' with state 'payment'" do
@@ -152,9 +156,13 @@ describe Comable::OrdersController do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
 
       before { current_order.update_attributes(order_attributes) }
-      before { put :update, order: { state: :shipment, shipment_method_id: shipment_method.id } }
+      before { put :update, state: :payment, order: { payment_method_id: payment_method.id } }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :confirm)) }
+
+      it 'has assigned @order with ship address' do
+        expect(assigns(:order).payment_method).to eq(payment_method)
+      end
     end
 
     describe "GET 'edit' with state 'confirm'" do
