@@ -40,6 +40,14 @@ module Comable
         context.validates :ship_address, presence: true
       end
 
+      with_options if: -> { stated?(:payment) && payment_required? } do |context|
+        context.validates :payment_method, presence: true
+      end
+
+      with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
+        context.validates :shipment_method, presence: true
+      end
+
       with_options if: -> { stated?(:complete) } do |context|
         context.validates :code, presence: true
         context.validates :shipment_fee, presence: true
