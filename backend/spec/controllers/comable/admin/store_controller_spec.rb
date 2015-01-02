@@ -17,7 +17,6 @@
 # that an instance is receiving a specific message.
 
 describe Comable::Admin::StoreController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Comable::Store. As you add validations to Comable::Store, be sure to
   # adjust the attributes here as well.
@@ -122,5 +121,4 @@ describe Comable::Admin::StoreController, type: :controller do
       end
     end
   end
-
 end

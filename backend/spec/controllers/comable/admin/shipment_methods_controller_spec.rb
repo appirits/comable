@@ -17,7 +17,6 @@
 # that an instance is receiving a specific message.
 
 describe Comable::Admin::ShipmentMethodsController do
-
   # This should return the minimal set of attributes required to create a valid
   # Comable::ShipmentMethod. As you add validations to Comable::ShipmentMethod, be sure to
   # adjust the attributes here as well.
@@ -143,5 +142,4 @@ describe Comable::Admin::ShipmentMethodsController do
       expect(response).to redirect_to(shipment_methods_url)
     end
   end
-
 end
