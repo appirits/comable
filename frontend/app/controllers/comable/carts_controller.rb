@@ -1,34 +1,36 @@
 module Comable
   class CartsController < Comable::ApplicationController
-    def add
-      cart_item = find_cart_item
-      return redirect_by_product_not_found unless cart_item
+    before_filter :set_cart_item, only: [:add, :update]
+    before_filter :ensure_found_cart_item, only: [:add, :update]
 
-      if current_customer.add_cart_item(cart_item, cart_item_options)
-        flash.now[:notice] = I18n.t('comable.carts.add_product')
+    def add
+      if current_customer.add_cart_item(@cart_item, cart_item_options)
+        flash[:notice] = I18n.t('comable.carts.add_product')
+        redirect_to comable.cart_path
       else
         flash.now[:alert] = I18n.t('comable.carts.invalid')
+        render :show
       end
-
-      render :show
     end
 
     def update
-      cart_item = find_cart_item
-      return redirect_by_product_not_found unless cart_item
-
-      if current_customer.reset_cart_item(cart_item, cart_item_options)
-        flash.now[:notice] = I18n.t('comable.carts.update')
+      if current_customer.reset_cart_item(@cart_item, cart_item_options)
+        flash[:notice] = I18n.t('comable.carts.update')
+        redirect_to comable.cart_path
       else
         flash.now[:alert] = I18n.t('comable.carts.invalid')
+        render :show
       end
-
-      render :show
     end
 
     private
 
-    def redirect_by_product_not_found
+    def set_cart_item
+      @cart_item = find_cart_item
+    end
+
+    def ensure_found_cart_item
+      return if @cart_item
       flash[:alert] = I18n.t('comable.errors.messages.products_not_found')
       redirect_to :back
     end
