@@ -86,14 +86,14 @@ describe Comable::CartsController do
       describe "POST 'add'" do
         let(:request) { post :add, product_id: product.id }
 
-        its(:response) { is_expected.to render_template(:show) }
+        its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
 
         it 'カートに１つの商品が投入されていること' do
           expect(current_customer.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
-          expect(flash.now[:notice]).to eq I18n.t('comable.carts.add_product')
+          expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
         end
 
         context 'when soldout' do
@@ -124,14 +124,14 @@ describe Comable::CartsController do
       describe "POST 'add'" do
         let(:request) { post :add, product_id: product.id, stock_id: product.stocks.first.id }
 
-        its(:response) { is_expected.to render_template(:show) }
+        its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
 
         it 'カートに１つの商品が投入されていること' do
           expect(current_customer.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
-          expect(flash.now[:notice]).to eq I18n.t('comable.carts.add_product')
+          expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
         end
 
         context 'SKUが選択されていない場合' do
@@ -142,7 +142,7 @@ describe Comable::CartsController do
           end
 
           it 'flashにメッセージが格納されていること' do
-            expect(flash[:alert]).to eq I18n.t('comable.errors.messages.products_not_found')
+            expect(flash.now[:alert]).to eq I18n.t('comable.errors.messages.products_not_found')
           end
         end
       end
@@ -152,8 +152,8 @@ describe Comable::CartsController do
   private
 
   # TODO: Move to the support directory.
-  # HACK: for calling Comable::Customer#inherit_cart_items method.
+  # HACK: for calling Comable::Customer#inherit_cart_items method form 'after_set_user' callback of warden.
   def sign_in(*_)
-    super.tap { controller.current_customer.update_attributes(current_sign_in_at: Time.now) }
+    super.tap { controller.current_customer.inherit_cart_items }
   end
 end

@@ -33,6 +33,10 @@ module Comable
         sum(&:current_subtotal_price)
       end
 
+      def count
+        sum(&:quantity)
+      end
+
       # TODO: Refactoring
       def errors
         ActiveModel::Errors.new(self).tap do |obj|

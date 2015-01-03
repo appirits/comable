@@ -4,7 +4,8 @@ module Comable
 
     # orderride OrdersController#order_params
     def order_params
-      @order.state?(:shipment) ? order_params_for_shipment : super
+      return super unless params[:state] == 'shipment'
+      order_params_for_shipment
     end
 
     def order_params_for_shipment

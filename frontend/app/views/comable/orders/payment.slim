@@ -3,7 +3,7 @@
     h1
       = @order.class.human_state_name(:payment)
 
-    = form_for @order, as: :order, url: next_order_path, method: :put do |f|
+    = form_for @order, as: :order, url: update_order_path, method: :put do |f|
       ul
         - Comable::PaymentMethod.all.each.with_index do |payment_method, index|
           li

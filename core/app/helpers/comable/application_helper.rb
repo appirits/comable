@@ -20,6 +20,11 @@ module Comable
       comable.next_order_path(state: current_order.state)
     end
 
+    def update_order_path
+      return next_order_path unless params[:state]
+      comable.next_order_path(state: params[:state])
+    end
+
     def name_with_honorific(name)
       I18n.t('comable.honorific', name: name)
     end

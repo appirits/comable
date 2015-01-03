@@ -13,8 +13,6 @@ module Comable
 
     devise(*Comable::Config.devise_strategies[:customer])
 
-    before_save :inherit_cart_items, if: :current_sign_in_at_changed?
-
     def with_cookies(cookies)
       @cookies = cookies
       self
@@ -70,6 +68,15 @@ module Comable
       incomplete_order.tap { reload }
     end
 
+    def inherit_cart_items
+      return unless current_guest_token
+      guest_order = Comable::Order.incomplete.preload(:order_details).where(guest_token: current_guest_token).first
+      return unless guest_order
+      guest_order.order_details.each do |order_detail|
+        move_cart_item(order_detail)
+      end
+    end
+
     private
 
     def current_guest_token
@@ -102,15 +109,6 @@ module Comable
         .where(guest_token: guest_token)
         .by_customer(self)
         .first
-    end
-
-    def inherit_cart_items
-      return unless current_guest_token
-      guest_order = Comable::Order.incomplete.preload(:order_details).where(guest_token: current_guest_token).first
-      return unless guest_order
-      guest_order.order_details.each do |order_detail|
-        move_cart_item(order_detail)
-      end
     end
   end
 end

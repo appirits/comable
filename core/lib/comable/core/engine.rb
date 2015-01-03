@@ -58,6 +58,15 @@ module Comable
 
         Devise::Controllers::Helpers.singleton_class.send(:prepend, DeviseHelperPrepender)
       end
+
+      initializer 'comable.devise.warden.manager' do
+        Warden::Manager.after_set_user except: :fetch do |record, warden, options|
+          if record.respond_to?(:inherit_cart_items) && warden.authenticated?(options[:scope])
+            record.with_cookies(warden.cookies)
+            record.inherit_cart_items
+          end
+        end
+      end
     end
   end
 end

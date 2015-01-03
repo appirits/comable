@@ -13,15 +13,15 @@ module Comable
     end
 
     def edit
-      if @order.state_name == params[:state].to_sym
-        render @order.state_name
+      if @order.state?(params[:state]) || @order.stated?(params[:state])
+        render params[:state]
       else
         redirect_to next_order_path
       end
     end
 
     def update
-      if @order.next_state
+      if @order.stated?(params[:state]) ? @order.save : @order.next_state
         redirect_to next_order_path
       else
         render @order.state
@@ -30,7 +30,7 @@ module Comable
 
     def create
       if @order.state?(:confirm) && @order.next_state
-        flash[:notice] = I18n.t('comable.orders.success')
+        flash.now[:notice] = I18n.t('comable.orders.success')
         send_order_complete_mail
       else
         flash[:alert] = I18n.t('comable.orders.failure')
@@ -44,16 +44,9 @@ module Comable
       Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
     end
 
+    # TODO: Remove
     def agreement_required?
       @order.customer.nil?
-    end
-
-    def orderer_required?
-      @order.bill_address.nil?
-    end
-
-    def delivery_required?
-      @order.ship_address.nil?
     end
 
     def ensure_cart_not_empty
@@ -75,7 +68,8 @@ module Comable
 
     def order_params
       return unless params[:order]
-      case @order.state_name
+      return unless params[:state]
+      case params[:state].to_sym
       when :orderer
         order_params_for_orderer
       when :delivery
