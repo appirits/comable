@@ -61,9 +61,9 @@ module Comable
 
       initializer 'comable.devise.warden.manager' do
         Warden::Manager.after_set_user except: :fetch do |record, warden, options|
-          if record.respond_to?(:inherit_cart_items) && warden.authenticated?(options[:scope])
+          if record.respond_to?(:after_set_user) && warden.authenticated?(options[:scope])
             record.with_cookies(warden.cookies)
-            record.inherit_cart_items
+            record.after_set_user
           end
         end
       end

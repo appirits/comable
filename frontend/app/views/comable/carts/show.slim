@@ -52,7 +52,8 @@
         thead
           tr
             th colspan="2"
-              = link_to '注文', comable.new_order_path, class: 'btn btn-primary btn-lg btn-block'
+              = form_for current_order, as: :order, url: comable.checkout_cart_path, method: :put do |f|
+                = f.submit '注文', class: 'btn btn-primary btn-lg btn-block'
         tbody
           tr.price
             th.text-right

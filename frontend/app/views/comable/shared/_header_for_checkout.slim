@@ -7,7 +7,7 @@ header
       /! Collect the nav links, forms, and other content for toggling
       .navbar-collapse
         ol.nav.navbar-nav.navbar-right.comable-checkout-flow
-          li.signin class="#{'active' if action_name == 'new'}"
+          li.signin class="#{'active' if action_name == 'signin'}"
             | Sign-in
           li.addresses class="#{'active' if params[:state].in? %w( orderer delivery payment shipment )}"
             | Addresses & Payment

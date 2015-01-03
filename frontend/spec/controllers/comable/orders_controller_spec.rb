@@ -6,8 +6,8 @@ describe Comable::OrdersController do
   let(:address_attributes) { FactoryGirl.attributes_for(:address) }
   let(:current_order) { controller.current_order }
 
-  describe "GET 'new'" do
-    before { get :new }
+  describe "GET 'signin'" do
+    before { get :signin }
 
     context 'when empty cart' do
       its(:response) { is_expected.to redirect_to(:cart) }
@@ -18,6 +18,10 @@ describe Comable::OrdersController do
     end
   end
 
+  # TODO: Refactaring
+  #   - subject { response }
+  #   - remove 'its'
+  #   - 'with state' => context
   shared_examples 'checkout' do
     let!(:payment_method) { FactoryGirl.create(:payment_method) }
     let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
@@ -30,10 +34,10 @@ describe Comable::OrdersController do
     before { allow(controller).to receive(:current_customer).and_return(customer) }
     before { customer.add_cart_item(product) }
 
-    describe "GET 'new'" do
-      before { get :new }
+    describe "GET 'signin'" do
+      before { get :signin }
 
-      its(:response) { is_expected.to render_template(:new) }
+      its(:response) { is_expected.to render_template(:signin) }
       its(:response) { is_expected.not_to be_redirect }
 
       it 'cart has any items' do
@@ -49,6 +53,12 @@ describe Comable::OrdersController do
 
       its(:response) { is_expected.to render_template(:orderer) }
       its(:response) { is_expected.not_to be_redirect }
+
+      context 'when not exist email' do
+        let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer, email: nil) }
+
+        it { is_expected.to redirect_to(controller.comable.signin_order_path) }
+      end
     end
 
     describe "PUT 'update' with state 'orderer'" do
@@ -205,6 +215,9 @@ describe Comable::OrdersController do
     end
 
     context 'when order invalid' do
+      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
+
+      before { current_order.update_attributes(order_attributes) }
       before { post :create }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :orderer)) }

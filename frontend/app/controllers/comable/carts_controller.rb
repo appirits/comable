@@ -36,6 +36,11 @@ module Comable
       redirect_to action: :show
     end
 
+    def checkout
+      current_order.next_state if current_order.state?(:cart)
+      redirect_to comable.next_order_path(state: :confirm)
+    end
+
     private
 
     def set_cart_item

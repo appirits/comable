@@ -27,12 +27,15 @@ feature 'カート処理' do
 
       When '注文画面に遷移して' do
         visit comable.cart_path
-        click_link '注文'
+        click_button '注文'
         expect(page).to have_button '規約に同意して注文'
       end
 
       When '注文者情報入力画面に遷移して' do
-        visit comable.new_order_path
+        visit comable.signin_order_path
+        within('form#edit_order') do
+          fill_in :order_email, with: order.email
+        end
         click_button '規約に同意して注文'
         expect(page).to have_content order.class.human_state_name(:orderer)
       end
