@@ -5,6 +5,7 @@ module Comable
     before_filter :authenticate_customer!
 
     def show
+      @orders = current_customer.orders.order('completed_at DESC, id DESC')
     end
 
     def addresses

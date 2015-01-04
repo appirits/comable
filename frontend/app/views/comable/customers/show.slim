@@ -15,7 +15,7 @@
   .coamble-orders
     h2
       = current_customer.class.human_attribute_name(:orders)
-    - current_customer.orders.each do |order|
+    - @orders.each do |order|
       table
         thead
           tr
