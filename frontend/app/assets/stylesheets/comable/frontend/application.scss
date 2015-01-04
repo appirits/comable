@@ -1,6 +1,5 @@
 //= require_tree
 
-$lighten-bg: #f7b529;
 $lighten-bg: #139bab;
 $darken-bg: darken($lighten-bg, 10%);
 
@@ -10,9 +9,9 @@ $brand-primary: $lighten-bg;
 $navbar-default-bg: $lighten-bg;
 $navbar-default-color: #fff;
 // navbar > link
-$navbar-default-link-color: #fff;
-$navbar-default-link-active-color: #fff;
-$navbar-default-link-hover-color: #fff;
+$navbar-default-link-color: $navbar-default-color;
+$navbar-default-link-active-color: $navbar-default-link-color;
+$navbar-default-link-hover-color: $navbar-default-link-color;
 $navbar-default-link-hover-bg: $darken-bg;
 $navbar-default-link-active-bg: $darken-bg;
 $navbar-default-link-hover-bg: darken($navbar-default-bg, 10%);
@@ -42,7 +41,7 @@ body.comable-checkout-layout {
     .navbar-brand:hover, {
       color: $lighten-bg;
     }
-    background: $navbar-default-color;
+    background: transparent;
     border: none;
   }
 }
