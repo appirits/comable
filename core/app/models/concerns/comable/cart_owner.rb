@@ -37,6 +37,8 @@ module Comable
         sum(&:quantity)
       end
 
+      alias_method :size, :count
+
       # TODO: Refactoring
       def errors
         ActiveModel::Errors.new(self).tap do |obj|
