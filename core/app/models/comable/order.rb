@@ -18,8 +18,6 @@ module Comable
     before_validation :clone_addresses_from_customer, on: :create
     after_complete :clone_addresses_to_customer
 
-    default_scope { order(completed_at: :desc, id: :desc) }
-
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
     scope :by_customer, -> (customer) { where(customer_id: customer) }
