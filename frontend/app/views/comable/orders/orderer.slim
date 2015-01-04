@@ -9,7 +9,7 @@
       = render 'comable/shared/address', address: @order.bill_address
       = link_to 'Next step', next_order_path
 
-      .edit
+      .edit.row
         h2
           | Edit billing address
         = form_for @order, as: :order, url: update_order_path, method: :put do |f|
@@ -25,19 +25,19 @@
           = f.submit
 
       - if current_customer.other_addresses.any?
-        .other_addresses
+        .other_addresses.row
           h2
             | Other addresses
-          ul
+          ul.list-unstyled
             - current_customer.addresses.each do |address|
               - next if @order.bill_address.same_as? address
-              li
+              li.col-sm-4
                 = render 'comable/shared/address', address: address
                 = form_for @order, as: :order, url: update_order_path, method: :put do |f|
                   .hidden
                     = f.fields_for :bill_address, address.clone do |ff|
                       = render 'comable/shared/address_form', address: ff
-                  = f.submit 'Use this'
+                  = f.submit 'Use this', class: 'btn btn-default'
 
     - else
       / TODO: Standardize

@@ -25,6 +25,9 @@ $navbar-default-toggle-icon-bar-bg: $navbar-default-link-color;
 $navbar-default-toggle-hover-bg: $navbar-default-link-hover-bg;
 // button
 $btn-primary-bg: invert($lighten-bg);
+$btn-default-border: $btn-primary-bg;
+$btn-default-border: $btn-primary-bg;
+$btn-default-color: $btn-primary-bg;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -67,6 +70,7 @@ nav {
   .form-control,
   .btn-default,
   .btn-default:hover {
+    color: #333;
     border-color: darken($navbar-default-bg, 10%);
   }
 }

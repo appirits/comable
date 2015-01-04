@@ -12,4 +12,4 @@
             = f.label :email
           .col-sm-10
             = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
-        = f.submit '規約に同意して注文'
+        = f.submit '規約に同意して注文', class: 'btn btn-default'
