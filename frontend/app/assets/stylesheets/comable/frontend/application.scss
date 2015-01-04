@@ -48,6 +48,10 @@ body.comable-checkout-layout {
 }
 
 nav {
+  &.navbar {
+    @include border-radius(0);
+  }
+
   .navbar-nav > li > a {
     @include transition(all .15s ease-in);
   }
