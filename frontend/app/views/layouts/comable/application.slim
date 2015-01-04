@@ -23,8 +23,9 @@ html
           function() { $('.dropdown-menu', this).stop().hide().parent().removeClass('open'); });
       });
 
-  body class="#{'comable-checkout-layout' if controller_name == 'orders'}"
-    - if controller_name == 'orders'
+  - mini_header_flag = controller_name == 'orders' || devise_controller?
+  body class="#{'comable-checkout-layout' if mini_header_flag}"
+    - if mini_header_flag
       = render 'comable/shared/header_for_checkout'
     - else
       = render 'comable/shared/header'

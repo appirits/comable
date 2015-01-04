@@ -4,14 +4,15 @@ header
       /! Brand and toggle get grouped for better mobile display
       .navbar-header
         = link_to current_store.name, comable.root_path, class: 'navbar-brand'
-      /! Collect the nav links, forms, and other content for toggling
-      .navbar-collapse
-        ol.nav.navbar-nav.navbar-right.comable-checkout-flow
-          li.signin class="#{'active' if action_name == 'signin'}"
-            | Sign-in
-          li.addresses class="#{'active' if params[:state].in? %w( orderer delivery payment shipment )}"
-            | Addresses & Payment
-          li.confirm class="#{'active' if params[:state] == 'confirm'}"
-            | Confirm
-          li.complete class="#{'active' if action_name == 'create'}"
-            | Complete
+      - unless devise_controller?
+        /! Collect the nav links, forms, and other content for toggling
+        .navbar-collapse
+          ol.nav.navbar-nav.navbar-right.comable-checkout-flow
+            li.signin class="#{'active' if action_name == 'signin'}"
+              | Sign-in
+            li.addresses class="#{'active' if params[:state].in? %w( orderer delivery payment shipment )}"
+              | Addresses & Payment
+            li.confirm class="#{'active' if params[:state] == 'confirm'}"
+              | Confirm
+            li.complete class="#{'active' if action_name == 'create'}"
+              | Complete
