@@ -31,10 +31,8 @@ $btn-default-color: $btn-primary-bg;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-
-// TODO: Enable after solve the issue.
-// @import "compass/utilities";
-// @import "compass/css3";
+@import "compass/utilities";
+@import "compass/css3";
 
 body.comable-checkout-layout {
   margin: 30px;
@@ -337,11 +335,7 @@ footer {
       color: $link-color;
       white-space: nowrap;
       overflow: hidden;
-      // TODO: Enable after solve the issue.
-      // @include ellipsis;
-      text-overflow: ellipsis;
-      -webkit-text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
+      @include ellipsis;
     }
   }
 
