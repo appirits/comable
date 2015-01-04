@@ -1,13 +1,13 @@
-.order
-  .ship_address
+#comable-order
+  .comable-ship_address
     h1
-      | Shipping address
+      = @order.class.human_state_name(:delivery)
 
     - if @order.ship_address.try(:persisted?)
       = render 'comable/shared/address', address: @order.ship_address
       = link_to 'Next step', next_order_path
 
-      .edit
+      .edit.row
         h2
           | Edit shipping address
         = form_for @order, as: :order, url: update_order_path, method: :put do |f|
@@ -16,19 +16,19 @@
           = f.submit
 
       - if current_customer.other_addresses.any?
-        .other_addresses
+        .other_addresses.row
           h2
             | Other addresses
-          ul
+          ul.list-unstyled
             - current_customer.addresses.each do |address|
               - next if @order.ship_address.same_as? address
-              li
+              li.col-sm-4
                 = render 'comable/shared/address', address: address
                 = form_for @order, as: :order, url: update_order_path, method: :put do |f|
                   .hidden
                     = f.fields_for :ship_address, address.clone do |ff|
                       = render 'comable/shared/address_form', address: ff
-                  = f.submit 'Use this'
+                  = f.submit 'Use this', class: 'btn btn-default'
 
     - else
       / TODO: Standardize

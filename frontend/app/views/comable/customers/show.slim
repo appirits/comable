@@ -1,2 +1,57 @@
-.customer
-  .name = current_customer.email
+#comable-customer
+  h1
+    | Member
+
+  .comable-name
+    = current_customer.email
+
+  .comable-member-menu
+    ul
+      li
+        = link_to 'Change E-mail address or password', comable.edit_customer_path
+      li
+        = link_to 'Edit your address book', comable.addresses_customer_path
+
+  .coamble-orders
+    h2
+      = current_customer.class.human_attribute_name(:orders)
+    - @orders.each do |order|
+      table
+        thead
+          tr
+            th
+              = order.class.human_attribute_name(:completed_at)
+            th
+              = order.class.human_attribute_name(:total_price)
+            th
+              = order.class.human_attribute_name(:bill_address)
+            th
+              = order.class.human_attribute_name(:code)
+        tbody
+          tr
+            td
+              = l order.completed_at.to_date, format: :long
+            td
+              = number_to_currency order.total_price
+            td
+              = order.bill_address.full_name
+            td
+              = order.code
+          - order.order_details.each do |order_detail|
+            tr
+              td colspan="4"
+                .comable-detail
+                  .row
+                    .col-sm-2.comable-image
+                      = link_to comable.product_path(order_detail.product), class: 'thumbnail' do
+                        img alt="dummy" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjU4IiB5PSI5MCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE3MXgxODA8L3RleHQ+PC9nPjwvc3ZnPg=="
+                    .col-sm-10
+                      .comable-name
+                        = link_to order_detail.name_with_sku, comable.product_path(order_detail.product)
+                      .comable-repeat
+                        = form_tag comable.add_cart_path do
+                          - if order_detail.stock.unsold?
+                            .add_cart.form-inline.form-group
+                              = hidden_field_tag :stock_id, order_detail.stock_id
+                              = hidden_field_tag :quantity, order_detail.quantity
+                              = submit_tag 'Reorder', class: 'btn btn-default'

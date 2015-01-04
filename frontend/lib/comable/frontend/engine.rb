@@ -1,6 +1,10 @@
 require 'comable_core'
 
 require 'slim'
+require 'jquery-rails'
+require 'bootstrap-sass'
+require 'sass-rails'
+require 'compass-rails'
 
 module Comable
   module Frontend

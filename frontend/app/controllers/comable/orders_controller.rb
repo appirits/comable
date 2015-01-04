@@ -1,16 +1,14 @@
 module Comable
   class OrdersController < Comable::ApplicationController
-    prepend Comable::ShipmentAction
-    prepend Comable::PaymentAction
-    include Comable::PermittedAttributes
-
     # TODO: Change the method name to load_order_with_params
     before_filter :load_order
     before_filter :ensure_cart_not_empty
     before_filter :ensure_saleable_stocks
 
-    def new
-    end
+    prepend Comable::SigninAction
+    prepend Comable::ShipmentAction
+    prepend Comable::PaymentAction
+    include Comable::PermittedAttributes
 
     def edit
       if @order.state?(params[:state]) || @order.stated?(params[:state])
@@ -42,11 +40,6 @@ module Comable
 
     def send_order_complete_mail
       Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
-    end
-
-    # TODO: Remove
-    def agreement_required?
-      @order.customer.nil?
     end
 
     def ensure_cart_not_empty

@@ -23,6 +23,24 @@ module Comable
       end
     end
 
+    def destroy
+      cart_item = find_cart_item
+      return redirect_by_product_not_found unless cart_item
+
+      if current_customer.reset_cart_item(cart_item)
+        flash.now[:notice] = I18n.t('comable.carts.update')
+      else
+        flash.now[:alert] = I18n.t('comable.carts.invalid')
+      end
+
+      redirect_to action: :show
+    end
+
+    def checkout
+      current_order.next_state if current_order.state?(:cart)
+      redirect_to comable.next_order_path(state: :confirm)
+    end
+
     private
 
     def set_cart_item

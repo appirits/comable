@@ -1,30 +1,67 @@
-h1 カート
+#carts
+  section.cart.col-sm-8
+    h1
+      | Shopping cart
 
-ul.cart
-  - current_customer.cart.each do |cart_item|
     - if current_customer.cart.errors.any?
       .errors
         ul
           - current_customer.cart.errors.full_messages.each do |message|
             li = message
 
-    = form_tag comable.cart_path, method: :put do
-      - stock = cart_item.stock
-      - product = stock.product
-      li.product
-        h2.name
-          = link_to stock.name_with_sku, comable.product_path(product)
-        .caption
-          = product.caption
-        .price
-          = number_to_currency product.price
-        .quantity
-          - selected = cart_item.quantity
-          = select_tag :quantity, options_for_select(1.upto([10, selected].max).to_a, selected)
-          = hidden_field_tag :stock_id, stock.id
-          = submit_tag '変更'
-        - if cart_item.soldout_stock?
-          .error.soldout = I18n.t('comable.carts.soldout')
+    - if current_customer.cart.empty?
+      | Cart is empty.
+    - else
+      table
+        thead
+          tr
+            th
+            th
+              | Price
+            th
+              | Quantity
+            th
 
-.order
-  = link_to '注文', comable.new_order_path
+        tbody
+          - current_customer.cart.each do |cart_item|
+            - stock = cart_item.stock
+            - product = stock.product
+            tr
+              td
+                .name
+                  = link_to stock.name_with_sku, comable.product_path(product)
+                .caption
+                  = product.caption
+                - if cart_item.soldout_stock?
+                  .error.soldout = I18n.t('comable.carts.soldout')
+              td.price
+                = number_to_currency product.price
+              td.quantity
+                = form_tag comable.cart_path, method: :put do
+                  .form-inline.form-group
+                    - selected = cart_item.quantity
+                    = select_tag :quantity, options_for_select(1.upto([10, selected].max).to_a, selected)
+                    = hidden_field_tag :stock_id, stock.id
+                    = submit_tag '変更', class: 'btn-default'
+              td
+                = link_to 'Delete', comable.cart_path(stock_id: stock.id), method: :delete
+
+  - if current_customer.cart.any?
+    section.order.col-sm-4
+      table
+        thead
+          tr
+            th colspan="2"
+              = form_for current_order, as: :order, url: comable.checkout_cart_path, method: :put do |f|
+                = f.submit '注文', class: 'btn btn-primary btn-lg btn-block'
+        tbody
+          tr.price
+            th.text-right
+              | Item total price
+            td
+              = number_to_currency current_customer.cart.price
+          tr.count
+            th.text-right
+              | Item count
+            td
+              = number_with_delimiter current_customer.cart.count

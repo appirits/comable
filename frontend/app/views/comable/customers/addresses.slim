@@ -14,33 +14,35 @@
         p
           | Not found.
     - else
-      .bill_address
-        h2
-          | Bill address
-        - if current_customer.bill_address
-          = render 'address', address: current_customer.bill_address
-        - else
-          .not_found
-            p
-              | Not found.
+      .row
+        .bill_address.col-sm-6
+          h2
+            | Bill address
+          - if current_customer.bill_address
+            = render 'address', address: current_customer.bill_address
+          - else
+            .not_found
+              p
+                | Not found.
 
-      .ship_address
-        h2
-          | Ship address
-        - if current_customer.ship_address
-          = render 'address', address: current_customer.ship_address
-        - else
-          .not_found
-            p
-              | Not found.
+        .ship_address.col-sm-6
+          h2
+            | Ship address
+          - if current_customer.ship_address
+            = render 'address', address: current_customer.ship_address
+          - else
+            .not_found
+              p
+                | Not found.
 
-      .other_addresses
-        h2
-          | Other addresses
-        ul
-          - current_customer.other_addresses.each do |address|
-            li
-              = render 'address', address: address
+      .row
+        .other_addresses
+          h2
+            | Other addresses
+          ul.list-unstyled
+            - current_customer.other_addresses.each do |address|
+              li.col-sm-4
+                = render 'address', address: address
 
   .new_address
     h2

@@ -1,17 +1,19 @@
 Comable::Core::Engine.routes.draw do
-  get '/' => 'products#index'
+  root to: 'products#index'
 
   resources :products
 
   resource :cart do
     collection do
+      # TODO: post => put
       post :add
+      put :checkout
     end
   end
 
   resource :order, only: [:create] do
     collection do
-      get 'new', as: :new
+      get 'signin', as: :signin
       get ':state', action: :edit, as: :next
       put ':state', action: :update
     end

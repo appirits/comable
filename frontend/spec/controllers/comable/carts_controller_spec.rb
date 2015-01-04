@@ -152,8 +152,8 @@ describe Comable::CartsController do
   private
 
   # TODO: Move to the support directory.
-  # HACK: for calling Comable::Customer#inherit_cart_items method form 'after_set_user' callback of warden.
+  # HACK: for calling Comable::Customer#after_set_user method form 'after_set_user' callback of warden.
   def sign_in(*_)
-    super.tap { controller.current_customer.inherit_cart_items }
+    super.tap { controller.current_customer.after_set_user }
   end
 end

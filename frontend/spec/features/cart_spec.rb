@@ -27,14 +27,17 @@ feature 'カート処理' do
 
       When '注文画面に遷移して' do
         visit comable.cart_path
-        click_link '注文'
+        click_button '注文'
         expect(page).to have_button '規約に同意して注文'
       end
 
       When '注文者情報入力画面に遷移して' do
-        visit comable.new_order_path
+        visit comable.signin_order_path
+        within('form#edit_order') do
+          fill_in :order_email, with: order.email
+        end
         click_button '規約に同意して注文'
-        expect(page).to have_content 'Billing address'
+        expect(page).to have_content order.class.human_state_name(:orderer)
       end
 
       When '配送先情報入力画面に遷移して' do
@@ -50,7 +53,7 @@ feature 'カート処理' do
         end
         # TODO: ボタン名につかう翻訳パスを変更または作成
         click_button I18n.t('helpers.submit.update')
-        expect(page).to have_content 'Shipping address'
+        expect(page).to have_content order.class.human_state_name(:delivery)
       end
 
       When '発送方法選択画面に遷移して' do
@@ -64,25 +67,25 @@ feature 'カート処理' do
           fill_in :order_ship_address_attributes_phone_number, with: address.phone_number
         end
         click_button I18n.t('helpers.submit.update')
-        expect(page).to have_content '発送方法'
+        expect(page).to have_content order.class.human_state_name(:shipment)
       end
 
       When '決済方法選択画面に遷移して' do
         visit comable.next_order_path(state: :shipment)
         click_button I18n.t('helpers.submit.update')
-        expect(page).to have_content '決済方法'
+        expect(page).to have_content order.class.human_state_name(:payment)
       end
 
       When '注文情報確認画面に遷移して' do
         visit comable.next_order_path(state: :payment)
         click_button I18n.t('helpers.submit.update')
-        expect(page).to have_content '注文情報確認'
+        expect(page).to have_content order.class.human_state_name(:confirm)
       end
 
       Then '注文できること' do
         visit comable.next_order_path(state: :confirm)
         click_button I18n.t('helpers.submit.update')
-        expect(page).to have_content '注文完了'
+        expect(page).to have_content order.class.human_state_name(:complete)
       end
     end
   end

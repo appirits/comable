@@ -1,24 +1,39 @@
-.name
-  = address.label :family_name
-  = address.text_field :family_name
-  = address.label :first_name
-  = address.text_field :first_name
+.form-group.comable-name
+  .col-sm-2.control-label
+    = address.label :name
+  .col-sm-10
+    .row
+      .col-sm-6
+        = address.text_field :family_name, placeholder: address.object.class.human_attribute_name(:family_name)
+      .col-sm-6
+        = address.text_field :first_name, placeholder: address.object.class.human_attribute_name(:first_name)
 
-.address
-  .state
+.form-group.comable-state_name
+  .col-sm-2.control-label
     = address.label :state_name
-    = address.text_field :state_name
-  .zip_code
-    = address.label :zip_code
-    = address.text_field :zip_code, max_length: 8
-  .city
-    = address.label :city
-    = address.text_field :city
-  .detail
-    = address.label :detail
-    = address.text_field :detail
+  .col-sm-10
+    = address.text_field :state_name, placeholder: address.object.class.human_attribute_name(:state_name)
 
-.other
-  .phone_number
+.form-group.comable-zip_code
+  .col-sm-2.control-label
+    = address.label :zip_code
+  .col-sm-10
+    = address.text_field :zip_code, max_length: 8, placeholder: address.object.class.human_attribute_name(:zip_code)
+
+.form-group.comable-city
+  .col-sm-2.control-label
+    = address.label :city
+  .col-sm-10
+    = address.text_field :city, placeholder: address.object.class.human_attribute_name(:city)
+
+.form-group.comable-detail
+  .col-sm-2.control-label
+    = address.label :detail
+  .col-sm-10
+    = address.text_field :detail, placeholder: address.object.class.human_attribute_name(:detail)
+
+.form-group.phone_number
+  .col-sm-2.control-label
     = address.label :phone_number
-    = address.text_field :phone_number, max_length: 18
+  .col-sm-10
+    = address.text_field :phone_number, max_length: 18, placeholder: address.object.class.human_attribute_name(:phone_number)

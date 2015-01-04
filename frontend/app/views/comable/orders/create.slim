@@ -1,5 +1,7 @@
-h1 注文完了
+#comable-order
+  .comable-complete
+    h1
+      = @order.class.human_state_name(:complete)
 
-.order
-  .code
-    = @order.code
+    .comable-code
+      = @order.code

@@ -68,13 +68,14 @@ module Comable
       incomplete_order.tap { reload }
     end
 
-    def inherit_cart_items
+    def after_set_user
       return unless current_guest_token
+
       guest_order = Comable::Order.incomplete.preload(:order_details).where(guest_token: current_guest_token).first
       return unless guest_order
-      guest_order.order_details.each do |order_detail|
-        move_cart_item(order_detail)
-      end
+
+      inherit_order_state(guest_order)
+      inherit_cart_items(guest_order)
     end
 
     private
@@ -109,6 +110,17 @@ module Comable
         .where(guest_token: guest_token)
         .by_customer(self)
         .first
+    end
+
+    def inherit_order_state(guest_order)
+      return if incomplete_order.stated?(guest_order.state)
+      incomplete_order.next_state
+    end
+
+    def inherit_cart_items(guest_order)
+      guest_order.order_details.each do |order_detail|
+        move_cart_item(order_detail)
+      end
     end
   end
 end

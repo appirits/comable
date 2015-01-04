@@ -1,11 +1,13 @@
-h1 発送方法
+#comable-order
+  .comable-shipment
+    h1
+      = @order.class.human_state_name(:shipment)
 
-.order.shipment
-  = form_for @order, as: :order, url: update_order_path, method: :put do |f|
-    ul
-      - Comable::ShipmentMethod.activated.each.with_index do |shipment_method, index|
-        li
-          - checked_flag = @order.shipment_method ? (@order.shipment_method.id == shipment_method.id) : index.zero?
-          = f.radio_button :shipment_method_id, shipment_method.id, checked: checked_flag
-          = f.label :shipment_method_id, shipment_method.name, value: shipment_method.id
-    = f.submit
+    = form_for @order, as: :order, url: update_order_path, method: :put do |f|
+      ul
+        - Comable::ShipmentMethod.activated.each.with_index do |shipment_method, index|
+          li
+            - checked_flag = @order.shipment_method ? (@order.shipment_method.id == shipment_method.id) : index.zero?
+            = f.radio_button :shipment_method_id, shipment_method.id, checked: checked_flag
+            = f.label :shipment_method_id, shipment_method.name, value: shipment_method.id
+      = f.submit

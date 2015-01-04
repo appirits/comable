@@ -1,0 +1,15 @@
+#comable-order
+  .comable-signin
+    section.col-sm-6
+      = render file: 'devise/sessions/new'
+
+    section.col-sm-6
+      h2
+        | Guest
+      = form_for @order, as: :order, url: update_order_path, method: :put do |f|
+        .form-group
+          .col-sm-2.control-label
+            = f.label :email
+          .col-sm-10
+            = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
+        = f.submit '規約に同意して注文', class: 'btn btn-default'
