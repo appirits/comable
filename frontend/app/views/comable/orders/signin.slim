@@ -1,12 +1,19 @@
 #comable-order
   .comable-signin
+    / TODO: Standardize
+    - if @order.errors.any?
+      .error_messages
+        ul
+          - @order.errors.full_messages.each do |full_message|
+            li = full_message
+
     section.col-sm-6
       = render file: 'devise/sessions/new'
 
     section.col-sm-6
       h2
         | Guest
-      = form_for @order, as: :order, url: update_order_path, method: :put do |f|
+      = form_for @order, as: :order, url: comable.guest_order_path, method: :put do |f|
         .form-group
           .col-sm-2.control-label
             = f.label :email

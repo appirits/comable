@@ -35,6 +35,7 @@ describe Comable::OrdersController do
     before { customer.add_cart_item(product) }
 
     describe "GET 'signin'" do
+      before { skip 'Unnecessary test case' if customer.signed_in? }
       before { get :signin }
 
       its(:response) { is_expected.to render_template(:signin) }
@@ -42,6 +43,22 @@ describe Comable::OrdersController do
 
       it 'cart has any items' do
         expect(customer.cart.count).to be_nonzero
+      end
+    end
+
+    describe "PUT 'guest'" do
+      let(:order_attributes) { { email: 'test@example.com' } }
+
+      before { skip 'Unnecessary test case' if customer.signed_in? }
+      before { put :guest, order: order_attributes }
+
+      its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :orderer)) }
+
+      context 'when email is empty' do
+        let(:order_attributes) { { email: nil } }
+
+        its(:response) { is_expected.to render_template(:signin) }
+        its(:response) { is_expected.not_to be_redirect }
       end
     end
 

@@ -14,6 +14,7 @@ Comable::Core::Engine.routes.draw do
   resource :order, only: [:create] do
     collection do
       get 'signin', as: :signin
+      put 'guest', as: :guest
       get ':state', action: :edit, as: :next
       put ':state', action: :update
     end
