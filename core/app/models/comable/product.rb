@@ -6,17 +6,30 @@ module Comable
     after_create :create_stock
 
     class << self
-      def search(keyword)
-        keyword.to_s.delete!('%')
-        return all if keyword.blank?
+      SEARCH_COLUMNS = %i( code name caption )
 
-        code = arel_table[:code].matches("%#{keyword}%")
-        name = arel_table[:name].matches("%#{keyword}%")
-        caption = arel_table[:caption].matches("%#{keyword}%")
+      def search(query)
+        keywords = parse_to_keywords(query)
+        return all if keywords.empty?
+        all.where(keywords_to_conditions(keywords))
+      end
 
-        relation = all
-        relation.where!(code.or(name.or(caption)))
-        relation
+      private
+
+      def keywords_to_conditions(keywords)
+        SEARCH_COLUMNS.inject(nil) do |conditions, column|
+          keywords_with_percent = keywords.map { |keyword| "%#{keyword}%" }
+          condition = arel_table[column].matches_all(keywords_with_percent)
+          conditions ? conditions.or(condition) : condition
+        end
+      end
+
+      def parse_to_keywords(query)
+        return [] if query.blank?
+        query
+          .delete('%')
+          .tr('　', ' ')
+          .split(' ')
       end
     end
 
