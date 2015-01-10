@@ -1,6 +1,7 @@
 module Comable
   class Product < ActiveRecord::Base
     include Comable::SkuItem
+    include Comable::Product::Search
 
     has_many :stocks, class_name: Comable::Stock.name
     after_create :create_stock

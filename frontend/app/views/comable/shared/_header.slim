@@ -101,10 +101,9 @@ header
                       = cart_item.quantity
               li.comable-show-cart
                 = link_to 'Show cart', comable.cart_path
-        form.navbar-form
+        = form_tag comable.products_path, method: :get, class: 'navbar-form' do
           .form-group
             .input-group
-              input.form-control type="text"
+              = text_field_tag :q, params[:q], class: 'form-control'
               span.input-group-btn
-                button.btn.btn-default type="button"
-                  | Search
+                = button_tag 'Search', class: 'btn btn-default', type: 'button'
