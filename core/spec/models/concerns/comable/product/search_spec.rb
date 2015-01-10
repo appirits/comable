@@ -42,7 +42,7 @@ describe Comable::Product::Search do
         expect(DummyProduct.search('aaa ccc').count).to eq(1)
         expect(DummyProduct.search('ddd fff').count).to eq(1)
         expect(DummyProduct.search('ggg iii').count).to eq(1)
-        expect(DummyProduct.search('aaa iii').count).to eq(0) # TODO: 0 => 1
+        expect(DummyProduct.search('aaa iii').count).to eq(1)
         expect(DummyProduct.search('aaa jjj').count).to eq(0)
       end
     end

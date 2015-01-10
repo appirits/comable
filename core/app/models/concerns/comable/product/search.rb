@@ -9,16 +9,22 @@ module Comable
         def search(query)
           keywords = parse_to_keywords(query)
           return all if keywords.empty?
-          all.where(keywords_to_conditions(keywords))
+          all.where(keywords_to_arel(keywords))
         end
 
         private
 
-        def keywords_to_conditions(keywords)
-          SEARCH_COLUMNS.inject(nil) do |conditions, column|
-            keywords_with_percent = keywords.map { |keyword| "%#{keyword}%" }
-            condition = arel_table[column].matches_all(keywords_with_percent)
-            conditions ? conditions.or(condition) : condition
+        def keywords_to_arel(keywords)
+          keywords.inject(nil) do |arel_chain, keyword|
+            arel = keyword_to_arel(keyword)
+            arel_chain ? arel_chain.and(arel) : arel
+          end
+        end
+
+        def keyword_to_arel(keyword)
+          SEARCH_COLUMNS.inject(nil) do |arel_chain, column|
+            arel = arel_table[column].matches("%#{keyword}%")
+            arel_chain ? arel_chain.or(arel) : arel
           end
         end
 
