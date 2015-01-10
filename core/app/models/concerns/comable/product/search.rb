@@ -9,7 +9,7 @@ module Comable
         def search(query)
           keywords = parse_to_keywords(query)
           return all if keywords.empty?
-          all.where(keywords_to_arel(keywords))
+          where(keywords_to_arel(keywords))
         end
 
         private
