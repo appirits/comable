@@ -1,7 +1,13 @@
 module Comable
   class ProductsController < Comable::ApplicationController
     def index
-      @products = Comable::Product.search(params[:q])
+      @category = Comable::Category.where(id: params[:category_id]).first
+      if @category
+        subtree_of_category = Comable::Category.subtree_of(@category)
+        @products = Comable::Product.eager_load(:categories).merge(subtree_of_category)
+      else
+        @products = Comable::Product.search(params[:q])
+      end
     end
 
     def show

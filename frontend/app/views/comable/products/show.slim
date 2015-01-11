@@ -1,36 +1,45 @@
-#products
-  ol.breadcrumb
-    li
-      = link_to 'Products', comable.products_path
-    li
-      = link_to 'Categories', comable.products_path
-    li.active
-      = @product.name
+#comable-product
+  .row
+    ol.breadcrumb
+      - if @product.categories.any?
+        - @product.categories.first.path.each do |category|
+          li = link_to category.name, comable.products_path(category_id: category.id)
+      li.active
+        = @product.name
 
-  section.images.col-sm-6
-    / TODO: Add images...
-    a href="#" class="thumbnail"
-      img width='100%' alt="dummy" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjU4IiB5PSI5MCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE3MXgxODA8L3RleHQ+PC9nPjwvc3ZnPg=="
+  .row
+    .images.col-sm-6
+      / TODO: Add images...
+      a href="#" class="thumbnail"
+        img width='100%' alt="dummy" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjU4IiB5PSI5MCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE3MXgxODA8L3RleHQ+PC9nPjwvc3ZnPg=="
 
-  section.text.col-sm-6
-    h1.name
-      = @product.name
-      small< = @product.code
-    .caption
-      = @product.caption
-    .price
-      = number_to_currency @product.price
+    .text.col-sm-6
+      h1.name
+        = @product.name
+        small< = @product.code
+      .caption
+        = @product.caption
+      .price
+        = number_to_currency @product.price
 
-    = form_tag comable.add_cart_path do
-      - if @product.sku?
-        .sku
-          = sku_table @product, border: 1
+      = form_tag comable.add_cart_path do
+        - if @product.sku?
+          .sku
+            = sku_table @product, border: 1
 
-      - if @product.unsold?
-        .add_cart.form-inline.form-group
-          = hidden_field_tag :product_id, @product.id
-          = select_tag :quantity, options_for_select(1.upto(10).to_a)
-          = submit_tag 'カートに入れる'
-      - else
-        .sold_out
-          | 品切れ中
+        - if @product.unsold?
+          .add_cart.form-inline.form-group
+            = hidden_field_tag :product_id, @product.id
+            = select_tag :quantity, options_for_select(1.upto(10).to_a)
+            = submit_tag 'カートに入れる'
+        - else
+          .sold_out
+            | 品切れ中
+
+  - if @product.categories.any?
+    .row
+      h2
+        | Related products
+      ul
+        - @product.categories.each do |category|
+          li = listed_categories category.path, class: 'category-breadcrumb'

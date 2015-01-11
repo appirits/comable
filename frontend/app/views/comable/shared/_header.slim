@@ -37,51 +37,13 @@ header
               | Category
               span.caret<
             ul.dropdown-menu.megamenu.row
-              li.col-sm-3
-                ul
-                  li.dropdown-header
-                    | Category1
-                  li
-                    a href="#" subcategory1
-                  li
-                    a href="#" subcategory2
-                  li.divider
-                  li.dropdown-header
-                    | Category2
-                  li
-                    a href="#" subcategory1
-                  li
-                    a href="#" subcategory2
-              li.col-sm-3
-                ul
-                  li.dropdown-header
-                    | Category3
-                  li
-                    a href="#" subcategory1
-                  li
-                    a href="#" subcategory2
-                  li
-                    a href="#" subcategory3
-              li.col-sm-3
-                ul
-                  li.dropdown-header
-                    | Category4
-                  li
-                    a href="#" subcategory1
-                  li
-                    a href="#" subcategory2
-                  li
-                    a href="#" subcategory3
-              li.col-sm-3
-                ul
-                  li.dropdown-header
-                    | Category5
-                  li
-                    a href="#" subcategory1
-                  li
-                    a href="#" subcategory2
-                  li
-                    a href="#" subcategory3
+              - Comable::Category.roots.each do |category|
+                li.col-sm-3
+                  ul
+                    li.dropdown-header
+                      = category.name
+                    - category.children.each do |child|
+                      li = link_to_category child, force_link: true
         ul.nav.navbar-nav.navbar-right
           li.dropdown
             = link_to comable.cart_path, class: 'dropdown-toggle', role: 'button', 'aria-expanded' => 'false' do
