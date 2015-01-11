@@ -354,3 +354,55 @@ footer {
     }
   }
 }
+
+.category {
+  & > ul:not(.category-path) {
+    list-style: none;
+    padding-left: 2em;
+  }
+
+  a {
+    display: block;
+    color: $text-color;
+  }
+}
+
+.category-path {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & > li {
+    & > a:before {
+      @include inline-block;
+      content: '<';
+      width: 1em;
+    }
+
+    &.active {
+      font-weight: bold;
+
+      &:before {
+        @include inline-block;
+        content: ' ';
+        width: 1em;
+      }
+    }
+  }
+}
+
+.category-breadcrumb {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & > li {
+    @include inline-block;
+
+    &:not(:last-child):after {
+      content: '>';
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+    }
+  }
+}
