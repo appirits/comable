@@ -6,6 +6,7 @@ require 'jquery-ui-rails'
 require 'bootstrap-sass'
 require 'sass-rails'
 require 'compass-rails'
+require 'kaminari'
 
 module Comable
   module Frontend
