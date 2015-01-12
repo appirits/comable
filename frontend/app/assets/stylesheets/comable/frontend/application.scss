@@ -427,3 +427,8 @@ footer {
 .without-titlebar .ui-dialog-titlebar {
   display: none;
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
