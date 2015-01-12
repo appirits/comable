@@ -11,8 +11,9 @@ p = flash[:alert]
         = product.name
 
         = form_for product, url: comable.admin_product_path(product), html: { multipart: true } do |f|
-          - product.images.each do |image|
-            = image_tag image.url, width: 180
-            = f.file_field :images, multiple: true
-          = f.file_field :images, multiple: true
+          - product.images.build
+          = f.fields_for :images do |ff|
+              - if ff.object.url
+                = image_tag ff.object.url, width: 180
+              = ff.file_field :file
           = f.button

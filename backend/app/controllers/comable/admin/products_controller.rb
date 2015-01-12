@@ -22,7 +22,7 @@ module Comable
 
       def product_params
         params.require(:product).permit(
-          images: []
+          images_attributes: [:file]
         )
       end
     end

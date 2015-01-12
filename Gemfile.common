@@ -14,6 +14,3 @@ gem 'pry-rails', require: false
 gem 'byebug'
 gem 'yard', require: false
 gem 'inch', require: false
-
-# TODO: This line for multiple file upload. Remove this line if the gem update to next version.
-gem 'carrierwave', github: 'carrierwaveuploader/carrierwave', ref: '56873b0'
