@@ -20,7 +20,7 @@
             li.product.col-sm-4
               = link_to comable.product_path(product), class: 'thumbnail' do
                 = image_tag product.image_url, width: '100%'
-              h2.name
+              .name
                 = link_to product.name, comable.product_path(product)
               .caption
                 = product.caption

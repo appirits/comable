@@ -11,6 +11,12 @@ module Comable
 
     after_create :create_stock
 
+    # Add conditions for the images association.
+    # Override method of the images association to support Rails 3.x.
+    def images
+      super.order(:id)
+    end
+
     def image_url
       image = images.first
       return image.url if image

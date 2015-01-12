@@ -10,10 +10,14 @@
   .row
     .images.col-sm-6
       - if @product.images.any?
-        - @product.images.each do |image|
-          .image
-            = link_to image.url, class: 'thumbnail' do
-              = image_tag image.url, width: '100%'
+        .image
+          = link_to @product.image_url, class: 'thumbnail' do
+            = image_tag @product.image_url, width: '100%'
+        .row
+          - (@product.images - [@product.images.first]).each do |image|
+              .image.col-sm-4
+                = link_to image.url, class: 'thumbnail' do
+                  = image_tag image.url, width: '100%'
       - else
         .thumbnail
           .image = image_tag @product.image_url, width: '100%'
