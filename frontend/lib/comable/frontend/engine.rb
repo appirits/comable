@@ -2,6 +2,7 @@ require 'comable_core'
 
 require 'slim'
 require 'jquery-rails'
+require 'jquery-ui-rails'
 require 'bootstrap-sass'
 require 'sass-rails'
 require 'compass-rails'
