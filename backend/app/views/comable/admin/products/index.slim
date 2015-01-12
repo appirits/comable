@@ -1,6 +1,18 @@
 h1 Admin::Products#index
 
+p = flash[:notice]
+p = flash[:alert]
+
 - if @products.any?
   ul
     - @products.each do |product|
-      li = product.name
+
+      li
+        = product.name
+
+        = form_for product, url: comable.admin_product_path(product), html: { multipart: true } do |f|
+          - product.images.each do |image|
+            = image_tag image.url, width: 180
+            = f.file_field :images, multiple: true
+          = f.file_field :images, multiple: true
+          = f.button
