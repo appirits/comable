@@ -423,3 +423,7 @@ footer {
     }
   }
 }
+
+.without-titlebar .ui-dialog-titlebar {
+  display: none;
+}

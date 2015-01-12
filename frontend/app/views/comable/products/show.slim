@@ -52,3 +52,40 @@
       ul
         - @product.categories.each do |category|
           li = listed_categories category.path, class: 'category-breadcrumb'
+
+  #comable-image-dialog
+  coffee:
+    jQuery( ->
+      getImageWidth = (element) ->
+        image = new Image()
+        image.src = element.attr('src')
+        image.width
+
+      $('#comable-product .images .image a').click((event) ->
+        # Disable this event on smartphone
+        return if $(window).width() <= 768
+
+        event.preventDefault()
+
+        image = $(this).find('img')[0]
+        return if image.length == 0
+
+        image_clone = $(image).clone().css(width: '100%', height: 'auto')
+
+        $('#comable-image-dialog').html(null).append(image_clone).dialog(
+          modal: true,
+          resizable: false,
+          width: getImageWidth(image_clone),
+          height: 'auto',
+          dialogClass: 'without-titlebar'
+        )
+      )
+
+      $('#comable-image-dialog').click( ->
+        $(this).dialog('close')
+      );
+
+      $(document).on('click', '.ui-widget-overlay', ->
+        $('#comable-image-dialog').dialog('close')
+      );
+    )
