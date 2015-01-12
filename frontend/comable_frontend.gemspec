@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'compass-rails'
   s.add_dependency 'uglifier'
   s.add_dependency 'jquery-rails'
+  s.add_dependency 'jquery-ui-rails'
   s.add_dependency 'normalize-rails'
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'font-awesome-rails'

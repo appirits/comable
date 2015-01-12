@@ -6,6 +6,25 @@ module Comable
       def index
         @products = Comable::Product.all
       end
+
+      def update
+        product = Comable::Product.find(params[:id])
+        product.attributes = product_params
+        if product.save
+          redirect_to comable.admin_products_path, notice: 'Success'
+        else
+          flash.now[:alert] = 'Failure'
+          render :index
+        end
+      end
+
+      private
+
+      def product_params
+        params.require(:product).permit(
+          images_attributes: [:file]
+        )
+      end
     end
   end
 end

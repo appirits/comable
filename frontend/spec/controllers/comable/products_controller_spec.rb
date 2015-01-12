@@ -37,6 +37,27 @@ describe Comable::ProductsController do
     end
   end
 
+  context 'with images' do
+    let!(:product) { FactoryGirl.create(:product) }
+    let!(:images) { FactoryGirl.create_list(:image, 5, product: product) }
+
+    describe "GET 'index'" do
+      before { get :index }
+
+      it { expect(response).to be_success }
+    end
+
+    describe "GET 'show'" do
+      before { get :show, id: product.id }
+
+      it { expect(response).to be_success }
+
+      it 'display five images' do
+        expect(assigns(:product).images.count).to eq(images.count)
+      end
+    end
+  end
+
   context 'with category' do
     let!(:parent_category) { FactoryGirl.create(:category, name: 'parent_category') }
     let!(:category) { FactoryGirl.create(:category, name: 'category', parent: parent_category) }

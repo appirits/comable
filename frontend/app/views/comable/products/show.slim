@@ -9,9 +9,18 @@
 
   .row
     .images.col-sm-6
-      / TODO: Add images...
-      a href="#" class="thumbnail"
-        img width='100%' alt="dummy" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjU4IiB5PSI5MCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE3MXgxODA8L3RleHQ+PC9nPjwvc3ZnPg=="
+      - if @product.images.any?
+        .image
+          = link_to @product.image_url, class: 'thumbnail' do
+            = image_tag @product.image_url, width: '100%'
+        .row
+          - (@product.images - [@product.images.first]).each do |image|
+              .image.col-sm-4
+                = link_to image.url, class: 'thumbnail' do
+                  = image_tag image.url, width: '100%'
+      - else
+        .thumbnail
+          .image = image_tag @product.image_url, width: '100%'
 
     .text.col-sm-6
       h1.name
@@ -43,3 +52,38 @@
       ul
         - @product.categories.each do |category|
           li = listed_categories category.path, class: 'category-breadcrumb'
+
+  #comable-image-dialog
+  coffee:
+    jQuery( ->
+      $('#comable-product .images .image a').click((event) ->
+        # Disable this event on smartphone
+        return if $(window).width() <= 768
+
+        event.preventDefault()
+
+        image = $(this).find('img')[0]
+        return if image.length == 0
+
+        $('body').addClass('stop-scrolling')
+
+        image_clone = $(image).clone().css(width: 'auto', height: 'auto')
+
+        $('#comable-image-dialog').html(image_clone).dialog(
+          modal: true,
+          resizable: false,
+          width: $(window).width(),
+          height: $(window).height(),
+          dialogClass: 'without-titlebar',
+          close: -> $('body').removeClass('stop-scrolling')
+        )
+      )
+
+      $('#comable-image-dialog').click( ->
+        $(this).dialog('close')
+      );
+
+      $(document).on('click', '.ui-widget-overlay', ->
+        $('#comable-image-dialog').dialog('close')
+      );
+    )

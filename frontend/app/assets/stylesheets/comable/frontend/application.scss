@@ -1,3 +1,4 @@
+//= require jquery-ui
 //= require_tree
 
 $lighten-bg: #139bab;
@@ -317,7 +318,7 @@ footer {
 
 .comable-mini-cart {
   $width: 250px;
-  $image-width: 40px;
+  $image-size: 40px;
   $padding: 10px;
 
   width: $width + $padding * 3;
@@ -330,7 +331,9 @@ footer {
     .comable-image {
       float: left;
       margin-right: $padding;
-      width: $image-width;
+      width: $image-size;
+      height: $image-size;
+      overflow: hidden;
     }
 
     .comable-name {
@@ -405,4 +408,27 @@ footer {
       margin-right: 0.5em;
     }
   }
+}
+
+#comable-product {
+  .products > .row {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $list-group-border;
+    }
+  }
+}
+
+.without-titlebar .ui-dialog-titlebar {
+  display: none;
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
 }

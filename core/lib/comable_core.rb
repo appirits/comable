@@ -3,6 +3,7 @@ require 'jquery-rails'
 require 'enumerize'
 require 'state_machine'
 require 'ancestry'
+require 'carrierwave'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'
