@@ -51,7 +51,7 @@ ja:
         quantity: 個数
         price: 価格
       comable/address: &comable_address
-        name: お名前
+        full_name: お名前
         family_name: 姓
         first_name: 名
         state_name: 都道府県
