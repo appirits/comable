@@ -11,6 +11,8 @@ module Comable
 
     after_create :create_stock
 
+    paginates_per 15
+
     # Add conditions for the images association.
     # Override method of the images association to support Rails 3.x.
     def images

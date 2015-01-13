@@ -78,4 +78,32 @@ describe Comable::ProductsController do
       it { expect(response).to be_success }
     end
   end
+
+  context 'with pagination' do
+    let!(:products) { FactoryGirl.create_list(:product, per_page + 1) }
+
+    let(:per_page) { Comable::Product.default_per_page }
+
+    describe "GET 'index'" do
+      context 'page 1' do
+        before { get :index, page: 1 }
+
+        it { expect(response).to be_success }
+
+        it 'display many products' do
+          expect(assigns(:products).count).to eq(per_page)
+        end
+      end
+
+      context 'page 2' do
+        before { get :index, page: 2 }
+
+        it { expect(response).to be_success }
+
+        it 'display a product' do
+          expect(assigns(:products).count).to eq(1)
+        end
+      end
+    end
+  end
 end

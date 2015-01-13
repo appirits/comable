@@ -3,7 +3,7 @@ describe 'comable/products/index.html.slim' do
   let(:product) { products.first }
 
   context '商品が登録されている場合' do
-    before { assign(:products, products) }
+    before { assign(:products, Kaminari.paginate_array(products).page(1)) }
     before { render }
 
     it '商品が表示されること' do

@@ -21,7 +21,7 @@ module Comable
     # Add conditions for the orders association.
     # Override method of the orders association to support Rails 3.x.
     def orders
-      super.complete
+      super.complete.order('completed_at DESC, id DESC')
     end
 
     def other_addresses
