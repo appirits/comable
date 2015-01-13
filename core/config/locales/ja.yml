@@ -38,9 +38,30 @@ ja:
 
     attributes:
       comable/order:
-        bill_address: 請求先
-        ship_address: 配送先
+        email: メールアドレス
+        bill_address: ご請求先
+        ship_address: お届け先
+        payment_method: お支払い方法
+        shipment_method: 発送方法
+        shipment_fee: 送料
+        item_total_price: 商品合計
+        total_price: 合計
+        order_details: 商品
       comable/order_detail: &comable_order_detail
-        quantity: 在庫
+        quantity: 個数
+        price: 価格
+      comable/address: &comable_address
+        name: お名前
+        family_name: 姓
+        first_name: 名
+        state_name: 都道府県
+        zip_code: 郵便番号
+        city: 市町村
+        detail: その他
+        phone_number: 電話番号
       comable/order/order_details:
         <<: *comable_order_detail
+      comable/order/bill_address:
+        <<: *comable_address
+      comable/order/ship_address:
+        <<: *comable_address
