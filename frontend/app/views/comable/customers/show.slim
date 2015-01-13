@@ -55,3 +55,6 @@
                               = hidden_field_tag :stock_id, order_detail.stock_id
                               = hidden_field_tag :quantity, order_detail.quantity
                               = submit_tag 'Reorder', class: 'btn btn-default'
+
+    .text-center
+      = paginate @orders

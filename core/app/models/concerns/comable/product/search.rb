@@ -8,7 +8,7 @@ module Comable
       module ClassMethods
         def search(query)
           keywords = parse_to_keywords(query)
-          return all if keywords.empty?
+          return (Rails::VERSION::MAJOR == 3) ? scoped : all if keywords.empty?
           where(keywords_to_arel(keywords))
         end
 

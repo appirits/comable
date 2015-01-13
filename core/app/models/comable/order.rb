@@ -25,6 +25,8 @@ module Comable
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
+    paginates_per 5
+
     def complete
       ActiveRecord::Base.transaction do
         run_callbacks :complete do
