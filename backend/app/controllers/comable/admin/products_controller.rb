@@ -11,9 +11,9 @@ module Comable
         product = Comable::Product.find(params[:id])
         product.attributes = product_params
         if product.save
-          redirect_to comable.admin_products_path, notice: 'Success'
+          redirect_to comable.admin_products_path, notice: Comable.t('successful')
         else
-          flash.now[:alert] = 'Failure'
+          flash.now[:alert] = Comable.t('failure')
           render :index
         end
       end

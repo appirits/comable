@@ -68,9 +68,9 @@ ja:
         products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
 
     carts:
-      add_product: '１つの商品がカートに入りました'
+      added: '１つの商品がカートに入りました'
       empty: 'カートに商品が入っていません'
-      update: 'カートの内容が変更されました'
+      updated: 'カートの内容が変更されました'
       invalid: 'カートにいくつかのエラーがあります'
       soldout: *soldout
 
