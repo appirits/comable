@@ -1,7 +1,7 @@
 .customer
   .addresses
     h1
-      | Addresses
+      = Comable.t('address_book')
 
     - if current_customer.errors.any?
       .errors
@@ -12,33 +12,33 @@
     - if current_customer.addresses.empty?
       .not_found
         p
-          | Not found.
+          = Comable.t('not_found')
     - else
       .row
         .bill_address.col-sm-6
           h2
-            | Bill address
+            = current_customer.class.human_attribute_name(:bill_address)
           - if current_customer.bill_address
             = render 'address', address: current_customer.bill_address
           - else
             .not_found
               p
-                | Not found.
+                = Comable.t('not_found')
 
         .ship_address.col-sm-6
           h2
-            | Ship address
+            = current_customer.class.human_attribute_name(:ship_address)
           - if current_customer.ship_address
             = render 'address', address: current_customer.ship_address
           - else
             .not_found
               p
-                | Not found.
+                = Comable.t('not_found')
 
       .row
         .other_addresses
           h2
-            | Other addresses
+            = Comable.t('other_addresses')
           ul.list-unstyled
             - current_customer.other_addresses.each do |address|
               li.col-sm-4
@@ -46,9 +46,9 @@
 
   .new_address
     h2
-      | New Address
+      = Comable.t('new_address')
     = form_for current_customer, as: :customer, url: comable.addresses_customer_url, method: :put do |f|
       = f.fields_for :addresses, current_customer.addresses.build do |ff|
         = render 'comable/shared/address_form', address: ff
       .submit
-        = f.submit
+        = f.submit Comable.t('actions.create')

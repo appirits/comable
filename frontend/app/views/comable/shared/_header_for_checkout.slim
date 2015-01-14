@@ -9,10 +9,10 @@ header
         .navbar-collapse
           ol.nav.navbar-nav.navbar-right.comable-checkout-flow
             li.signin class="#{'active' if action_name == 'signin'}"
-              | Sign-in
+              = Comable.t('checkout_flow.sign_in')
             li.addresses class="#{'active' if params[:state].in? %w( orderer delivery payment shipment )}"
-              | Addresses & Payment
+              = Comable.t('checkout_flow.address_and_payment')
             li.confirm class="#{'active' if params[:state] == 'confirm'}"
-              | Confirm
+              = Comable.t('checkout_flow.confirm')
             li.complete class="#{'active' if action_name == 'create'}"
-              | Complete
+              = Comable.t('checkout_flow.complete')

@@ -7,11 +7,11 @@
       .comable-email
         = @order.email
       = render 'comable/shared/address', address: @order.bill_address
-      = link_to 'Next step', next_order_path
+      = link_to Comable.t('next_step'), next_order_path
 
       .edit.row
         h2
-          | Edit billing address
+          = Comable.t('edit_billing_address')
         = form_for @order, as: :order, url: update_order_path, method: :put do |f|
           .form-group
             .col-sm-2.control-label
@@ -22,12 +22,12 @@
           = f.fields_for :bill_address do |ff|
             = render 'comable/shared/address_form', address: ff
 
-          = f.submit
+          = f.submit Comable.t('next_step')
 
       - if current_customer.other_addresses.any?
         .other_addresses.row
           h2
-            | Other addresses
+            = Comable.t('other_addresses')
           ul.list-unstyled
             - current_customer.addresses.each do |address|
               - next if @order.bill_address.same_as? address
@@ -37,7 +37,7 @@
                   .hidden
                     = f.fields_for :bill_address, address.clone do |ff|
                       = render 'comable/shared/address_form', address: ff
-                  = f.submit 'Use this', class: 'btn btn-default'
+                  = f.submit Comable.t('use_this_address'), class: 'btn btn-default'
 
     - else
       / TODO: Standardize
@@ -49,7 +49,7 @@
 
       .new
         h2
-          | New billing address
+          = Comable.t('new_billing_address')
         - @order.bill_address ||= @order.build_bill_address
         = form_for @order, as: :order, url: update_order_path, method: :put do |f|
           .form-group
@@ -61,4 +61,4 @@
           = f.fields_for :bill_address do |ff|
             = render 'comable/shared/address_form', address: ff
 
-          = f.submit
+          = f.submit Comable.t('next_step')

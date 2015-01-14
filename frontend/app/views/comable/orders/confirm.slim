@@ -59,7 +59,7 @@
         tr
           th colspan="2"
             = form_for @order, as: :order, url: comable.order_path, method: :post do |f|
-              = f.submit
+              = f.submit Comable.t('complete_order')
       tbody
         tr
           th.text-right

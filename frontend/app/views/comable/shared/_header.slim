@@ -10,16 +10,16 @@ header
                 | descriptions
           ul.nav.navbar-nav.navbar-right
             li
-              = link_to 'My Account', comable.customer_path
+              = link_to Comable.t('my_account'), comable.customer_path
             li
               - if current_customer.signed_in?
                 = link_to comable.destroy_customer_session_path, method: :delete do
                   i.glyphicon.glyphicon-log-out>
-                  | Sign Out
+                  = Comable.t('sign_out')
               - else
                 = link_to comable.new_customer_session_path do
                   i.glyphicon.glyphicon-log-in>
-                  | Sign In
+                  = Comable.t('sign_in')
     .container
       /! Brand and toggle get grouped for better mobile display
       .navbar-header
@@ -34,7 +34,7 @@ header
         ul.nav.navbar-nav
           li.dropdown.menu-large
             = link_to comable.products_path, class: 'dropdown-toggle', role: 'button', 'aria-expanded' => 'false' do
-              | Category
+              = Comable.t('category')
               span.caret<
             ul.dropdown-menu.megamenu.row
               - Comable::Category.roots.each do |category|
@@ -48,7 +48,10 @@ header
           li.dropdown
             = link_to comable.cart_path, class: 'dropdown-toggle', role: 'button', 'aria-expanded' => 'false' do
               i.glyphicon.glyphicon-shopping-cart>
-              | Cart (#{current_customer.cart.size})
+              span
+                = Comable.t('cart')
+              span<
+                | (#{current_customer.cart.size})
               span.caret<
             ul.dropdown-menu.comable-mini-cart role="menu"
               - current_customer.cart.take(5).each do |cart_item|
@@ -62,10 +65,10 @@ header
                       = "#{cart_item.class.human_attribute_name(:quantity)}: "
                       = cart_item.quantity
               li.comable-show-cart
-                = link_to 'Show cart', comable.cart_path
+                = link_to Comable.t('show_cart'), comable.cart_path
         = form_tag comable.products_path, method: :get, class: 'navbar-form' do
           .form-group
             .input-group
               = text_field_tag :q, params[:q], class: 'form-control'
               span.input-group-btn
-                = button_tag 'Search', class: 'btn btn-default', type: 'button'
+                = button_tag Comable.t('search'), class: 'btn btn-default', type: 'button'

@@ -13,9 +13,9 @@ module Comable
 
       current_customer.attributes = customer_params
       if current_customer.save
-        flash.now[:notice] = 'Success'
+        flash.now[:notice] = Comable.t('successful')
       else
-        flash.now[:alert] = 'Error'
+        flash.now[:alert] = Comable.t('failure')
       end
     end
 

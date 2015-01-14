@@ -40,15 +40,15 @@
           .add_cart.form-inline.form-group
             = hidden_field_tag :product_id, @product.id
             = select_tag :quantity, options_for_select(1.upto(10).to_a)
-            = submit_tag 'カートに入れる'
+            = submit_tag Comable.t('add_to_cart')
         - else
           .sold_out
-            | 品切れ中
+            = Comable.t('soldout')
 
   - if @product.categories.any?
     .row
       h2
-        | Related products
+        = Comable.t('browse_related_products')
       ul
         - @product.categories.each do |category|
           li = listed_categories category.path, class: 'category-breadcrumb'

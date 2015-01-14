@@ -6,7 +6,7 @@
   .row
     .category.col-sm-2
       h2
-        | Category
+        = Comable.t('category')
       - if @category
         = listed_categories @category.path, class: 'category-path'
         = listed_categories @category.children

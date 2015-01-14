@@ -10,4 +10,4 @@
             - checked_flag = @order.shipment_method ? (@order.shipment_method.id == shipment_method.id) : index.zero?
             = f.radio_button :shipment_method_id, shipment_method.id, checked: checked_flag
             = f.label :shipment_method_id, shipment_method.name, value: shipment_method.id
-      = f.submit
+      = f.submit Comable.t('next_step')
