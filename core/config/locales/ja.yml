@@ -5,8 +5,8 @@ ja:
 
     errors:
       messages:
-        product_soldout: '(%{name})が不足しています。'
-        products_soldout: 'が不足しています。'
+        product_soldout: '(%{name})が在庫を超過しています。'
+        products_soldout: '在庫を超過する個数の注文が含まれている可能性があります。'
         product_not_found: '%{name}は存在しないか削除された可能性があります。'
         products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
 
