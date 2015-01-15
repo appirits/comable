@@ -17,5 +17,11 @@ module Comable
     def setup(&_)
       yield Comable::Config
     end
+
+    def translate(key, options = {})
+      I18n.translate("comable.#{key}", options)
+    end
+
+    alias_method :t, :translate
   end
 end

@@ -1,21 +1,79 @@
 ja:
   comable:
+    cart: カート
+    shopping_cart: ショッピングカート
+    checkout: レジに進む
+    show_cart: カートを見る
+    search: 検索
+    category: カテゴリー
+    my_account: マイアカウント
+    sign_in: ログイン
+    sign_out: ログアウト
+    guest: ゲスト
+    guest_order: ログインせずに進む
+    add_to_cart: カートに入れる
+    browse_related_products: 関連商品を探す
+    reorder: 再度注文
+    change_email_or_password: メールアドレス、パスワードを変更する
+    edit_your_address_book: アドレス帳を編集する
+    address_book: アドレス帳
+    order_history: 注文履歴
+    next_step: 次へ進む
+    use_this_address: この住所を使う
+    complete_order: 注文を確定する
+    use_as_billing_address: 請求先住所として使用する
+    use_as_shipping_address: 配送先住所として使用する
+    new_billing_address: 新しい請求先住所
+    new_shipping_address: 新しい配送先住所
+    edit_billing_address: 請求先住所の編集
+    edit_shipping_address: 配送先住所の編集
+    other_addresses: その他の住所
+    new_address: 新しい住所
+    successful: 成功しました
+    failure: 失敗しました
+
+    price: &price
+      '価格'
+    quantity: &quantity
+      '個数'
+    item_total_price: &item_total_price
+      '合計価格'
+    item_total_quantity: &item_total_quantity
+      '合計商品数'
+    soldout: &soldout
+      '品切れ'
     honorific: &honorific
       '%{name} 様'
 
+    checkout_flow:
+      sign_in: ログイン
+      address_and_payment: 配送・会計
+      confirm: 確認
+      complete: 注文完了
+
+    actions:
+      new: 新規作成
+      edit: 編集する
+      create: 登録する
+      update: 更新する
+      destroy: 削除
+      cancel: キャンセル
+      continue: 続ける
+
     errors:
       messages:
-        product_soldout: '(%{name})が不足しています。'
-        products_soldout: 'が不足しています。'
+        product_soldout: '(%{name})が在庫を超過しています。'
+        products_soldout: '在庫を超過する個数の注文が含まれている可能性があります。'
         product_not_found: '%{name}は存在しないか削除された可能性があります。'
         products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
 
     carts:
-      add_product: '１つの商品がカートに入りました'
+      added: '１つの商品がカートに入りました'
       empty: 'カートに商品が入っていません'
-      update: 'カートの内容が変更されました'
+      updated: 'カートの内容が変更されました'
       invalid: 'カートにいくつかのエラーがあります'
-      soldout: '在庫切れ'
+      soldout: *soldout
+
     orders:
       success: '注文が完了しました'
       failure: '注文に失敗しました。入力項目を見直してください。'
@@ -32,15 +90,63 @@ ja:
           %{store_name}
 
   activerecord:
+    state_machines:
+      comable/order:
+        state:
+          states:
+            cart: カート
+            orderer: 請求先住所の選択
+            delivery: 配送先住所の選択
+            shipment: 配送方法の選択
+            payment: 決済方法の選択
+            confirm: 注文内容を確認
+            complete: 注文完了
+
     models:
       comable/order: ご注文
       comable/order_details: ご注文明細
 
     attributes:
+      comable/customer:
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        current_password: 現在のパスワード
+        bill_address: 請求先住所
+        ship_address: 配送先住所
       comable/order:
-        bill_address: 請求先
-        ship_address: 配送先
+        code: 注文番号
+        email: メールアドレス
+        bill_address: ご請求先
+        ship_address: お届け先
+        payment_method: お支払い方法
+        shipment_method: 発送方法
+        shipment_fee: 送料
+        item_total_price: 商品合計
+        total_price: 合計
+        order_details: 商品
+        completed_at: 注文日時
       comable/order_detail: &comable_order_detail
-        quantity: 在庫
+        quantity: *quantity
+        price: *price
+      comable/address: &comable_address
+        full_name: お名前
+        family_name: 姓
+        first_name: 名
+        state_name: 都道府県
+        zip_code: 郵便番号
+        city: 市町村
+        detail: その他
+        phone_number: 電話番号
       comable/order/order_details:
         <<: *comable_order_detail
+      comable/order/bill_address:
+        <<: *comable_address
+      comable/order/ship_address:
+        <<: *comable_address
+
+  views:
+    pagination:
+      next: "次 &rsaquo;"
+      previous: "&lsaquo; 前"
+      truncate: "&hellip;"

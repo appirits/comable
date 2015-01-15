@@ -51,7 +51,7 @@ module Comable
 
     def valid_stock_quantity
       return unless soldout_stock?
-      errors.add :quantity, I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku)
+      errors.add :quantity, Comable.t('errors.messages.product_soldout', name: stock.name_with_sku)
     end
 
     private

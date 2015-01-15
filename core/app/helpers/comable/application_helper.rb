@@ -29,7 +29,7 @@ module Comable
     end
 
     def name_with_honorific(name)
-      I18n.t('comable.honorific', name: name)
+      Comable.t('honorific', name: name)
     end
 
     def name_with_quantity(name, quantity)

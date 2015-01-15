@@ -1,7 +1,7 @@
 #carts
   section.cart.col-sm-8
     h1
-      | Shopping cart
+      = Comable.t('shopping_cart')
 
     - if current_customer.cart.errors.any?
       .errors
@@ -10,16 +10,16 @@
             li = message
 
     - if current_customer.cart.empty?
-      | Cart is empty.
+      = Comable.t('carts.empty')
     - else
       table
         thead
           tr
             th
             th
-              | Price
+              = Comable.t('price')
             th
-              | Quantity
+              = Comable.t('quantity')
             th
 
         tbody
@@ -33,7 +33,7 @@
                 .caption
                   = product.caption
                 - if cart_item.soldout_stock?
-                  .error.soldout = I18n.t('comable.carts.soldout')
+                  .error.soldout = Comable.t('carts.soldout')
               td.price
                 = number_to_currency product.price
               td.quantity
@@ -42,9 +42,9 @@
                     - selected = cart_item.quantity
                     = select_tag :quantity, options_for_select(1.upto([10, selected].max).to_a, selected)
                     = hidden_field_tag :stock_id, stock.id
-                    = submit_tag '変更', class: 'btn-default'
+                    = submit_tag Comable.t('actions.update'), class: 'btn-default'
               td
-                = link_to 'Delete', comable.cart_path(stock_id: stock.id), method: :delete
+                = link_to Comable.t('actions.destroy'), comable.cart_path(stock_id: stock.id), method: :delete
 
   - if current_customer.cart.any?
     section.order.col-sm-4
@@ -53,15 +53,15 @@
           tr
             th colspan="2"
               = form_for current_order, as: :order, url: comable.checkout_cart_path, method: :put do |f|
-                = f.submit '注文', class: 'btn btn-primary btn-lg btn-block'
+                = f.submit Comable.t('checkout'), class: 'btn btn-primary btn-lg btn-block'
         tbody
           tr.price
             th.text-right
-              | Item total price
+              = Comable.t('item_total_price')
             td
               = number_to_currency current_customer.cart.price
           tr.count
             th.text-right
-              | Item count
+              = Comable.t('item_total_quantity')
             td
               = number_with_delimiter current_customer.cart.count

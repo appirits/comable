@@ -93,7 +93,7 @@ describe Comable::CartsController do
         end
 
         it 'flashにメッセージが格納されていること' do
-          expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
+          expect(flash[:notice]).to eq Comable.t('carts.added')
         end
 
         context 'when soldout' do
@@ -103,7 +103,7 @@ describe Comable::CartsController do
           its(:response) { is_expected.to render_template(:show) }
 
           it 'shows the error' do
-            expect(flash.now[:alert]).to eq I18n.t('comable.carts.invalid')
+            expect(flash.now[:alert]).to eq Comable.t('carts.invalid')
           end
         end
       end
@@ -131,7 +131,7 @@ describe Comable::CartsController do
         end
 
         it 'flashにメッセージが格納されていること' do
-          expect(flash[:notice]).to eq I18n.t('comable.carts.add_product')
+          expect(flash[:notice]).to eq Comable.t('carts.added')
         end
 
         context 'SKUが選択されていない場合' do
@@ -142,7 +142,7 @@ describe Comable::CartsController do
           end
 
           it 'flashにメッセージが格納されていること' do
-            expect(flash.now[:alert]).to eq I18n.t('comable.errors.messages.products_not_found')
+            expect(flash.now[:alert]).to eq Comable.t('errors.messages.products_not_found')
           end
         end
       end

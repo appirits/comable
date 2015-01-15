@@ -5,20 +5,18 @@ module Comable
 
     def add
       if current_customer.add_cart_item(@cart_item, cart_item_options)
-        flash[:notice] = I18n.t('comable.carts.add_product')
-        redirect_to comable.cart_path
+        redirect_to comable.cart_path, notice: Comable.t('carts.added')
       else
-        flash.now[:alert] = I18n.t('comable.carts.invalid')
+        flash.now[:alert] = Comable.t('carts.invalid')
         render :show
       end
     end
 
     def update
       if current_customer.reset_cart_item(@cart_item, cart_item_options)
-        flash[:notice] = I18n.t('comable.carts.update')
-        redirect_to comable.cart_path
+        redirect_to comable.cart_path, notice: Comable.t('carts.updated')
       else
-        flash.now[:alert] = I18n.t('comable.carts.invalid')
+        flash.now[:alert] = Comable.t('carts.invalid')
         render :show
       end
     end
@@ -28,12 +26,11 @@ module Comable
       return redirect_by_product_not_found unless cart_item
 
       if current_customer.reset_cart_item(cart_item)
-        flash.now[:notice] = I18n.t('comable.carts.update')
+        redirect_to comable.cart_path, notice: Comable.t('carts.updated')
       else
-        flash.now[:alert] = I18n.t('comable.carts.invalid')
+        flash.now[:alert] = Comable.t('carts.invalid')
+        render :show
       end
-
-      redirect_to action: :show
     end
 
     def checkout
@@ -49,8 +46,7 @@ module Comable
 
     def ensure_found_cart_item
       return if @cart_item
-      flash[:alert] = I18n.t('comable.errors.messages.products_not_found')
-      redirect_to :back
+      redirect_to :back, alert: Comable.t('errors.messages.products_not_found')
     end
 
     def find_cart_item

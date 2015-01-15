@@ -13,7 +13,7 @@ describe Comable::OrdersController do
       its(:response) { is_expected.to redirect_to(:cart) }
 
       it 'has flash messages' do
-        expect(flash[:alert]).to eq I18n.t('comable.carts.empty')
+        expect(flash[:alert]).to eq Comable.t('carts.empty')
       end
     end
   end
@@ -213,7 +213,7 @@ describe Comable::OrdersController do
       its(:response) { should be_success }
 
       it 'has flash messages' do
-        expect(flash[:notice]).to eq I18n.t('comable.orders.success')
+        expect(flash[:notice]).to eq Comable.t('orders.success')
       end
 
       it 'has assigned completed @order' do
@@ -240,7 +240,7 @@ describe Comable::OrdersController do
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :orderer)) }
 
       it 'has flash messages' do
-        expect(flash[:alert]).to eq I18n.t('comable.orders.failure')
+        expect(flash[:alert]).to eq Comable.t('orders.failure')
       end
     end
   end

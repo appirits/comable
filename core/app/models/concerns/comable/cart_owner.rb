@@ -42,8 +42,8 @@ module Comable
       # TODO: Refactoring
       def errors
         ActiveModel::Errors.new(self).tap do |obj|
-          map(&:errors).map(&:full_messages).each do |full_message|
-            obj[:base] << full_message if full_message.any?
+          map(&:errors).map(&:full_messages).flatten.each do |full_message|
+            obj[:base] << full_message
           end
         end
       end

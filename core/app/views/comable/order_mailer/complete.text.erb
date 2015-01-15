@@ -2,9 +2,9 @@
 <%= "#{@order.class.human_attribute_name(:code)}: #{@order.code}" %>
 ----------------------------------------------------------------------
 
-<%= I18n.t('comable.order_mailer.complete.dear', name: @order.bill_full_name) %>
+<%= Comable.t('order_mailer.complete.dear', name: @order.bill_full_name) %>
 
-<%= I18n.t('comable.order_mailer.complete.introductions', store_name: current_store.name) %>
+<%= Comable.t('order_mailer.complete.introductions', store_name: current_store.name) %>
 
     <%- shipment_method = @order.shipment_method %>
     <%- if shipment_method %>
@@ -38,4 +38,4 @@
 
 ======================================================================
 
-<%= I18n.t('comable.order_mailer.complete.outroductions', store_name: current_store.name) %>
+<%= Comable.t('order_mailer.complete.outroductions', store_name: current_store.name) %>

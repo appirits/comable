@@ -12,11 +12,11 @@
 
     section.col-sm-6
       h2
-        | Guest
+        = Comable.t('guest')
       = form_for @order, as: :order, url: comable.guest_order_path, method: :put do |f|
         .form-group
           .col-sm-2.control-label
             = f.label :email
           .col-sm-10
             = f.email_field :email, placeholder: @order.class.human_attribute_name(:email)
-        = f.submit '規約に同意して注文', class: 'btn btn-default'
+        = f.submit Comable.t('guest_order'), class: 'btn btn-default'

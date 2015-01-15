@@ -1,5 +1,5 @@
 class DummyCustomer
-  include ActiveRecord::Validations
+  include ActiveModel::Validations
   include Comable::CartOwner
 end
 
@@ -13,5 +13,17 @@ describe Comable::CartOwner do
 
   it 'has cart items' do
     expect(subject.cart.count).to eq(order_details.count * quantity)
+  end
+
+  context 'with errors' do
+    let(:stock) { FactoryGirl.build(:stock, :soldout) }
+    let(:cart_item) { subject.cart_items.first }
+
+    before { allow(cart_item).to receive(:stock).and_return(stock) }
+    before { cart_item.valid? }
+
+    it 'has cart with errors' do
+      expect(subject.cart.errors.full_messages.first).to include(stock.name)
+    end
   end
 end

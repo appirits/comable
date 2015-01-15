@@ -17,7 +17,7 @@ feature 'Checkout' do
     scenario 'Sign in while checkout flow' do
       visit comable.cart_path
 
-      click_button '注文'
+      click_button Comable.t('checkout')
 
       expect(current_url).to eq(comable.signin_order_url)
 
@@ -40,9 +40,7 @@ feature 'Checkout' do
       within('form') do
         fill_in :order_email, with: "updated.#{order.email}"
       end
-
-      # TODO: ボタン名につかう翻訳パスを変更または作成
-      click_button I18n.t('helpers.submit.update')
+      click_button Comable.t('next_step')
 
       expect(current_url).to eq(comable.next_order_url(state: :confirm))
       expect(order.state).to eq('confirm')

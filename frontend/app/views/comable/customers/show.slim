@@ -1,6 +1,6 @@
 #comable-customer
   h1
-    | Member
+    = Comable.t('my_account')
 
   .comable-name
     = current_customer.email
@@ -8,13 +8,13 @@
   .comable-member-menu
     ul
       li
-        = link_to 'Change E-mail address or password', comable.edit_customer_path
+        = link_to Comable.t('change_email_or_password'), comable.edit_customer_path
       li
-        = link_to 'Edit your address book', comable.addresses_customer_path
+        = link_to Comable.t('edit_your_address_book'), comable.addresses_customer_path
 
   .coamble-orders
     h2
-      = current_customer.class.human_attribute_name(:orders)
+      = Comable.t('order_history')
     - @orders.each do |order|
       table
         thead
@@ -54,7 +54,7 @@
                             .add_cart.form-inline.form-group
                               = hidden_field_tag :stock_id, order_detail.stock_id
                               = hidden_field_tag :quantity, order_detail.quantity
-                              = submit_tag 'Reorder', class: 'btn btn-default'
+                              = submit_tag Comable.t('reorder'), class: 'btn btn-default'
 
     .text-center
       = paginate @orders

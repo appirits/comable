@@ -21,14 +21,14 @@ feature 'カート処理' do
       When '商品をカートに投入して' do
         visit comable.product_path(subject)
         choose subject.stocks.first.code if subject.sku?
-        click_button 'カートに入れる'
-        expect(page).to have_content I18n.t('comable.carts.add_product')
+        click_button Comable.t('add_to_cart')
+        expect(page).to have_content Comable.t('carts.added')
       end
 
       When '注文画面に遷移して' do
         visit comable.cart_path
-        click_button '注文'
-        expect(page).to have_button '規約に同意して注文'
+        click_button Comable.t('checkout')
+        expect(page).to have_button Comable.t('guest_order')
       end
 
       When '注文者情報入力画面に遷移して' do
@@ -36,7 +36,7 @@ feature 'カート処理' do
         within('form#edit_order') do
           fill_in :order_email, with: order.email
         end
-        click_button '規約に同意して注文'
+        click_button Comable.t('guest_order')
         expect(page).to have_content order.class.human_state_name(:orderer)
       end
 
@@ -51,8 +51,7 @@ feature 'カート処理' do
           fill_in :order_bill_address_attributes_city, with: address.city
           fill_in :order_bill_address_attributes_phone_number, with: address.phone_number
         end
-        # TODO: ボタン名につかう翻訳パスを変更または作成
-        click_button I18n.t('helpers.submit.update')
+        click_button Comable.t('next_step')
         expect(page).to have_content order.class.human_state_name(:delivery)
       end
 
@@ -66,25 +65,25 @@ feature 'カート処理' do
           fill_in :order_ship_address_attributes_city, with: address.city
           fill_in :order_ship_address_attributes_phone_number, with: address.phone_number
         end
-        click_button I18n.t('helpers.submit.update')
+        click_button Comable.t('next_step')
         expect(page).to have_content order.class.human_state_name(:shipment)
       end
 
       When '決済方法選択画面に遷移して' do
         visit comable.next_order_path(state: :shipment)
-        click_button I18n.t('helpers.submit.update')
+        click_button Comable.t('next_step')
         expect(page).to have_content order.class.human_state_name(:payment)
       end
 
       When '注文情報確認画面に遷移して' do
         visit comable.next_order_path(state: :payment)
-        click_button I18n.t('helpers.submit.update')
+        click_button Comable.t('next_step')
         expect(page).to have_content order.class.human_state_name(:confirm)
       end
 
       Then '注文できること' do
         visit comable.next_order_path(state: :confirm)
-        click_button I18n.t('helpers.submit.update')
+        click_button Comable.t('complete_order')
         expect(page).to have_content order.class.human_state_name(:complete)
       end
     end
@@ -104,8 +103,8 @@ feature 'カート処理' do
         visit comable.product_path(subject)
         choose subject.stocks.first.code if subject.sku?
         select quantity, from: 'quantity'
-        click_button 'カートに入れる'
-        expect(page).to have_content I18n.t('comable.carts.add_product')
+        click_button Comable.t('add_to_cart')
+        expect(page).to have_content Comable.t('carts.added')
       end
 
       Then 'カートが更新されること' do
@@ -128,15 +127,15 @@ feature 'カート処理' do
       When '商品をカートに投入して' do
         visit comable.product_path(subject)
         choose subject.stocks.first.code if subject.sku?
-        click_button 'カートに入れる'
-        expect(page).to have_content I18n.t('comable.carts.add_product')
+        click_button Comable.t('add_to_cart')
+        expect(page).to have_content Comable.t('carts.added')
       end
 
       When '数量を変更して' do
         visit comable.cart_path
         select quantity, from: 'quantity'
-        click_button '変更'
-        expect(page).to have_content I18n.t('comable.carts.update')
+        click_button Comable.t('actions.update')
+        expect(page).to have_content Comable.t('carts.updated')
       end
 
       Then 'カートが更新されること' do
