@@ -25,7 +25,7 @@ Comable::Core::Engine.routes.draw do
   resource :customer, path: :member do
     member do
       get :addresses
-      put :addresses
+      put :addresses, action: :update_addresses
     end
   end
 end
