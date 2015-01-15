@@ -1,5 +1,5 @@
 class DummyCustomer
-  include ActiveModel::Model
+  include ActiveModel::Validations
   include Comable::CartOwner
 end
 
