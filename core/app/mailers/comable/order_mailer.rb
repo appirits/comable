@@ -12,7 +12,7 @@ module Comable
     private
 
     def subject_for(order)
-      I18n.t('comable.order_mailer.complete.subject', store_name: current_store.name, order_code: order.code)
+      Comable.t('order_mailer.complete.subject', store_name: current_store.name, order_code: order.code)
     end
   end
 end

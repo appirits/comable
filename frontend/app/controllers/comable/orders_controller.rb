@@ -28,10 +28,10 @@ module Comable
 
     def create
       if @order.state?(:confirm) && @order.next_state
-        flash.now[:notice] = I18n.t('comable.orders.success')
+        flash.now[:notice] = Comable.t('orders.success')
         send_order_complete_mail
       else
-        flash[:alert] = I18n.t('comable.orders.failure')
+        flash[:alert] = Comable.t('orders.failure')
         redirect_to next_order_path
       end
     end
@@ -44,13 +44,13 @@ module Comable
 
     def ensure_cart_not_empty
       return if current_customer.cart.any?
-      flash[:alert] = I18n.t('comable.carts.empty')
+      flash[:alert] = Comable.t('carts.empty')
       redirect_to comable.cart_path
     end
 
     def ensure_saleable_stocks
       return if current_order.soldout_stocks.empty?
-      flash[:alert] = I18n.t('comable.errors.messages.products_soldout')
+      flash[:alert] = Comable.t('errors.messages.products_soldout')
       redirect_to comable.cart_path
     end
 

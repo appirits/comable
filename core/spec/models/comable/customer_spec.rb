@@ -95,7 +95,7 @@ describe Comable::Customer do
 
       it 'has a error message in cart' do
         subject.add_cart_item(stock)
-        expect(subject.cart.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
+        expect(subject.cart.errors.full_messages.join).to include(Comable.t('errors.messages.product_soldout', name: stock.name_with_sku))
       end
     end
   end
@@ -148,7 +148,7 @@ describe Comable::Customer do
       it '商品を購入できないこと' do
         order = subject.incomplete_order
         order.complete
-        expect(order.errors.full_messages.join).to include(I18n.t('comable.errors.messages.product_soldout', name: stock.name_with_sku))
+        expect(order.errors.full_messages.join).to include(Comable.t('errors.messages.product_soldout', name: stock.name_with_sku))
       end
     end
   end
