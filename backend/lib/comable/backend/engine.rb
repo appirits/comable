@@ -8,6 +8,7 @@ require 'jquery-rails'
 require 'normalize-rails'
 require 'bootstrap-sass'
 require 'font-awesome-rails'
+require 'kaminari'
 
 module Comable
   module Backend

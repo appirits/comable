@@ -26,6 +26,9 @@ p = flash[:alert]
                 = link_to product.code, comable.admin_product_path(product)
               td
                 = product.name
+
+      .text-center
+        = paginate @products
     /
       .container
         .row

@@ -6,7 +6,7 @@ module Comable
       before_filter :find_product, only: [:show, :edit, :update, :destroy]
 
       def index
-        @products = Comable::Product.all
+        @products = Comable::Product.all.page(params[:page])
       end
 
       def new
