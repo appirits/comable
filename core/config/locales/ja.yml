@@ -89,6 +89,16 @@ ja:
           またのご利用をお待ちしております。
           %{store_name}
 
+    admin:
+      not_found: レコードが見つかりませんでした。
+      general: 一般
+      images: 画像
+      main_image: メイン画像
+      sub_image: サブ画像
+      actions:
+        new: 新規作成
+        destroy: 削除する
+
   activerecord:
     state_machines:
       comable/order:

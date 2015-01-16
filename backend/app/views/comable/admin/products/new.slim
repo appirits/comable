@@ -1,0 +1,11 @@
+p = flash[:notice]
+p = flash[:alert]
+
+#comable-product
+  h1
+    = Comable.t('admin.actions.new')
+
+  section.col-sm-8
+    = render 'form'
+
+  nav.col-sm-4

@@ -9,25 +9,42 @@ module Comable
         @products = Comable::Product.all
       end
 
-      def update
+      def new
+        @product = Comable::Product.new
+      end
+
+      def create
+        @product = Comable::Product.new
         if @product.update_attributes(product_params)
-          redirect_to comable.admin_products_path, notice: Comable.t('successful')
+          redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
-          # TODO: Implement 'show' action
-          render :index
+          render :new
+        end
+      end
+
+      def update
+        if @product.update_attributes(product_params)
+          redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
+        else
+          flash.now[:alert] = Comable.t('failure')
+          render :show
         end
       end
 
       private
 
       def find_product
-        @product = Comable::Product.find(params[:id])
+        @product = Comable::Product.includes(:images).find(params[:id])
       end
 
       def product_params
         params.require(:product).permit(
-          images_attributes: [:file]
+          :name,
+          :code,
+          :caption,
+          :price,
+          images_attributes: [:id, :file, :_destroy]
         )
       end
     end

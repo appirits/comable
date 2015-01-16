@@ -1,8 +1,7 @@
 //= require_self
-//= require normalize-rails
 //= require_tree .
 
-@import 'compass';
+@import 'compass/utilities';
 @import 'compass/css3';
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
@@ -209,4 +208,58 @@ margin-right: auto;
 
     }
   }
+}
+
+// ---
+// apply Bootstrap
+// ---
+button {
+  @extend .btn;
+}
+
+input[type="submit"] {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .btn-lg;
+
+  &.btn-default {
+    @extend .btn-default;
+  }
+}
+
+select,
+input[type="password"],
+input[type="email"],
+input[type="text"] {
+  @extend .form-control;
+  margin-right: 0.5em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+table {
+  @extend .table;
+}
+
+#comable-product {
+  input[type="submit"] {
+    @extend .btn-block;
+  }
+  label.remove {
+    display: block;
+    margin: 0;
+  }
+
+  .table tbody > tr > td {
+    .thumbnail {
+      margin-bottom: 0;
+    }
+    vertical-align: middle;
+  }
+}
+
+legend {
+  border-bottom: 0;
 }

@@ -1,19 +1,47 @@
-h1 Admin::Products#index
-
 p = flash[:notice]
 p = flash[:alert]
 
-- if @products.any?
-  ul
-    - @products.each do |product|
+#comable-product
+  h1
+    | Admin::Products#index
 
-      li
-        = product.name
+  section.col-sm-8
+    - if @products.empty?
+      = Comable.t('admin.not_found')
+    - else
+      table.table.table-striped
+        thead
+          th
+          th
+            = @products.klass.human_attribute_name(:code)
+          th
+            = @products.klass.human_attribute_name(:name)
+        tbody
+          - @products.each do |product|
+            tr
+              td style="width: 180px"
+                = link_to comable.admin_product_path(product), class: 'thumbnail' do
+                  = image_tag product.image_url
+              td
+                = link_to product.code, comable.admin_product_path(product)
+              td
+                = product.name
+    /
+      .container
+        .row
+          - @products.each.with_index(1) do |product, index|
+            .col-sm-3.col-lg-2
+              .image
+                = link_to comable.admin_product_path(product), class: 'thumbnail' do
+                  = image_tag product.image_url, width: '100%'
+              .name
+                = link_to product.name, comable.admin_product_path(product)
 
-        = form_for product, url: comable.admin_product_path(product), html: { multipart: true } do |f|
-          - product.images.build
-          = f.fields_for :images do |ff|
-              - if ff.object.url
-                = image_tag ff.object.url, width: 180
-              = ff.file_field :file
-          = f.button
+            / TODO: Sidebar
+            - if (index % (4 - 1)) == 0
+              .clearfix.hidden-lg
+
+            - if (index % (6 - 1)) == 0
+              .clearfix.visible-lg-block
+
+  nav.col-sm-4

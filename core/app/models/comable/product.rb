@@ -7,7 +7,7 @@ module Comable
     has_many :images, class_name: Comable::Image.name
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
-    accepts_nested_attributes_for :images
+    accepts_nested_attributes_for :images, allow_destroy: true
 
     after_create :create_stock
 

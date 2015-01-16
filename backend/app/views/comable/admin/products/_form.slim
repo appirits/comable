@@ -1,0 +1,58 @@
+- url = comable.admin_products_path if @product.new_record?
+- url ||= comable.admin_product_path(@product)
+= form_for @product, url: url, html: { multipart: true } do |f|
+  fieldset.panel.panel-default
+    .panel-heading
+      legend.panel-title
+        = Comable.t('admin.general')
+    .panel-body
+      .form-horizontal
+        .form-group
+          .col-sm-2.control-label
+            = f.label :code
+          .col-sm-10
+            = f.text_field :code
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label :name
+          .col-sm-10
+            = f.text_field :name
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label :caption
+          .col-sm-10
+            = f.text_field :caption
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label :price
+          .col-sm-10
+            = f.text_field :price
+
+  fieldset.panel.panel-default
+    .panel-heading
+      legend.panel-title
+        = Comable.t('admin.images')
+    .panel-body
+      - (@product.images + [@product.images.build]).each.with_index do |image, index|
+        = f.fields_for :images, image do |ff|
+          div class="#{index.zero? ? 'col-sm-6' : 'col-sm-3'}"
+            label
+              - if index.zero?
+                = Comable.t('admin.main_image')
+              - else
+                | #{Comable.t('admin.sub_image')} ##{index}
+            p
+              = ff.file_field :file
+            - if ff.object.url
+              .thumbnail
+                = image_tag ff.object.url
+                - if ff.object.persisted?
+                  label.remove
+                    span> = ff.check_box :_destroy
+                    span> = Comable.t('admin.actions.destroy')
+
+  .form-group
+    = f.submit
