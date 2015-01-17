@@ -34,6 +34,15 @@ module Comable
         end
       end
 
+      def destroy
+        if @product.destroy
+          redirect_to comable.admin_products_path, notice: Comable.t('successful')
+        else
+          flash.now[:alert] = Comable.t('failure')
+          render :show
+        end
+      end
+
       private
 
       def find_product

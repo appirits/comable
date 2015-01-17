@@ -216,14 +216,15 @@ body {
   margin-top: $navbar-height;
   background-color: #d9e0e7;
 }
+
 .navbar {
   @include box-shadow(rgba(0, 0, 0, 0.3) 0 0 2px);
 }
 
-.panel-inverse {
+.panel {
   border: none;
 
-  & > .panel-heading {
+  &.panel-inverse > .panel-heading {
     background: #313239;
     color: #fff;
   }

@@ -100,6 +100,7 @@ ja:
       index: 一覧
       search: 検索
       back_to_store: ストアに戻る
+      confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
       nav:
         dashboard: ダッシュボード
         order: 注文管理
