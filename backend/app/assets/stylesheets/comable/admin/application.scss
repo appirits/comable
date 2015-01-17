@@ -295,3 +295,12 @@ table {
 legend {
   border-bottom: 0;
 }
+
+#comable-affix {
+  @extend .hidden-sm;
+  @extend .hidden-xs;
+}
+
+.affix {
+  top: 50px + 20px;
+}

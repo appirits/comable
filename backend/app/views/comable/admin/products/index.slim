@@ -16,7 +16,6 @@ p = flash[:alert]
       - if @products.empty?
         = Comable.t('admin.not_found')
       - else
-
         .panel.panel-inverse
           .panel-heading
             .panel-title
@@ -41,22 +40,5 @@ p = flash[:alert]
 
         .text-center
           = paginate @products
-      /
-        .container
-          .row
-            - @products.each.with_index(1) do |product, index|
-              .col-sm-3.col-lg-2
-                .image
-                  = link_to comable.admin_product_path(product), class: 'thumbnail' do
-                    = image_tag product.image_url, width: '100%'
-                .name
-                  = link_to product.name, comable.admin_product_path(product)
-
-              / TODO: Sidebar
-              - if (index % (4 - 1)) == 0
-                .clearfix.hidden-lg
-
-              - if (index % (6 - 1)) == 0
-                .clearfix.visible-lg-block
 
     nav.col-sm-4

@@ -19,3 +19,12 @@ p = flash[:alert]
       = render 'form'
 
     nav.col-sm-4
+      #comable-affix data-spy="affix"
+        .panel
+          .list-group
+            = link_to comable.admin_product_path(@product), class: 'list-group-item'
+              span.fa.fa-cubes>
+              | Check the stocks of this product
+            = link_to comable.product_path(@product), class: 'list-group-item' do
+              span.fa.fa-external-link>
+              | Check this product in frontend
