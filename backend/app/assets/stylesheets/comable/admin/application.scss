@@ -304,8 +304,13 @@ legend {
 #comable-affix {
   @extend .hidden-sm;
   @extend .hidden-xs;
-}
 
-.affix {
-  top: 50px + 20px;
+  &.affix {
+    top: $navbar-height + 20px;
+  }
+
+  .panel > .list-group > a:before {
+    @include fa(angle-right);
+    margin-right: 1em;
+  }
 }

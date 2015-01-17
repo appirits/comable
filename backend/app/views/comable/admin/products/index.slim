@@ -55,6 +55,10 @@ p = flash[:alert]
     nav.col-sm-4
       #comable-affix
         .panel
+          .list-group
+            = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path, class: 'list-group-item'
+
+        .panel
           .panel-body
             = form_tag comable.admin_products_path, method: :get do
               .form-horizontal

@@ -53,7 +53,9 @@ html
                 = Comable.t('admin.nav.product')
               ul
                 li class="#{'active' if controller_name == 'products' && action_name == 'index'}"
-                  = link_to '一覧', comable.admin_products_path
+                  = link_to Comable.t('admin.actions.index'), comable.admin_products_path
+                li class="#{'active' if controller_name == 'products' && action_name == 'new'}"
+                  = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path
                 li
                   = link_to 'カテゴリ', '#'
             li

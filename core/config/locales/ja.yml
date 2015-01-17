@@ -104,6 +104,7 @@ ja:
         order: 注文管理
         product: 商品管理
       actions:
+        index: 一覧
         new: 新規作成
         destroy: 削除する
 
