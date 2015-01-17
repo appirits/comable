@@ -6,7 +6,7 @@ module Comable
       before_filter :find_order, only: [:show, :edit, :update, :destroy]
 
       def index
-        @orders = Comable::Order.complete.all.page(params[:page])
+        @orders = Comable::Order.complete.all.page(params[:page]).order('completed_at DESC')
       end
 
       private

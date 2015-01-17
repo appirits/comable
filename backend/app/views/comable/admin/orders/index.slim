@@ -25,18 +25,34 @@ p = flash[:alert]
               th
                 = @orders.klass.human_attribute_name(:code)
               th
-                = @orders.klass.human_attribute_name(:email)
+                / TODO: Change to shipment_state and payment_state
+                = @orders.klass.human_attribute_name(:state)
+              th
+                = @orders.klass.human_attribute_name(:bill_full_name)
+              th
+                = @orders.klass.human_attribute_name(:products)
               th
                 = @orders.klass.human_attribute_name(:total_price)
+              th
+                = @orders.klass.human_attribute_name(:completed_at)
             tbody
               - @orders.each do |order|
                 tr
                   td
                     = link_to order.code, comable.admin_order_path(order)
                   td
-                    = order.email
+                    = order.human_state_name
+                  td
+                    = order.bill_full_name
+                  td
+                    ul.list-unstyled
+                      - order.order_details.each do |order_detail|
+                        li
+                          | #{order_detail.name_with_sku} x #{order_detail.quantity}
                   td
                     = number_to_currency order.total_price
+                  td
+                    = l order.completed_at
 
         .text-center
           = paginate @orders
