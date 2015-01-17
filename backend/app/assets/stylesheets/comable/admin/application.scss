@@ -288,7 +288,12 @@ table {
     .thumbnail {
       margin-bottom: 0;
     }
-    vertical-align: middle;
+    &.comable-image {
+      width: 180px;
+    }
+    &:not(.comable-image) {
+      vertical-align: middle;
+    }
   }
 }
 

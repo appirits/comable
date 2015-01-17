@@ -28,16 +28,26 @@ p = flash[:alert]
                 = @products.klass.human_attribute_name(:code)
               th
                 = @products.klass.human_attribute_name(:name)
+              th
+                = @products.klass.human_attribute_name(:price)
+              th
+                = @products.klass.human_attribute_name(:quantity)
             tbody
               - @products.each do |product|
+                - quantity = product.stocks.to_a.sum(&:quantity)
                 tr
-                  td style="width: 180px"
+                  td.comable-image
                     = link_to comable.admin_product_path(product), class: 'thumbnail' do
                       = image_tag product.image_url
                   td
                     = link_to product.code, comable.admin_product_path(product)
                   td
                     = product.name
+                  td
+                    = number_to_currency product.price
+                  td
+                    strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
+                      = number_with_delimiter product.stocks.to_a.sum(&:quantity)
 
         .text-center
           = paginate @products
