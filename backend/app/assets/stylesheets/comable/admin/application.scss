@@ -336,3 +336,18 @@ table > tbody > tr > td > ul {
 main.container-fluid {
   padding: 10px 20px;
 }
+
+footer {
+  @extend .text-muted;
+  margin: 25px;
+  text-align: center;
+
+  & > ul > li + li:before {
+    content: '·';
+    padding-right: 10px;
+  }
+}
+
+hr {
+  border-color: darken(#d9e0e7, 5%);
+}
