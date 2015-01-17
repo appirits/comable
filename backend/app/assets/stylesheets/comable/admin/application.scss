@@ -238,10 +238,23 @@ body {
 }
 
 .breadcrumb {
-  background-color: darken(#d9e0e7, 5%);
+  @extend .pull-right;
+  margin-bottom: 0;
+  padding-right: 0;
+  background-color: transparent;
+
+  & > li {
+    float: right;
+  }
+
+  & > li + li:after {
+    content: '/';
+    padding: 0 5px;
+    color: darken(#d9e0e7, 20%);
+  }
 
   & > li + li:before {
-    color: darken(#d9e0e7, 20%);
+    display: none;
   }
 }
 
@@ -317,4 +330,8 @@ legend {
 
 table > tbody > tr > td > ul {
   margin-bottom: 0;
+}
+
+main.container-fluid {
+  padding: 10px 20px;
 }
