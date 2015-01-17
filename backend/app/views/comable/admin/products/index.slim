@@ -2,49 +2,61 @@ p = flash[:notice]
 p = flash[:alert]
 
 #comable-product
-  h1
-    | Admin::Products#index
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.product')
 
-  section.col-sm-8
-    - if @products.empty?
-      = Comable.t('admin.not_found')
-    - else
-      table.table.table-striped
-        thead
-          th
-          th
-            = @products.klass.human_attribute_name(:code)
-          th
-            = @products.klass.human_attribute_name(:name)
-        tbody
-          - @products.each do |product|
-            tr
-              td style="width: 180px"
-                = link_to comable.admin_product_path(product), class: 'thumbnail' do
-                  = image_tag product.image_url
-              td
-                = link_to product.code, comable.admin_product_path(product)
-              td
-                = product.name
+  h1.page-header
+    = Comable.t('admin.nav.product')
 
-      .text-center
-        = paginate @products
-    /
-      .container
-        .row
-          - @products.each.with_index(1) do |product, index|
-            .col-sm-3.col-lg-2
-              .image
-                = link_to comable.admin_product_path(product), class: 'thumbnail' do
-                  = image_tag product.image_url, width: '100%'
-              .name
-                = link_to product.name, comable.admin_product_path(product)
+  .row
+    section.col-sm-8
+      - if @products.empty?
+        = Comable.t('admin.not_found')
+      - else
 
-            / TODO: Sidebar
-            - if (index % (4 - 1)) == 0
-              .clearfix.hidden-lg
+        .panel.panel-inverse
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.index')
+          table.table.table-striped
+            thead
+              th
+              th
+                = @products.klass.human_attribute_name(:code)
+              th
+                = @products.klass.human_attribute_name(:name)
+            tbody
+              - @products.each do |product|
+                tr
+                  td style="width: 180px"
+                    = link_to comable.admin_product_path(product), class: 'thumbnail' do
+                      = image_tag product.image_url
+                  td
+                    = link_to product.code, comable.admin_product_path(product)
+                  td
+                    = product.name
 
-            - if (index % (6 - 1)) == 0
-              .clearfix.visible-lg-block
+        .text-center
+          = paginate @products
+      /
+        .container
+          .row
+            - @products.each.with_index(1) do |product, index|
+              .col-sm-3.col-lg-2
+                .image
+                  = link_to comable.admin_product_path(product), class: 'thumbnail' do
+                    = image_tag product.image_url, width: '100%'
+                .name
+                  = link_to product.name, comable.admin_product_path(product)
 
-  nav.col-sm-4
+              / TODO: Sidebar
+              - if (index % (4 - 1)) == 0
+                .clearfix.hidden-lg
+
+              - if (index % (6 - 1)) == 0
+                .clearfix.visible-lg-block
+
+    nav.col-sm-4

@@ -2,10 +2,19 @@ p = flash[:notice]
 p = flash[:alert]
 
 #comable-product
-  h1
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = link_to Comable.t('admin.nav.product'), comable.admin_products_path
+    li.active
+      = Comable.t('admin.actions.new')
+
+  h1.page-header
     = Comable.t('admin.actions.new')
 
-  section.col-sm-8
-    = render 'form'
+  .row
+    section.col-sm-8
+      = render 'form'
 
-  nav.col-sm-4
+    nav.col-sm-4

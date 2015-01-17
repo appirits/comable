@@ -95,6 +95,13 @@ ja:
       images: 画像
       main_image: メイン画像
       sub_image: サブ画像
+      home: ホーム
+      product: 商品
+      index: 一覧
+      nav:
+        dashboard: ダッシュボード
+        order: 注文管理
+        product: 商品管理
       actions:
         new: 新規作成
         destroy: 削除する

@@ -7,24 +7,53 @@ html
     = javascript_include_tag 'comable/admin/application'
     = csrf_meta_tags
   body
+    header.header.navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        .navbar-header
+          = link_to comable.admin_root_path, class: 'navbar-brand' do
+            span.navbar-logo
+            | Comable
+
+          button.navbar-toggle type="button" data-click="sidebar-toggled"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+
+        ul.nav.navbar-nav.navbar-right
+          li.dropdown.navbar-user
+            a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+              span.hidden-xs
+                | John
+              span.caret<
+            ul.dropdown-menu.animated.fadeInLeft
+              li.arrow
+              li
+                a href="javascript:;"
+                  | Edit Profile
+              li.divider
+              li
+                a href="javascript:;"
+                  | Sign out
+
     #wrapper
       .sidebar
-        .logo
-          = link_to 'Comable', admin_root_path
-
         .vnavigation
           ul
-            li.active
+            li class="#{'active' if controller_name == 'orders'}"
+              = link_to '#' do
+                i.fa.fa-dashboard
+                = Comable.t('admin.nav.dashboard')
+            li class="#{'active' if controller_name == 'orders'}"
               = link_to '#' do
                 i.fa.fa-shopping-cart
-                | 注文
-            li
+                = Comable.t('admin.nav.order')
+            li class="#{'active' if controller_name == 'products'}"
               = link_to '#' do
                 i.fa.fa-cubes
-                | 商品
+                = Comable.t('admin.nav.product')
               ul
-                li
-                  = link_to '一覧', '#'
+                li class="#{'active' if controller_name == 'products' && action_name == 'index'}"
+                  = link_to '一覧', comable.admin_products_path
                 li
                   = link_to 'カテゴリ', '#'
             li

@@ -141,11 +141,10 @@ margin-right: auto;
 
     &> li.active > a {
       color: #fff;
-      border-left: 2px solid #7761a7;
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: #7761a7;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(#7761a7, 0.9);
         @include transition(background-color 250ms ease);
       }
 
@@ -213,6 +212,39 @@ margin-right: auto;
 // ---
 // apply Bootstrap
 // ---
+body {
+  margin-top: $navbar-height;
+  background-color: #d9e0e7;
+}
+.navbar {
+  @include box-shadow(rgba(0, 0, 0, 0.3) 0 0 2px);
+}
+
+.panel-inverse {
+  border: none;
+
+  & > .panel-heading {
+    background: #313239;
+    color: #fff;
+  }
+}
+
+.page-header {
+  font-size: 24px;
+  margin: 0 0 20px;
+  padding: 0;
+  border: none;
+  line-height: 28px;
+}
+
+.breadcrumb {
+  background-color: darken(#d9e0e7, 5%);
+
+  & > li + li:before {
+    color: darken(#d9e0e7, 20%);
+  }
+}
+
 button {
   @extend .btn;
 }

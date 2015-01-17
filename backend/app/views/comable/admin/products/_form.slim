@@ -1,9 +1,9 @@
 - url = comable.admin_products_path if @product.new_record?
 - url ||= comable.admin_product_path(@product)
 = form_for @product, url: url, html: { multipart: true } do |f|
-  fieldset.panel.panel-default
+  .panel.panel-inverse
     .panel-heading
-      legend.panel-title
+      .panel-title
         = Comable.t('admin.general')
     .panel-body
       .form-horizontal
@@ -31,9 +31,9 @@
           .col-sm-10
             = f.text_field :price
 
-  fieldset.panel.panel-default
+  .panel.panel-inverse
     .panel-heading
-      legend.panel-title
+      .panel-title
         = Comable.t('admin.images')
     .panel-body
       - (@product.images + [@product.images.build]).each.with_index do |image, index|
