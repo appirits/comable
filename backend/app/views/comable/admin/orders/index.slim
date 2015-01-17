@@ -1,0 +1,44 @@
+p = flash[:notice]
+p = flash[:alert]
+
+#comable-order
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.order')
+
+  h1.page-header
+    = Comable.t('admin.nav.order')
+
+  .row
+    section.col-sm-8
+      - if @orders.empty?
+        = Comable.t('admin.not_found')
+      - else
+        .panel.panel-inverse
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.index')
+          table.table.table-striped
+            thead
+              th
+                = @orders.klass.human_attribute_name(:code)
+              th
+                = @orders.klass.human_attribute_name(:email)
+              th
+                = @orders.klass.human_attribute_name(:total_price)
+            tbody
+              - @orders.each do |order|
+                tr
+                  td
+                    = link_to order.code, comable.admin_order_path(order)
+                  td
+                    = order.email
+                  td
+                    = number_to_currency order.total_price
+
+        .text-center
+          = paginate @orders
+
+    nav.col-sm-4

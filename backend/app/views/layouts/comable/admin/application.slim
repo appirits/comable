@@ -44,7 +44,7 @@ html
                 i.fa.fa-dashboard
                 = Comable.t('admin.nav.dashboard')
             li class="#{'active' if controller_name == 'orders'}"
-              = link_to '#' do
+              = link_to comable.admin_orders_path do
                 i.fa.fa-shopping-cart
                 = Comable.t('admin.nav.order')
             li class="#{'active' if controller_name == 'products'}"
