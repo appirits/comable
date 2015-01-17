@@ -13,13 +13,14 @@ p = flash[:alert]
 
   .row
     section.col-sm-8
-      - if @products.empty?
-        = Comable.t('admin.not_found')
-      - else
-        .panel.panel-inverse
-          .panel-heading
-            .panel-title
-              = Comable.t('admin.index')
+      .panel.panel-inverse
+        .panel-heading
+          .panel-title
+            = Comable.t('admin.index')
+        - if @products.empty?
+          .panel-body
+            = Comable.t('admin.not_found')
+        - else
           table.table.table-striped
             thead
               th
@@ -42,3 +43,20 @@ p = flash[:alert]
           = paginate @products
 
     nav.col-sm-4
+      #comable-affix
+        .panel
+          .panel-body
+            = form_tag comable.admin_products_path, method: :get do
+              .form-horizontal
+                .form-group
+                  .col-sm-2.control-label
+                    = label_tag :search_code, @products.klass.human_attribute_name(:code)
+                  .col-sm-10
+                    = text_field_tag :search_code, params[:search_code]
+                .form-group
+                  .col-sm-2.control-label
+                    = label_tag :search_name, @products.klass.human_attribute_name(:name)
+                  .col-sm-10
+                    = text_field_tag :search_name, params[:search_name]
+                .text-right
+                  = button_tag Comable.t('admin.search'), class: 'btn btn-default'
