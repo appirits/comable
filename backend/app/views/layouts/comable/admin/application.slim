@@ -20,6 +20,9 @@ html
             span.icon-bar
 
         ul.nav.navbar-nav.navbar-right
+          li
+            = link_to comable.root_path do
+              = Comable.t('admin.back_to_store')
           li.dropdown.navbar-user
             a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
               span.hidden-xs

@@ -99,6 +99,7 @@ ja:
       product: 商品
       index: 一覧
       search: 検索
+      back_to_store: ストアに戻る
       nav:
         dashboard: ダッシュボード
         order: 注文管理
