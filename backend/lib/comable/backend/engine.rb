@@ -10,6 +10,7 @@ require 'kaminari'
 
 require 'rails-assets-jquery'
 require 'rails-assets-jquery-ujs'
+require 'rails-assets-jstree'
 
 module Comable
   module Backend
