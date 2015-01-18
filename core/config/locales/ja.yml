@@ -102,6 +102,8 @@ ja:
       back_to_store: ストアに戻る
       confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
+      you_can_right_click: 右クリックでメニューを表示できます。
+      note: 'NOTE:'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -113,6 +115,8 @@ ja:
         edit: 編集する
         update: 変更する
         destroy: 削除する
+      categories:
+        new_node: 新しいカテゴリ
 
   activerecord:
     state_machines:

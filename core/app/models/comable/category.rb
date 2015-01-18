@@ -46,12 +46,16 @@ module Comable
 
       def rebuild_by_jstree!(jstree, parent = nil)
         return if jstree.blank?
+
         jstree.each do |node|
-          category = find(node['id'])
-          category.update_attributes(
+          next find(node['_destroy']).destroy! if node['_destroy'].present?
+
+          category = node['id'].to_i.zero? ? new : find(node['id'])
+          category.update_attributes!(
             parent: parent,
             name: node['text']
           )
+
           rebuild_by_jstree!(node['children'], category)
         end
       end

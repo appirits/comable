@@ -35,8 +35,9 @@
         = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all'
         = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js'
 
+        / TODO: Refactoring
         javascript:
-          comable_tagit_available_tags = #{raw Comable::Category.all.map(&:path).map { |path| path.map(&:name).join(' > ') }.to_json};
+          comable_tagit_available_tags = #{raw Comable::Category.all.map(&:path).map { |path| path.map(&:name).join(' > ') }.sort.to_json};
         coffee:
           $(document).ready(->
             $("#comable-tagit").tagit({
@@ -55,7 +56,6 @@
             = f.label :categories
           .col-sm-10
             ul#comable-tagit
-              li
               - @product.categories.each do |category|
                 li
                   = category.path.map(&:name).join(' > ')

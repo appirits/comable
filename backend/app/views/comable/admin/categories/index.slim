@@ -15,20 +15,51 @@ p = flash[:alert]
 
   javascript:
     comable_jstree_json = #{raw Comable::Category.all.to_jstree(state: { opened: true }, icon: 'fa fa-bars')};
+    comable_new_node_label = '#{Comable.t('admin.categories.new_node')}';
+    comable_action_new = '#{Comable.t('admin.actions.new')}';
+    comable_action_edit = '#{Comable.t('admin.actions.edit')}';
+    comable_action_destroy = '#{Comable.t('admin.actions.destroy')}';
+    comable_destroied_nodes = [];
 
   coffee:
     jQuery(->
-      $('#comable-jstree').jstree({
+      $comable_jstree = $('#comable-jstree')
+      $comable_jstree.jstree({
         core: {
           check_callback: true,
-          data: comable_jstree_json
+          data: comable_jstree_json,
+          strings : { new_node: comable_new_node_label, icon: 'fa fa-bars' }
         },
-        plugins: ['dnd', 'wholerow']
+        contextmenu: {
+          items: ($node) ->
+            _this = $comable_jstree.jstree(true)
+            {
+              create: {
+                label: comable_action_new,
+                action: ->
+                  new_node = _this.create_node($node)
+                  _this.rename_node(new_node, comable_new_node_label)
+                  _this.set_icon(new_node, 'fa fa-bars')
+              }
+              edit: {
+                label: comable_action_edit,
+                action: -> _this.edit($node)
+              }
+              destory: {
+                label: comable_action_destroy,
+                action: ->
+                  comable_destroied_nodes.push { _destroy: $node.id }
+                  _this.delete_node($node)
+              }
+            }
+        },
+        plugins: ['dnd', 'wholerow', 'contextmenu']
       })
 
       $('form').submit(->
-        json = JSON.stringify($('#comable-jstree').jstree(true).get_json())
-        $(this).find('#jstree_json').val(json)
+        json = $comable_jstree.jstree(true).get_json().concat(comable_destroied_nodes)
+        json_string = JSON.stringify(json)
+        $(this).find('#jstree_json').val(json_string)
       )
     )
 
@@ -43,8 +74,15 @@ p = flash[:alert]
             = Comable.t('admin.not_found')
         - else
           .panel-body
-            p.text-muted
-              = Comable.t('admin.you_can_drag_and_drop')
+            .well.well-sm
+              p
+                strong
+                  = Comable.t('admin.note')
+              ul
+                li
+                  = Comable.t('admin.you_can_drag_and_drop')
+                li
+                  = Comable.t('admin.you_can_right_click')
             #comable-jstree
           .panel-footer
             = form_tag comable.admin_categories_path do
