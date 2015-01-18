@@ -25,7 +25,7 @@ module Comable
       end
 
       def to_jstree(options = {})
-        build_jstree(arrange_serializable, options).to_json
+        build_jstree(arrange_serializable(order: :position), options).to_json
       end
 
       def from_jstree!(jstree_json)
@@ -48,13 +48,14 @@ module Comable
       def rebuild_by_jstree!(jstree, parent = nil)
         return if jstree.blank?
 
-        jstree.each do |node|
+        jstree.each.with_index do |node, index|
           next find(node['_destroy']).destroy! if node['_destroy'].present?
 
           category = node['id'].to_i.zero? ? new : find(node['id'])
           category.update_attributes!(
             parent: parent,
-            name: node['text']
+            name: node['text'],
+            position: index
           )
 
           rebuild_by_jstree!(node['children'], category)
