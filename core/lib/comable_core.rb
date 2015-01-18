@@ -2,6 +2,7 @@ require 'devise'
 require 'enumerize'
 require 'state_machine'
 require 'ancestry'
+require 'acts_as_list'
 require 'carrierwave'
 
 require 'comable/core/configuration'
