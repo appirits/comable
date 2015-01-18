@@ -4,11 +4,12 @@ require 'slim'
 require 'sass-rails'
 require 'coffee-rails'
 require 'compass-rails'
-require 'jquery-rails'
-require 'normalize-rails'
 require 'bootstrap-sass'
 require 'font-awesome-rails'
 require 'kaminari'
+
+require 'rails-assets-jquery'
+require 'rails-assets-jquery-ujs'
 
 module Comable
   module Backend
