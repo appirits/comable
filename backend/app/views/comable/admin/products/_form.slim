@@ -31,6 +31,35 @@
           .col-sm-10
             = f.text_field :price
 
+        = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all'
+        = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all'
+        = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js'
+
+        javascript:
+          comable_tagit_available_tags = #{raw Comable::Category.all.map(&:path).map { |path| path.map(&:name).join(' > ') }.to_json};
+        coffee:
+          $(document).ready(->
+            $("#comable-tagit").tagit({
+              fieldName: 'product[category_path_names][]',
+              availableTags: comable_tagit_available_tags,
+              autocomplete: { delay: 0, minLength: 0 },
+              showAutocompleteOnFocus: true,
+              removeConfirmation: true,
+              # Only allow available tags
+              beforeTagAdded: (event, ui) -> (comable_tagit_available_tags.indexOf(ui.tagLabel) != -1)
+            })
+          )
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label :categories
+          .col-sm-10
+            ul#comable-tagit
+              li
+              - @product.categories.each do |category|
+                li
+                  = category.path.map(&:name).join(' > ')
+
   .panel.panel-inverse
     .panel-heading
       .panel-title

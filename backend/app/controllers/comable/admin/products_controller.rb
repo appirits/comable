@@ -55,6 +55,7 @@ module Comable
           :code,
           :caption,
           :price,
+          category_path_names: [],
           images_attributes: [:id, :file, :_destroy]
         )
       end
