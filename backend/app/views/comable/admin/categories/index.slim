@@ -36,10 +36,7 @@ p = flash[:alert]
             {
               create: {
                 label: comable_action_new,
-                action: ->
-                  new_node = _this.create_node($node)
-                  _this.rename_node(new_node, comable_new_node_label)
-                  _this.set_icon(new_node, 'fa fa-bars')
+                action: -> create_new_node($node)
               }
               edit: {
                 label: comable_action_edit,
@@ -55,6 +52,13 @@ p = flash[:alert]
         },
         plugins: ['dnd', 'wholerow', 'contextmenu']
       })
+
+      window.create_new_node = ($node = '#') ->
+        jstree = $comable_jstree.jstree(true)
+        new_node = jstree.create_node($node)
+        jstree.open_node($node) unless jstree.is_open($node)
+        jstree.rename_node(new_node, comable_new_node_label)
+        jstree.set_icon(new_node, 'fa fa-bars')
 
       $('form').submit(->
         json = $comable_jstree.jstree(true).get_json().concat(comable_destroied_nodes)
@@ -83,6 +87,9 @@ p = flash[:alert]
                   = Comable.t('admin.you_can_drag_and_drop')
                 li
                   = Comable.t('admin.you_can_right_click')
+                li
+                  = Comable.t('admin.link_to_add_new_node')
+                  = link_to Comable.t('admin.actions.new'), '#', onclick: 'create_new_node()'
             #comable-jstree
           .panel-footer
             = form_tag comable.admin_categories_path do

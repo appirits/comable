@@ -103,6 +103,7 @@ ja:
       confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
       you_can_right_click: 右クリックでメニューを表示できます。
+      link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
       note: 'NOTE:'
       nav:
         dashboard: ダッシュボード
