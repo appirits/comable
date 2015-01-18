@@ -22,6 +22,39 @@ module Comable
           (category ? category.children : roots).find_by(name: name) || return
         end
       end
+
+      def to_jstree(options = {})
+        build_jstree(arrange_serializable, options).to_json
+      end
+
+      def from_jstree!(jstree_json)
+        jstree = JSON.parse(jstree_json)
+        rebuild_by_jstree!(jstree)
+      end
+
+      private
+
+      def build_jstree(serialized_categories, options = {})
+        serialized_categories.map do |serialized_category|
+          options.merge(
+            id: serialized_category['id'],
+            text: serialized_category['name'],
+            children: build_jstree(serialized_category['children'], options)
+          )
+        end
+      end
+
+      def rebuild_by_jstree!(jstree, parent = nil)
+        return if jstree.blank?
+        jstree.each do |node|
+          category = find(node['id'])
+          category.update_attributes(
+            parent: parent,
+            name: node['text']
+          )
+          rebuild_by_jstree!(node['children'], category)
+        end
+      end
     end
   end
 end

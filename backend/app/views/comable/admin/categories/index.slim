@@ -1,0 +1,54 @@
+p = flash[:notice]
+p = flash[:alert]
+
+#comable-category
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li
+      = link_to Comable.t('admin.nav.product'), comable.admin_products_path
+    li.active
+      = Comable.t('admin.nav.category')
+
+  h1.page-header
+    = Comable.t('admin.nav.category')
+
+  javascript:
+    comable_jstree_json = #{raw Comable::Category.all.to_jstree(state: { opened: true }, icon: 'fa fa-bars')};
+
+  coffee:
+    jQuery(->
+      $('#comable-jstree').jstree({
+        core: {
+          check_callback: true,
+          data: comable_jstree_json
+        },
+        plugins: ['dnd', 'wholerow']
+      })
+
+      $('form').submit(->
+        json = JSON.stringify($('#comable-jstree').jstree(true).get_json())
+        $(this).find('#jstree_json').val(json)
+      )
+    )
+
+  .row
+    section.col-sm-8
+      .panel.panel-inverse
+        .panel-heading
+          .panel-title
+            = Comable.t('admin.actions.edit')
+        - if @categories.empty?
+          .panel-body
+            = Comable.t('admin.not_found')
+        - else
+          .panel-body
+            p.text-muted
+              = Comable.t('admin.you_can_drag_and_drop')
+            #comable-jstree
+          .panel-footer
+            = form_tag comable.admin_categories_path do
+              = hidden_field_tag :jstree_json
+              = submit_tag Comable.t('admin.actions.update')
+
+    nav.col-sm-4

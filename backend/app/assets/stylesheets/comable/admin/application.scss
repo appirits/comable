@@ -1,4 +1,5 @@
 //= require jquery-ui
+//= require jstree
 //= require_self
 //= require_tree .
 
@@ -239,6 +240,12 @@ body {
   line-height: 28px;
 }
 
+.panel > .panel-footer {
+  form {
+    @extend .text-right;
+  }
+}
+
 .breadcrumb {
   @extend .pull-right;
   margin-bottom: 0;
@@ -267,11 +274,6 @@ button {
 input[type="submit"] {
   @extend .btn;
   @extend .btn-primary;
-  @extend .btn-lg;
-
-  &.btn-default {
-    @extend .btn-default;
-  }
 }
 
 select,
@@ -292,6 +294,7 @@ table {
 
 #comable-product {
   input[type="submit"] {
+    @extend .btn-lg;
     @extend .btn-block;
   }
   label.remove {
@@ -374,6 +377,28 @@ ul.tagit-autocomplete.ui-menu {
     &.ui-state-focus {
       color: $dropdown-link-active-color;
       background-color: $dropdown-link-active-bg;
+    }
+  }
+}
+
+// ---
+// jstree
+// ---
+.jstree-default {
+  .jstree-wholerow-hovered {
+    color: $dropdown-link-color;
+    background: $dropdown-link-hover-bg;
+  }
+
+  .jstree-wholerow-clicked {
+    color: $dropdown-link-active-color;
+    background: $dropdown-link-active-bg;
+  }
+
+  .jstree-anchor.jstree-clicked {
+    &:link, &:visited, &:hover, &:active {
+      @include transition(color .05s ease-in);
+      color: $dropdown-link-active-color;
     }
   }
 }

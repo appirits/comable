@@ -3,6 +3,7 @@ Comable::Core::Engine.routes.draw do
     root to: 'products#index'
 
     resources :products
+    resources :categories
     resources :orders
     resources :shipment_methods
     resource :store, controller: :store

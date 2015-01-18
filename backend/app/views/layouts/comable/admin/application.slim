@@ -50,7 +50,7 @@ html
               = link_to comable.admin_orders_path do
                 i.fa.fa-shopping-cart
                 = Comable.t('admin.nav.order')
-            li class="#{'active' if controller_name == 'products'}"
+            li class="#{'active' if controller_name == 'products' || controller_name == 'categories'}"
               = link_to '#' do
                 i.fa.fa-cubes
                 = Comable.t('admin.nav.product')
@@ -59,8 +59,8 @@ html
                   = link_to Comable.t('admin.actions.index'), comable.admin_products_path
                 li class="#{'active' if controller_name == 'products' && action_name == 'new'}"
                   = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path
-                li
-                  = link_to 'カテゴリ', '#'
+                li class="#{'active' if controller_name == 'categories'}"
+                  = link_to Comable.t('admin.nav.category'), comable.admin_categories_path
             li
               = link_to '#' do
                 i.fa.fa-bar-chart
