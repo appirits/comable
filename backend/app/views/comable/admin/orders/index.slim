@@ -58,3 +58,15 @@ p = flash[:alert]
           = paginate @orders
 
     nav.col-sm-4
+      #comable-affix
+        .panel
+          .panel-body
+            = form_tag comable.admin_orders_path, method: :get do
+              .form-horizontal
+                .form-group
+                  .col-sm-3.control-label
+                    = label_tag :search_code, @orders.klass.human_attribute_name(:code)
+                  .col-sm-9
+                    = text_field_tag :search_code, params[:search_code]
+                .text-right
+                  = button_tag Comable.t('admin.search'), class: 'btn btn-default'
