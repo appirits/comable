@@ -327,7 +327,7 @@ legend {
     top: $navbar-height + 20px;
   }
 
-  .panel > .list-group > a:before {
+  .list-group > a:before {
     @include fa(angle-right);
     margin-right: 1em;
   }

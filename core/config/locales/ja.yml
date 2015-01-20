@@ -104,12 +104,16 @@ ja:
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
       you_can_right_click: 右クリックでメニューを表示できます。
       link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
+      check_this_product_in_frontend: 'この商品をフロントで確認する'
       note: 'NOTE:'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
         product: 商品管理
         category: カテゴリ
+        products:
+          detail: 商品詳細
+          stock: 在庫管理
       actions:
         index: 一覧
         new: 新規作成
