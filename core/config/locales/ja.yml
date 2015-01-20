@@ -114,6 +114,12 @@ ja:
         products:
           detail: 商品詳細
           stock: 在庫管理
+        orders:
+          detail: 注文明細
+          cart: カート情報
+          customer: 顧客情報
+          shipment: 送料
+          payment: 支払手数料
       actions:
         index: 一覧
         new: 新規作成
