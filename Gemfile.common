@@ -14,3 +14,5 @@ gem 'pry-rails', require: false
 gem 'byebug'
 gem 'yard', require: false
 gem 'inch', require: false
+
+gem 'brakeman', require: false
