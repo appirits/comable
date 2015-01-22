@@ -5,6 +5,7 @@ Comable::Core::Engine.routes.draw do
     resources :products
     resources :categories
     resources :orders
+    resources :customers
     resources :shipment_methods
     resource :store, controller: :store
   end

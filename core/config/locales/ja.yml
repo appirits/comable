@@ -107,20 +107,26 @@ ja:
       check_this_product_in_frontend: 'この商品をフロントで確認する'
       note: 'NOTE:'
       results: 件
+      times: 回
+      more: もっと見る
       nav:
         dashboard: ダッシュボード
         order: 注文管理
         product: 商品管理
         category: カテゴリ
+        customer: ユーザー
         products:
           detail: 商品詳細
           stock: 在庫管理
         orders:
           detail: 注文明細
           cart: カート情報
-          customer: 顧客情報
+          customer: ユーザー詳細
           shipment: 送料
           payment: 支払手数料
+        customers:
+          detail: ユーザー詳細
+          new_orders: '最新の注文 (%{count}件)'
       actions:
         index: 一覧
         new: 新規作成

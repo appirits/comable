@@ -13,6 +13,9 @@ module Comable
 
     devise(*Comable::Config.devise_strategies[:customer])
 
+    delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
+    delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
+
     def with_cookies(cookies)
       @cookies = cookies
       self
@@ -76,6 +79,10 @@ module Comable
 
       inherit_order_state(guest_order)
       inherit_cart_items(guest_order)
+    end
+
+    def human_id
+      "##{id}"
     end
 
     private

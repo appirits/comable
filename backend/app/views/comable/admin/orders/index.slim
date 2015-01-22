@@ -71,5 +71,12 @@ p = flash[:alert]
                     = label_tag :search_code, @orders.klass.human_attribute_name(:code)
                   .col-sm-9
                     = text_field_tag :search_code, params[:search_code]
+
+                .form-group
+                  .col-sm-3.control-label
+                    = label_tag :search_customer_id, @orders.klass.human_attribute_name(:customer_id)
+                  .col-sm-9
+                    = text_field_tag :search_customer_id, params[:search_customer_id]
+
                 .text-right
                   = button_tag Comable.t('admin.search'), class: 'btn btn-default'

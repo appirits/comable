@@ -50,6 +50,10 @@ html
               = link_to comable.admin_orders_path do
                 i.fa.fa-shopping-cart
                 = Comable.t('admin.nav.order')
+            li class="#{'active' if controller_name == 'customers'}"
+              = link_to comable.admin_customers_path do
+                i.fa.fa-user
+                = Comable.t('admin.nav.customer')
             li class="#{'active' if controller_name == 'products' || controller_name == 'categories'}"
               = link_to '#' do
                 i.fa.fa-cubes
@@ -78,10 +82,6 @@ html
               = link_to '#' do
                 i.fa.fa-cog
                 | 一般設定
-            li
-              = link_to '#' do
-                i.fa.fa-user
-                | ユーザー
       main.container-fluid
         = yield
 
