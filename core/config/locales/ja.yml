@@ -126,6 +126,7 @@ ja:
           payment: 支払手数料
         customers:
           detail: ユーザー詳細
+          edit: 編集
           new_orders: '最新の注文 (%{count}件)'
       actions:
         index: 一覧
@@ -133,6 +134,7 @@ ja:
         edit: 編集する
         update: 変更する
         destroy: 削除する
+        cancel: キャンセル
       categories:
         new_node: 新しいカテゴリ
 
