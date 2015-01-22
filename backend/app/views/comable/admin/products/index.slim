@@ -10,6 +10,9 @@ p = flash[:alert]
 
   h1.page-header
     = Comable.t('admin.nav.product')
+    small<
+      = @products.total_count
+      = Comable.t('admin.results')
 
   .row
     section.col-sm-8

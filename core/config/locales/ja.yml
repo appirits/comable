@@ -106,6 +106,7 @@ ja:
       link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
       check_this_product_in_frontend: 'この商品をフロントで確認する'
       note: 'NOTE:'
+      results: 件
       nav:
         dashboard: ダッシュボード
         order: 注文管理
