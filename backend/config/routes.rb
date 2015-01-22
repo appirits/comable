@@ -7,6 +7,6 @@ Comable::Core::Engine.routes.draw do
     resources :orders
     resources :customers
     resources :shipment_methods
-    resource :store, controller: :store
+    resource :store, controller: :store, only: [:show, :edit, :update]
   end
 end

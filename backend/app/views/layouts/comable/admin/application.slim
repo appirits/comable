@@ -78,10 +78,18 @@ html
                   = link_to '特集', '#'
                 li
                   = link_to 'フリースペース', '#'
-            li
+            li class="#{'active' if controller_name == 'store'}"
               = link_to '#' do
                 i.fa.fa-cog
-                | 一般設定
+                = Comable.t('admin.nav.general_settings')
+              ul
+                li class="#{'active' if controller_name == 'store'}"
+                  = link_to Comable.t('admin.nav.store'), comable.admin_store_path
+                li
+                  = link_to Comable.t('admin.nav.shipment'), '#'
+                li
+                  = link_to Comable.t('admin.nav.payment'), '#'
+
       main.container-fluid
         = yield
 

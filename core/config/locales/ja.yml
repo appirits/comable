@@ -115,6 +115,10 @@ ja:
         product: 商品管理
         category: カテゴリ
         customer: ユーザー
+        general_settings: 一般設定
+        store: ストア設定
+        shipment: 配送管理
+        payment: 決済管理
         products:
           detail: 商品詳細
           stock: 在庫管理
@@ -128,6 +132,8 @@ ja:
           detail: ユーザー詳細
           edit: 編集
           new_orders: '最新の注文 (%{count}件)'
+        stores:
+          edit: 編集
       actions:
         index: 一覧
         new: 新規作成

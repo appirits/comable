@@ -3,46 +3,27 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class StoreController < Comable::Admin::ApplicationController
-      # GET /admin/store
+      before_filter :find_store, only: [:show, :edit, :update]
+
       def show
-        @store = Comable::Store.first
-        return redirect_to action: :new unless @store
+        render :edit
       end
 
-      # GET /admin/store/new
-      def new
-        @store = Comable::Store.new
-      end
-
-      # GET /admin/store/edit
-      def edit
-        @store = Comable::Store.first
-      end
-
-      # POST /admin/store
-      def create
-        @store = Comable::Store.new(store_params)
-
-        if @store.save
-          redirect_to comable.admin_store_url(@store), notice: 'Store was successfully created.'
-        else
-          render :new
-        end
-      end
-
-      # PATCH/PUT /admin/store
       def update
-        @store = Comable::Store.first
         if @store.update(store_params)
-          redirect_to comable.admin_store_url(@store), notice: 'Store was successfully updated.'
+          redirect_to comable.admin_store_url(@store), notice: Comable.t('successful')
         else
+          flash.now[:alert] = Comable.t('failure')
           render :edit
         end
       end
 
       private
 
-      # Only allow a trusted parameter "white list" through.
+      def find_store
+        @store = Comable::Store.instance
+      end
+
       def store_params
         params.require(:store).permit(
           :name,

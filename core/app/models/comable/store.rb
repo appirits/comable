@@ -2,10 +2,10 @@ module Comable
   class Store < ActiveRecord::Base
     class << self
       def instance
-        first || new(name: default_store_name)
+        first || new(name: default_name)
       end
 
-      def default_store_name
+      def default_name
         'Comable store'
       end
     end

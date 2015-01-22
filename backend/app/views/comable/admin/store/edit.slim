@@ -1,5 +1,16 @@
-h1 Editing store
+p = flash[:notice]
+p = flash[:alert]
 
-= render 'form'
+#comable-store
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.store')
 
-= link_to 'Show', comable.admin_store_path(@store)
+  h1.page-header
+    = Comable.t('admin.nav.store')
+
+  .row
+    section.col-sm-8
+      = render 'form'

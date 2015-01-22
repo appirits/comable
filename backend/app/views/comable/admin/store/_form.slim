@@ -1,38 +1,50 @@
-= form_for(@store, url: comable.admin_store_path(@store)) do |f|
-  - if @store.errors.any?
-    #error_explanation
-      h2
-        = pluralize(@store.errors.count, "error")
-        | prohibited this store from being saved:
+- if @store.errors.any?
+  #error_explanation
+    h2
+      = pluralize(@store.errors.count, "error")
+      | prohibited this store from being saved:
+    ul
+      - @store.errors.full_messages.each do |message|
+        li = message
 
-      ul
-        - @store.errors.full_messages.each do |message|
-          li = message
+= form_for @store, url: comable.admin_store_path(@store), method: :put do |f|
+  .panel.panel-inverse
+    .panel-heading
+      .panel-title
+        = Comable.t('admin.nav.stores.edit')
 
-  .name
-    = f.label :name do
-      span = @store.class.human_attribute_name(:name)
-      span = f.text_field :name
+    .panel-body
+      .form-horizontal
+        .form-group
+          .col-sm-3.control-label
+            = f.label :name
+          .col-sm-6
+            = f.text_field :name, placeholder: f.object.class.default_name
 
-  .meta_keywords
-    = f.label :meta_keywords do
-      span = @store.class.human_attribute_name(:meta_keywords)
-      span = f.text_field :meta_keywords
+        .form-group
+          .col-sm-3.control-label
+            = f.label :meta_keywords
+          .col-sm-6
+            = f.text_field :meta_keywords
 
-  .meta_description
-    = f.label :meta_description do
-      span = @store.class.human_attribute_name(:meta_description)
-      span = f.text_field :meta_description
+        .form-group
+          .col-sm-3.control-label
+            = f.label :meta_description
+          .col-sm-6
+            = f.text_field :meta_description
 
-  .email_sender
-    = f.label :email_sender do
-      span = @store.class.human_attribute_name(:email_sender)
-      span = f.email_field :email_sender
+        .form-group
+          .col-sm-3.control-label
+            = f.label :email_sender
+          .col-sm-6
+            = f.email_field :email_sender
 
-  .email_activate_flag
-    = f.label :email_activate_flag do
-      span = f.check_box :email_activate_flag
-      span = @store.class.human_attribute_name(:email_activate_flag)
+        .form-group
+          .col-sm-offset-3.col-sm-6
+            .checkbox
+              = f.label :email_activate_flag do
+                = f.check_box :email_activate_flag
+                = f.object.class.human_attribute_name(:email_activate_flag)
 
-  .actions
-    = f.submit
+    .panel-footer.text-right
+      = f.submit Comable.t('admin.actions.update')
