@@ -1,5 +1,20 @@
-h1 New shipment_method
+p = flash[:notice]
+p = flash[:alert]
 
-= render 'form'
+#comable-shipment-method
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li
+      = link_to Comable.t('admin.nav.shipment_method'), comable.admin_shipment_methods_path
+    li.active
+      = Comable.t('admin.actions.new')
 
-= link_to 'Back', comable.admin_shipment_methods_path
+  h1.page-header
+    = Comable.t('admin.actions.new')
+
+  .row
+    section.col-sm-8
+      = render 'form'
+
+    nav.col-sm-4

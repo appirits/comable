@@ -117,8 +117,8 @@ ja:
         customer: ユーザー
         general_settings: 一般設定
         store: ストア設定
-        shipment: 配送管理
-        payment: 決済管理
+        shipment_method: 配送管理
+        payment_method: 決済管理
         products:
           detail: 商品詳細
           stock: 在庫管理
@@ -133,6 +133,8 @@ ja:
           edit: 編集
           new_orders: '最新の注文 (%{count}件)'
         stores:
+          edit: 編集
+        shipment_methods:
           edit: 編集
       actions:
         index: 一覧

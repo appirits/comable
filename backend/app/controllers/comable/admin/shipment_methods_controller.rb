@@ -3,57 +3,50 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class ShipmentMethodsController < Comable::Admin::ApplicationController
-      # GET /admin/shipment_methods
+      before_filter :find_shipment_method, only: [:show, :edit, :update, :destroy]
+
       def index
-        @shipment_methods = Comable::ShipmentMethod.all
+        @shipment_methods = Comable::ShipmentMethod.page(params[:page]).all
       end
 
-      # GET /admin/shipment_methods/1
       def show
-        @shipment_method = Comable::ShipmentMethod.find(params[:id])
+        render :edit
       end
 
-      # GET /admin/shipment_methods/new
       def new
         @shipment_method = Comable::ShipmentMethod.new
       end
 
-      # GET /admin/shipment_methods/1/edit
-      def edit
-        @shipment_method = Comable::ShipmentMethod.find(params[:id])
-      end
-
-      # POST /admin/shipment_methods
       def create
-        @shipment_method = Comable::ShipmentMethod.new(shipment_method_params)
-
-        if @shipment_method.save
-          redirect_to comable.admin_shipment_method_url(@shipment_method), notice: 'Shipment method was successfully created.'
+        @shipment_method = Comable::ShipmentMethod.new
+        if @shipment_method.update_attributes(shipment_method_params)
+          redirect_to comable.admin_shipment_method_path(@shipment_method), notice: Comable.t('successful')
         else
+          flash.now[:alert] = Comable.t('failure')
           render :new
         end
       end
 
-      # PATCH/PUT /admin/shipment_methods/1
       def update
-        @shipment_method = Comable::ShipmentMethod.find(params[:id])
-        if @shipment_method.update(shipment_method_params)
-          redirect_to comable.admin_shipment_method_url(@shipment_method), notice: 'Shipment method was successfully updated.'
+        if @shipment_method.update_attributes(shipment_method_params)
+          redirect_to comable.admin_shipment_method_path(@shipment_method), notice: Comable.t('successful')
         else
+          flash.now[:alert] = Comable.t('failure')
           render :edit
         end
       end
 
-      # DELETE /admin/shipment_methods/1
       def destroy
-        @shipment_method = Comable::ShipmentMethod.find(params[:id])
         @shipment_method.destroy
-        redirect_to comable.admin_shipment_methods_url, notice: 'Shipment method was successfully destroyed.'
+        redirect_to comable.admin_shipment_methods_path, notice: Comable.t('successful')
       end
 
       private
 
-      # Only allow a trusted parameter "white list" through.
+      def find_shipment_method
+        @shipment_method = Comable::ShipmentMethod.find(params[:id])
+      end
+
       def shipment_method_params
         params.require(:shipment_method).permit(
           :activate_flag,
