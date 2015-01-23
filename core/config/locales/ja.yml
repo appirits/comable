@@ -136,6 +136,8 @@ ja:
           edit: 編集
         shipment_methods:
           edit: 編集
+        payment_methods:
+          edit: 編集
       actions:
         index: 一覧
         new: 新規作成

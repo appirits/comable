@@ -1,0 +1,20 @@
+p = flash[:notice]
+p = flash[:alert]
+
+#comable-payment-method
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li
+      = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
+    li.active
+      = Comable.t('admin.actions.new')
+
+  h1.page-header
+    = Comable.t('admin.actions.new')
+
+  .row
+    section.col-sm-8
+      = render 'form'
+
+    nav.col-sm-4
