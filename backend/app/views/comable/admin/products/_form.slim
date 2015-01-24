@@ -8,27 +8,27 @@
     .panel-body
       .form-horizontal
         .form-group
-          .col-sm-2.control-label
+          .col-sm-3.control-label
             = f.label :code
-          .col-sm-10
+          .col-sm-6
             = f.text_field :code
 
         .form-group
-          .col-sm-2.control-label
+          .col-sm-3.control-label
             = f.label :name
-          .col-sm-10
+          .col-sm-6
             = f.text_field :name
 
         .form-group
-          .col-sm-2.control-label
+          .col-sm-3.control-label
             = f.label :caption
-          .col-sm-10
+          .col-sm-6
             = f.text_field :caption
 
         .form-group
-          .col-sm-2.control-label
+          .col-sm-3.control-label
             = f.label :price
-          .col-sm-10
+          .col-sm-6
             = f.text_field :price
 
         = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all'
@@ -52,13 +52,18 @@
           )
 
         .form-group
-          .col-sm-2.control-label
+          .col-sm-3.control-label
             = f.label :categories
-          .col-sm-10
+          .col-sm-6
             ul#comable-tagit
               - @product.categories.each do |category|
                 li
                   = category.path.map(&:name).join(' > ')
+
+    .panel-footer
+      = link_to Comable.t('admin.actions.cancel'), comable.admin_products_path, class: 'btn btn-default'
+      .pull-right
+        = f.submit
 
   .panel.panel-inverse
     .panel-heading
@@ -101,5 +106,7 @@
                           span> = ff.check_box :_destroy
                           span> = Comable.t('admin.actions.destroy')
 
-  .form-group
-    = f.submit
+    .panel-footer
+      = link_to Comable.t('admin.actions.cancel'), comable.admin_products_path, class: 'btn btn-default'
+      .pull-right
+        = f.submit

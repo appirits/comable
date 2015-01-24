@@ -293,10 +293,6 @@ table {
 }
 
 #comable-product {
-  input[type="submit"] {
-    @extend .btn-lg;
-    @extend .btn-block;
-  }
   label.remove {
     display: block;
     margin: 0;
