@@ -3,6 +3,8 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class CustomersController < Comable::Admin::ApplicationController
+      include Comable::PermittedAttributes
+
       before_filter :find_customer, only: [:show, :edit, :update, :destroy]
 
       def index
@@ -29,15 +31,7 @@ module Comable
         params.require(:customer).permit(
           :email,
           :password,
-          bill_address_attributes: [
-            :family_name,
-            :first_name,
-            :zip_code,
-            :state_name,
-            :city,
-            :detail,
-            :phone_number
-          ]
+          bill_address_attributes: permitted_address_attributes
         )
       end
     end
