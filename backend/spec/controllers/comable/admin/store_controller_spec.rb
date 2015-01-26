@@ -37,12 +37,7 @@ describe Comable::Admin::StoreController, type: :controller do
     end
   end
 
-  describe 'GET new' do
-    it 'assigns a new store as @store' do
-      get :new, {}, valid_session
-      expect(assigns(:store)).to be_a_new(Comable::Store)
-    end
-  end
+  # TODO: Add a test case for new store
 
   describe 'GET edit' do
     it 'assigns the requested store as @store' do
