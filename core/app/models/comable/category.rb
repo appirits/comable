@@ -27,41 +27,45 @@ module Comable
       end
 
       def to_jstree(options = {})
-        build_jstree(arrange_serializable(order: :position), options).to_json
+        build_to_jstree(arrange_serializable(order: :position), options).to_json
       end
 
       def from_jstree!(jstree_json)
         jstree = JSON.parse(jstree_json)
-        rebuild_by_jstree!(jstree)
+
+        transaction do
+          restore_from_jstree!(jstree)
+        end
       end
 
       private
 
-      def build_jstree(serialized_categories, options = {})
+      def build_to_jstree(serialized_categories, options = {})
         serialized_categories.map do |serialized_category|
           options.merge(
             id: serialized_category['id'],
             text: serialized_category['name'],
-            children: build_jstree(serialized_category['children'], options)
+            children: build_to_jstree(serialized_category['children'], options)
           )
         end
       end
 
-      def rebuild_by_jstree!(jstree, parent = nil)
-        return if jstree.blank?
+      def restore_from_jstree!(jstree, parent = nil)
+        return unless jstree
 
-        jstree.each.with_index do |node, index|
-          next find(node['_destroy']).destroy! if node['_destroy'].present?
+        jstree.each.with_index(1) do |node, index|
+          return find(node['_destroy']).destroy! if node['_destroy'].present?
 
-          category = node['id'].to_i.zero? ? new : find(node['id'])
-          category.update_attributes!(
-            parent: parent,
-            name: node['text'],
-            position: index
-          )
-
-          rebuild_by_jstree!(node['children'], category)
+          restore_from_jstree_node!(node, parent, position: index)
         end
+      end
+
+      def restore_from_jstree_node!(node, parent, default_attributes = {})
+        attributes = default_attributes.merge(parent: parent, name: node['text'])
+        category = node['id'].to_i.zero? ? new : find(node['id'])
+        category.update_attributes!(attributes)
+
+        restore_from_jstree!(node['children'], category)
       end
     end
   end
