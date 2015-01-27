@@ -10,7 +10,7 @@ module Comable
       end
 
       def update
-        if @store.update(store_params)
+        if @store.update_attributes(store_params)
           redirect_to comable.admin_store_url, notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')

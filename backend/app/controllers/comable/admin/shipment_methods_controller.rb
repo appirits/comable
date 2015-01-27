@@ -6,7 +6,7 @@ module Comable
       before_filter :find_shipment_method, only: [:show, :edit, :update, :destroy]
 
       def index
-        @shipment_methods = Comable::ShipmentMethod.page(params[:page]).all
+        @shipment_methods = Comable::ShipmentMethod.page(params[:page])
       end
 
       def show

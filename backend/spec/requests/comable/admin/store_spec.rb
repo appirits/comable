@@ -8,7 +8,7 @@ describe 'Store' do
 
   describe 'PATCH /comable/admin/store' do
     it 'create a store and redirect to the page' do
-      patch comable.admin_store_path, store: { name: 'test' }
+      put comable.admin_store_path, store: { name: 'test' }
       expect(response).to redirect_to(comable.admin_store_path)
     end
   end

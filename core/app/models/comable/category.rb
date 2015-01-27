@@ -4,7 +4,7 @@ module Comable
     has_ancestry
     acts_as_list scope: [:ancestry]
 
-    default_scope -> { order(:position) }
+    default_scope -> { order('position ASC') }
 
     DEFAULT_PATH_NAME_DELIMITER = ' > '
 
