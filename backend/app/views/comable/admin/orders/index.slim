@@ -26,18 +26,18 @@ p = flash[:alert]
           table.table.table-striped
             thead
               th
-                = @orders.klass.human_attribute_name(:code)
+                = sort_link @q, :code
               th
                 / TODO: Change to shipment_state and payment_state
-                = @orders.klass.human_attribute_name(:state)
+                = sort_link @q, :state
               th
                 = @orders.klass.human_attribute_name(:bill_full_name)
               th
                 = @orders.klass.human_attribute_name(:products)
               th
-                = @orders.klass.human_attribute_name(:total_price)
+                = sort_link @q, :total_price
               th
-                = @orders.klass.human_attribute_name(:completed_at)
+                = sort_link @q, :completed_at
             tbody
               - @orders.each do |order|
                 tr
@@ -64,19 +64,19 @@ p = flash[:alert]
       #comable-affix
         .panel
           .panel-body
-            = form_tag comable.admin_orders_path, method: :get do
+            = search_form_for @q, url: comable.admin_orders_path do |f|
               .form-horizontal
                 .form-group
                   .col-sm-3.control-label
-                    = label_tag :search_code, @orders.klass.human_attribute_name(:code)
+                    = f.label :code
                   .col-sm-9
-                    = text_field_tag :search_code, params[:search_code]
+                    = f.text_field :code_cont
 
                 .form-group
                   .col-sm-3.control-label
-                    = label_tag :search_customer_id, @orders.klass.human_attribute_name(:customer_id)
+                    = f.label :customer_id
                   .col-sm-9
-                    = text_field_tag :search_customer_id, params[:search_customer_id]
+                    = f.text_field :customer_id
 
                 .text-right
-                  = button_tag Comable.t('admin.search'), class: 'btn btn-default'
+                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

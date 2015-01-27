@@ -8,8 +8,8 @@ module Comable
       before_filter :find_customer, only: [:show, :edit, :update, :destroy]
 
       def index
-        @customers = Comable::Customer.page(params[:page])
-        @customers = @customers.where!('email LIKE ?', "%#{params[:search_email]}%") if params[:search_email].present?
+        @q = Comable::Customer.ransack(params[:q])
+        @customers = @q.result.page(params[:page])
       end
 
       def update

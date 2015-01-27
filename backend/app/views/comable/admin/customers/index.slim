@@ -26,9 +26,9 @@ p = flash[:alert]
           table.table.table-striped
             thead
               th
-                = @customers.klass.human_attribute_name(:id)
+                = sort_link @q, :id
               th
-                = @customers.klass.human_attribute_name(:email)
+                = sort_link @q, :email
               th
                 = @customers.klass.human_attribute_name(:bill_full_name)
               th
@@ -59,12 +59,12 @@ p = flash[:alert]
       #comable-affix
         .panel
           .panel-body
-            = form_tag comable.admin_customers_path, method: :get do
+            = search_form_for @q, url: comable.admin_customers_path do |f|
               .form-horizontal
                 .form-group
                   .col-sm-3.control-label
-                    = label_tag :search_email, @customers.klass.human_attribute_name(:email)
+                    = f.label :email
                   .col-sm-9
-                    = text_field_tag :search_email, params[:search_email]
+                    = f.text_field :email_cont
                 .text-right
-                  = button_tag Comable.t('admin.search'), class: 'btn btn-default'
+                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

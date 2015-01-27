@@ -6,9 +6,8 @@ module Comable
       before_filter :find_product, only: [:show, :edit, :update, :destroy]
 
       def index
-        @products = Comable::Product.includes(:stocks).page(params[:page])
-        @products = @products.where('code LIKE ?', "%#{params[:search_code]}%") if params[:search_code].present?
-        @products = @products.where('name LIKE ?', "%#{params[:search_name]}%") if params[:search_name].present?
+        @q = Comable::Product.ransack(params[:q])
+        @products = @q.result.includes(:stocks).page(params[:page])
       end
 
       def new

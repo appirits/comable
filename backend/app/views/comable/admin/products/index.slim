@@ -28,13 +28,13 @@ p = flash[:alert]
             thead
               th
               th
-                = @products.klass.human_attribute_name(:code)
+                = sort_link @q, :code
               th
-                = @products.klass.human_attribute_name(:name)
+                = sort_link @q, :name
               th
-                = @products.klass.human_attribute_name(:price)
+                = sort_link @q, :price
               th
-                = @products.klass.human_attribute_name(:quantity)
+                = sort_link @q, :stocks_quantity
             tbody
               - @products.each do |product|
                 - quantity = product.stocks.to_a.sum(&:quantity)
@@ -63,17 +63,17 @@ p = flash[:alert]
 
         .panel
           .panel-body
-            = form_tag comable.admin_products_path, method: :get do
+            = search_form_for @q, url: comable.admin_products_path do |f|
               .form-horizontal
                 .form-group
-                  .col-sm-2.control-label
-                    = label_tag :search_code, @products.klass.human_attribute_name(:code)
-                  .col-sm-10
-                    = text_field_tag :search_code, params[:search_code]
+                  .col-sm-3.control-label
+                    = f.label :code
+                  .col-sm-9
+                    = f.text_field :code_cont
                 .form-group
-                  .col-sm-2.control-label
-                    = label_tag :search_name, @products.klass.human_attribute_name(:name)
-                  .col-sm-10
-                    = text_field_tag :search_name, params[:search_name]
+                  .col-sm-3.control-label
+                    = f.label :name
+                  .col-sm-9
+                    = f.text_field :name_cont
                 .text-right
-                  = button_tag Comable.t('admin.search'), class: 'btn btn-default'
+                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

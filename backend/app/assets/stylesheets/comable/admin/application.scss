@@ -290,6 +290,12 @@ input[type="text"] {
 
 table {
   @extend .table;
+
+  th > a {
+    &:link, &:visited, &:hover, &:active {
+      color: $text-color;
+    }
+  }
 }
 
 #comable-product {
