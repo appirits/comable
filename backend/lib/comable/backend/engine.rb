@@ -7,6 +7,7 @@ require 'compass-rails'
 require 'bootstrap-sass'
 require 'font-awesome-rails'
 require 'kaminari'
+require 'ransack'
 
 require 'rails-assets-jquery'
 require 'rails-assets-jquery-ujs'

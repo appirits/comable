@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'font-awesome-rails'
   s.add_dependency 'kaminari'
+  s.add_dependency 'ransack'
 
   s.add_dependency 'rails-assets-jquery', '~> 2.1.3'
   s.add_dependency 'rails-assets-jquery-ujs'
