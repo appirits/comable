@@ -11,6 +11,8 @@ module Comable
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
 
+    validates :email, presence: true, length: { maximum: 255 }
+
     devise(*Comable::Config.devise_strategies[:customer])
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill

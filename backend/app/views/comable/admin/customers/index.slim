@@ -26,9 +26,9 @@ p = flash[:alert]
           table.table.table-striped
             thead
               th
-                = sort_link @q, :id
+                = sort_link [:comable, @q], :id
               th
-                = sort_link @q, :email
+                = sort_link [:comable, @q], :email
               th
                 = @customers.klass.human_attribute_name(:bill_full_name)
               th
@@ -45,9 +45,10 @@ p = flash[:alert]
                   td
                     = customer.bill_full_name
                   td
-                    span> = customer.bill_address.state_name
-                    span> = customer.bill_address.city
-                    span> = customer.bill_address.detail
+                    - if customer.bill_address
+                      span> = customer.bill_address.state_name
+                      span> = customer.bill_address.city
+                      span> = customer.bill_address.detail
                   td
                     = customer.orders.count
                     = Comable.t('admin.times')

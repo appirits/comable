@@ -30,17 +30,18 @@ p = flash[:alert]
             dt
               = @customer.class.human_attribute_name(:bill_address)
             dd
-              ul.list-unstyled
-                li = @customer.bill_address.zip_code
-                li = @customer.bill_address.full_name
-                li = @customer.bill_address.state_name
-                li = @customer.bill_address.city
-                li = @customer.bill_address.detail
-                li = "#{@customer.bill_address.class.human_attribute_name(:phone_number)}: #{@customer.bill_address.phone_number}"
+              - if @customer.bill_address
+                ul.list-unstyled
+                  li = @customer.bill_address.zip_code
+                  li = @customer.bill_address.full_name
+                  li = @customer.bill_address.state_name
+                  li = @customer.bill_address.city
+                  li = @customer.bill_address.detail
+                  li = "#{@customer.bill_address.class.human_attribute_name(:phone_number)}: #{@customer.bill_address.phone_number}"
             dt
               = @customer.class.human_attribute_name(:last_sign_in_at)
             dd
-              = l @customer.last_sign_in_at
+              = l @customer.last_sign_in_at if @customer.last_sign_in_at
             dt
               = @customer.class.human_attribute_name(:sign_in_count)
             dd
