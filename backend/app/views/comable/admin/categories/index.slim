@@ -14,7 +14,7 @@ p = flash[:alert]
     = Comable.t('admin.nav.category')
 
   javascript:
-    comable_jstree_json = #{raw Comable::Category.all.to_jstree(state: { opened: true }, icon: 'fa fa-bars')};
+    comable_jstree_json = #{raw @categories.to_jstree(state: { opened: true }, icon: 'fa fa-bars')};
     comable_new_node_label = '#{Comable.t('admin.categories.new_node')}';
     comable_action_new = '#{Comable.t('admin.actions.new')}';
     comable_action_edit = '#{Comable.t('admin.actions.edit')}';

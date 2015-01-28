@@ -4,7 +4,7 @@ module Comable
   module Admin
     class CategoriesController < Comable::Admin::ApplicationController
       def index
-        @categories = Comable::Category.all.page(params[:page])
+        @categories = (Rails::VERSION::MAJOR == 3) ? Comable::Category.scoped : Comable::Category.all
       end
 
       def create
