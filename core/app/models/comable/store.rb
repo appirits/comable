@@ -1,5 +1,10 @@
 module Comable
   class Store < ActiveRecord::Base
+    validates :name, length: { maximum: 255 }
+    validates :meta_keywords, length: { maximum: 255 }
+    validates :meta_description, length: { maximum: 255 }
+    validates :email_sender, length: { maximum: 255 }
+
     class << self
       def instance
         first || new(name: default_name)

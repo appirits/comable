@@ -7,7 +7,7 @@
       - @store.errors.full_messages.each do |message|
         li = message
 
-= form_for @store, url: comable.admin_store_path(@store), method: :put do |f|
+= form_for @store, url: comable.admin_store_path, method: :patch do |f|
   .panel.panel-inverse
     .panel-heading
       .panel-title
