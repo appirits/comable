@@ -5,5 +5,6 @@ describe 'comable/admin/shipment_methods/index' do
 
   it 'renders a list of shipment_methods' do
     render
+    expect(rendered).to include(*shipment_methods.map(&:name))
   end
 end
