@@ -5,6 +5,10 @@ module Comable
     class ProductsController < Comable::Admin::ApplicationController
       before_filter :find_product, only: [:show, :edit, :update, :destroy]
 
+      def show
+        render :edit
+      end
+
       def index
         @q = Comable::Product.ransack(params[:q])
         @products = @q.result.includes(:stocks).page(params[:page])
@@ -29,7 +33,7 @@ module Comable
           redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
-          render :show
+          render :edit
         end
       end
 
@@ -38,7 +42,7 @@ module Comable
           redirect_to comable.admin_products_path, notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
-          render :show
+          render :edit
         end
       end
 

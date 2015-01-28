@@ -13,6 +13,12 @@ module Comable
 
     paginates_per 15
 
+    validates :name, presence: true, length: { maximum: 255 }
+    validates :code, presence: true, length: { maximum: 255 }
+    validates :price, presence: true, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
+    validates :sku_h_item_name, length: { maximum: 255 }
+    validates :sku_v_item_name, length: { maximum: 255 }
+
     # Add conditions for the images association.
     # Override method of the images association to support Rails 3.x.
     def images

@@ -28,13 +28,13 @@ p = flash[:alert]
             thead
               th
               th
-                = sort_link @q, :code
+                = sort_link [:comable, @q], :code
               th
-                = sort_link @q, :name
+                = sort_link [:comable, @q], :name
               th
-                = sort_link @q, :price
+                = sort_link [:comable, @q], :price
               th
-                = sort_link @q, :stocks_quantity
+                = sort_link [:comable, @q], :stocks_quantity
             tbody
               - @products.each do |product|
                 - quantity = product.stocks.to_a.sum(&:quantity)
