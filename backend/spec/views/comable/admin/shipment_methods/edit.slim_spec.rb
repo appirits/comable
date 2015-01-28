@@ -6,6 +6,6 @@ describe 'comable/admin/shipment_methods/edit' do
   it 'renders the edit shipment_method form' do
     render
     assert_select 'form[action=?]', comable.admin_shipment_method_path(shipment_method)
-    assert_select 'input[name=_method][value=?]', 'patch'
+    assert_select 'input[name=_method][value=?]', (Rails::VERSION::MAJOR == 3) ? 'put' : 'patch'
   end
 end
