@@ -1,8 +1,10 @@
 module Comable
   class PaymentMethod < ActiveRecord::Base
-    validates :name, presence: true
-    validates :payment_provider_type, presence: true
-    validates :payment_provider_kind, presence: true
+    validates :name, presence: true, length: { maximum: 255 }
+    validates :payment_provider_type, presence: true, length: { maximum: 255 }
+    validates :payment_provider_kind, presence: true, numericality: { greater_than_or_equal_to: 0 }
+    validates :enable_price_from, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
+    validates :enable_price_to, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
 
     def payment_provider
       return unless Object.const_defined?(payment_provider_type)
