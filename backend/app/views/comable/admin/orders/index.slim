@@ -26,18 +26,18 @@ p = flash[:alert]
           table.table.table-striped
             thead
               th
-                = sort_link @q, :code
+                = sort_link [:comable, @q], :code
               th
                 / TODO: Change to shipment_state and payment_state
-                = sort_link @q, :state
+                = sort_link [:comable, @q], :state
               th
                 = @orders.klass.human_attribute_name(:bill_full_name)
               th
                 = @orders.klass.human_attribute_name(:products)
               th
-                = sort_link @q, :total_price
+                = sort_link [:comable, @q], :total_price
               th
-                = sort_link @q, :completed_at
+                = sort_link [:comable, @q], :completed_at
             tbody
               - @orders.each do |order|
                 tr
