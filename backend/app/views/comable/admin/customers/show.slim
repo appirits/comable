@@ -24,6 +24,10 @@ p = flash[:alert]
         .panel-body
           dl.dl-horizontal
             dt
+              = @customer.class.human_attribute_name(:role)
+            dd
+              = @customer.role_text
+            dt
               = @customer.class.human_attribute_name(:email)
             dd
               = @customer.email

@@ -27,6 +27,7 @@ module Comable
         params.require(:customer).permit(
           :email,
           :password,
+          :role,
           bill_address_attributes: permitted_address_attributes
         )
       end
