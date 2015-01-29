@@ -25,7 +25,7 @@ module Comable
     end
 
     def store_location
-      session['customer_return_to'] = request.fullpath.gsub('//', '/')
+      session[:customer_return_to] = request.fullpath.gsub('//', '/')
     end
 
     def name_with_honorific(name)
@@ -39,6 +39,28 @@ module Comable
         name,
         "x#{quantity}"
       ].join(' ')
+    end
+
+    private
+
+    def after_sign_in_path_for(_resource)
+      session.delete(:customer_return_to) || comable.root_path
+    end
+
+    def after_sign_out_path_for(_resource)
+      session.delete(:customer_return_to) || comable.root_path
+    end
+
+    def after_sign_up_path_for(resource)
+      signed_in_root_path(resource) || comable.root_path
+    end
+
+    def after_update_path_for(resource)
+      signed_in_root_path(resource) || comable.root_path
+    end
+
+    def after_resetting_password_path_for(resource)
+      signed_in_root_path(resource) || comable.root_path
     end
   end
 end
