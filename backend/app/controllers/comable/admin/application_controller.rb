@@ -15,11 +15,19 @@ module Comable
 
       def unauthorized
         if current_customer.signed_in?
-          flash[:error] = Comable.t('admin.access_denied')
-          redirect_to comable.root_path
+          flash[:alert] = Comable.t('admin.access_denied')
+          redirect_to after_access_denied_path
         else
           store_location
           redirect_to comable.new_admin_customer_session_path
+        end
+      end
+
+      def after_access_denied_path
+        if current_customer.customer?
+          comable.root_path
+        else
+          comable.admin_root_path
         end
       end
     end

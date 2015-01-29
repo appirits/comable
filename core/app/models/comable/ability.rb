@@ -10,6 +10,8 @@ module Comable
         can :manage, :all
       when :reporter
         can :read, :all
+      else
+        fail CanCan::AccessDenied
       end
     end
   end
