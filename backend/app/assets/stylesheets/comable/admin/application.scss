@@ -273,7 +273,18 @@ button {
 
 input[type="submit"] {
   @extend .btn;
-  @extend .btn-primary;
+}
+
+section {
+  input[type="submit"] {
+    @extend .btn-primary;
+  }
+}
+
+nav {
+  input[type="submit"] {
+    @extend .btn-default;
+  }
 }
 
 select,
