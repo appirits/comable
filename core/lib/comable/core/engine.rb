@@ -41,19 +41,21 @@ module Comable
         module DeviseHelperPrepender
           def define_helpers(mapping)
             super.tap do
-              mapping = mapping.name
-              return if mapping.to_sym != :customer
-
-              class_eval <<-METHODS, __FILE__, __LINE__ + 1
-                alias_method :devise_current_#{mapping}, :current_#{mapping}
-                def current_#{mapping}
-                  resource = current_admin_#{mapping} if respond_to? :current_admin_#{mapping}
-                  resource ||= devise_current_#{mapping}
-                  resource ||= Comable::Customer.new
-                  resource.with_cookies(cookies)
-                end
-              METHODS
+              return if mapping.name.to_sym != :customer
+              define_comable_helper
             end
+          end
+
+          private
+
+          def define_comable_helper
+            class_eval <<-METHODS, __FILE__, __LINE__ + 1
+              alias_method :devise_current_customer, :current_customer
+              def current_customer
+                resource = current_admin_customer || devise_current_customer || Comable::Customer.new
+                resource.with_cookies(cookies)
+              end
+            METHODS
           end
         end
 
