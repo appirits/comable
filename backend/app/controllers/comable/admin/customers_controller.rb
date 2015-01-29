@@ -5,7 +5,7 @@ module Comable
     class CustomersController < Comable::Admin::ApplicationController
       include Comable::PermittedAttributes
 
-      load_and_authorize_resource class: Comable::Customer.name
+      load_and_authorize_resource class: Comable::Customer.name, except: :index
 
       def index
         @q = Comable::Customer.ransack(params[:q])

@@ -3,7 +3,7 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class ProductsController < Comable::Admin::ApplicationController
-      load_and_authorize_resource class: Comable::Product.name
+      load_and_authorize_resource class: Comable::Product.name, except: :index
 
       def show
         render :edit
