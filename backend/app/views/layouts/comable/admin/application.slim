@@ -26,17 +26,19 @@ html
           li.dropdown.navbar-user
             a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
               span.hidden-xs
-                | John
+                = current_customer.email
               span.caret<
             ul.dropdown-menu.animated.fadeInLeft
               li.arrow
               li
-                a href="javascript:;"
+                = link_to comable.edit_admin_customer_path(current_customer) do
+                  span.fa.fa-edit>
                   | Edit Profile
               li.divider
               li
-                a href="javascript:;"
-                  | Sign out
+                = link_to comable.destroy_customer_session_path, method: :delete do
+                  span.fa.fa-sign-in
+                  = Comable.t('sign_out')
 
     #wrapper
       .sidebar

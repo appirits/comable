@@ -1,4 +1,6 @@
 describe Comable::Admin::CustomersController do
+  sign_in_admin
+
   let(:comable) { controller.comable }
 
   let(:valid_attributes) { FactoryGirl.attributes_for(:customer) }
@@ -8,7 +10,7 @@ describe Comable::Admin::CustomersController do
     it 'assigns all customers as @customers' do
       customer = FactoryGirl.create(:customer)
       get :index
-      expect(assigns(:customers)).to eq([customer])
+      expect(assigns(:customers)).to include(customer)
     end
   end
 

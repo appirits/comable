@@ -30,6 +30,8 @@ RSpec.configure do |config|
 
   config.include EngineControllerTestMonkeyPatch, type: :controller
   config.include Devise::TestHelpers, type: :controller
+  config.extend Comable::AuthHelpers, type: :controller
+  config.extend Comable::RequestHelpers, type: :request
 
   # for Rspec 3
   # refs: https://github.com/rspec/rspec-rails/issues/932#issuecomment-43521700

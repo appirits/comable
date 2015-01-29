@@ -47,9 +47,10 @@ module Comable
               class_eval <<-METHODS, __FILE__, __LINE__ + 1
                 alias_method :devise_current_#{mapping}, :current_#{mapping}
                 def current_#{mapping}
-                  @current_#{mapping}_guest ||= Comable::Customer.new
-                  #{mapping} = devise_current_#{mapping} || @current_#{mapping}_guest
-                  #{mapping}.with_cookies(cookies)
+                  resource = current_admin_#{mapping} if respond_to? :current_admin_#{mapping}
+                  resource ||= devise_current_#{mapping}
+                  resource ||= Comable::Customer.new
+                  resource.with_cookies(cookies)
                 end
               METHODS
             end

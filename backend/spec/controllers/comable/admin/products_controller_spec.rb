@@ -1,4 +1,6 @@
 describe Comable::Admin::ProductsController do
+  sign_in_admin
+
   let(:comable) { controller.comable }
 
   let(:valid_attributes) { FactoryGirl.attributes_for(:product) }

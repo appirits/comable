@@ -3,7 +3,7 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class ProductsController < Comable::Admin::ApplicationController
-      before_filter :find_product, only: [:show, :edit, :update, :destroy]
+      load_and_authorize_resource class: Comable::Product.name
 
       def show
         render :edit
@@ -11,15 +11,10 @@ module Comable
 
       def index
         @q = Comable::Product.ransack(params[:q])
-        @products = @q.result.includes(:stocks).page(params[:page])
-      end
-
-      def new
-        @product = Comable::Product.new
+        @products = @q.result.includes(:stocks).page(params[:page]).accessible_by(current_ability)
       end
 
       def create
-        @product = Comable::Product.new
         if @product.update_attributes(product_params)
           redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
         else
@@ -47,10 +42,6 @@ module Comable
       end
 
       private
-
-      def find_product
-        @product = Comable::Product.includes(:images).find(params[:id])
-      end
 
       def product_params
         params.require(:product).permit(

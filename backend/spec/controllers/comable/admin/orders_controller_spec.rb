@@ -1,4 +1,6 @@
 describe Comable::Admin::OrdersController do
+  sign_in_admin
+
   let(:comable) { controller.comable }
 
   describe 'GET index' do

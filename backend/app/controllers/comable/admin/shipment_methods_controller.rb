@@ -3,22 +3,17 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class ShipmentMethodsController < Comable::Admin::ApplicationController
-      before_filter :find_shipment_method, only: [:show, :edit, :update, :destroy]
+      load_and_authorize_resource class: Comable::ShipmentMethod.name
 
       def index
-        @shipment_methods = Comable::ShipmentMethod.page(params[:page])
+        @shipment_methods = @shipment_methods.page(params[:page])
       end
 
       def show
         render :edit
       end
 
-      def new
-        @shipment_method = Comable::ShipmentMethod.new
-      end
-
       def create
-        @shipment_method = Comable::ShipmentMethod.new
         if @shipment_method.update_attributes(shipment_method_params)
           redirect_to comable.admin_shipment_method_path(@shipment_method), notice: Comable.t('successful')
         else
@@ -42,10 +37,6 @@ module Comable
       end
 
       private
-
-      def find_shipment_method
-        @shipment_method = Comable::ShipmentMethod.find(params[:id])
-      end
 
       def shipment_method_params
         params.require(:shipment_method).permit(

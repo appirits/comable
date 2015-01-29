@@ -3,6 +3,7 @@ class CreateComableCustomers < ActiveRecord::Migration
     create_table :comable_customers do |t|
       ## Database authenticatable
       t.string :email, null: false
+      t.string :role, null: false
       t.string :encrypted_password
 
       ## Recoverable
