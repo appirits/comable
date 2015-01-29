@@ -4,6 +4,7 @@ require 'state_machine'
 require 'ancestry'
 require 'acts_as_list'
 require 'carrierwave'
+require 'cancancan'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'
