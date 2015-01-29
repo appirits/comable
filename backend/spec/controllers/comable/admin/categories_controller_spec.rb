@@ -1,4 +1,6 @@
 describe Comable::Admin::CategoriesController do
+  sign_in_admin
+
   let(:comable) { controller.comable }
 
   describe 'GET index' do

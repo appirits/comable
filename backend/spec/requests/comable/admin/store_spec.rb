@@ -1,4 +1,6 @@
 describe 'Store' do
+  sign_in_admin
+
   describe 'GET /comable/admin/store' do
     it 'display the store' do
       get comable.admin_store_path

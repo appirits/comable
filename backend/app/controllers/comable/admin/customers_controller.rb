@@ -5,11 +5,11 @@ module Comable
     class CustomersController < Comable::Admin::ApplicationController
       include Comable::PermittedAttributes
 
-      before_filter :find_customer, only: [:show, :edit, :update, :destroy]
+      load_and_authorize_resource class: Comable::Customer.name, except: :index
 
       def index
         @q = Comable::Customer.ransack(params[:q])
-        @customers = @q.result.page(params[:page])
+        @customers = @q.result.page(params[:page]).accessible_by(current_ability)
       end
 
       def update
@@ -23,14 +23,11 @@ module Comable
 
       private
 
-      def find_customer
-        @customer = Comable::Customer.find(params[:id])
-      end
-
       def customer_params
         params.require(:customer).permit(
           :email,
           :password,
+          :role,
           bill_address_attributes: permitted_address_attributes
         )
       end

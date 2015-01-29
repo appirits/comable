@@ -3,6 +3,8 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class StoreController < Comable::Admin::ApplicationController
+      authorize_resource class: Comable::Store.name
+
       before_filter :find_store, only: [:show, :edit, :update]
 
       def show

@@ -109,6 +109,7 @@ ja:
       results: 件
       times: 回
       more: もっと見る
+      access_denied: アクセス権がありません
       nav:
         dashboard: ダッシュボード
         order: 注文管理

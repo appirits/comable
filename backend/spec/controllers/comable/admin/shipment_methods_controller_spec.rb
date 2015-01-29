@@ -1,4 +1,6 @@
 describe Comable::Admin::ShipmentMethodsController do
+  sign_in_admin
+
   let(:comable) { controller.comable }
 
   let(:valid_attributes) { FactoryGirl.attributes_for(:shipment_method) }

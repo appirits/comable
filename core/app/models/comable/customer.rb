@@ -1,6 +1,7 @@
 module Comable
   class Customer < ActiveRecord::Base
     include CartOwner
+    include RoleOwner
 
     has_many :orders, class_name: Comable::Order.name
     has_many :addresses, class_name: Comable::Address.name, dependent: :destroy

@@ -29,6 +29,13 @@ p = flash[:alert]
               fieldset
                 .form-group
                   .col-sm-3.control-label
+                    = f.label :role
+                  .col-sm-6
+                    = f.select :role, @customer.class.role.options, {}, disabled: (@customer == current_customer)
+
+              fieldset
+                .form-group
+                  .col-sm-3.control-label
                     = f.label :email
                   .col-sm-6
                     = f.text_field :email
