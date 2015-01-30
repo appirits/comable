@@ -475,3 +475,29 @@ ul.vakata-context.jstree-contextmenu {
     }
   }
 }
+
+#comable-notifier {
+  @include opacity(0.95);
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+
+  & > * {
+    padding: 0 1em;
+    height: $navbar-height;
+    line-height: $navbar-height;
+
+    &.comable-alert {
+      color: $alert-danger-text;
+      background-color: $alert-danger-bg;
+    }
+
+    &.comable-notice {
+      color: $alert-success-text;
+      background-color: $alert-success-bg;
+    }
+  }
+}

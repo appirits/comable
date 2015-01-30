@@ -57,6 +57,19 @@ $( ->
     $affix = $('#comable-affix')
     $affix.css('width', $affix.parent().width())
 
+  notify_flash_message = ->
+    $notifier = $('#comable-notifier')
+    return if $notifier.length <= 0
+    $notifier.on('click', -> $(this).clearQueue().animate({ height: 0 }))
+    height = $notifier.css('height')
+    $notifier
+      .removeClass('hidden')
+      .css({ height: 0 })
+      .delay(400)
+      .animate({ height: height })
+      .delay(5 * 1000)
+      .animate({ height: 0 })
+
   # ---
   # main
   # ---
@@ -67,4 +80,6 @@ $( ->
     initialize_comable_affix()
     resize_comable_affix()
     $(window).on('resize', resize_comable_affix)
+
+  notify_flash_message()
 )

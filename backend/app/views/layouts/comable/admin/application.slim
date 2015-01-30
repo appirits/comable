@@ -93,6 +93,13 @@ html
                   = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
 
       main.container-fluid
+        - if flash[:alert] || flash[:notice]
+          #comable-notifier
+            - if flash[:alert]
+              .comable-alert = flash[:alert]
+            - if flash[:notice]
+              .comable-notice = flash[:notice]
+
         = yield
 
       footer
