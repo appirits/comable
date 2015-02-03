@@ -5,52 +5,31 @@
   section.row
     .col-sm-4
       - number = @this_week_orders.count
-      - progress = (number.to_f / @last_week_orders.count) * 100
-      - progress = '-' if progress.nan? || progress.infinite?
-      .widget.widget-stats.widget-bg-green
-        .stats-icon.stats-icon-lg
-          i.fa.fa-shopping-cart
-        .stats-title
-          = Comable.t('admin.new_orders')
-        .stats-number
-          = number_with_delimiter number
-        .stats-progress.progress
-          .progress-bar style="width: #{progress}%;"
-        .stats-desc
-          = Comable.t('admin.better_than_last_week', percentage: progress)
+      = render 'widget',
+        title: Comable.t('admin.new_orders'),
+        number: number_with_delimiter(number),
+        progress: (number.to_f / @last_week_orders.count) * 100,
+        color: 'green',
+        fa: 'shopping-cart'
 
     .col-sm-4
       - number = @this_week_orders.sum(:total_price)
-      - progress = (number.to_f / @last_week_orders.sum(:total_price)) * 100
-      - progress = '-' if progress.nan? || progress.infinite?
-      .widget.widget-stats.widget-bg-blue
-        .stats-icon.stats-icon-lg
-          i.fa.fa-dollar
-        .stats-title
-          = Comable.t('admin.sales')
-        .stats-number
-          = number_to_currency number
-        .stats-progress.progress
-          .progress-bar style="width: #{progress}%;"
-        .stats-desc
-          = Comable.t('admin.better_than_last_week', percentage: progress)
+      = render 'widget',
+        title: Comable.t('admin.sales'),
+        number: number_to_currency(number),
+        progress:  (number.to_f / @last_week_orders.sum(:total_price)) * 100,
+        color: 'blue',
+        fa: 'dollar'
 
     .col-sm-4
       / TODO: @this_week_orders => @this_week_users
       - number = @this_week_orders.count
-      - progress = (number.to_f / @last_week_orders.count) * 100
-      - progress = '-' if progress.nan? || progress.infinite?
-      .widget.widget-stats.widget-bg-black
-        .stats-icon.stats-icon-lg
-          i.fa.fa-user
-        .stats-title
-          = Comable.t('admin.new_users')
-        .stats-number
-          = number
-        .stats-progress.progress
-          .progress-bar style="width: #{progress}%;"
-        .stats-desc
-          = Comable.t('admin.better_than_last_week', percentage: progress)
+      = render 'widget',
+        title: Comable.t('admin.new_users'),
+        number: number_with_delimiter(number),
+        progress: (number.to_f / @last_week_orders.count) * 100,
+        color: 'black',
+        fa: 'user'
 
   section.row
     .col-sm-12

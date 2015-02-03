@@ -1,0 +1,13 @@
+- progress = '-' if progress.nan? || progress.infinite?
+
+.widget.widget-stats class="widget-bg-#{color}"
+  .stats-icon.stats-icon-lg
+    i.fa class="fa-#{fa}"
+  .stats-title
+    = title
+  .stats-number
+    = number
+  .stats-progress.progress
+    .progress-bar style="width: #{progress}%;"
+  .stats-desc
+    = Comable.t('admin.better_than_last_week', percentage: progress)
