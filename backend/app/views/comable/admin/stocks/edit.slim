@@ -32,13 +32,15 @@
 
     nav.col-sm-4
       #comable-affix data-spy="affix"
-        .list-group
-          = link_to Comable.t('admin.nav.products.detail'), comable.admin_product_path(@product), class: 'list-group-item'
-          = link_to Comable.t('admin.nav.products.stock'), comable.admin_product_stocks_path(@product), class: 'list-group-item disabled'
+        .panel
+          .list-group
+            = link_to Comable.t('admin.nav.products.detail'), comable.admin_product_path(@product), class: 'list-group-item'
+            = link_to Comable.t('admin.nav.products.stock'), comable.admin_product_stocks_path(@product), class: 'list-group-item disabled'
 
-        .list-group
-          - if @product.sku?
-              = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path, class: 'list-group-item'
-          = link_to comable.product_path(@product), class: 'list-group-item' do
-            span.fa.fa-external-link>
-            = Comable.t('admin.check_this_product_in_frontend')
+        .panel
+          .list-group
+            - if @product.sku?
+                = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path, class: 'list-group-item'
+            = link_to comable.product_path(@product), class: 'list-group-item' do
+              span.fa.fa-external-link>
+              = Comable.t('admin.check_this_product_in_frontend')
