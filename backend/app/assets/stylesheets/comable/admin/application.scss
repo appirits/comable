@@ -1,5 +1,6 @@
 //= require jquery-ui
 //= require jstree
+//= require morris
 //= require_self
 //= require_tree .
 
@@ -357,7 +358,7 @@ table > tbody > tr > td > ul {
 }
 
 main.container-fluid {
-  padding: 10px 20px;
+  padding: 20px;
 }
 
 footer {
@@ -500,4 +501,89 @@ ul.vakata-context.jstree-contextmenu {
       background-color: $alert-success-bg;
     }
   }
+}
+
+// Dashboard
+
+.widget {
+  border-radius: 3px;
+  margin-bottom: 20px;
+  color: #fff;
+  padding: 15px;
+  overflow: hidden;
+
+  &.widget-stats {
+    position: relative;
+
+    & > .stats-icon {
+      @include opacity(0.2);
+      font-size: 42px;
+      height: 56px;
+      width: 56px;
+      text-align: center;
+      line-height: 56px;
+      margin-left: 15px;
+      color: #fff;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+
+      &.stats-icon-lg {
+        font-size: 52px;
+        top: 12px;
+        right: 21px;
+      }
+    }
+
+    & > .stats-desc,
+    & > .stats-title {
+      color: #fff;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    & > .stats-title {
+      margin: 2px 0 7px;
+      font-size: 12px;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    & > .stats-number {
+      margin-bottom: 10px;
+      font-size: 24px;
+      font-weight: normal;
+    }
+
+    & > .stats-progress {
+      margin: 0 -15px 12px;
+      height: 2px;
+      background: #000;
+      background: rgba(0, 0, 0, 0.2);
+
+      & > .progress-bar {
+        @include box-shadow(none);
+        background: #fff;
+      }
+    }
+  }
+
+  &.widget-bg-green {
+    background: #00acac !important;
+  }
+
+  &.widget-bg-blue {
+    background: #348fe2 !important;
+  }
+
+  &.widget-bg-black {
+    background: #272930 !important;
+  }
+}
+
+.morris > .morris-hover {
+  @include border-radius($border-radius-base !important);
+  padding: 8px !important;
+  color: #ccc !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  border: none !important;
 }

@@ -1,6 +1,8 @@
 Comable::Core::Engine.routes.draw do
   namespace :admin do
-    root to: 'products#index'
+    root to: 'dashboard#show'
+
+    resource :dashboard, only: :show
 
     resources :products do
       resources :stocks
