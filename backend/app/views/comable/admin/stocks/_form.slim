@@ -1,4 +1,4 @@
-- url = comable.admin_product_stocks_path if @stock.new_record?
+- url = comable.admin_product_stocks_path(@product) if @stock.new_record?
 - url ||= comable.admin_product_stock_path(@product, @stock)
 = form_for @stock, url: url do |f|
   .panel.panel-inverse

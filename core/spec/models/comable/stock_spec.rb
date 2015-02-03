@@ -11,24 +11,14 @@ describe Comable::Stock do
     end
   end
 
-  describe 'Validations' do
-    subject { described_class.new }
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:product) }
+    it { is_expected.to validate_presence_of(:code) }
 
-    describe '#quantity' do
-      it 'is valid with greater than 0' do
-        subject.quantity = 1
-        is_expected.to be_valid
-      end
+    it { is_expected.to ensure_length_of(:code).is_at_most(255) }
+    it { is_expected.to ensure_length_of(:sku_h_choice_name).is_at_most(255) }
+    it { is_expected.to ensure_length_of(:sku_v_choice_name).is_at_most(255) }
 
-      it 'is valid with equal 0' do
-        subject.quantity = 0
-        is_expected.to be_valid
-      end
-
-      it 'is invalid with less than 0' do
-        subject.quantity = -1
-        is_expected.to be_invalid
-      end
-    end
+    it { is_expected.to validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
   end
 end

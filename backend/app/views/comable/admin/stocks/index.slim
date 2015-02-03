@@ -28,16 +28,16 @@
           table.table.table-striped
             thead
               th
-                = sort_link [:comable, @q], :code
+                = sort_link [:comable, @q], :code, product_id: @product.id
               th
-                = sort_link [:comable, @q], :quantity
+                = sort_link [:comable, @q], :quantity, product_id: @product.id
               - if @product.sku?
                 - if @product.sku_h?
                   th
-                    = sort_link [:comable, @q], :sku_h_choice_name, @product.sku_h_item_name
+                    = sort_link [:comable, @q], :sku_h_choice_name, @product.sku_h_item_name, product_id: @product.id
                 - if @product.sku_v?
                   th
-                    = sort_link [:comable, @q], :sku_v_choice_name, @product.sku_v_item_name
+                    = sort_link [:comable, @q], :sku_v_choice_name, @product.sku_v_item_name, product_id: @product.id
             tbody
               - @stocks.each do |stock|
                 tr
@@ -66,7 +66,7 @@
 
         .panel
           .list-group
-            = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path, class: 'list-group-item'
+            = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product), class: 'list-group-item'
 
         .panel
           .panel-body

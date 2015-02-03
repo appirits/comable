@@ -9,8 +9,6 @@ module Comable
 
     accepts_nested_attributes_for :images, allow_destroy: true
 
-    after_create :create_stock
-
     paginates_per 15
 
     validates :name, presence: true, length: { maximum: 255 }
