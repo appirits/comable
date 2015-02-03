@@ -12,6 +12,8 @@ require 'ransack'
 require 'rails-assets-jquery'
 require 'rails-assets-jquery-ujs'
 require 'rails-assets-jstree'
+require 'rails-assets-raphael'
+require 'rails-assets-morris'
 
 module Comable
   module Backend

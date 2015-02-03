@@ -3,6 +3,8 @@
 #= require jquery-ui
 #= require jstree
 #= require bootstrap-sprockets
+#= require raphael
+#= require morris
 #= require_tree .
 
 $( ->
