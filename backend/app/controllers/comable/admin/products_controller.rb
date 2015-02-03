@@ -49,6 +49,8 @@ module Comable
           :code,
           :caption,
           :price,
+          :sku_h_item_name,
+          :sku_v_item_name,
           category_path_names: [],
           images_attributes: [:id, :file, :_destroy]
         )

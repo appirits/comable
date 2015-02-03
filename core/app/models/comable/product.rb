@@ -3,8 +3,8 @@ module Comable
     include Comable::SkuItem
     include Comable::Product::Search
 
-    has_many :stocks, class_name: Comable::Stock.name
-    has_many :images, class_name: Comable::Image.name
+    has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
+    has_many :images, class_name: Comable::Image.name, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
     accepts_nested_attributes_for :images, allow_destroy: true

@@ -2,7 +2,10 @@ Comable::Core::Engine.routes.draw do
   namespace :admin do
     root to: 'products#index'
 
-    resources :products
+    resources :products do
+      resources :stocks
+    end
+
     resources :categories
     resources :orders
     resources :customers

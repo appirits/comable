@@ -60,6 +60,24 @@
                 li
                   = category.path.map(&:name).join(' > ')
 
+        fieldset
+          legend.text-center.text-muted
+            | SKU
+
+          .form-group
+            .col-sm-3.control-label
+              = f.label :sku_h_item_name
+            .col-sm-6
+              = f.text_field :sku_h_item_name
+              span.help-block
+                | Please fill the text field when using sku.
+
+          .form-group
+            .col-sm-3.control-label
+              = f.label :sku_v_item_name
+            .col-sm-6
+              = f.text_field :sku_v_item_name
+
     .panel-footer
       = link_to Comable.t('admin.actions.cancel'), comable.admin_products_path, class: 'btn btn-default'
       .pull-right
