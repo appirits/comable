@@ -34,7 +34,7 @@
       = form_tag comable.add_cart_path do
         - if @product.sku?
           .sku
-            = sku_table @product, border: 1
+            = sku_table @product
 
         - if @product.unsold?
           .add_cart.form-inline.form-group

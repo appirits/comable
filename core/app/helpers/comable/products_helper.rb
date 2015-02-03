@@ -35,7 +35,6 @@ module Comable
       html = ''
       html << content_tag(:th, sku_item_name)
       stocks.group_by(&:sku_h_choice_name).keys.each do |sku_h_choice_name|
-        next if sku_h_choice_name.blank?
         html << content_tag(:th, sku_h_choice_name)
       end
       html.html_safe
@@ -45,8 +44,7 @@ module Comable
       return content_tag(:tr, build_sku_table_row(stocks)) unless product.sku_v?
 
       html = ''
-      stocks.group_by(&:sku_v_choice_name).each_pair do |sku_v_choice_name, sku_v_stocks|
-        next if sku_v_choice_name.blank?
+      stocks_groups_by_sku_v(stocks).each_pair do |sku_v_choice_name, sku_v_stocks|
         html << content_tag(:tr, build_sku_table_row(sku_v_stocks, sku_v_choice_name))
       end
       html.html_safe
@@ -60,11 +58,24 @@ module Comable
     end
 
     def build_sku_product_label(stock)
-      content_tag(:label) do
-        html = ''
-        html << radio_button_tag(:stock_id, stock.id, false, disabled: stock.soldout?)
-        html << stock.code
-        html.html_safe
+      return unless stock
+      content_tag(:div, class: 'radio') do
+        content_tag(:label) do
+          html = ''
+          html << radio_button_tag(:stock_id, stock.id, false, disabled: stock.soldout?)
+          html << stock.code
+          html.html_safe
+        end
+      end
+    end
+
+    def stocks_groups_by_sku_v(stocks)
+      sku_h_choice_names = stocks.group_by(&:sku_h_choice_name).keys
+
+      stocks.group_by(&:sku_v_choice_name).each_with_object({}) do |(sku_v_choice_name, sku_v_stocks), group|
+        group[sku_v_choice_name] = sku_h_choice_names.map do |sku_h_choice_name|
+          sku_v_stocks.find { |s| s.sku_h_choice_name == sku_h_choice_name }
+        end
       end
     end
   end
