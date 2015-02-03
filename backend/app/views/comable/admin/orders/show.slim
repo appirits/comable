@@ -103,13 +103,14 @@
                 = @order.class.human_attribute_name(:total_price)
               = number_to_currency @order.total_price
 
-        .list-group
-          = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'list-group-item'
+        .panel
+          .list-group
+            = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'list-group-item'
 
-          - if @order.customer
-            = link_to Comable.t('admin.nav.orders.customer'), comable.admin_customer_path(@order.customer), class: 'list-group-item'
-          - else
-            = link_to Comable.t('admin.nav.orders.customer'), '#', class: 'list-group-item disabled'
+            - if @order.customer
+              = link_to Comable.t('admin.nav.orders.customer'), comable.admin_customer_path(@order.customer), class: 'list-group-item'
+            - else
+              = link_to Comable.t('admin.nav.orders.customer'), '#', class: 'list-group-item disabled'
 
-          = link_to Comable.t('admin.nav.orders.shipment'), '#', class: 'list-group-item'
-          = link_to Comable.t('admin.nav.orders.payment'), '#', class: 'list-group-item'
+            = link_to Comable.t('admin.nav.orders.shipment'), '#', class: 'list-group-item'
+            = link_to Comable.t('admin.nav.orders.payment'), '#', class: 'list-group-item'

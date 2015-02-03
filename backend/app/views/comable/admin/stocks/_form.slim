@@ -1,0 +1,40 @@
+- url = comable.admin_product_stocks_path(@product) if @stock.new_record?
+- url ||= comable.admin_product_stock_path(@product, @stock)
+= form_for @stock, url: url do |f|
+  .panel.panel-inverse
+    .panel-heading
+      .panel-title
+        = Comable.t('admin.general')
+    .panel-body
+      .form-horizontal
+        .form-group
+          .col-sm-3.control-label
+            = f.label :code
+          .col-sm-6
+            = f.text_field :code
+
+        .form-group
+          .col-sm-3.control-label
+            = f.label :quantity
+          .col-sm-6
+            = f.text_field :quantity
+
+        - if @product.sku?
+          - if @product.sku_h?
+            .form-group
+              .col-sm-3.control-label
+                = f.label :sku_h_choice_name, @product.sku_h_item_name
+              .col-sm-6
+                = f.text_field :sku_h_choice_name
+
+          - if @product.sku_v?
+            .form-group
+              .col-sm-3.control-label
+                = f.label :sku_v_choice_name, @product.sku_v_item_name
+              .col-sm-6
+                = f.text_field :sku_v_choice_name
+
+    .panel-footer
+      = link_to Comable.t('admin.actions.cancel'), comable.admin_product_stocks_path(@product), class: 'btn btn-default'
+      .pull-right
+        = f.submit
