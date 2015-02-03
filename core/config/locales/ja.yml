@@ -111,6 +111,11 @@ ja:
       times: 回
       more: もっと見る
       access_denied: アクセス権がありません
+      order_count: 注文数
+      new_orders: 新規受注
+      new_users: 新規顧客
+      sales: 売上
+      better_than_last_week: '先週との比較 (%{percentage}%)'
       nav:
         dashboard: ダッシュボード
         order: 注文管理

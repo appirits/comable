@@ -44,8 +44,8 @@ html
       .sidebar
         .vnavigation
           ul
-            li class="#{'active' if controller_name == 'home'}"
-              = link_to '#' do
+            li class="#{'active' if controller_name == 'dashboard'}"
+              = link_to comable.admin_root_path do
                 i.fa.fa-dashboard
                 = Comable.t('admin.nav.dashboard')
             li class="#{'active' if controller_name == 'orders'}"
