@@ -69,10 +69,10 @@ if File.exist?('comable.gemspec')
     end
   end
 
-  task default: ['app:spec:all', 'rubocop']
+  task default: ['app:spec:all', 'rubocop', 'brakeman:all']
+else
+  task default: ['app:spec', 'rubocop', 'brakeman']
 end
-
-task default: ['app:spec', 'rubocop']
 
 Bundler::GemHelper.install_tasks
 
@@ -80,5 +80,17 @@ Bundler::GemHelper.install_tasks
 task 'test:prepare'
 
 task :rubocop do
-  exec 'rubocop'
+  sh 'rubocop'
+end
+
+task :brakeman do
+  sh 'brakeman --exit-on-warn'
+end
+
+namespace :brakeman do
+  task :all do
+    FRAMEWORKS.each do |framework|
+      sh "brakeman --exit-on-warn #{framework}"
+    end
+  end
 end
