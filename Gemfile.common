@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'pg', require: false
+
 gem 'rspec-rails'
 gem 'rspec-its', require: false
 gem 'rspec-example_steps', require: false
@@ -8,10 +9,14 @@ gem 'shoulda-matchers', require: false
 gem 'factory_girl_rails', require: false
 gem 'capybara', require: false
 gem 'coveralls', require: false
+
 gem 'rubocop', require: false
+
 gem 'bullet', require: false
+
 gem 'pry-rails', require: false
 gem 'byebug'
+
 gem 'yard', require: false
 gem 'inch', require: false
 
