@@ -23,7 +23,7 @@
             dt
               = @customer.class.human_attribute_name(:role)
             dd
-              = @customer.role_text
+              = @customer.role.text
             dt
               = @customer.class.human_attribute_name(:email)
             dd
@@ -58,7 +58,7 @@
               th
                 = @customer.orders.klass.human_attribute_name(:bill_full_name)
               th
-                = @customer.orders.klass.human_attribute_name(:products)
+                = @customer.orders.klass.human_attribute_name(:order_details)
               th
                 = @customer.orders.klass.human_attribute_name(:total_price)
               th

@@ -33,7 +33,7 @@ html
               li
                 = link_to comable.edit_admin_customer_path(current_customer) do
                   span.fa.fa-edit>
-                  | Edit Profile
+                  = Comable.t('admin.edit_profile')
               li.divider
               li
                 = link_to comable.destroy_customer_session_path, method: :delete do

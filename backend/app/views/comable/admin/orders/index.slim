@@ -30,7 +30,7 @@
               th
                 = @orders.klass.human_attribute_name(:bill_full_name)
               th
-                = @orders.klass.human_attribute_name(:products)
+                = @orders.klass.human_attribute_name(:order_details)
               th
                 = sort_link [:comable, @q], :total_price
               th

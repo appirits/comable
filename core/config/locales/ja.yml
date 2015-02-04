@@ -116,6 +116,8 @@ ja:
       new_users: 新規顧客
       sales: 売上
       better_than_last_week: '先週との比較 (%{percentage}%)'
+      edit_profile: プロフィールを編集
+      please_fill_when_using_sku: SKUを利用する場合はこの項目を記入してください。
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -174,12 +176,16 @@ ja:
 
     attributes:
       comable/customer:
+        id: ID
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
         current_password: 現在のパスワード
         bill_address: 請求先住所
         ship_address: 配送先住所
+        bill_full_name: 配送先氏名
+        orders: 注文数
+        role: 権限
       comable/order:
         code: 注文番号
         email: メールアドレス
@@ -192,9 +198,16 @@ ja:
         total_price: 合計
         order_details: 商品
         completed_at: 注文日時
+        state: ステータス
+        bill_address: 請求先住所
+        ship_address: 配送先住所
+        bill_full_name: 配送先氏名
+        order_details: 注文明細
       comable/order_detail: &comable_order_detail
         quantity: *quantity
         price: *price
+        product: 商品情報
+        subtotal_price: 小計
       comable/address: &comable_address
         full_name: お名前
         family_name: 姓
@@ -204,12 +217,47 @@ ja:
         city: 市町村
         detail: その他
         phone_number: 電話番号
+      comable/product:
+        code: 商品コード
+        name: 商品名
+        price: 価格
+        caption: キャプション
+        categories: カテゴリ
+        sku_h_item_name: SKU横軸項目名
+        sku_v_item_name: SKU縦軸項目名
+      comable/stock:
+        code: SKU商品コード
+        quantity: 在庫
+        sku_h_choice_name: SKU横軸選択肢名
+        sku_v_choice_name: SKU縦軸選択肢名
+      comable/store:
+        name: ストア名
+        meta_keywords: メタキーワード
+        meta_description: メタディスクリプション
+        email_sender: 送信元メールアドレス
+        email_activate_flag: メール送信を有効にする
+      comable/shipment_method:
+        name: 配送方法名
+        fee: 手数料
+        activate_flag: この配送方法を有効にする
+        traking_url: トラッキングURL
+      comable/payment_method:
+        name: 決済方法名
+        payment_provider: 決済プロバイダ
+        enable_price: 利用可能な価格範囲
       comable/order/order_details:
         <<: *comable_order_detail
       comable/order/bill_address:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+
+  enumerize:
+    comable/customer:
+      role:
+        customer: 顧客
+        reporter: 報告者
+        admin: 管理者
 
   views:
     pagination:
