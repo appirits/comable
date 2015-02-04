@@ -9,8 +9,6 @@ module Comable
 
     accepts_nested_attributes_for :images, allow_destroy: true
 
-    paginates_per 15
-
     validates :name, presence: true, length: { maximum: 255 }
     validates :code, presence: true, length: { maximum: 255 }
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0, allow_blank: true }

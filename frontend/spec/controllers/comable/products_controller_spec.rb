@@ -82,7 +82,7 @@ describe Comable::ProductsController do
   context 'with pagination' do
     let!(:products) { FactoryGirl.create_list(:product, per_page + 1) }
 
-    let(:per_page) { Comable::Product.default_per_page }
+    let(:per_page) { Comable::Config.products_per_page }
 
     describe "GET 'index'" do
       context 'page 1' do
