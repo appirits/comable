@@ -84,13 +84,13 @@ task :rubocop do
 end
 
 task :brakeman do
-  sh 'brakeman --exit-on-warn'
+  sh 'brakeman --exit-on-warn --ignore-config .brakeman.ignore'
 end
 
 namespace :brakeman do
   task :all do
     FRAMEWORKS.each do |framework|
-      sh "brakeman --exit-on-warn #{framework}"
+      sh "brakeman --exit-on-warn --ignore-config .brakeman.ignore #{framework}"
     end
   end
 end
