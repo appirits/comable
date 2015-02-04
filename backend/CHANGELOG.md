@@ -1,3 +1,11 @@
+## Comable 0.3.0 (February 04, 2015) ##
+
+*   Implement the look and feel.
+
+*   Fix requirements of gemspec.
+    Add an upper limit on the version of Rails.
+
+
 ## Comable 0.2.3 (November 30, 2014) ##
 
 *   No changes.
