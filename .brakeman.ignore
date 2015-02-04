@@ -1,0 +1,25 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "693a76b8d3bf724f1b13daae87822ce6193fbdad639fcd0c69f1b18edea45fb1",
+      "message": "Render path contains parameter value",
+      "file": "app/controllers/comable/orders_controller.rb",
+      "line": 15,
+      "link": "http://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => params[:state], {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Comable::OrdersController",
+        "method": "edit"
+      },
+      "user_input": "params[:state]",
+      "confidence": "High",
+      "note": ""
+    }
+  ],
+  "updated": "2015-02-04 17:01:35 +0900",
+  "brakeman_version": "3.0.0"
+}
