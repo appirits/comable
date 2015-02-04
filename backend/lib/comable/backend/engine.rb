@@ -14,6 +14,7 @@ require 'rails-assets-jquery-ujs'
 require 'rails-assets-jstree'
 require 'rails-assets-raphael'
 require 'rails-assets-morris'
+require 'rails-assets-pace'
 
 module Comable
   module Backend

@@ -5,6 +5,7 @@
 #= require bootstrap-sprockets
 #= require raphael
 #= require morris
+#= require pace
 #= require_tree .
 
 $( ->
