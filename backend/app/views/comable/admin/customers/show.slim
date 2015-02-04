@@ -98,4 +98,5 @@
         .panel
           .list-group
             = link_to Comable.t('admin.nav.order'), comable.admin_orders_path(q: { customer_id_eq: @customer.id }), class: 'list-group-item'
+            / TODO: Comment out after implemented.
             / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'list-group-item'
