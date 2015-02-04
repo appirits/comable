@@ -39,15 +39,6 @@
                   li = @customer.bill_address.city
                   li = @customer.bill_address.detail
                   li = "#{@customer.bill_address.class.human_attribute_name(:phone_number)}: #{@customer.bill_address.phone_number}"
-            dt
-              = @customer.class.human_attribute_name(:last_sign_in_at)
-            dd
-              = l @customer.last_sign_in_at if @customer.last_sign_in_at
-            dt
-              = @customer.class.human_attribute_name(:sign_in_count)
-            dd
-              = @customer.sign_in_count
-              = Comable.t('admin.times')
         .panel-footer.text-right
           = link_to comable.edit_admin_customer_path(@customer), class: 'btn btn-default' do
             span.fa.fa-edit>
