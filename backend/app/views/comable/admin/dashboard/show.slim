@@ -21,13 +21,13 @@
         color: 'blue',
         fa: 'dollar'
 
+  / TODO: Comment out after adding timestamp columns
     .col-sm-4
-      / TODO: @this_week_orders => @this_week_users
-      - number = @this_week_orders.count
+      - number = @this_week_customers.count
       = render 'widget',
         title: Comable.t('admin.new_users'),
         number: number_with_delimiter(number),
-        progress: (number.to_f / @last_week_orders.count) * 100,
+        progress: (number.to_f / @last_week_customers.count) * 100,
         color: 'black',
         fa: 'user'
 
