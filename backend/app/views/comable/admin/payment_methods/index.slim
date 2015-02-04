@@ -44,7 +44,7 @@
                       span = number_to_currency payment_method.enable_price_to
 
         .text-center
-          = paginate @payment_methods
+          = paginate @payment_methods, theme: :comable_backend
 
     nav.col-sm-4
       #comable-affix

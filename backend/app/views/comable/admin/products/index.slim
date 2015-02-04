@@ -50,7 +50,7 @@
                       = number_with_delimiter product.stocks.to_a.sum(&:quantity)
 
         .text-center
-          = paginate @products
+          = paginate @products, theme: :comable_backend
 
     nav.col-sm-4
       #comable-affix
