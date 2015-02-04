@@ -17,4 +17,19 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 3.2.0'
   s.add_dependency 'slim-rails'
+  s.add_dependency 'sass-rails'
+  s.add_dependency 'coffee-rails'
+  s.add_dependency 'compass-rails'
+  s.add_dependency 'uglifier'
+  s.add_dependency 'bootstrap-sass'
+  s.add_dependency 'font-awesome-rails'
+  s.add_dependency 'kaminari'
+  s.add_dependency 'ransack'
+
+  s.add_dependency 'rails-assets-jquery', '~> 2.1.3'
+  s.add_dependency 'rails-assets-jquery-ujs'
+  s.add_dependency 'rails-assets-jstree', '~> 3.0.9'
+  s.add_dependency 'rails-assets-raphael', '~> 2.1.3'
+  s.add_dependency 'rails-assets-morris', '~> 0.5.2'
+  s.add_dependency 'rails-assets-pace', '~> 1.0.2'
 end

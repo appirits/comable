@@ -89,6 +89,74 @@ ja:
           またのご利用をお待ちしております。
           %{store_name}
 
+    admin:
+      not_found: レコードが見つかりませんでした。
+      general: 一般
+      images: 画像
+      main_image: メイン画像
+      sub_image: サブ画像
+      home: ホーム
+      product: 商品
+      index: 一覧
+      search: 検索
+      back_to_store: ストアに戻る
+      confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
+      confirmation_to_remove_stock: この操作は元に戻せません。在庫を削除してもよろしいですか？
+      you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
+      you_can_right_click: 右クリックでメニューを表示できます。
+      link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
+      check_this_product_in_frontend: 'この商品をフロントで確認する'
+      note: 'NOTE:'
+      results: 件
+      times: 回
+      more: もっと見る
+      access_denied: アクセス権がありません
+      order_count: 注文数
+      new_orders: 新規受注
+      new_users: 新規顧客
+      sales: 売上
+      better_than_last_week: '先週との比較 (%{percentage}%)'
+      edit_profile: プロフィールを編集
+      please_fill_when_using_sku: SKUを利用する場合はこの項目を記入してください。
+      nav:
+        dashboard: ダッシュボード
+        order: 注文管理
+        product: 商品管理
+        category: カテゴリ
+        customer: ユーザー
+        general_settings: 一般設定
+        store: ストア設定
+        shipment_method: 配送管理
+        payment_method: 決済管理
+        products:
+          detail: 商品詳細
+          stock: 在庫管理
+        orders:
+          detail: 注文明細
+          cart: カート情報
+          customer: ユーザー詳細
+          shipment: 送料
+          payment: 支払手数料
+        customers:
+          detail: ユーザー詳細
+          edit: 編集
+          new_orders: '最新の注文 (%{count}件)'
+        stores:
+          edit: 編集
+        shipment_methods:
+          edit: 編集
+        payment_methods:
+          edit: 編集
+      actions:
+        index: 一覧
+        new: 新規作成
+        edit: 編集する
+        update: 変更する
+        destroy: 削除する
+        cancel: キャンセル
+      categories:
+        new_node: 新しいカテゴリ
+
   activerecord:
     state_machines:
       comable/order:
@@ -108,12 +176,16 @@ ja:
 
     attributes:
       comable/customer:
+        id: ID
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
         current_password: 現在のパスワード
         bill_address: 請求先住所
         ship_address: 配送先住所
+        bill_full_name: 配送先氏名
+        orders: 注文数
+        role: 権限
       comable/order:
         code: 注文番号
         email: メールアドレス
@@ -126,9 +198,16 @@ ja:
         total_price: 合計
         order_details: 商品
         completed_at: 注文日時
+        state: ステータス
+        bill_address: 請求先住所
+        ship_address: 配送先住所
+        bill_full_name: 配送先氏名
+        order_details: 注文明細
       comable/order_detail: &comable_order_detail
         quantity: *quantity
         price: *price
+        product: 商品情報
+        subtotal_price: 小計
       comable/address: &comable_address
         full_name: お名前
         family_name: 姓
@@ -138,6 +217,34 @@ ja:
         city: 市町村
         detail: その他
         phone_number: 電話番号
+      comable/product:
+        code: 商品コード
+        name: 商品名
+        price: 価格
+        caption: キャプション
+        categories: カテゴリ
+        sku_h_item_name: SKU横軸項目名
+        sku_v_item_name: SKU縦軸項目名
+      comable/stock:
+        code: SKU商品コード
+        quantity: 在庫
+        sku_h_choice_name: SKU横軸選択肢名
+        sku_v_choice_name: SKU縦軸選択肢名
+      comable/store:
+        name: ストア名
+        meta_keywords: メタキーワード
+        meta_description: メタディスクリプション
+        email_sender: 送信元メールアドレス
+        email_activate_flag: メール送信を有効にする
+      comable/shipment_method:
+        name: 配送方法名
+        fee: 手数料
+        activate_flag: この配送方法を有効にする
+        traking_url: トラッキングURL
+      comable/payment_method:
+        name: 決済方法名
+        payment_provider: 決済プロバイダ
+        enable_price: 利用可能な価格範囲
       comable/order/order_details:
         <<: *comable_order_detail
       comable/order/bill_address:
@@ -145,8 +252,17 @@ ja:
       comable/order/ship_address:
         <<: *comable_address
 
+  enumerize:
+    comable/customer:
+      role:
+        customer: 顧客
+        reporter: 報告者
+        admin: 管理者
+
   views:
     pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
       next: "次 &rsaquo;"
       previous: "&lsaquo; 前"
       truncate: "&hellip;"

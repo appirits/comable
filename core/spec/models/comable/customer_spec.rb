@@ -6,6 +6,12 @@ describe Comable::Customer do
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:email) }
+
+    it { is_expected.to ensure_length_of(:email).is_at_most(255) }
+  end
+
   describe 'incomplete order' do
     context 'when guest' do
       let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }

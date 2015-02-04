@@ -1,19 +1,76 @@
-h1 Admin::Products#index
+#comable-product
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.product')
 
-p = flash[:notice]
-p = flash[:alert]
+  h1.page-header
+    = Comable.t('admin.nav.product')
+    small<
+      = @products.total_count
+      = Comable.t('admin.results')
 
-- if @products.any?
-  ul
-    - @products.each do |product|
+  .row
+    section.col-sm-8
+      .panel.panel-inverse
+        .panel-heading
+          .panel-title
+            = Comable.t('admin.index')
+        - if @products.empty?
+          .panel-body
+            = Comable.t('admin.not_found')
+        - else
+          table.table.table-striped
+            thead
+              th
+              th
+                = sort_link [:comable, @q], :code
+              th
+                = sort_link [:comable, @q], :name
+              th
+                = sort_link [:comable, @q], :price
+              th
+                = sort_link [:comable, @q], :stocks_quantity
+            tbody
+              - @products.each do |product|
+                - quantity = product.stocks.to_a.sum(&:quantity)
+                tr
+                  td.comable-image
+                    = link_to comable.admin_product_path(product), class: 'thumbnail' do
+                      = image_tag product.image_url
+                  td
+                    = link_to product.code, comable.admin_product_path(product)
+                  td
+                    = product.name
+                  td
+                    = number_to_currency product.price
+                  td
+                    strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
+                      = number_with_delimiter product.stocks.to_a.sum(&:quantity)
 
-      li
-        = product.name
+        .text-center
+          = paginate @products, theme: :comable_backend
 
-        = form_for product, url: comable.admin_product_path(product), html: { multipart: true } do |f|
-          - product.images.build
-          = f.fields_for :images do |ff|
-              - if ff.object.url
-                = image_tag ff.object.url, width: 180
-              = ff.file_field :file
-          = f.button
+    nav.col-sm-4
+      #comable-affix
+        .panel
+          .list-group
+            = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path, class: 'list-group-item'
+
+        .panel
+          .panel-body
+            = search_form_for @q, url: comable.admin_products_path do |f|
+              .form-horizontal
+                .form-group
+                  .col-sm-3.control-label
+                    = f.label :code
+                  .col-sm-9
+                    = f.text_field :code_cont
+                .form-group
+                  .col-sm-3.control-label
+                    = f.label :name
+                  .col-sm-9
+                    = f.text_field :name_cont
+                .text-right
+                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

@@ -1,6 +1,7 @@
 module Comable
   class Customer < ActiveRecord::Base
     include CartOwner
+    include RoleOwner
 
     has_many :orders, class_name: Comable::Order.name
     has_many :addresses, class_name: Comable::Address.name, dependent: :destroy
@@ -11,7 +12,12 @@ module Comable
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
 
+    validates :email, presence: true, length: { maximum: 255 }
+
     devise(*Comable::Config.devise_strategies[:customer])
+
+    delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
+    delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
     def with_cookies(cookies)
       @cookies = cookies
@@ -76,6 +82,10 @@ module Comable
 
       inherit_order_state(guest_order)
       inherit_cart_items(guest_order)
+    end
+
+    def human_id
+      "##{id}"
     end
 
     private

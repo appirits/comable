@@ -21,11 +21,27 @@ module Comable
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
     scope :by_customer, -> (customer) { where(customer_id: customer) }
+    scope :this_month, -> { where(completed_at: Time.now.beginning_of_month..Time.now.end_of_month) }
+    scope :this_week, -> { where(completed_at: Time.now.beginning_of_week..Time.now.end_of_week) }
+    scope :last_week, -> { where(completed_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week) }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
     paginates_per 5
+
+    class << self
+      def morris_keys
+        %w( count price )
+      end
+
+      def to_morris
+        this = (Rails::VERSION::MAJOR == 3) ? scoped : all
+        this.group_by { |order| order.completed_at.to_date }.map do |date, orders|
+          { date: date, count: orders.count, price: orders.sum(&:total_price) }
+        end.to_json
+      end
+    end
 
     def complete
       ActiveRecord::Base.transaction do

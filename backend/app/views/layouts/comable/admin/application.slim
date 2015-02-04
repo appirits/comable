@@ -1,9 +1,110 @@
 doctype html
 html
   head
-    title ComableBackend
+    title
+      | Comable
     = stylesheet_link_tag 'comable/admin/application', media: 'all'
     = javascript_include_tag 'comable/admin/application'
     = csrf_meta_tags
   body
-    = yield
+    header.header.navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        .navbar-header
+          = link_to comable.admin_root_path, class: 'navbar-brand' do
+            span.navbar-logo
+            | Comable
+
+          button.navbar-toggle type="button" data-click="sidebar-toggled"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+
+        ul.nav.navbar-nav.navbar-right
+          li
+            = link_to comable.root_path do
+              = Comable.t('admin.back_to_store')
+          li.dropdown.navbar-user
+            a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+              span.hidden-xs
+                = current_customer.email
+              span.caret<
+            ul.dropdown-menu.animated.fadeInLeft
+              li.arrow
+              li
+                = link_to comable.edit_admin_customer_path(current_customer) do
+                  span.fa.fa-edit>
+                  = Comable.t('admin.edit_profile')
+              li.divider
+              li
+                = link_to comable.destroy_customer_session_path, method: :delete do
+                  span.fa.fa-sign-in
+                  = Comable.t('sign_out')
+
+    #wrapper
+      .sidebar
+        .vnavigation
+          ul
+            li class="#{'active' if controller_name == 'dashboard'}"
+              = link_to comable.admin_root_path do
+                i.fa.fa-dashboard
+                = Comable.t('admin.nav.dashboard')
+            li class="#{'active' if controller_name == 'orders'}"
+              = link_to comable.admin_orders_path do
+                i.fa.fa-shopping-cart
+                = Comable.t('admin.nav.order')
+            li class="#{'active' if controller_name == 'products' || controller_name == 'stocks'}"
+              = link_to comable.admin_products_path do
+                i.fa.fa-cubes
+                = Comable.t('admin.nav.product')
+            li class="#{'active' if controller_name == 'categories'}"
+              = link_to comable.admin_categories_path do
+                i.fa.fa-tags
+                = Comable.t('admin.nav.category')
+            /
+              li
+                = link_to '#' do
+                  i.fa.fa-bar-chart
+                  = Comable.t('admin.nav.analytics')
+              li
+                = link_to '#' do
+                  i.fa.fa-bullhorn
+                  = Comable.t('admin.nav.promotion')
+                ul
+                  li
+                    = Comable.t('admin.nav.static_page')
+                  li
+                    = Comable.t('admin.nav.static_content')
+            li class="#{'active' if controller_name == 'customers'}"
+              = link_to comable.admin_customers_path do
+                i.fa.fa-user
+                = Comable.t('admin.nav.customer')
+            li class="#{'active' if controller_name.in? %w( store shipment_methods payment_methods )}"
+              = link_to '#' do
+                i.fa.fa-cog
+                = Comable.t('admin.nav.general_settings')
+              ul
+                li class="#{'active' if controller_name == 'store'}"
+                  = link_to Comable.t('admin.nav.store'), comable.admin_store_path
+                li class="#{'active' if controller_name == 'shipment_methods'}"
+                  = link_to Comable.t('admin.nav.shipment_method'), comable.admin_shipment_methods_path
+                li class="#{'active' if controller_name == 'payment_methods'}"
+                  = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
+
+      main.container-fluid
+        - if flash[:alert] || flash[:notice]
+          #comable-notifier
+            - if flash[:alert]
+              .comable-alert = flash[:alert]
+            - if flash[:notice]
+              .comable-notice = flash[:notice]
+
+        = yield
+
+      footer
+        ul.list-inline
+          li
+            | Comable v#{Comable::VERSION::STRING}
+          li
+            = link_to 'GitHub', 'https://github.com/hyoshida/comable'
+          li
+            = link_to 'License', 'https://github.com/hyoshida/comable/blob/master/MIT-LICENSE'

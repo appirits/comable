@@ -1,5 +1,13 @@
-h1 Editing store
+#comable-store
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.store')
 
-= render 'form'
+  h1.page-header
+    = Comable.t('admin.nav.store')
 
-= link_to 'Show', comable.admin_store_path(@store)
+  .row
+    section.col-sm-8
+      = render 'form'

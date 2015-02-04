@@ -1,17 +1,50 @@
-h1 Listing shipment_methods
+#comable-shipment-method
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.shipment_method')
 
-table
-  thead
-    tr
-      th colspan="3"
+  h1.page-header
+    = Comable.t('admin.nav.shipment_method')
+    small<
+      = @shipment_methods.total_count
+      = Comable.t('admin.results')
 
-  tbody
-    - @shipment_methods.each do |shipment_method|
-      tr
-        td = link_to 'Show', comable.admin_shipment_method_path(shipment_method)
-        td = link_to 'Edit', comable.edit_admin_shipment_method_path(shipment_method)
-        td = link_to 'Destroy', comable.admin_shipment_method_path(shipment_method), method: :delete, data: { confirm: 'Are you sure?' }
+  .row
+    section.col-sm-8
+      - if @shipment_methods.empty?
+        = Comable.t('admin.not_found')
+      - else
+        .panel.panel-inverse
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.index')
+          table.table.table-striped
+            thead
+              th
+                = @shipment_methods.klass.human_attribute_name(:name)
+              th
+                = @shipment_methods.klass.human_attribute_name(:fee)
+              th
+                = @shipment_methods.klass.human_attribute_name(:traking_url)
+            tbody
+              - @shipment_methods.each do |shipment_method|
+                tr
+                  td
+                    = link_to shipment_method.name, comable.admin_shipment_method_path(shipment_method)
+                    - unless shipment_method.activate_flag
+                      span.fa.fa-eye-slash.text-muted<
+                  td
+                    = number_to_currency shipment_method.fee
+                  td
+                    = truncate shipment_method.traking_url
 
-br
+        .text-center
+          = paginate @shipment_methods, theme: :comable_backend
 
-= link_to 'New Shipment method', comable.new_admin_shipment_method_path
+    nav.col-sm-4
+      #comable-affix
+        .panel
+          .list-group
+            = link_to Comable.t('admin.actions.new'), comable.new_admin_shipment_method_path, class: 'list-group-item'

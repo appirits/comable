@@ -1,11 +1,25 @@
 describe 'comable/admin/store/edit' do
-  before(:each) do
-    @store = assign(:store, FactoryGirl.create(:store))
+  context 'when sotre is persisted' do
+    let(:store) { FactoryGirl.create(:store) }
+
+    before { assign(:store, store) }
+
+    it 'renders the edit store form with put method' do
+      render
+      assert_select 'form[action=?]', comable.admin_store_path
+      assert_select 'input[name=_method][value=?]', 'patch'
+    end
   end
 
-  it 'renders the edit store form' do
-    render
+  context 'when sotre is not persisted' do
+    let(:store) { FactoryGirl.build(:store) }
 
-    assert_select 'form[action=?][method=?]', comable.admin_store_path(@store), 'post'
+    before { assign(:store, store) }
+
+    it 'renders the edit store form with put method' do
+      render
+      assert_select 'form[action=?]', comable.admin_store_path
+      assert_select 'input[name=_method][value=?]', 'patch'
+    end
   end
 end

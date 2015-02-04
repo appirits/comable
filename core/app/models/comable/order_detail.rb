@@ -10,6 +10,7 @@ module Comable
     validate :valid_stock_quantity
 
     delegate :product, to: :stock
+    delegate :image_url, to: :product
     delegate :guest_token, to: :order
     delegate :completed?, to: :order, allow_nil: true
     delegate :completing?, to: :order, allow_nil: true

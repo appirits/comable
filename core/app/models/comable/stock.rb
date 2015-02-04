@@ -24,6 +24,10 @@ module Comable
     # @!endgroup
     #
 
+    validates :product, presence: true
+    validates :code, presence: true, length: { maximum: 255 }
+    validates :sku_h_choice_name, length: { maximum: 255 }
+    validates :sku_v_choice_name, length: { maximum: 255 }
     # TODO: add conditions (by limitless flag, backoder flag and etc..)
     validates :quantity, numericality: { greater_than_or_equal_to: 0 }
 

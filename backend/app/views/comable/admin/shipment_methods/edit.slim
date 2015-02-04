@@ -1,7 +1,28 @@
-h1 Editing shipment_method
+#comable-shipment-method
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li
+      = link_to Comable.t('admin.nav.shipment_method'), comable.admin_shipment_methods_path
+    li.active
+      = @shipment_method.name
 
-= render 'form'
+  h1.page-header
+    = @shipment_method.name
 
-= link_to 'Show', comable.admin_shipment_method_path(@shipment_method)
-| |
-= link_to 'Back', comable.admin_shipment_methods_path
+  .row
+    section.col-sm-8
+      = render 'form'
+      hr
+      .panel.panel-danger
+        .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger" aria-expanded="false" aria-controls="comable-danger"
+          strong
+            span.fa.fa-angle-down>
+            = Comable.t('admin.actions.destroy')
+        #comable-danger.collapse
+          .panel-body
+            p
+              = Comable.t('admin.confirmation_to_remove_product')
+            = link_to Comable.t('admin.actions.destroy'), comable.admin_shipment_method_path(@shipment_method), method: :delete, class: 'btn btn-danger'
+
+    nav.col-sm-4

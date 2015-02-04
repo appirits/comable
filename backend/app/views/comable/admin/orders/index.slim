@@ -1,0 +1,79 @@
+#comable-order
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.order')
+
+  h1.page-header
+    = Comable.t('admin.nav.order')
+    small<
+      = @orders.total_count
+      = Comable.t('admin.results')
+
+  .row
+    section.col-sm-8
+      - if @orders.empty?
+        = Comable.t('admin.not_found')
+      - else
+        .panel.panel-inverse
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.index')
+          table.table.table-striped
+            thead
+              th
+                = sort_link [:comable, @q], :code
+              th
+                / TODO: Change to shipment_state and payment_state
+                = sort_link [:comable, @q], :state
+              th
+                = @orders.klass.human_attribute_name(:bill_full_name)
+              th
+                = @orders.klass.human_attribute_name(:order_details)
+              th
+                = sort_link [:comable, @q], :total_price
+              th
+                = sort_link [:comable, @q], :completed_at
+            tbody
+              - @orders.each do |order|
+                tr
+                  td
+                    = link_to order.code, comable.admin_order_path(order)
+                  td
+                    = order.human_state_name
+                  td
+                    = order.bill_full_name
+                  td
+                    ul.list-unstyled
+                      - order.order_details.each do |order_detail|
+                        li
+                          | #{order_detail.name_with_sku} x #{order_detail.quantity}
+                  td
+                    = number_to_currency order.total_price
+                  td
+                    = l order.completed_at
+
+        .text-center
+          = paginate @orders, theme: :comable_backend
+
+    nav.col-sm-4
+      #comable-affix
+        .panel
+          .panel-body
+            = search_form_for @q, url: comable.admin_orders_path do |f|
+              .form-horizontal
+                .form-group
+                  .col-sm-3.control-label
+                    = f.label :code
+                  .col-sm-9
+                    = f.text_field :code_cont
+
+                .form-group
+                  .col-sm-3.control-label
+                    = f.label :customer_id
+                  .col-sm-9
+                    = f.text_field :customer_id_eq
+
+                .text-right
+                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

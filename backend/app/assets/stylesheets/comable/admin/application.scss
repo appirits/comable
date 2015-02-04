@@ -1,0 +1,590 @@
+//= require jquery-ui
+//= require jstree
+//= require morris
+//= require pace/themes/purple/pace-theme-minimal
+//= require_self
+//= require_tree .
+
+@import 'compass/utilities';
+@import 'compass/css3';
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@import 'font-awesome';
+
+// ---
+// mixins
+// ---
+
+// from https://github.com/FortAwesome/Font-Awesome/issues/213
+@mixin glyphicon($name, $float: none) {
+  &:before {
+    float: $float;
+  @extend .glyphicon;
+  }
+  @extend .glyphicon-#{$name};
+}
+
+@mixin fa($name, $float: none) {
+  &:before {
+    float: $float;
+    @extend .fa;
+  }
+  @extend .fa-#{$name};
+}
+
+// ---
+// common
+// ---
+
+body {
+  font-size: 12px;
+  font-family: Verdana, '游ゴシック', YuGothic, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+}
+
+#wrapper {
+  display: table;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+
+  body.animated & {
+    opacity: 0;
+    margin-left: -20px;
+    transition: margin-left 600ms ease, opacity 600ms;
+  }
+}
+
+.container {
+  &.right {
+    display: table-cell;
+    vertical-align: top;
+
+    margin-left: 216px;
+    position: relative;
+  }
+
+padding: 0;
+overflow: hidden;
+
+margin-right: auto;
+}
+
+.sidebar {
+  display: table-cell;
+  position: relative;
+  vertical-align: top;
+  padding-bottom: 200px;
+
+  & {
+    background: #272930;
+    width: 280px;
+    z-index: 2;
+  }
+  &.small {
+  }
+}
+
+.logo {
+  padding: 0 20px;
+  height: 64px;
+  line-height: 64px;
+  background-color: #fc796b;
+  background-color: #e55466;
+  background-color: #7761a7;
+
+  a {
+    font-size: x-large;
+    text-decoration: none;
+
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      color: #fff;
+    }
+  }
+}
+
+.vnavigation {
+  background-color: #272930;
+
+  a {
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      color: #aaa;
+      text-decoration: none;
+
+    }
+
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  & > ul {
+    & > li > a {
+      border-top: 1px solid #2f3137;
+      display: block;
+      padding: 12px 25px;
+      font-size: 13px;
+      font-weight: 400;
+      white-space: nowrap;
+      @include transition(color 250ms ease);
+
+      border-left: 2px solid transparent;
+    }
+
+    &> li.active > a {
+      color: #fff;
+      background-color: #7761a7;
+
+      &:hover {
+        background-color: rgba(#7761a7, 0.9);
+        @include transition(background-color 250ms ease);
+      }
+
+      i {
+        text-align: center;
+        width: 20px;
+        font-size: 14px;
+        margin-right: 7px;
+      }
+    }
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  & > ul > li > a {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      @include transition(background-color 250ms ease);
+    }
+
+    i {
+      text-align: center;
+      width: 20px;
+      font-size: 14px;
+      margin-right: 7px;
+    }
+  }
+
+  li.parent {
+    & > a {
+      //@include glyphicon(chevron-right, $float: right);
+      @include fa(angle-right, $float: right);
+    }
+
+    & > ul {
+      padding: 14px 0;
+      background-color: #1d1f26;
+      display: none;
+
+      a {
+        display: block;
+        padding: 7px 42px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.2);
+          @include transition(background-color 250ms ease);
+        }
+        border-left: 2px solid transparent;
+      }
+
+      .active > a {
+        color: #fff;
+        border-left: 2px solid #7761a7;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+    }
+  }
+}
+
+// ---
+// apply Bootstrap
+// ---
+body {
+  margin-top: $navbar-height;
+  background-color: #d9e0e7;
+}
+
+.navbar {
+  @include box-shadow(rgba(0, 0, 0, 0.3) 0 0 2px);
+}
+
+.panel {
+  border: none;
+
+  &.panel-inverse > .panel-heading {
+    background: #313239;
+    color: #fff;
+  }
+}
+
+.page-header {
+  font-size: 24px;
+  margin: 0 0 20px;
+  padding: 0;
+  border: none;
+  line-height: 28px;
+}
+
+.panel > .panel-footer {
+  form {
+    @extend .text-right;
+  }
+}
+
+.breadcrumb {
+  @extend .pull-right;
+  margin-bottom: 0;
+  padding-right: 0;
+  background-color: transparent;
+
+  & > li {
+    float: right;
+  }
+
+  & > li + li:after {
+    content: '/';
+    padding: 0 5px;
+    color: darken(#d9e0e7, 20%);
+  }
+
+  & > li + li:before {
+    display: none;
+  }
+}
+
+button {
+  @extend .btn;
+}
+
+input[type="submit"] {
+  @extend .btn;
+}
+
+section {
+  input[type="submit"] {
+    @extend .btn-primary;
+  }
+}
+
+nav {
+  input[type="submit"] {
+    @extend .btn-default;
+  }
+}
+
+select,
+input[type="password"],
+input[type="email"],
+input[type="text"] {
+  @extend .form-control;
+  margin-right: 0.5em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+table {
+  @extend .table;
+
+  th > a {
+    &:link, &:visited, &:hover, &:active {
+      color: $text-color;
+    }
+  }
+}
+
+#comable-product {
+  label.remove {
+    display: block;
+    margin: 0;
+  }
+
+  .table tbody > tr > td {
+    .thumbnail {
+      margin-bottom: 0;
+    }
+    &.comable-image {
+      width: 180px;
+    }
+    &:not(.comable-image) {
+      vertical-align: middle;
+    }
+  }
+}
+
+#comable-order {
+  .panel > .panel-body > h3 {
+    margin-top: 10px;
+  }
+}
+
+legend {
+  border-bottom: 0;
+}
+
+#comable-affix {
+  @extend .hidden-sm;
+  @extend .hidden-xs;
+
+  &.affix {
+    top: $navbar-height + 20px;
+  }
+
+  .list-group > a:before {
+    @include fa(angle-right);
+    margin-right: 1em;
+  }
+}
+
+table > tbody > tr > td > ul {
+  margin-bottom: 0;
+}
+
+main.container-fluid {
+  padding: 20px;
+}
+
+footer {
+  @extend .text-muted;
+  margin: 25px;
+  text-align: center;
+
+  & > ul > li + li:before {
+    content: '·';
+    padding-right: 10px;
+  }
+}
+
+hr {
+  border-color: darken(#d9e0e7, 5%);
+}
+
+// ---
+// tag-it
+// ---
+ul.tagit > li > input[type="text"] {
+  height: auto;
+}
+
+ul.tagit-autocomplete.ui-menu {
+  @include border-radius($border-radius-base);
+  @include box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
+  padding: 5px 0;
+  border-color: $dropdown-border;
+
+  li.ui-menu-item {
+    padding: $padding-base-vertical $padding-base-horizontal;
+    color: $dropdown-link-color;
+    background-color: $dropdown-bg;
+    border: none;
+
+    &.ui-state-focus {
+      color: $dropdown-link-active-color;
+      background-color: $dropdown-link-active-bg;
+    }
+  }
+}
+
+// ---
+// jstree
+// ---
+.jstree {
+  @include border-radius($input-border-radius);
+  @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+  padding: 5px 0;
+  border: 1px solid $input-border;
+
+  .jstree-wholerow {
+    @include transition(none);
+  }
+
+  .jstree-wholerow-hovered {
+    color: $dropdown-link-color;
+    background: $dropdown-link-hover-bg;
+  }
+
+  .jstree-wholerow-clicked {
+    color: $dropdown-link-active-color;
+    background: $dropdown-link-active-bg;
+  }
+
+  .jstree-anchor.jstree-clicked {
+    color: $dropdown-link-active-color;
+
+    &:link, &:visited, &:hover, &:active {
+      color: $dropdown-link-active-color;
+    }
+
+    & > input {
+      @include border-radius($input-border-radius);
+      @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+      color: $dropdown-link-color;
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+    }
+  }
+}
+
+ul.vakata-context.jstree-contextmenu {
+  @include border-radius($border-radius-base);
+  @include box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
+
+  padding: 5px 0;
+  background-color: $dropdown-bg;
+  border-color: $dropdown-border;
+
+  & > li {
+    @include border-radius(0);
+
+    & > a {
+      padding-top: 0;
+      padding-bottom: 0;
+      line-height: $line-height-computed;
+      color: $dropdown-link-color;
+      background-color: $dropdown-bg;
+
+      & > i,
+      & > .vakata-contextmenu-sep {
+        display: none;
+      }
+    }
+
+    &.vakata-context-hover > a {
+      @include box-shadow(none);
+      background-color: $dropdown-bg;
+
+      &:hover {
+        background-color: $dropdown-link-hover-bg;
+      }
+    }
+  }
+}
+
+#comable-notifier {
+  @include opacity(0.95);
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+
+  & > * {
+    padding: 0 1em;
+    height: $navbar-height;
+    line-height: $navbar-height;
+
+    &.comable-alert {
+      color: $alert-danger-text;
+      background-color: $alert-danger-bg;
+    }
+
+    &.comable-notice {
+      color: $alert-success-text;
+      background-color: $alert-success-bg;
+    }
+  }
+}
+
+// Dashboard
+
+.widget {
+  border-radius: 3px;
+  margin-bottom: 20px;
+  color: #fff;
+  padding: 15px;
+  overflow: hidden;
+
+  &.widget-stats {
+    position: relative;
+
+    & > .stats-icon {
+      @include opacity(0.2);
+      font-size: 42px;
+      height: 56px;
+      width: 56px;
+      text-align: center;
+      line-height: 56px;
+      margin-left: 15px;
+      color: #fff;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+
+      &.stats-icon-lg {
+        font-size: 52px;
+        top: 12px;
+        right: 21px;
+      }
+    }
+
+    & > .stats-desc,
+    & > .stats-title {
+      color: #fff;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    & > .stats-title {
+      margin: 2px 0 7px;
+      font-size: 12px;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    & > .stats-number {
+      margin-bottom: 10px;
+      font-size: 24px;
+      font-weight: normal;
+    }
+
+    & > .stats-progress {
+      margin: 0 -15px 12px;
+      height: 2px;
+      background: #000;
+      background: rgba(0, 0, 0, 0.2);
+
+      & > .progress-bar {
+        @include box-shadow(none);
+        background: #fff;
+      }
+    }
+  }
+
+  &.widget-bg-green {
+    background: #00acac !important;
+  }
+
+  &.widget-bg-blue {
+    background: #348fe2 !important;
+  }
+
+  &.widget-bg-black {
+    background: #272930 !important;
+  }
+}
+
+.morris > .morris-hover {
+  @include border-radius($border-radius-base !important);
+  padding: 8px !important;
+  color: #ccc !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  border: none !important;
+}

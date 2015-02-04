@@ -1,0 +1,53 @@
+#comable-payment-method
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li.active
+      = Comable.t('admin.nav.payment_method')
+
+  h1.page-header
+    = Comable.t('admin.nav.payment_method')
+    small<
+      = @payment_methods.total_count
+      = Comable.t('admin.results')
+
+  .row
+    section.col-sm-8
+      - if @payment_methods.empty?
+        = Comable.t('admin.not_found')
+      - else
+        .panel.panel-inverse
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.index')
+          table.table.table-striped
+            thead
+              th
+                = @payment_methods.klass.human_attribute_name(:name)
+              th
+                = @payment_methods.klass.human_attribute_name(:payment_provider)
+              th
+                = @payment_methods.klass.human_attribute_name(:enable_price)
+            tbody
+              - @payment_methods.each do |payment_method|
+                tr
+                  td
+                    = link_to payment_method.name, comable.admin_payment_method_path(payment_method)
+                    /- unless payment_method.activate_flag
+                    /  span.fa.fa-eye-slash.text-muted<
+                  td
+                    = payment_method.payment_provider.display_name
+                  td
+                    - if payment_method.enable_price_from || payment_method.enable_price_to
+                      span = number_to_currency payment_method.enable_price_from
+                      span>< ~
+                      span = number_to_currency payment_method.enable_price_to
+
+        .text-center
+          = paginate @payment_methods, theme: :comable_backend
+
+    nav.col-sm-4
+      #comable-affix
+        .panel
+          .list-group
+            = link_to Comable.t('admin.actions.new'), comable.new_admin_payment_method_path, class: 'list-group-item'

@@ -1,0 +1,81 @@
+#comable-stock
+  ol.breadcrumb
+    li
+      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
+    li
+      = link_to Comable.t('admin.nav.product'), comable.admin_products_path
+    li
+      = link_to @product.name, comable.admin_product_path(@product)
+    li.active
+      = Comable.t('admin.nav.products.stock')
+
+  h1.page-header
+    = Comable.t('admin.nav.products.stock')
+    small<
+      = @stocks.total_count
+      = Comable.t('admin.results')
+
+  .row
+    section.col-sm-8
+      .panel.panel-inverse
+        .panel-heading
+          .panel-title
+            = Comable.t('admin.index')
+        - if @stocks.empty?
+          .panel-body
+            = Comable.t('admin.not_found')
+        - else
+          table.table.table-striped
+            thead
+              th
+                = sort_link [:comable, @q], :code, product_id: @product.id
+              th
+                = sort_link [:comable, @q], :quantity, product_id: @product.id
+              - if @product.sku?
+                - if @product.sku_h?
+                  th
+                    = sort_link [:comable, @q], :sku_h_choice_name, @product.sku_h_item_name, product_id: @product.id
+                - if @product.sku_v?
+                  th
+                    = sort_link [:comable, @q], :sku_v_choice_name, @product.sku_v_item_name, product_id: @product.id
+            tbody
+              - @stocks.each do |stock|
+                tr
+                  td
+                    = link_to stock.code, comable.admin_product_stock_path(@product, stock)
+                  td
+                    strong class="#{(stock.quantity <= 0) ? 'text-danger' : (stock.quantity <= 10) ? 'text-warning' : 'text-success'}"
+                      = number_with_delimiter stock.quantity
+                  - if @product.sku?
+                    - if @product.sku_h?
+                      td
+                        = stock.sku_h_choice_name
+                    - if @product.sku_v?
+                      td
+                        = stock.sku_v_choice_name
+
+        .text-center
+          = paginate @stocks, theme: :comable_backend
+
+    nav.col-sm-4
+      #comable-affix
+        .panel
+          .list-group
+            = link_to Comable.t('admin.nav.products.detail'), comable.admin_product_path(@product), class: 'list-group-item'
+            = link_to Comable.t('admin.nav.products.stock'), comable.admin_product_stocks_path(@product), class: 'list-group-item disabled'
+
+        .panel
+          .list-group
+            = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product), class: 'list-group-item'
+
+        .panel
+          .panel-body
+            = search_form_for @q, url: comable.new_admin_product_stock_path(@product) do |f|
+              .form-horizontal
+                .form-group
+                  .col-sm-3.control-label
+                    = f.label :code
+                  .col-sm-9
+                    = f.text_field :code_cont
+                .text-right
+                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

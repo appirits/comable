@@ -17,5 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'enumerize'
   s.add_dependency 'state_machine'
   s.add_dependency 'ancestry'
+  s.add_dependency 'acts_as_list'
   s.add_dependency 'carrierwave'
+  s.add_dependency 'cancancan', '~> 1.10'
 end
