@@ -5,7 +5,7 @@ module Comable
     before_filter :authenticate_customer!
 
     def show
-      @orders = current_customer.orders.page(params[:page])
+      @orders = current_customer.orders.page(params[:page]).per(5)
     end
 
     def update_addresses

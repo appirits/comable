@@ -28,8 +28,6 @@ module Comable
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
-    paginates_per 5
-
     class << self
       def morris_keys
         %w( count price )

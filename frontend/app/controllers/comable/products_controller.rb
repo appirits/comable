@@ -8,7 +8,7 @@ module Comable
       else
         @products = Comable::Product.search(params[:q])
       end
-      @products = @products.page(params[:page])
+      @products = @products.page(params[:page]).per(15)
     end
 
     def show
