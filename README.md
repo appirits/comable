@@ -9,9 +9,11 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 
 ## Installation
 
-1. Add comable in the `Gemfile`:
+1. Add comable and a source in the `Gemfile`:
 
   ```ruby
+  source 'https://rails-assets.org'
+
   gem 'comable'
   ```
 
