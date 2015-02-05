@@ -1,6 +1,6 @@
 require 'devise'
 require 'enumerize'
-require 'state_machines-activerecord'
+require 'state_machine'
 require 'ancestry'
 require 'acts_as_list'
 require 'carrierwave'
@@ -11,6 +11,7 @@ require 'comable/core/engine'
 
 require 'comable/errors'
 require 'comable/payment_provider'
+require 'comable/state_machine_patch'
 
 module Comable
   class << self
