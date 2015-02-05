@@ -1,3 +1,8 @@
+## Comable 0.3.1 (February 05, 2015) ##
+
+*   No changes.
+
+
 ## Comable 0.3.0 (February 04, 2015) ##
 
 *   Implement the look and feel.
