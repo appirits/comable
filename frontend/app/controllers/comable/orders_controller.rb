@@ -39,7 +39,12 @@ module Comable
     private
 
     def send_order_complete_mail
-      Comable::OrderMailer.complete(@order).deliver if current_store.email_activate?
+      return unless current_store.email_activate?
+      if Rails.version =~ /^4.2./
+        Comable::OrderMailer.complete(@order).deliver_now
+      else
+        Comable::OrderMailer.complete(@order).deliver
+      end
     end
 
     def ensure_cart_not_empty
