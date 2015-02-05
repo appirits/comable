@@ -6,6 +6,9 @@ class DummyOrder
   attr_accessor :bill_address
   attr_accessor :ship_address
 
+  def initialize(_ = {})
+  end
+
   def complete
     true
   end
