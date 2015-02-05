@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'comable_core', version
 
-  s.add_dependency 'rails', '>= 3.2.0', '< 4.2.0'
+  s.add_dependency 'rails', '>= 3.2.0', '< 5'
   s.add_dependency 'slim-rails', '~> 3.0.1'
   s.add_dependency 'sass-rails' # TODO: '~> 5.0.1'
   s.add_dependency 'coffee-rails', '>= 3.2.2', '< 4.2'
