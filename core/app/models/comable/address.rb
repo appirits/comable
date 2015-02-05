@@ -12,7 +12,7 @@ module Comable
 
     class << self
       def find_or_clone(address)
-        find { |obj| obj.same_as? address } || address.clone
+        all.to_a.find { |obj| obj.same_as? address } || address.clone
       end
     end
 
