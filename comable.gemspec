@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Comable provides a simple way to add e-commerce features to your Ruby on Rails application.'
   s.description = 'Comable provides a simple way to add e-commerce features to your Ruby on Rails application.'
 
-  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'COMABLE_VERSION']
 
   s.add_dependency 'comable_core', version
   s.add_dependency 'comable_frontend', version
