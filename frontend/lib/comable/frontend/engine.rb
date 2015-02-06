@@ -1,14 +1,12 @@
 require 'comable_core'
 
 require 'slim'
+require 'jquery-rails'
 require 'jquery-ui-rails'
 require 'bootstrap-sass'
 require 'sass-rails'
 require 'compass-rails'
 require 'kaminari'
-
-require 'rails-assets-jquery'
-require 'rails-assets-jquery-ujs'
 
 module Comable
   module Frontend
