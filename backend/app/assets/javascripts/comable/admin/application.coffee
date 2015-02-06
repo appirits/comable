@@ -1,11 +1,11 @@
 #= require jquery
-#= require jquery-ujs
+#= require jquery_ujs
 #= require jquery-ui
 #= require jstree
 #= require bootstrap-sprockets
 #= require raphael
 #= require morris
-#= require pace
+#= require pace/pace
 #= require_tree .
 
 $( ->
