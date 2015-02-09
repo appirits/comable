@@ -599,4 +599,5 @@ ul.vakata-context.jstree-contextmenu {
 // ---
 .pace .pace-progress {
   background-color: $comable-theme-bg !important;
+  @include transition-property(none);
 }
