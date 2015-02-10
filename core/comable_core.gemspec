@@ -14,10 +14,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 3.2.0', '< 4.2.0'
   s.add_dependency 'devise', '~> 3.2'
-  s.add_dependency 'enumerize'
-  s.add_dependency 'state_machine'
-  s.add_dependency 'ancestry'
-  s.add_dependency 'acts_as_list'
-  s.add_dependency 'carrierwave'
-  s.add_dependency 'cancancan', '~> 1.10'
+  s.add_dependency 'enumerize', '~> 0.9.0'
+  s.add_dependency 'state_machine', '~> 1.2.0'
+  s.add_dependency 'ancestry', '~> 2.1.0'
+  s.add_dependency 'acts_as_list', '~> 0.6.0'
+  s.add_dependency 'carrierwave', '0.10.0'
+  s.add_dependency 'cancancan', '~> 1.10.1'
 end
