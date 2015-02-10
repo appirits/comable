@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'ancestry', '~> 2.1.0'
   s.add_dependency 'acts_as_list', '~> 0.6.0'
   s.add_dependency 'carrierwave', '0.10.0'
-  s.add_dependency 'cancancan', '~> 1.10.1'
+  s.add_dependency 'cancancan', '~> 1.10'
 end
