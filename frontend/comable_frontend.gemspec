@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 3.2.0', '< 4.2.0'
   s.add_dependency 'slim-rails', '~> 3.0.1'
-  s.add_dependency 'sass-rails', '>= 3.2.6', '< 5.1'
+  s.add_dependency 'sass-rails' # TODO: '~> 5.0.1'
   s.add_dependency 'coffee-rails', '>= 3.2.2', '< 4.2'
   s.add_dependency 'compass-rails', '~> 2.0.4'
   s.add_dependency 'uglifier', '~> 2.7.0'
@@ -25,6 +25,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'font-awesome-rails', '~> 4.3.0.0'
   s.add_dependency 'kaminari', '~> 0.16.2'
 
-  s.add_dependency 'jquery-rails', '~> 3.1.2', '< 4.2'
+  s.add_dependency 'jquery-rails', '~> 3.1.2', '< 4.1'
   s.add_dependency 'jquery-ui-rails', '~> 5.0.3'
 end
