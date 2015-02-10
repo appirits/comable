@@ -1,3 +1,8 @@
+## Comable 0.3.2 (February 10, 2015) ##
+
+*   Remove gems of rails-asstes.org.
+
+
 ## Comable 0.3.1 (February 05, 2015) ##
 
 *   No changes.
