@@ -26,10 +26,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari'
   s.add_dependency 'ransack'
 
-  s.add_dependency 'rails-assets-jquery', '~> 2.1.3'
-  s.add_dependency 'rails-assets-jquery-ujs'
-  s.add_dependency 'rails-assets-jstree', '~> 3.0.9'
-  s.add_dependency 'rails-assets-raphael', '~> 2.1.3'
-  s.add_dependency 'rails-assets-morris', '~> 0.5.2'
-  s.add_dependency 'rails-assets-pace', '~> 1.0.2'
+  s.add_dependency 'jquery-rails', '~> 3.1.2', '<= 4.0.3'
+  s.add_dependency 'jquery-ui-rails', '~> 5.0.3'
+  s.add_dependency 'jstree-rails', '~> 0.0.4'
+  s.add_dependency 'raphael-rails', '~> 2.1.2'
+  s.add_dependency 'morrisjs-rails', '~> 0.5.1'
+  s.add_dependency 'pace-rails', '~> 0.1.1'
 end

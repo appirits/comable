@@ -9,12 +9,12 @@ require 'font-awesome-rails'
 require 'kaminari'
 require 'ransack'
 
-require 'rails-assets-jquery'
-require 'rails-assets-jquery-ujs'
-require 'rails-assets-jstree'
-require 'rails-assets-raphael'
-require 'rails-assets-morris'
-require 'rails-assets-pace'
+require 'jquery-rails'
+require 'jquery-ui-rails'
+require 'jstree-rails'
+require 'raphael-rails'
+require 'morrisjs-rails'
+require 'pace/rails'
 
 module Comable
   module Backend

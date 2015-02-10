@@ -1,7 +1,7 @@
 //= require jquery-ui
-//= require jstree
+//= require jstree/themes/default/style
 //= require morris
-//= require pace/themes/purple/pace-theme-minimal
+//= require pace/pace-theme-minimal
 //= require_self
 //= require_tree .
 
@@ -10,6 +10,11 @@
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
 @import 'font-awesome';
+
+// ---
+// variables
+// ---
+$comable-theme-bg: #7761a7;
 
 // ---
 // mixins
@@ -90,7 +95,7 @@ margin-right: auto;
   line-height: 64px;
   background-color: #fc796b;
   background-color: #e55466;
-  background-color: #7761a7;
+  background-color: $comable-theme-bg;
 
   a {
     font-size: x-large;
@@ -587,4 +592,12 @@ ul.vakata-context.jstree-contextmenu {
   color: #ccc !important;
   background: rgba(0, 0, 0, 0.75) !important;
   border: none !important;
+}
+
+// ---
+// pace
+// ---
+.pace .pace-progress {
+  background-color: $comable-theme-bg !important;
+  @include transition-property(none);
 }
