@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/hyoshida/comable#comable'
   s.summary     = 'Provide core functions for Comable.'
   s.description = 'Provide core functions for Comable.'
+  s.license     = 'MIT'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile']
 
