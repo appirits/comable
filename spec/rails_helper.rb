@@ -28,7 +28,7 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-  config.include EngineControllerTestMonkeyPatch, type: :controller
+  config.include Comable::EngineControllerTestMonkeyPatch, type: :controller
   config.include Devise::TestHelpers, type: :view
   config.include Devise::TestHelpers, type: :controller
   config.extend Comable::AuthHelpers, type: :controller

@@ -8,6 +8,7 @@ gemfile:
   - gemfiles/active_record_32.gemfile
   - gemfiles/active_record_40.gemfile
   - gemfiles/active_record_41.gemfile
+  - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_edge.gemfile
 before_script:
   - psql -U postgres -c 'CREATE ROLE dummy WITH LOGIN CREATEDB;'
