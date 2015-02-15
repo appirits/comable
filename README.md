@@ -37,7 +37,7 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 
 ## Requirements
 
-* Ruby on Rails 3.2, 4.1
+* Ruby on Rails 3.2, 4.1, 4.2
 * Ruby 2.1, 2.2
 
 And `strong_parameters`, `everywhere` gems are required only for Rails 3.
