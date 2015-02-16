@@ -68,27 +68,23 @@
         .panel-heading
           .panel-title
             = Comable.t('admin.actions.edit')
-        - if @categories.empty?
-          .panel-body
-            = Comable.t('admin.not_found')
-        - else
-          .panel-body
-            .well.well-sm
-              p
-                strong
-                  = Comable.t('admin.note')
-              ul
-                li
-                  = Comable.t('admin.you_can_drag_and_drop')
-                li
-                  = Comable.t('admin.you_can_right_click')
-                li
-                  = Comable.t('admin.link_to_add_new_node')
-                  = link_to Comable.t('admin.actions.new'), '#', onclick: 'create_new_node()'
-            #comable-jstree
-          .panel-footer
-            = form_tag comable.admin_categories_path do
-              = hidden_field_tag :jstree_json
-              = submit_tag Comable.t('admin.actions.update')
+        .panel-body
+          .well.well-sm
+            p
+              strong
+                = Comable.t('admin.note')
+            ul
+              li
+                = Comable.t('admin.you_can_drag_and_drop')
+              li
+                = Comable.t('admin.you_can_right_click')
+              li
+                = Comable.t('admin.link_to_add_new_node')
+                = link_to Comable.t('admin.actions.new'), '#', onclick: 'create_new_node()'
+          #comable-jstree
+        .panel-footer
+          = form_tag comable.admin_categories_path do
+            = hidden_field_tag :jstree_json
+            = submit_tag Comable.t('admin.actions.update')
 
     nav.col-sm-4
