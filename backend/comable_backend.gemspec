@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'jquery-rails', '~> 3.1.2', '< 4.1'
   s.add_dependency 'jquery-ui-rails', '~> 5.0.3'
-  s.add_dependency 'jstree-rails', '~> 0.0.4'
   s.add_dependency 'raphael-rails', '~> 2.1.2'
   s.add_dependency 'morrisjs-rails', '~> 0.5.1'
   s.add_dependency 'pace-rails', '~> 0.1.1'

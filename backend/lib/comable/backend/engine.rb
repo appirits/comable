@@ -11,7 +11,6 @@ require 'ransack'
 
 require 'jquery-rails'
 require 'jquery-ui-rails'
-require 'jstree-rails'
 require 'raphael-rails'
 require 'morrisjs-rails'
 require 'pace/rails'
