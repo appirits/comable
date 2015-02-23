@@ -1,17 +1,16 @@
-#comable-payment-method
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li
-      = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
-    li.active
-      = Comable.t('admin.actions.new')
+#comable-payment-method.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
 
-  h1.page-header
-    = Comable.t('admin.actions.new')
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
+          li.active
+            = Comable.t('admin.actions.new')
 
-  .row
-    section.col-sm-8
-      = render 'form'
-
-    nav.col-sm-4
+  .comable-page-body
+    = render 'form'
