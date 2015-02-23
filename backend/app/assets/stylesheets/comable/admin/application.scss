@@ -4,16 +4,52 @@
 //= require_self
 //= require_tree .
 
+// ---
+// variables
+// ---
+$comable-theme-bg: #7761a7;
+
+// sidebar
+$comable-sidebar-bg: #d9e0e7;
+$comable-sidebar-border: darken($comable-sidebar-bg, 10%);
+$comable-sidebar-color: #444;
+$comable-sidebar-link-color: $comable-sidebar-color;
+$comable-sidebar-link-hover-color: #000;
+$comable-sidebar-link-active-color: #000;
+$comable-sidebar-link-hover-bg: $comable-theme-bg;
+$comable-sidebar-link-active-bg: $comable-sidebar-link-hover-bg;
+$comable-sidebar-width: 280px;
+
+// bootstrap
+$navbar-default-color: #aaa;
+$navbar-default-bg: #272930;
+$navbar-default-bg: #373737;
+$navbar-default-link-color: $navbar-default-color;
+$navbar-default-link-hover-color: #fff;
+$navbar-default-link-active-color: $navbar-default-link-hover-color;
+$navbar-default-link-hover-bg: darken($navbar-default-bg, 10%);
+$navbar-default-link-active-bg: darken($navbar-default-bg, 10%);
+$navbar-default-brand-color: $navbar-default-link-hover-color;
+$navbar-default-brand-hover-color: $navbar-default-brand-color;
+$navbar-default-toggle-icon-bar-bg: $navbar-default-link-color;
+$navbar-default-toggle-hover-bg: $navbar-default-link-hover-bg;
+
+// $panel-default-heading-bg: $comable-sidebar-bg;
+// $panel-default-border: $comable-sidebar-border;
+
+// pace
+$comable-pace: #fff;
+
+
+// ---
+// imports
+// ---
+
 @import 'compass/utilities';
 @import 'compass/css3';
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
 @import 'font-awesome';
-
-// ---
-// variables
-// ---
-$comable-theme-bg: #7761a7;
 
 // ---
 // mixins
@@ -73,21 +109,6 @@ overflow: hidden;
 margin-right: auto;
 }
 
-.sidebar {
-  display: table-cell;
-  position: relative;
-  vertical-align: top;
-  padding-bottom: 200px;
-
-  & {
-    background: #272930;
-    width: 280px;
-    z-index: 2;
-  }
-  &.small {
-  }
-}
-
 .logo {
   padding: 0 20px;
   height: 64px;
@@ -109,25 +130,43 @@ margin-right: auto;
   }
 }
 
+.sidebar {
+  display: table-cell;
+  position: relative;
+  vertical-align: top;
+  padding-bottom: 200px;
+  border-right: 1px solid $comable-sidebar-border;
+
+  & {
+    background: $comable-sidebar-bg;
+    width: $comable-sidebar-width;
+    z-index: 300;
+  }
+}
+
 .vnavigation {
-  background-color: #272930;
+  width: $comable-sidebar-width;
+  background-color: $comable-sidebar-bg;
+  border-right: 1px solid $comable-sidebar-border;
+  position: fixed;
 
   a {
     &:link,
     &:visited,
     &:hover,
     &:active {
-      color: #aaa;
+      color: $comable-sidebar-link-color;
       text-decoration: none;
-
     }
-
 
     &:hover {
-      color: #fff;
+      color: $comable-sidebar-link-hover-color;
+    }
+
+    &:active {
+      color: $comable-sidebar-link-active-color;
     }
   }
-
 
   ul {
     margin: 0;
@@ -135,8 +174,9 @@ margin-right: auto;
   }
 
   & > ul {
+    margin: 5px 0;
+
     & > li > a {
-      border-top: 1px solid #2f3137;
       display: block;
       padding: 12px 25px;
       font-size: 13px;
@@ -222,17 +262,16 @@ margin-right: auto;
 // ---
 body {
   margin-top: $navbar-height;
-  background-color: #d9e0e7;
 }
 
 .navbar {
   @include box-shadow(rgba(0, 0, 0, 0.3) 0 0 2px);
 }
 
-.panel {
+.panel.panel-inverse {
   border: none;
 
-  &.panel-inverse > .panel-heading {
+  & > .panel-heading {
     background: #313239;
     color: #fff;
   }
@@ -252,44 +291,17 @@ body {
   }
 }
 
-.breadcrumb {
-  @extend .pull-right;
-  margin-bottom: 0;
-  padding-right: 0;
+.page-header > .breadcrumb {
+  margin: 0;
+  padding: 0;
   background-color: transparent;
 
   & > li {
-    float: right;
-  }
+    color: $text-color;
 
-  & > li + li:after {
-    content: '/';
-    padding: 0 5px;
-    color: darken(#d9e0e7, 20%);
-  }
-
-  & > li + li:before {
-    display: none;
-  }
-}
-
-button {
-  @extend .btn;
-}
-
-input[type="submit"] {
-  @extend .btn;
-}
-
-section {
-  input[type="submit"] {
-    @extend .btn-primary;
-  }
-}
-
-nav {
-  input[type="submit"] {
-    @extend .btn-default;
+    & > a {
+      color: darken($breadcrumb-color, 20%);
+    }
   }
 }
 
@@ -341,6 +353,7 @@ table {
 }
 
 legend {
+  margin-bottom: 0;
   border-bottom: 0;
 }
 
@@ -362,10 +375,6 @@ table > tbody > tr > td > ul {
   margin-bottom: 0;
 }
 
-main.container-fluid {
-  padding: 20px;
-}
-
 footer {
   @extend .text-muted;
   margin: 25px;
@@ -375,10 +384,6 @@ footer {
     content: '·';
     padding-right: 10px;
   }
-}
-
-hr {
-  border-color: darken(#d9e0e7, 5%);
 }
 
 // ---
@@ -597,6 +602,52 @@ ul.vakata-context.jstree-contextmenu {
 // pace
 // ---
 .pace .pace-progress {
-  background-color: $comable-theme-bg !important;
+  background-color: $comable-pace !important;
   @include transition-property(none);
+}
+
+
+// ---
+// new
+// ---
+.comable-page-heading {
+  margin: 0 -15px 25px;
+  padding: 25px 30px;
+  border-bottom: 5px solid #eee;
+
+  & > .page-header {
+    margin-bottom: 0;
+  }
+
+  & > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    & > li {
+      margin-left: 5px;
+    }
+  }
+}
+
+.comable-search {
+  margin: 0 30px 25px;
+}
+
+.comable-main-fixed-top {
+  padding-left: $comable-sidebar-width;
+  width: 100%;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  z-index: 200;
+
+  & > .comable-page-heading {
+    margin: 0;
+  }
+
+  & + .comable-page-body {
+    // 89px = comable-page-heding-height
+    padding-top: 89px + 20px;
+  }
 }

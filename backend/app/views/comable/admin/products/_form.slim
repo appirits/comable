@@ -1,93 +1,118 @@
 - url = comable.admin_products_path if @product.new_record?
 - url ||= comable.admin_product_path(@product)
 = form_for @product, url: url, html: { multipart: true } do |f|
-  .panel.panel-inverse
-    .panel-heading
-      .panel-title
+  fieldset
+    .col-sm-3
+      legend
         = Comable.t('admin.general')
-    .panel-body
-      .form-horizontal
-        .form-group
-          .col-sm-3.control-label
-            = f.label :code
-          .col-sm-6
-            = f.text_field :code
+      .help-block
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :name
-          .col-sm-6
-            = f.text_field :name
+    .col-sm-9
+      .form-group
+        = f.label :code
+        = f.text_field :code
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :caption
-          .col-sm-6
-            = f.text_field :caption
+      .form-group
+        = f.label :name
+        = f.text_field :name
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :price
-          .col-sm-6
-            = f.text_field :price
+      .form-group
+        = f.label :caption
+        = f.text_field :caption
 
-        = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all'
-        = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all'
-        = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js'
+      .form-group
+        = f.label :price
+        = f.text_field :price
 
-        / TODO: Refactoring
-        javascript:
-          comable_tagit_available_tags = #{raw Comable::Category.all.map(&:path).map { |path| path.map(&:name).join(' > ') }.sort.to_json};
-        coffee:
-          $(document).ready(->
-            $("#comable-tagit").tagit({
-              fieldName: 'product[category_path_names][]',
-              availableTags: comable_tagit_available_tags,
-              autocomplete: { delay: 0, minLength: 0 },
-              showAutocompleteOnFocus: true,
-              removeConfirmation: true,
-              # Only allow available tags
-              beforeTagAdded: (event, ui) -> (comable_tagit_available_tags.indexOf(ui.tagLabel) != -1)
-            })
-          )
+      = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all'
+      = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all'
+      = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js'
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :categories
-          .col-sm-6
-            ul#comable-tagit
-              - @product.categories.each do |category|
-                li
-                  = category.path.map(&:name).join(' > ')
+      / TODO: Refactoring
+      javascript:
+        comable_tagit_available_tags = #{raw Comable::Category.all.map(&:path).map { |path| path.map(&:name).join(' > ') }.sort.to_json};
+      coffee:
+        $(document).ready(->
+          $("#comable-tagit").tagit({
+            fieldName: 'product[category_path_names][]',
+            availableTags: comable_tagit_available_tags,
+            autocomplete: { delay: 0, minLength: 0 },
+            showAutocompleteOnFocus: true,
+            removeConfirmation: true,
+            # Only allow available tags
+            beforeTagAdded: (event, ui) -> (comable_tagit_available_tags.indexOf(ui.tagLabel) != -1)
+          })
+        )
 
-        fieldset
-          legend.text-center.text-muted
-            | SKU
+      .form-group
+        = f.label :categories
+        ul#comable-tagit
+          - @product.categories.each do |category|
+            li
+              = category.path.map(&:name).join(' > ')
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :sku_h_item_name
-            .col-sm-6
-              = f.text_field :sku_h_item_name
-              span.help-block
-                = Comable.t('admin.please_fill_when_using_sku')
+  hr
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :sku_v_item_name
-            .col-sm-6
-              = f.text_field :sku_v_item_name
+  fieldset
+    .col-sm-3
+      legend
+        | SKU
+      .help-block
+        = Comable.t('admin.please_fill_when_using_sku')
 
-    .panel-footer
-      = link_to Comable.t('admin.actions.cancel'), comable.admin_products_path, class: 'btn btn-default'
-      .pull-right
-        = f.submit
+    .col-sm-9
+      .form-group
+        = f.label :sku_h_item_name
+        = f.text_field :sku_h_item_name
 
-  .panel.panel-inverse
-    .panel-heading
-      .panel-title
+      .form-group
+        = f.label :sku_v_item_name
+        = f.text_field :sku_v_item_name
+
+      table.table.table-striped
+        thead
+          th
+            = @product.stocks.human_attribute_name(:code)
+          th
+            = @product.stocks.human_attribute_name(:quantity)
+          - if @product.sku?
+            - if @product.sku_h?
+              th
+                = @product.stocks.human_attribute_name(:sku_h_choice_name)
+            - if @product.sku_v?
+              th
+                = @product.stocks.human_attribute_name(:sku_v_choice_name)
+          th
+            = Comable.t('admin.operation')
+        tbody
+          - @product.stocks.each do |stock|
+            tr
+              td
+                = stock.code
+              td
+                strong class="#{(stock.quantity <= 0) ? 'text-danger' : (stock.quantity <= 10) ? 'text-warning' : 'text-success'}"
+                  = number_with_delimiter stock.quantity
+              - if @product.sku?
+                - if @product.sku_h?
+                  td
+                    = stock.sku_h_choice_name
+                - if @product.sku_v?
+                  td
+                    = stock.sku_v_choice_name
+              td
+                = link_to comable.admin_product_stock_path(@product, stock), class: 'btn btn-default'
+                  i.fa.fa-edit>
+                  = Comable.t('admin.actions.edit')
+
+  hr
+
+  fieldset
+    .col-sm-3
+      legend
         = Comable.t('admin.images')
-    .panel-body
+      .help-block
+
+    .col-sm-9
       - images = @product.images + [@product.images.build]
       - main_image = images.first
       - sub_images = images - [main_image]
@@ -123,8 +148,3 @@
                         label.remove
                           span> = ff.check_box :_destroy
                           span> = Comable.t('admin.actions.destroy')
-
-    .panel-footer
-      = link_to Comable.t('admin.actions.cancel'), comable.admin_products_path, class: 'btn btn-default'
-      .pull-right
-        = f.submit

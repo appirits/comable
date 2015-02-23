@@ -1,22 +1,47 @@
-#comable-product
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li.active
+#comable-product.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li
+        .btn-group role="group"
+          = link_to_previous_page @products, '<', class: 'btn btn-default' do
+            .btn.btn-default disabled="disabled"
+              | <
+          = link_to_next_page @products, '>', class: 'btn btn-default' do
+            .btn.btn-default disabled="disabled"
+              | >
+      li
+        = link_to comable.root_path do
+          = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path, class: 'btn btn-default'
+
+    h1.page-header
       = Comable.t('admin.nav.product')
+      small<
+        = @products.total_count
+        = Comable.t('admin.results')
 
-  h1.page-header
-    = Comable.t('admin.nav.product')
-    small<
-      = @products.total_count
-      = Comable.t('admin.results')
+  .comable-page-body
+    .comable-search
+      = search_form_for @q, url: comable.admin_products_path do |f|
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default.dropdown-toggle type="button" data-toggle="dropdown"
+              i.fa.fa-search
+              span.caret<
+            ul.dropdown-menu role="menu"
+              li
+                a href="#"
+                 | Action
+              li
+                a href="#"
+                  | Another action
+              li
+                a href="#"
+                  | Something else here
+          = f.text_field :code_or_name_cont, class: 'form-control'
+          span.input-group-btn
+            = f.submit Comable.t('admin.search'), class: 'btn btn-default'
 
-  .row
-    section.col-sm-8
-      .panel.panel-inverse
-        .panel-heading
-          .panel-title
-            = Comable.t('admin.index')
+    section
         - if @products.empty?
           .panel-body
             = Comable.t('admin.not_found')
@@ -56,21 +81,6 @@
       #comable-affix
         .panel
           .list-group
-            = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path, class: 'list-group-item'
 
         .panel
           .panel-body
-            = search_form_for @q, url: comable.admin_products_path do |f|
-              .form-horizontal
-                .form-group
-                  .col-sm-3.control-label
-                    = f.label :code
-                  .col-sm-9
-                    = f.text_field :code_cont
-                .form-group
-                  .col-sm-3.control-label
-                    = f.label :name
-                  .col-sm-9
-                    = f.text_field :name_cont
-                .text-right
-                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'

@@ -8,11 +8,10 @@ html
     = javascript_include_tag 'comable/admin/application'
     = csrf_meta_tags
   body
-    header.header.navbar.navbar-default.navbar-fixed-top
+    header.navbar.navbar-default.navbar-fixed-top
       .container-fluid
         .navbar-header
           = link_to comable.admin_root_path, class: 'navbar-brand' do
-            span.navbar-logo
             | Comable
 
           button.navbar-toggle type="button" data-click="sidebar-toggled"
@@ -25,7 +24,7 @@ html
             = link_to comable.root_path do
               = Comable.t('admin.back_to_store')
           li.dropdown.navbar-user
-            a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+            a href="#" class="dropdown-toggle" data-toggle="dropdown"
               span.hidden-xs
                 = current_customer.email
               span.caret<
