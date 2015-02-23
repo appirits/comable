@@ -10,19 +10,24 @@
 $comable-theme-bg: #7761a7;
 
 // sidebar
+$comable-sidebar-width: 280px;
 $comable-sidebar-bg: #d9e0e7;
-$comable-sidebar-border: darken($comable-sidebar-bg, 10%);
 $comable-sidebar-color: #444;
+$comable-sidebar-border: darken($comable-sidebar-bg, 10%);
 $comable-sidebar-link-color: $comable-sidebar-color;
 $comable-sidebar-link-hover-color: #000;
-$comable-sidebar-link-active-color: #000;
-$comable-sidebar-link-hover-bg: $comable-theme-bg;
-$comable-sidebar-link-active-bg: $comable-sidebar-link-hover-bg;
-$comable-sidebar-width: 280px;
+$comable-sidebar-link-active-color: #fff;
+$comable-sidebar-link-hover-bg: darken($comable-sidebar-bg, 10%);
+$comable-sidebar-link-active-bg: $comable-theme-bg;
+$comable-sidebar-darken-bg: darken($comable-sidebar-bg, 15%);
+$comable-sidebar-darken-hover-bg: rgba(0, 0, 0, 0.2);
+$comable-sidebar-darken-active-bg: $comable-sidebar-darken-hover-bg;
+$comable-sidebar-darken-color: $comable-sidebar-color;
+$comable-sidebar-darken-hover-color: #fff;
+$comable-sidebar-darken-active-color: $comable-sidebar-darken-hover-color;
 
 // bootstrap
 $navbar-default-color: #aaa;
-$navbar-default-bg: #272930;
 $navbar-default-bg: #373737;
 $navbar-default-link-color: $navbar-default-color;
 $navbar-default-link-hover-color: #fff;
@@ -88,9 +93,9 @@ body {
   height: 100%;
 
   body.animated & {
+    @include transition(margin-left 600ms ease, opacity 600ms);
     opacity: 0;
     margin-left: -20px;
-    transition: margin-left 600ms ease, opacity 600ms;
   }
 }
 
@@ -162,10 +167,6 @@ margin-right: auto;
     &:hover {
       color: $comable-sidebar-link-hover-color;
     }
-
-    &:active {
-      color: $comable-sidebar-link-active-color;
-    }
   }
 
   ul {
@@ -182,19 +183,12 @@ margin-right: auto;
       font-size: 13px;
       font-weight: 400;
       white-space: nowrap;
-      @include transition(color 250ms ease);
-
       border-left: 2px solid transparent;
     }
 
     &> li.active > a {
-      color: #fff;
-      background-color: #7761a7;
-
-      &:hover {
-        background-color: rgba(#7761a7, 0.9);
-        @include transition(background-color 250ms ease);
-      }
+      color: $comable-sidebar-link-active-color;
+      background-color: $comable-sidebar-link-active-bg;
 
       i {
         text-align: center;
@@ -213,8 +207,8 @@ margin-right: auto;
 
   & > ul > li > a {
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
-      @include transition(background-color 250ms ease);
+      @include transition(color 250ms ease, background-color 250ms ease);
+      background-color: $comable-sidebar-link-hover-bg;
     }
 
     i {
@@ -232,27 +226,32 @@ margin-right: auto;
     }
 
     & > ul {
-      padding: 14px 0;
-      background-color: #1d1f26;
       display: none;
+      padding: 14px 0;
+      background-color: $comable-sidebar-darken-bg;
 
       a {
         display: block;
         padding: 7px 42px;
 
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.2);
-          @include transition(background-color 250ms ease);
+        &:link, &:visited, &:hover, &:active {
+          color: $comable-sidebar-darken-color;
         }
+
+        &:hover {
+          @include transition(color 250ms ease, background-color 250ms ease);
+          color: $comable-sidebar-darken-hover-color;
+          background-color: $comable-sidebar-darken-hover-bg;
+        }
+
         border-left: 2px solid transparent;
       }
 
       .active > a {
-        color: #fff;
-        border-left: 2px solid #7761a7;
-        background-color: rgba(0, 0, 0, 0.2);
+        color: $comable-sidebar-darken-active-color;
+        background-color: $comable-sidebar-darken-active-bg;
+        border-left: 2px solid $comable-theme-bg;
       }
-
     }
   }
 }
@@ -266,6 +265,10 @@ body {
 
 .navbar {
   @include box-shadow(rgba(0, 0, 0, 0.3) 0 0 2px);
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  @include transition(color 250ms ease, background-color 250ms ease);
 }
 
 .panel.panel-inverse {
@@ -602,8 +605,8 @@ ul.vakata-context.jstree-contextmenu {
 // pace
 // ---
 .pace .pace-progress {
-  background-color: $comable-pace !important;
   @include transition-property(none);
+  background-color: $comable-pace !important;
 }
 
 
