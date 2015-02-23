@@ -91,6 +91,9 @@
               li = @order.bill_address.detail
               li = "#{@order.bill_address.class.human_attribute_name(:phone_number)}: #{@order.bill_address.phone_number}"
 
+          .panel-footer
+            = render 'google_map', id: 'comable-google-map-for-bill-address', address: @order.bill_address
+
       - if @order.ship_address
         .panel.panel-default
           .panel-heading
@@ -104,6 +107,9 @@
               li = @order.ship_address.city
               li = @order.ship_address.detail
               li = "#{@order.ship_address.class.human_attribute_name(:phone_number)}: #{@order.ship_address.phone_number}"
+
+          .panel-footer
+            = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address
 
       - if @order.shipment_method
         .panel.panel-default

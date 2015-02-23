@@ -31,5 +31,9 @@ module Comable
     def full_name
       "#{family_name} #{first_name}"
     end
+
+    def full_address
+      "#{state_name} #{city} #{detail}"
+    end
   end
 end

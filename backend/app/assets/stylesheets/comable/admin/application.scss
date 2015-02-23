@@ -651,3 +651,17 @@ ul.vakata-context.jstree-contextmenu {
     padding-top: 89px + 20px;
   }
 }
+
+.comable-map {
+  height: 160px;
+
+  .panel-footer > & {
+    margin: -10px -15px;
+  }
+
+  .comable-google-map {
+    width: 100%;
+    height: 100%;
+    padding: $padding-base-vertical $padding-base-horizontal;
+  }
+}
