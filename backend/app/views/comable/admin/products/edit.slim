@@ -7,12 +7,15 @@
             i.fa.fa-bars
           ul.dropdown-menu.dropdown-menu-right
             li
-              = link_to Comable.t('admin.nav.products.stock'), comable.admin_product_stocks_path(@product)
-            li.divider
-            li
               = link_to comable.product_path(@product) do
                 span.fa.fa-external-link>
                 = Comable.t('admin.check_this_product_in_frontend')
+            - if @product.sku?
+              li.divider
+              li.dropdown-header
+                = Comable.t('admin.nav.stock')
+              li
+                = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
         li
           = link_to Comable.t('admin.actions.save'), '#', onclick: '$("form").submit();', class: 'btn btn-primary'
 

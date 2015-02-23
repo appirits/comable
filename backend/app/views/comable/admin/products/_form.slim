@@ -56,53 +56,58 @@
   fieldset
     .col-sm-3
       legend
-        | SKU
+        = Comable.t('admin.stocks')
       .help-block
-        = Comable.t('admin.please_fill_when_using_sku')
+        - if @product.sku?
+          = Comable.t('admin.link_to_add_new_stock')
+          = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
 
     .col-sm-9
+      - if @product.stocks.any?
+        table.table.table-striped
+          thead
+            th
+              = @product.stocks.human_attribute_name(:code)
+            th
+              = @product.stocks.human_attribute_name(:quantity)
+            - if @product.sku?
+              - if @product.sku_h?
+                th
+                  = @product.sku_h_item_name
+              - if @product.sku_v?
+                th
+                  = @product.sku_v_item_name
+            th
+              = Comable.t('admin.operation')
+          tbody
+            - @product.stocks.each do |stock|
+              tr
+                td
+                  = stock.code
+                td
+                  strong class="#{(stock.quantity <= 0) ? 'text-danger' : (stock.quantity <= 10) ? 'text-warning' : 'text-success'}"
+                    = number_with_delimiter stock.quantity
+                - if @product.sku?
+                  - if @product.sku_h?
+                    td
+                      = stock.sku_h_choice_name
+                  - if @product.sku_v?
+                    td
+                      = stock.sku_v_choice_name
+                td
+                  = link_to comable.admin_stock_path(stock), class: 'btn btn-default'
+                    i.fa.fa-edit>
+                    = Comable.t('admin.actions.edit')
+
       .form-group
         = f.label :sku_h_item_name
         = f.text_field :sku_h_item_name
+        .help-block
+          = Comable.t('admin.please_fill_when_using_sku')
 
       .form-group
         = f.label :sku_v_item_name
         = f.text_field :sku_v_item_name
-
-      table.table.table-striped
-        thead
-          th
-            = @product.stocks.human_attribute_name(:code)
-          th
-            = @product.stocks.human_attribute_name(:quantity)
-          - if @product.sku?
-            - if @product.sku_h?
-              th
-                = @product.stocks.human_attribute_name(:sku_h_choice_name)
-            - if @product.sku_v?
-              th
-                = @product.stocks.human_attribute_name(:sku_v_choice_name)
-          th
-            = Comable.t('admin.operation')
-        tbody
-          - @product.stocks.each do |stock|
-            tr
-              td
-                = stock.code
-              td
-                strong class="#{(stock.quantity <= 0) ? 'text-danger' : (stock.quantity <= 10) ? 'text-warning' : 'text-success'}"
-                  = number_with_delimiter stock.quantity
-              - if @product.sku?
-                - if @product.sku_h?
-                  td
-                    = stock.sku_h_choice_name
-                - if @product.sku_v?
-                  td
-                    = stock.sku_v_choice_name
-              td
-                = link_to comable.admin_product_stock_path(@product, stock), class: 'btn btn-default'
-                  i.fa.fa-edit>
-                  = Comable.t('admin.actions.edit')
 
   hr
 

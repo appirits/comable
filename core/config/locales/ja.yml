@@ -105,6 +105,7 @@ ja:
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
       you_can_right_click: 右クリックでメニューを表示できます。
       link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
+      link_to_add_new_stock: '次のリンクから新しい在庫を追加できます: '
       check_this_product_in_frontend: 'この商品をフロントで確認する'
       note: 'NOTE:'
       results: 件
@@ -119,10 +120,12 @@ ja:
       edit_profile: プロフィールを編集
       please_fill_when_using_sku: SKUを利用する場合はこの項目を記入してください。
       operation: 操作
+      stocks: 在庫
       nav:
         dashboard: ダッシュボード
         order: 注文管理
         product: 商品管理
+        stock: 在庫管理
         category: カテゴリ
         customer: ユーザー
         general_settings: 一般設定
@@ -131,7 +134,6 @@ ja:
         payment_method: 決済管理
         products:
           detail: 商品詳細
-          stock: 在庫管理
         orders:
           detail: 注文明細
           cart: カート情報

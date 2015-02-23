@@ -6,12 +6,12 @@ describe Comable::Admin::StocksController do
   let(:valid_attributes) { FactoryGirl.attributes_for(:stock) }
   let(:invalid_attributes) { valid_attributes.merge(code: 'x' * 1024) }
 
-  let!(:product) { FactoryGirl.create(:product) }
+  let(:product) { FactoryGirl.create(:product) }
 
   describe 'GET index' do
     it 'assigns all stocks as @stocks' do
       stock = FactoryGirl.create(:stock, product: product)
-      get :index, product_id: product.id
+      get :index
       expect(assigns(:stocks)).to eq([stock])
     end
   end
@@ -19,7 +19,7 @@ describe Comable::Admin::StocksController do
   describe 'GET show' do
     it 'assigns the requested stock as @stock' do
       stock = FactoryGirl.create(:stock, product: product)
-      get :show, product_id: product.id, id: stock.to_param
+      get :show, id: stock.to_param
       expect(assigns(:stock)).to eq(stock)
     end
   end
@@ -34,7 +34,7 @@ describe Comable::Admin::StocksController do
   describe 'GET edit' do
     it 'assigns the requested stock as @stock' do
       stock = FactoryGirl.create(:stock, product: product)
-      get :edit, product_id: product.id, id: stock.to_param
+      get :edit, id: stock.to_param
       expect(assigns(:stock)).to eq(stock)
     end
   end
@@ -54,7 +54,7 @@ describe Comable::Admin::StocksController do
       it 'redirects to the created stock' do
         post :create, product_id: product.id, stock: valid_attributes
         stock = Comable::Stock.last
-        expect(response).to redirect_to([comable, :admin, stock.product, stock])
+        expect(response).to redirect_to([comable, :admin, stock])
       end
     end
 
@@ -78,30 +78,30 @@ describe Comable::Admin::StocksController do
       let(:new_attributes) { { code: "new_#{stock.code}" } }
 
       it 'updates the requested stock' do
-        put :update, product_id: product.id, id: stock.to_param, stock: new_attributes
+        put :update, id: stock.to_param, stock: new_attributes
         stock.reload
         expect(stock).to have_attributes(new_attributes)
       end
 
       it 'assigns the requested stock as @stock' do
-        put :update, product_id: product.id, id: stock.to_param, stock: valid_attributes
+        put :update, id: stock.to_param, stock: valid_attributes
         expect(assigns(:stock)).to eq(stock)
       end
 
       it 'redirects to the stock' do
-        put :update, product_id: product.id, id: stock.to_param, stock: valid_attributes
-        expect(response).to redirect_to([comable, :admin, stock.product, stock])
+        put :update, id: stock.to_param, stock: valid_attributes
+        expect(response).to redirect_to([comable, :admin, stock])
       end
     end
 
     describe 'with invalid params' do
       it 'assigns the stock as @stock' do
-        put :update, product_id: product.id, id: stock.to_param, stock: invalid_attributes
+        put :update, id: stock.to_param, stock: invalid_attributes
         expect(assigns(:stock)).to eq(stock)
       end
 
       it "re-renders the 'edit' template" do
-        put :update, product_id: product.id, id: stock.to_param, stock: invalid_attributes
+        put :update, id: stock.to_param, stock: invalid_attributes
         expect(response).to render_template(:edit)
       end
     end
@@ -110,13 +110,13 @@ describe Comable::Admin::StocksController do
   describe 'DELETE destroy' do
     it 'destroys the requested stock' do
       stock = FactoryGirl.create(:stock, product: product)
-      expect { delete :destroy, product_id: product.id, id: stock.to_param }.to change(Comable::Stock, :count).by(-1)
+      expect { delete :destroy, id: stock.to_param }.to change(Comable::Stock, :count).by(-1)
     end
 
     it 'redirects to the stocks list' do
       stock = FactoryGirl.create(:stock, product: product)
-      delete :destroy, product_id: product.id, id: stock.to_param
-      expect(response).to redirect_to([comable, :admin, product, :stocks])
+      delete :destroy, id: stock.to_param
+      expect(response).to redirect_to([comable, :admin, :stocks])
     end
   end
 end

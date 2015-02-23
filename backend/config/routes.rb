@@ -7,6 +7,7 @@ Comable::Core::Engine.routes.draw do
     resources :products do
       resources :stocks
     end
+    resources :stocks
 
     resources :categories
     resources :orders

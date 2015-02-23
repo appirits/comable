@@ -52,13 +52,17 @@ html
               = link_to comable.admin_orders_path do
                 i.fa.fa-shopping-cart
                 = Comable.t('admin.nav.order')
-            li class="#{'active' if controller_name == 'products' || controller_name == 'stocks'}"
+            li class="#{'active' if controller_name == 'products'}"
               = link_to comable.admin_products_path do
-                i.fa.fa-cubes
+                i.fa.fa-cube
                 = Comable.t('admin.nav.product')
+            li class="#{'active' if controller_name == 'stocks'}"
+              = link_to comable.admin_stocks_path do
+                i.fa.fa-archive
+                = Comable.t('admin.nav.stock')
             li class="#{'active' if controller_name == 'categories'}"
               = link_to comable.admin_categories_path do
-                i.fa.fa-tags
+                i.fa.fa-tag
                 = Comable.t('admin.nav.category')
             /
               li

@@ -1,17 +1,16 @@
-#comable-product
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li.active
-      = link_to Comable.t('admin.nav.product'), comable.admin_products_path
-    li.active
-      = Comable.t('admin.actions.new')
+#comable-product.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to Comable.t('admin.actions.save'), '#', onclick: '$("form").submit();', class: 'btn btn-primary'
 
-  h1.page-header
-    = Comable.t('admin.actions.new')
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.product'), comable.admin_products_path
+          li.active
+            = Comable.t('admin.actions.new')
 
-  .row
-    section.col-sm-8
-      = render 'form'
-
-    nav.col-sm-4
+  .comable-page-body
+    = render 'form'
