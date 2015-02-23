@@ -121,6 +121,7 @@ ja:
       please_fill_when_using_sku: SKUを利用する場合はこの項目を記入してください。
       operation: 操作
       stocks: 在庫
+      clear_search_conditions: 検索条件をクリア
       nav:
         dashboard: ダッシュボード
         order: 注文管理
