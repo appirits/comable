@@ -1,57 +1,25 @@
-#comable-order
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li
-      = link_to Comable.t('admin.nav.order'), comable.admin_orders_path
-    li.active
-      = @order.code
+#comable-order.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li.btn-group
+        = link_to Comable.t('admin.nav.orders.customer'), comable.admin_customer_path(@order.customer), class: 'btn btn-default'
+        / TODO: Comment out after implemented.
+        / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'btn btn-default'
+        / = link_to Comable.t('admin.nav.orders.shipment'), '#', class: 'btn btn-default'
+        / = link_to Comable.t('admin.nav.orders.payment'), '#', class: 'btn btn-default'
 
-  h1.page-header
-    = @order.code
-    small<
-      = Comable.t('honorific', name: @order.bill_full_name)
+    h1.page-header
+      ol.breadcrumb
+        li>
+          = link_to Comable.t('admin.nav.order'), comable.admin_orders_path
+        li.active
+          = @order.code
+          small< data-toggle="tooltip" data-placement="right" title="#{l @order.completed_at}"
+            = time_ago_in_words @order.completed_at
 
-  .row
+  .comable-page-body.row
     section.col-sm-8
-      .panel.panel-inverse
-        .panel-heading
-          .panel-title
-            = Comable.t('admin.nav.orders.detail')
-        .panel-body
-          dl.dl-horizontal
-            dt
-              = @order.class.human_attribute_name(:code)
-            dd
-              = @order.code
-            dt
-              = @order.class.human_attribute_name(:completed_at)
-            dd
-              = l @order.completed_at
-            dt
-              = @order.class.human_attribute_name(:bill_address)
-            dd
-              ul.list-unstyled
-                li = @order.bill_address.zip_code
-                li = @order.bill_address.full_name
-                li = @order.bill_address.state_name
-                li = @order.bill_address.city
-                li = @order.bill_address.detail
-                li = "#{@order.bill_address.class.human_attribute_name(:phone_number)}: #{@order.bill_address.phone_number}"
-            dt
-              = @order.class.human_attribute_name(:email)
-            dd
-              = @order.email
-            dt
-              = @order.class.human_attribute_name(:shipment_method)
-            dd
-              = @order.shipment_method.name
-            dt
-              = @order.class.human_attribute_name(:payment_method)
-            dd
-              = @order.payment_method.name
-
-      .panel.panel-inverse
+      .panel.panel-default
         table.table
           thead
             tr
@@ -95,22 +63,60 @@
                 = number_to_currency @order.total_price
 
     nav.col-sm-4
-      #comable-affix data-spy="affix"
-        .panel
+      .panel.panel-default
+        .panel-body
+          h3.text-center
+            small>
+              = @order.class.human_attribute_name(:total_price)
+            = number_to_currency @order.total_price
+
+      - if @order.bill_address
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = @order.class.human_attribute_name(:bill_address)
           .panel-body
-            h3.text-center
-              small>
-                = @order.class.human_attribute_name(:total_price)
-              = number_to_currency @order.total_price
+            .pull-right
+              .comable-avatar
+                = mail_to @order.email, class: 'thumbnail' do
+                  = gravatar_tag @order.email, width: '100%'
 
-        .panel
-          .list-group
-            - if @order.customer
-              = link_to Comable.t('admin.nav.orders.customer'), comable.admin_customer_path(@order.customer), class: 'list-group-item'
-            - else
-              = link_to Comable.t('admin.nav.orders.customer'), '#', class: 'list-group-item disabled'
+            ul.list-unstyled
+              li = @order.bill_address.zip_code
+              li
+                strong>
+                  = @order.bill_address.full_name
+              li = @order.bill_address.state_name
+              li = @order.bill_address.city
+              li = @order.bill_address.detail
+              li = "#{@order.bill_address.class.human_attribute_name(:phone_number)}: #{@order.bill_address.phone_number}"
 
-            / TODO: Comment out after implemented.
-            / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'list-group-item'
-            / = link_to Comable.t('admin.nav.orders.shipment'), '#', class: 'list-group-item'
-            / = link_to Comable.t('admin.nav.orders.payment'), '#', class: 'list-group-item'
+      - if @order.ship_address
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = @order.class.human_attribute_name(:ship_address)
+          .panel-body
+            ul.list-unstyled
+              li = @order.ship_address.zip_code
+              li = @order.ship_address.full_name
+              li = @order.ship_address.state_name
+              li = @order.ship_address.city
+              li = @order.ship_address.detail
+              li = "#{@order.ship_address.class.human_attribute_name(:phone_number)}: #{@order.ship_address.phone_number}"
+
+      - if @order.shipment_method
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = @order.class.human_attribute_name(:shipment_method)
+          .panel-body
+            = @order.shipment_method.name
+
+      - if @order.payment_method
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = @order.class.human_attribute_name(:payment_method)
+          .panel-body
+            = @order.payment_method.name

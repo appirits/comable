@@ -84,4 +84,6 @@ $( ->
     $(window).on('resize', resize_comable_affix)
 
   notify_flash_message()
+
+  $('[data-toggle="tooltip"]').tooltip()
 )
