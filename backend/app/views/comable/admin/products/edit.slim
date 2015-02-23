@@ -17,7 +17,7 @@
               li
                 = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
         li
-          = link_to Comable.t('admin.actions.save'), '#', onclick: '$("form").submit();', class: 'btn btn-primary'
+          = link_to_save
 
       h1.page-header
         ol.breadcrumb
