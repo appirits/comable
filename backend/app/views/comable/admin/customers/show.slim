@@ -1,93 +1,88 @@
-#comable-customer
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li
-      = link_to Comable.t('admin.nav.customer'), comable.admin_customers_path
-    li.active
-      = @customer.human_id
+#comable-customer.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li.btn-group
+        = link_to comable.edit_admin_customer_path(@customer), class: 'btn btn-default' do
+          span.fa.fa-edit>
+          = Comable.t('admin.actions.edit')
+        = link_to Comable.t('admin.nav.order'), comable.admin_orders_path(q: { customer_id_eq: @customer.id }), class: 'btn btn-default'
+      li
+        / TODO: Comment out after implemented.
+        / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'btn btn-default'
 
-  h1.page-header
-    = @customer.human_id
-    small<
-      = Comable.t('honorific', name: @customer.bill_full_name)
+    h1.page-header
+      ol.breadcrumb
+        li>
+          = link_to Comable.t('admin.nav.customer'), comable.admin_customers_path
+        li.active
+          = @customer.human_id
+          - if @customer.bill_full_name
+            small<
+              = Comable.t('honorific', name: @customer.bill_full_name)
 
-  .row
-    section.col-sm-8
-      .panel.panel-inverse
-        .panel-heading
-          .panel-title
-            = Comable.t('admin.nav.customers.detail')
-        .panel-body
-          dl.dl-horizontal
-            dt
-              = @customer.class.human_attribute_name(:role)
-            dd
-              = @customer.role.text
-            dt
-              = @customer.class.human_attribute_name(:email)
-            dd
-              = @customer.email
-            dt
-              = @customer.class.human_attribute_name(:bill_address)
-            dd
-              - if @customer.bill_address
-                ul.list-unstyled
-                  li = @customer.bill_address.zip_code
-                  li = @customer.bill_address.full_name
-                  li = @customer.bill_address.state_name
-                  li = @customer.bill_address.city
-                  li = @customer.bill_address.detail
-                  li = "#{@customer.bill_address.class.human_attribute_name(:phone_number)}: #{@customer.bill_address.phone_number}"
-        .panel-footer.text-right
-          = link_to comable.edit_admin_customer_path(@customer), class: 'btn btn-default' do
-            span.fa.fa-edit>
-            = Comable.t('admin.actions.edit')
+  .comable-page-body
+    section
+      dl.dl-horizontal
+        dt
+          = @customer.class.human_attribute_name(:role)
+        dd
+          = @customer.role.text
+        dt
+          = @customer.class.human_attribute_name(:email)
+        dd
+          = @customer.email
+        - if @customer.bill_address
+          dt
+            = @customer.class.human_attribute_name(:bill_address)
+          dd
+            ul.list-unstyled
+              li = @customer.bill_address.zip_code
+              li = @customer.bill_address.full_name
+              li = @customer.bill_address.state_name
+              li = @customer.bill_address.city
+              li = @customer.bill_address.detail
+              li = "#{@customer.bill_address.class.human_attribute_name(:phone_number)}: #{@customer.bill_address.phone_number}"
 
-      .panel.panel-inverse
-        .panel-heading
-          .panel-title
-            = Comable.t('admin.nav.customers.new_orders', count: 5)
-        table.table
-          thead
-            tr
-              th
-                = @customer.orders.klass.human_attribute_name(:code)
-              th
-                = @customer.orders.klass.human_attribute_name(:state)
-              th
-                = @customer.orders.klass.human_attribute_name(:bill_full_name)
-              th
-                = @customer.orders.klass.human_attribute_name(:order_details)
-              th
-                = @customer.orders.klass.human_attribute_name(:total_price)
-              th
-                = @customer.orders.klass.human_attribute_name(:completed_at)
-          tbody
-            - @customer.orders.limit(5).each do |order|
+    - if @customer.orders.any?
+      section
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.nav.customers.new_orders', count: 5)
+
+          table.table
+            thead
               tr
-                td
-                  = link_to order.code, comable.admin_order_path(order)
-                td
-                  = order.human_state_name
-                td
-                  = order.bill_full_name
-                td
-                  ul.list-unstyled
-                    - order.order_details.each do |order_detail|
-                      li
-                        | #{order_detail.name_with_sku} x #{order_detail.quantity}
-                td
-                  = number_to_currency order.total_price
-                td
-                  = l order.completed_at
-        .panel-footer.text-right
-          = link_to Comable.t('admin.more'), comable.admin_orders_path(search_customer_id: @customer.id), class: 'btn btn-default'
+                th
+                  = @customer.orders.klass.human_attribute_name(:code)
+                th
+                  = @customer.orders.klass.human_attribute_name(:state)
+                th
+                  = @customer.orders.klass.human_attribute_name(:bill_full_name)
+                th
+                  = @customer.orders.klass.human_attribute_name(:order_details)
+                th
+                  = @customer.orders.klass.human_attribute_name(:total_price)
+                th
+                  = @customer.orders.klass.human_attribute_name(:completed_at)
+            tbody
+              - @customer.orders.limit(5).each do |order|
+                tr
+                  td
+                    = link_to order.code, comable.admin_order_path(order)
+                  td
+                    = order.human_state_name
+                  td
+                    = order.bill_full_name
+                  td
+                    ul.list-unstyled
+                      - order.order_details.each do |order_detail|
+                        li
+                          | #{order_detail.name_with_sku} x #{order_detail.quantity}
+                  td
+                    = number_to_currency order.total_price
+                  td
+                    = l order.completed_at
 
-    nav.col-sm-4
-      #comable-affix data-spy="affix"
-        .panel
-          .list-group
-            = link_to Comable.t('admin.nav.order'), comable.admin_orders_path(q: { customer_id_eq: @customer.id }), class: 'list-group-item'
-            / TODO: Comment out after implemented.
-            / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'list-group-item'
+          .panel-footer.text-right
+            = link_to Comable.t('admin.more'), comable.admin_orders_path(search_customer_id: @customer.id), class: 'btn btn-default'

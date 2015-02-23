@@ -1,68 +1,76 @@
-#comable-customer
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li.active
+#comable-customer.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li
+        .btn-group role="group"
+          = link_to_previous_page @customers, '<', class: 'btn btn-default' do
+            .btn.btn-default disabled="disabled"
+              | <
+          = link_to_next_page @customers, '>', class: 'btn btn-default' do
+            .btn.btn-default disabled="disabled"
+              | >
+
+    h1.page-header
       = Comable.t('admin.nav.customer')
+      small<
+        = @customers.total_count
+        = Comable.t('admin.results')
 
-  h1.page-header
-    = Comable.t('admin.nav.customer')
-    small<
-      = @customers.total_count
-      = Comable.t('admin.results')
+  .comable-page-body
+    .comable-search
+      = search_form_for @q, url: comable.admin_customers_path do |f|
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default.dropdown-toggle type="button" data-toggle="dropdown"
+              i.fa.fa-search
+              span.caret<
+            ul.dropdown-menu role="menu"
+              li
+                a href="#"
+                 | Action
+              li
+                a href="#"
+                  | Another action
+              li
+                a href="#"
+                  | Something else here
+          = f.text_field :email_cont, class: 'form-control'
+          span.input-group-btn
+            = f.submit Comable.t('admin.search'), class: 'btn btn-default'
 
-  .row
-    section.col-sm-8
+    section
       - if @customers.empty?
         = Comable.t('admin.not_found')
       - else
-        .panel.panel-inverse
-          .panel-heading
-            .panel-title
-              = Comable.t('admin.index')
-          table.table.table-striped
-            thead
-              th
-                = sort_link [:comable, @q], :id
-              th
-                = sort_link [:comable, @q], :email
-              th
-                = @customers.klass.human_attribute_name(:bill_full_name)
-              th
-                = @customers.klass.human_attribute_name(:bill_address)
-              th
-                = @customers.klass.human_attribute_name(:orders)
-            tbody
-              - @customers.each do |customer|
-                tr
-                  td
-                    = link_to customer.human_id, comable.admin_customer_path(customer)
-                  td
-                    = customer.email
-                  td
-                    = customer.bill_full_name
-                  td
-                    - if customer.bill_address
-                      span> = customer.bill_address.state_name
-                      span> = customer.bill_address.city
-                      span> = customer.bill_address.detail
-                  td
-                    = customer.orders.count
-                    = Comable.t('admin.times')
+        table.table.table-striped
+          thead
+            th
+              = sort_link [:comable, @q], :id
+            th
+              = sort_link [:comable, @q], :email
+            th
+              = @customers.klass.human_attribute_name(:bill_full_name)
+            th
+              = @customers.klass.human_attribute_name(:bill_address)
+            th
+              = @customers.klass.human_attribute_name(:orders)
+          tbody
+            - @customers.each do |customer|
+              tr
+                td
+                  = link_to customer.human_id, comable.admin_customer_path(customer)
+                td
+                  = customer.email
+                td
+                  = customer.bill_full_name
+                td
+                  - if customer.bill_address
+                    span> = customer.bill_address.state_name
+                    span> = customer.bill_address.city
+                    span> = customer.bill_address.detail
+                td
+                  = customer.orders.count
+                  = Comable.t('admin.times')
 
         .text-center
           = paginate @customers, theme: :comable_backend
-
-    nav.col-sm-4
-      #comable-affix
-        .panel
-          .panel-body
-            = search_form_for @q, url: comable.admin_customers_path do |f|
-              .form-horizontal
-                .form-group
-                  .col-sm-3.control-label
-                    = f.label :email
-                  .col-sm-9
-                    = f.text_field :email_cont
-                .text-right
-                  = f.submit Comable.t('admin.search'), class: 'btn btn-default'
