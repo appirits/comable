@@ -10,7 +10,7 @@
               = link_to comable.product_path(@product) do
                 span.fa.fa-external-link>
                 = Comable.t('admin.check_this_product_in_frontend')
-            - if @product.sku?
+            - if @product.sku? || @product.stocks.empty?
               li.divider
               li.dropdown-header
                 = Comable.t('admin.nav.stock')

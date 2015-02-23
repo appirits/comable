@@ -58,7 +58,7 @@
       legend
         = Comable.t('admin.stocks')
       .help-block
-        - if @product.sku?
+        - if @product.sku? || (@product.persisted? && @product.stocks.empty?)
           = Comable.t('admin.link_to_add_new_stock')
           = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
 
