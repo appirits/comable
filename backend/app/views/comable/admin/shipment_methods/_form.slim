@@ -10,40 +10,29 @@
         - @shipment_method.errors.full_messages.each do |message|
           li = message
 
-  .panel.panel-inverse
-    .panel-heading
-      .panel-title
-        = Comable.t('admin.nav.shipment_methods.edit')
+  .hidden
+    = f.submit
 
-    .panel-body
-      .form-horizontal
-        fieldset
-          .form-group
-            .col-sm-3.control-label
-              = f.label :name
-            .col-sm-6
-              = f.text_field :name
+  fieldset
+    .col-sm-3
+      legend
+        = Comable.t('admin.general')
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :fee
-            .col-sm-6
-              = f.text_field :fee
+    .col-sm-9
+      .form-group
+        = f.label :name
+        = f.text_field :name
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :traking_url
-            .col-sm-6
-              = f.text_field :traking_url, placeholder: 'http://'
+      .form-group
+        = f.label :fee
+        = f.text_field :fee
 
-          .form-group
-            .col-sm-offset-3.col-sm-6
-              .checkbox
-                = f.label :activate_flag do
-                  = f.check_box :activate_flag
-                  = f.object.class.human_attribute_name(:activate_flag)
+      .form-group
+        = f.label :traking_url
+        = f.text_field :traking_url, placeholder: 'http://'
 
-    .panel-footer
-      = link_to Comable.t('admin.actions.cancel'), comable.admin_shipment_methods_path, class: 'btn btn-default'
-      .pull-right
-        = f.submit
+      .form-group
+        .checkbox
+          = f.label :activate_flag do
+            = f.check_box :activate_flag
+            = f.object.class.human_attribute_name(:activate_flag)
