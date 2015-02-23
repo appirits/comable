@@ -1,6 +1,9 @@
 - url = comable.admin_products_path if @product.new_record?
 - url ||= comable.admin_product_path(@product)
 = form_for @product, url: url, html: { multipart: true } do |f|
+  .hidden
+    = f.submit
+
   fieldset
     .col-sm-3
       legend

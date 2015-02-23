@@ -86,4 +86,6 @@ coffee:
       .col-sm-9
         #comable-jstree
         = form_tag comable.admin_categories_path do
+          .hidden
+            = submit_tag
           = hidden_field_tag :jstree_json
