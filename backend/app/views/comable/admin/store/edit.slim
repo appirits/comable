@@ -1,13 +1,12 @@
-#comable-store
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li.active
-      = Comable.t('admin.nav.store')
+#comable-store.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
 
-  h1.page-header
-    = Comable.t('admin.nav.store')
+      h1.page-header
+        = Comable.t('admin.nav.store')
 
-  .row
-    section.col-sm-8
-      = render 'form'
+  .comable-page-body
+    = render 'form'
