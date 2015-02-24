@@ -2,7 +2,6 @@
   .comable-page-heading
     ul.pull-right.list-inline
       li.btn-group
-        = link_to Comable.t('admin.nav.orders.customer'), comable.admin_customer_path(@order.customer), class: 'btn btn-default'
         / TODO: Comment out after implemented.
         / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'btn btn-default'
         / = link_to Comable.t('admin.nav.orders.shipment'), '#', class: 'btn btn-default'
@@ -70,59 +69,78 @@
               = @order.class.human_attribute_name(:total_price)
             = number_to_currency @order.total_price
 
-      - if @order.bill_address
-        .panel.panel-default
-          .panel-heading
-            .panel-title
-              = @order.class.human_attribute_name(:bill_address)
-          .panel-body
-            .pull-right
-              .comable-avatar
-                = mail_to @order.email, class: 'thumbnail' do
-                  = gravatar_tag @order.email, width: '100%'
+      .panel.panel-default
+        .panel-heading
+          .panel-title
+            = Comable.t('admin.bill')
+        .panel-body
+          .pull-right
+            .comable-avatar
+              = gravatar_tag @order.email, class: 'thumbnail'
 
-            ul.list-unstyled
-              li = @order.bill_address.zip_code
-              li
-                strong>
-                  = @order.bill_address.full_name
-              li = @order.bill_address.state_name
-              li = @order.bill_address.city
-              li = @order.bill_address.detail
-              li = "#{@order.bill_address.class.human_attribute_name(:phone_number)}: #{@order.bill_address.phone_number}"
+          dl.dl-horizontal.comable-address-with-icon
+            dt
+              i.fa.fa-map-marker.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:bill_address)}"
+            dd
+              ul.list-unstyled
+                li = @order.bill_address.zip_code
+                li = @order.bill_address.state_name
+                li = @order.bill_address.city
+                li = @order.bill_address.detail
 
-          .panel-footer
-            = render 'google_map', id: 'comable-google-map-for-bill-address', address: @order.bill_address
+            - if @order.bill_address.phone_number.present?
+              dt
+                i.fa.fa-phone.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.bill_address.class.human_attribute_name(:phone_number)}"
+              dd
+                = @order.bill_address.phone_number
 
-      - if @order.ship_address
-        .panel.panel-default
-          .panel-heading
-            .panel-title
-              = @order.class.human_attribute_name(:ship_address)
-          .panel-body
-            ul.list-unstyled
-              li = @order.ship_address.zip_code
-              li = @order.ship_address.full_name
-              li = @order.ship_address.state_name
-              li = @order.ship_address.city
-              li = @order.ship_address.detail
-              li = "#{@order.ship_address.class.human_attribute_name(:phone_number)}: #{@order.ship_address.phone_number}"
+            dt
+              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:customer)}"
+            dd
+              = link_to_if @order.customer, @order.bill_address.full_name, [comable, :admin, @order.customer]
 
-          .panel-footer
-            = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address
+            dt
+              i.fa.fa-envelope.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:email)}"
+            dd
+              = mail_to @order.email
 
-      - if @order.shipment_method
-        .panel.panel-default
-          .panel-heading
-            .panel-title
-              = @order.class.human_attribute_name(:shipment_method)
-          .panel-body
-            = @order.shipment_method.name
+      .panel.panel-default
+        .panel-heading
+          .panel-title
+            = Comable.t('admin.ship')
+        .panel-body
+          dl.dl-horizontal.comable-address-with-icon
+            dt
+              i.fa.fa-map-marker.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:ship_address)}"
+            dd
+              ul.list-unstyled
+                li = @order.ship_address.zip_code
+                li = @order.ship_address.state_name
+                li = @order.ship_address.city
+                li = @order.ship_address.detail
 
-      - if @order.payment_method
-        .panel.panel-default
-          .panel-heading
-            .panel-title
-              = @order.class.human_attribute_name(:payment_method)
-          .panel-body
-            = @order.payment_method.name
+            - if @order.ship_address.phone_number.present?
+              dt
+                i.fa.fa-phone.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.ship_address.class.human_attribute_name(:phone_number)}"
+              dd
+                = @order.ship_address.phone_number
+
+            dt
+              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:customer)}"
+            dd
+              = @order.bill_address.full_name
+
+            - if @order.shipment_method
+              dt
+                i.fa.fa-truck.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:shipment_method)}"
+              dd
+                = @order.shipment_method.name
+
+            - if @order.payment_method
+              dt
+                i.fa.fa-money.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:payment_method)}"
+              dd
+                = @order.payment_method.name
+
+        .panel-footer
+          = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address
