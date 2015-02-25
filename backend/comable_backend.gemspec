@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass', '~> 3.3.3'
   s.add_dependency 'font-awesome-rails', '~> 4.3.0.0'
   s.add_dependency 'kaminari', '~> 0.16.2'
+  s.add_dependency 'dynamic_form', '~> 1.1.4'
 
   s.add_dependency 'ransack', '~> 1.6.3'
 
