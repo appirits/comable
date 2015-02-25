@@ -55,7 +55,7 @@
               tr
                 td.comable-image
                   = link_to comable.admin_product_path(product), class: 'thumbnail' do
-                    = image_tag product.image_url
+                    = image_tag product.image_url, width: '100%'
                 td
                   = link_to product.code, comable.admin_product_path(product)
                 td
