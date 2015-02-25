@@ -1,15 +1,6 @@
+= error_messages_for @payment_method
+
 = form_for [comable, :admin, @payment_method] do |f|
-  / TODO: Standardize
-  - if @payment_method.errors.any?
-    #error_explanation
-      h2
-        = pluralize(@payment_method.errors.count, 'error')
-        | prohibited this payment_method from being saved:
-
-      ul
-        - @payment_method.errors.full_messages.each do |message|
-          li = message
-
   .hidden
     = f.submit
 

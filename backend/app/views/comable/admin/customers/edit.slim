@@ -16,6 +16,8 @@
 
   .comable-page-body
     section
+      = error_messages_for @customer
+
       = form_for @customer, url: comable.admin_customer_path(@customer) do |f|
         .hidden
           = f.submit

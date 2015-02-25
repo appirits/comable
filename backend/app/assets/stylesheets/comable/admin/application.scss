@@ -314,6 +314,10 @@ body {
   }
 }
 
+label {
+  @extend .control-label;
+}
+
 select,
 input[type="password"],
 input[type="email"],
@@ -711,4 +715,26 @@ dl.comable-address-with-icon {
       text-decoration: underline;
     }
   }
+}
+
+// ---
+// errors
+// ---
+#errorExplanation {
+  @extend .alert;
+  @extend .alert-danger;
+
+  & > h2 {
+    margin-top: 0;
+    font-size: $font-size-h4;
+    font-weight: bold;
+  }
+
+  & > ul {
+    margin-top: 5px;
+  }
+}
+
+.field_with_errors {
+  @extend .has-error;
 }

@@ -1,11 +1,4 @@
-- if @store.errors.any?
-  #error_explanation
-    h2
-      = pluralize(@store.errors.count, "error")
-      | prohibited this store from being saved:
-    ul
-      - @store.errors.full_messages.each do |message|
-        li = message
+= error_messages_for @store
 
 = form_for @store, url: comable.admin_store_path, method: :patch do |f|
   .hidden

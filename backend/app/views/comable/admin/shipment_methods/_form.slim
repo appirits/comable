@@ -1,15 +1,6 @@
+= error_messages_for @shipment_method
+
 = form_for [comable, :admin, @shipment_method] do |f|
-  / TODO: Standardize
-  - if @shipment_method.errors.any?
-    #error_explanation
-      h2
-        = pluralize(@shipment_method.errors.count, 'error')
-        | prohibited this shipment_method from being saved:
-
-      ul
-        - @shipment_method.errors.full_messages.each do |message|
-          li = message
-
   .hidden
     = f.submit
 

@@ -1,5 +1,8 @@
+= error_messages_for @stock
+
 - url = comable.admin_product_stocks_path(@product) if @stock.new_record?
 - url ||= comable.admin_stock_path(@stock)
+
 = form_for @stock, url: url do |f|
   .hidden
     = f.submit
