@@ -12,6 +12,20 @@ $( ->
   # functions
   # ---
 
+  initialize_beforeunload_event = ->
+    $form = $('form[method!="get"]')
+    $form.change(->
+      $(window).on('beforeunload', (event) ->
+        # TODO: Install 'i18n-js' gem
+        confirmation_message = 'The changes not saved. Are you sure you want to move from this page?'
+        (event || window.event).returnValue = confirmation_message # for Gecko and Trident
+        confirmation_message                                       # for Gecko and WebKit
+      )
+    )
+    $form.submit(->
+      $(window).off('beforeunload')
+    )
+
   initialize_vertical_navigation = ->
     $vnavigation = $('.vnavigation').find('ul')
 
@@ -76,6 +90,7 @@ $( ->
   # main
   # ---
 
+  initialize_beforeunload_event()
   initialize_vertical_navigation()
 
   if $('#comable-affix').length != 0
