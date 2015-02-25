@@ -1,0 +1,22 @@
+ul.tagit > li > input[type="text"] {
+  height: auto;
+}
+
+ul.tagit-autocomplete.ui-menu {
+  @include border-radius($border-radius-base);
+  @include box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
+  padding: 5px 0;
+  border-color: $dropdown-border;
+
+  li.ui-menu-item {
+    padding: $padding-base-vertical $padding-base-horizontal;
+    color: $dropdown-link-color;
+    background-color: $dropdown-bg;
+    border: none;
+
+    &.ui-state-focus {
+      color: $dropdown-link-active-color;
+      background-color: $dropdown-link-active-bg;
+    }
+  }
+}
