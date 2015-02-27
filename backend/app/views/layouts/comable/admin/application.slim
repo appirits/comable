@@ -97,10 +97,9 @@ html
       main.container-fluid
         - if flash[:alert] || flash[:notice]
           #comable-notifier
-            - if flash[:alert]
-              .comable-alert = flash[:alert]
-            - if flash[:notice]
-              .comable-notice = flash[:notice]
+            javascript:
+              #{add_gritter(flash[:alert], image: :error) if flash[:alert]}
+              #{add_gritter(flash[:notice], image: :success) if flash[:notice]}
 
         = yield
 
