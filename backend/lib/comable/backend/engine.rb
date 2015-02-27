@@ -15,6 +15,7 @@ require 'jquery-ui-rails'
 require 'raphael-rails'
 require 'morrisjs-rails'
 require 'pace/rails'
+require 'gritter'
 
 module Comable
   module Backend

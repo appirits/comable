@@ -33,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'raphael-rails', '~> 2.1.2'
   s.add_dependency 'morrisjs-rails', '~> 0.5.1'
   s.add_dependency 'pace-rails', '~> 0.1.1'
+  s.add_dependency 'gritter', '~> 1.1.0'
 end
