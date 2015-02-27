@@ -5,6 +5,7 @@
 #= require raphael
 #= require morris
 #= require pace/pace
+#= require gritter
 #= require_tree .
 
 $( ->
