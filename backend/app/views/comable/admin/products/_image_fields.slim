@@ -1,0 +1,15 @@
+.col-sm-6
+  label
+    | #{Comable.t('admin.sub_image')}
+    - if local_assigns[:index]
+      span<
+        | ##{index}
+  p
+    = ff.file_field :file
+  - if ff.object.url
+    .thumbnail
+      = image_tag ff.object.url
+      - if ff.object.persisted?
+        label.remove
+          span> = ff.check_box :_destroy
+          span> = Comable.t('admin.actions.destroy')

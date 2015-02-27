@@ -124,6 +124,7 @@ ja:
       clear_search_conditions: 検索条件をクリア
       bill: 請求先
       ship: 配送先
+      add_sub_image: サブ画像を追加
       nav:
         dashboard: ダッシュボード
         order: 注文管理

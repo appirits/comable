@@ -86,6 +86,11 @@ $( ->
       .delay(5 * 1000)
       .animate({ height: 0 })
 
+  window.add_fields = (_this, association, content) ->
+    new_id = new Date().getTime()
+    regexp = new RegExp('new_' + association, 'g')
+    $(_this).parent().before(content.replace(regexp, new_id))
+
   # ---
   # main
   # ---

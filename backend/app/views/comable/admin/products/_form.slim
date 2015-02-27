@@ -124,8 +124,8 @@
       .help-block
 
     .col-sm-9
-      - images = @product.images + [@product.images.build]
-      - main_image = images.first
+      - images = @product.images
+      - main_image = images.first || @product.images.build
       - sub_images = images - [main_image]
 
       .row
@@ -147,15 +147,7 @@
           .row
             - sub_images.each.with_index(1) do |image, index|
               = f.fields_for :images, image do |ff|
-                .col-sm-6
-                  label
-                    | #{Comable.t('admin.sub_image')} ##{index}
-                  p
-                    = ff.file_field :file
-                  - if ff.object.url
-                    .thumbnail
-                      = image_tag ff.object.url
-                      - if ff.object.persisted?
-                        label.remove
-                          span> = ff.check_box :_destroy
-                          span> = Comable.t('admin.actions.destroy')
+                = render 'image_fields', ff: ff, index: index
+
+            .col-sm-6
+              = link_to_add_fields Comable.t('admin.add_sub_image'), f, :images
