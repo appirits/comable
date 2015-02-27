@@ -37,6 +37,12 @@ module Comable
     delegate :sku_h_item_name, to: :product
     delegate :sku_v_item_name, to: :product
 
+    class << self
+      def ransackable_attributes(auth_object = nil)
+        column_names + _ransackers.keys - %w(product_id)
+      end
+    end
+
     # 在庫の有無を取得する
     #
     # @example

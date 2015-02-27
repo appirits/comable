@@ -7,7 +7,7 @@ module Comable
 
       def index
         @q = Comable::Product.ransack(params[:q])
-        @products = @q.result.includes(:stocks, :images).page(params[:page]).accessible_by(current_ability)
+        @products = @q.result(distinct: true).includes(:stocks, :images).page(params[:page]).accessible_by(current_ability)
       end
 
       def show

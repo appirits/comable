@@ -122,6 +122,9 @@ ja:
       operation: 操作
       stocks: 在庫
       clear_search_conditions: 検索条件をクリア
+      add_search_condition: 検索条件を追加
+      remove_search_condition: 削除
+      advanced_search: 詳細検索
       bill: 請求先
       ship: 配送先
       add_sub_image: サブ画像を追加
@@ -276,3 +279,10 @@ ja:
       next: "次 &rsaquo;"
       previous: "&lsaquo; 前"
       truncate: "&hellip;"
+
+  ransack:
+    predicates:
+      gteq: 以上
+      lteq: 以下
+      eq_any_splitted: 完全一致
+      cont_any_splitted: 部分一致

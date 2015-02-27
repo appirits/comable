@@ -30,6 +30,24 @@ module Comable
         g.test_framework :rspec, fixture: true
         g.fixture_replacement :factory_girl, dir: 'spec/factories'
       end
+
+      initializer 'comable.ransack.configure' do
+        Ransack.configure do |config|
+          config.add_predicate 'eq_any_splitted',
+            arel_predicate: 'eq_any',
+            formatter: proc { |v| v.split(' ') },
+            validator: proc { |v| v.present? },
+            compounds: false,
+            type: :string
+
+          config.add_predicate 'cont_any_splitted',
+            arel_predicate: 'matches_any',
+            formatter: proc { |v| v.split(' ').map { |s| "%#{s}%"} },
+            validator: proc { |v| v.present? },
+            compounds: false,
+            type: :string
+        end
+      end
     end
   end
 end
