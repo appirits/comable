@@ -18,7 +18,7 @@ module Comable
       end
 
       def create
-        if @stock.update_attributes(stock_params)
+        if @stock.save
           redirect_to comable.admin_stock_path(@stock), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')

@@ -14,7 +14,7 @@ module Comable
       end
 
       def create
-        if @payment_method.update_attributes(payment_method_params)
+        if @payment_method.save
           redirect_to comable.admin_payment_method_path(@payment_method), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
