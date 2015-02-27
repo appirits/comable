@@ -1,0 +1,5 @@
+- if flash[:alert] || flash[:notice]
+#comable-notifier
+  javascript:
+    #{add_gritter(flash[:alert], image: :error) if flash[:alert]}
+    #{add_gritter(flash[:notice], image: :success) if flash[:notice]}

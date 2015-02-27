@@ -1,0 +1,25 @@
+- content_for :head do
+  link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"
+
+.comable-signin
+  .comable-signin-heading
+    h1.page-header
+      | Comable
+      small
+        | provides a simple way to add e-commerce features.
+
+  .comable-signin-body
+    = form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+      .form-group
+        = f.email_field :email, placeholder: f.object.class.human_attribute_name(:email)
+
+      .form-group
+        = f.password_field :password, placeholder: f.object.class.human_attribute_name(:password)
+
+      .form-group
+        .checkbox
+          = f.label :remember_me do
+            = f.check_box :remember_me
+            = f.object.class.human_attribute_name(:remember_me)
+
+      = f.submit Comable.t('admin.sign_in'), class: 'btn btn-primary btn-block btn-lg'

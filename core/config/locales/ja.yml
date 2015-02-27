@@ -125,6 +125,8 @@ ja:
       bill: 請求先
       ship: 配送先
       add_sub_image: サブ画像を追加
+      sign_in: ログイン
+      sign_out: ログアウト
       nav:
         dashboard: ダッシュボード
         order: 注文管理

@@ -37,8 +37,8 @@ html
               li.divider
               li
                 = link_to comable.destroy_customer_session_path, method: :delete do
-                  span.fa.fa-sign-in
-                  = Comable.t('sign_out')
+                  span.fa.fa-sign-in>
+                  = Comable.t('admin.sign_out')
 
     #wrapper
       .sidebar
@@ -95,19 +95,7 @@ html
                   = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
 
       main.container-fluid
-        - if flash[:alert] || flash[:notice]
-          #comable-notifier
-            javascript:
-              #{add_gritter(flash[:alert], image: :error) if flash[:alert]}
-              #{add_gritter(flash[:notice], image: :success) if flash[:notice]}
-
+        = render 'layouts/comable/admin/notifier'
         = yield
 
-      footer
-        ul.list-inline
-          li
-            | Comable v#{Comable::VERSION::STRING}
-          li
-            = link_to 'GitHub', 'https://github.com/hyoshida/comable'
-          li
-            = link_to 'License', 'https://github.com/hyoshida/comable/blob/master/MIT-LICENSE'
+      = render 'layouts/comable/admin/footer'
