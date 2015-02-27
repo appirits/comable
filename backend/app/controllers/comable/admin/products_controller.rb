@@ -15,7 +15,7 @@ module Comable
       end
 
       def create
-        if @product.update_attributes(product_params)
+        if @product.save
           redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
