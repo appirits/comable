@@ -8,13 +8,16 @@ module Comable
       load_and_authorize_resource :product, class: Comable::Product.name, only: [:new, :create]
       load_and_authorize_resource :stock, class: Comable::Stock.name, through: :product, only: [:new, :create]
 
+      def index
+        @q = @stocks.ransack(params[:q])
+        @stocks = @q.result.includes(:product).page(params[:page]).accessible_by(current_ability)
+      end
+
       def show
         render :edit
       end
 
-      def index
-        @q = @stocks.ransack(params[:q])
-        @stocks = @q.result.includes(:product).page(params[:page]).accessible_by(current_ability)
+      def new
       end
 
       def create
@@ -24,6 +27,9 @@ module Comable
           flash.now[:alert] = Comable.t('failure')
           render :new
         end
+      end
+
+      def edit
       end
 
       def update

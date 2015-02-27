@@ -11,6 +11,9 @@ module Comable
         render :edit
       end
 
+      def edit
+      end
+
       def update
         if @store.update_attributes(store_params)
           redirect_to comable.admin_store_url, notice: Comable.t('successful')
