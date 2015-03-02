@@ -12,6 +12,12 @@ module Comable
         @customers = @q.result.page(params[:page]).accessible_by(current_ability)
       end
 
+      def show
+      end
+
+      def edit
+      end
+
       def update
         if @customer.update_attributes(customer_params)
           redirect_to comable.admin_customer_path(@customer), notice: Comable.t('successful')

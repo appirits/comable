@@ -1,94 +1,79 @@
-#comable-customer
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li
-      = link_to Comable.t('admin.nav.customer'), comable.admin_customers_path
-    li
-      = link_to @customer.human_id, comable.admin_customer_path(@customer)
-    li.active
-      = Comable.t('admin.nav.customers.edit')
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
 
-  h1.page-header
-    = @customer.human_id
-    small<
-      = Comable.t('honorific', name: @customer.bill_full_name)
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.customer'), comable.admin_customers_path
+          li>
+            = link_to @customer.human_id, comable.admin_customer_path(@customer)
+          li.active
+            = Comable.t('admin.actions.edit')
 
-  .row
-    section.col-sm-8
+  .comable-page-body
+    section
+      = error_messages_for @customer
+
       = form_for @customer, url: comable.admin_customer_path(@customer) do |f|
-        .panel.panel-inverse
-          .panel-heading
-            .panel-title
-              = Comable.t('admin.nav.customers.edit')
-          .panel-body
-            .form-horizontal
-              fieldset
+        .hidden
+          = f.submit
+
+        fieldset
+          .col-sm-3
+            legend
+              = Comable.t('admin.general')
+            .help-block
+
+          .col-sm-9
+            .form-group
+              = f.label :role
+              = f.select :role, @customer.class.role.options, {}, disabled: (@customer == current_customer)
+
+            .form-group
+              = f.label :email
+              = f.text_field :email
+
+            .form-group
+              = f.label :password
+              = f.password_field :password
+
+        - if @customer.bill_address
+          fieldset
+            .col-sm-3
+              legend
+                = f.object.class.human_attribute_name(:bill_address)
+              .help-block
+
+            .col-sm-9
+              = f.fields_for :bill_address do |ff|
                 .form-group
-                  .col-sm-3.control-label
-                    = f.label :role
-                  .col-sm-6
-                    = f.select :role, @customer.class.role.options, {}, disabled: (@customer == current_customer)
-
-              fieldset
-                .form-group
-                  .col-sm-3.control-label
-                    = f.label :email
-                  .col-sm-6
-                    = f.text_field :email
-
-                .form-group
-                  .col-sm-3.control-label
-                    = f.label :password
-                  .col-sm-6
-                    = f.password_field :password
-
-              fieldset
-                legend.text-center.text-muted
-                  = f.object.class.human_attribute_name(:bill_address)
-
-                = f.fields_for :bill_address do |ff|
-                  .form-group
-                    .col-sm-3.control-label
-                      = ff.label :full_name
-                    .col-sm-3
+                  = ff.label :full_name
+                  .row
+                    .col-sm-6
                       = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
-                    .col-sm-3
+                    .col-sm-6
                       = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
 
-                  .form-group
-                    .col-sm-3.control-label
-                      = ff.label :zip_code
-                    .col-sm-6
-                      = ff.text_field :zip_code, max_length: 8
+                .form-group
+                  = ff.label :zip_code
+                  = ff.text_field :zip_code, max_length: 8
 
-                  .form-group
-                    .col-sm-3.control-label
-                      = ff.label :state_name
-                    .col-sm-6
-                      = ff.text_field :state_name
+                .form-group
+                  = ff.label :state_name
+                  = ff.text_field :state_name
 
-                  .form-group
-                    .col-sm-3.control-label
-                      = ff.label :city
-                    .col-sm-6
-                      = ff.text_field :city
+                .form-group
+                  = ff.label :city
+                  = ff.text_field :city
 
-                  .form-group
-                    .col-sm-3.control-label
-                      = ff.label :detail
-                    .col-sm-6
-                      = ff.text_field :detail
+                .form-group
+                  = ff.label :detail
+                  = ff.text_field :detail
 
-                  .form-group
-                    .col-sm-3.control-label
-                      = ff.label :phone_number
-                    .col-sm-6
-                        = ff.text_field :phone_number, max_length: 18
-
-          .panel-footer
-            = link_to Comable.t('admin.actions.cancel'), comable.admin_customer_path(@customer), class: 'btn btn-default'
-            .pull-right
-              = f.submit
-
-    nav.col-sm-4
+                .form-group
+                  = ff.label :phone_number
+                  = ff.text_field :phone_number, max_length: 18

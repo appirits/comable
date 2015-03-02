@@ -13,13 +13,19 @@ module Comable
         render :edit
       end
 
+      def new
+      end
+
       def create
-        if @shipment_method.update_attributes(shipment_method_params)
+        if @shipment_method.save
           redirect_to comable.admin_shipment_method_path(@shipment_method), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
           render :new
         end
+      end
+
+      def edit
       end
 
       def update

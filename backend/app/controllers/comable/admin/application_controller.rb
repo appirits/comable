@@ -3,6 +3,9 @@ module Comable
     class ApplicationController < ActionController::Base
       include Comable::ApplicationHelper
 
+      # Include `asset_path` method for gritter
+      helper Sprockets::Helpers::RailsHelper if Rails::VERSION::MAJOR == 3
+
       layout 'comable/admin/application'
 
       def current_ability

@@ -5,22 +5,28 @@ module Comable
     class ProductsController < Comable::Admin::ApplicationController
       load_and_authorize_resource class: Comable::Product.name, except: :index
 
+      def index
+        @q = Comable::Product.ransack(params[:q])
+        @products = @q.result.includes(:stocks, :images).page(params[:page]).accessible_by(current_ability)
+      end
+
       def show
         render :edit
       end
 
-      def index
-        @q = Comable::Product.ransack(params[:q])
-        @products = @q.result.includes(:stocks).page(params[:page]).accessible_by(current_ability)
+      def new
       end
 
       def create
-        if @product.update_attributes(product_params)
+        if @product.save
           redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
           render :new
         end
+      end
+
+      def edit
       end
 
       def update

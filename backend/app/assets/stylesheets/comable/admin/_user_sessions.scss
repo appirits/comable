@@ -1,0 +1,57 @@
+#comable-user_session {
+  margin: 0;
+  background-color: $comable-sidebar-bg;
+  font-size: 12px;
+  font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+  main {
+    margin: 170px 0 30px;
+    padding: 0;
+  }
+}
+
+.comable-signin {
+  background-color: $navbar-default-bg;
+
+  & > .comable-signin-heading {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    right: 0;
+    width: 450px;
+    padding: 0 40px;
+    margin-left: -225px;
+
+    & > h1 {
+      color: $comable-sidebar-title-color;
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 110%;
+
+      & > small {
+        display: block;
+        color: inherit;
+        font-size: 14px;
+        line-height: inherit;
+        font-weight: inherit;
+      }
+    }
+  }
+
+  .comable-signin-body {
+    padding: 30px 40px;
+    color: $navbar-default-color;
+    width: 450px;
+    margin: 0 auto;
+
+    input {
+      font-size: 12px;
+    }
+
+    .btn-primary {
+      background-color: $comable-theme-bg;
+      border-color: darken($comable-theme-bg, 10%);
+      outline: none;
+    }
+  }
+}

@@ -7,6 +7,7 @@ require 'compass-rails'
 require 'bootstrap-sass'
 require 'font-awesome-rails'
 require 'kaminari'
+require 'dynamic_form'
 require 'ransack'
 
 require 'jquery-rails'
@@ -14,6 +15,7 @@ require 'jquery-ui-rails'
 require 'raphael-rails'
 require 'morrisjs-rails'
 require 'pace/rails'
+require 'gritter'
 
 module Comable
   module Backend

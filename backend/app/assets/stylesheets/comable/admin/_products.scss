@@ -1,0 +1,18 @@
+#comable-product {
+  label.remove {
+    display: block;
+    margin: 0;
+  }
+
+  .table tbody > tr > td {
+    .thumbnail {
+      margin-bottom: 0;
+    }
+    &.comable-image {
+      width: 180px;
+    }
+    &:not(.comable-image) {
+      vertical-align: middle;
+    }
+  }
+}

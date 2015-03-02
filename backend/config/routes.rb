@@ -7,6 +7,7 @@ Comable::Core::Engine.routes.draw do
     resources :products do
       resources :stocks
     end
+    resources :stocks
 
     resources :categories
     resources :orders
@@ -15,6 +16,8 @@ Comable::Core::Engine.routes.draw do
     resources :payment_methods
     resource :store, controller: :store, only: [:show, :edit, :update]
 
-    devise_for :customer, path: :user, class_name: Comable::Customer.name, module: :devise
+    devise_for :customer, path: :user, class_name: Comable::Customer.name, module: :devise, controllers: {
+      sessions: 'comable/admin/user_sessions'
+    }
   end
 end

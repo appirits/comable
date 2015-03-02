@@ -4,6 +4,7 @@ module Comable
   # 商品に複数紐付き、品数やSKU(Stock Keeping Unit)情報を保持する。
   #
   class Stock < ActiveRecord::Base
+    include Comable::SkuItem
     include Comable::SkuChoice
 
     belongs_to :product, class_name: Comable::Product.name
@@ -33,7 +34,8 @@ module Comable
 
     delegate :name, to: :product
     delegate :price, to: :product
-    delegate :sku?, to: :product
+    delegate :sku_h_item_name, to: :product
+    delegate :sku_v_item_name, to: :product
 
     # 在庫の有無を取得する
     #

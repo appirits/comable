@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass', '~> 3.3.3'
   s.add_dependency 'font-awesome-rails', '~> 4.3.0.0'
   s.add_dependency 'kaminari', '~> 0.16.2'
+  s.add_dependency 'dynamic_form', '~> 1.1.4'
 
   s.add_dependency 'ransack', '~> 1.6.3'
 
@@ -32,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'raphael-rails', '~> 2.1.2'
   s.add_dependency 'morrisjs-rails', '~> 0.5.1'
   s.add_dependency 'pace-rails', '~> 0.1.1'
+  s.add_dependency 'gritter', '~> 1.1.0'
 end

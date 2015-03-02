@@ -1,0 +1,22 @@
+/ TODO: Refactoring
+= javascript_include_tag '//maps.google.com/maps/api/js?v=3&sensor=false'
+
+coffee:
+  window.initialize_google_map = (element_id, address) ->
+    google_map = new google.maps.Map(document.getElementById(element_id), { zoom: 15 })
+    google_geo = new google.maps.Geocoder()
+    google_geo.geocode({ address: address }, (result, status) =>
+      return if status != google.maps.GeocoderStatus.OK
+      location = result[0].geometry.location
+      google_map.setCenter(location)
+      new google.maps.Marker({ map: google_map, position: location })
+    )
+
+javascript:
+  $(document).ready(function() {
+    initialize_google_map('#{id}', '#{address.full_address}');
+  })
+
+.comable-map
+  .comable-google-map id="#{id}"
+    | Loading map...

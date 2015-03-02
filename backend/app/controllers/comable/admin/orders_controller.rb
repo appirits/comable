@@ -9,6 +9,9 @@ module Comable
         @q = Comable::Order.complete.ransack(params[:q])
         @orders = @q.result.page(params[:page]).per(15).order('completed_at DESC').accessible_by(current_ability)
       end
+
+      def show
+      end
     end
   end
 end

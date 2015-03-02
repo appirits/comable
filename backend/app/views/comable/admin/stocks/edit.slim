@@ -1,46 +1,37 @@
-#comable-product
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li
-      = link_to Comable.t('admin.nav.product'), comable.admin_products_path
-    li
-      = link_to @product.name, comable.admin_product_path(@product)
-    li
-      = link_to Comable.t('admin.nav.products.stock'), comable.admin_product_stocks_path(@product)
-    li.active
-      = @stock.name_with_sku
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li.dropdown
+          = link_to '#', class: 'btn btn-default', 'data-toggle' => 'dropdown' do
+            i.fa.fa-bars
+          ul.dropdown-menu.dropdown-menu-right
+            li
+              = link_to Comable.t('admin.nav.products.detail'), comable.admin_product_path(@stock.product)
+            - if @stock.sku?
+              li.divider
+              li
+                = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@stock.product)
+        li
+          = link_to_save
 
-  h1.page-header
-    = @stock.name_with_sku
-    small< = @stock.code
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.stock'), comable.admin_stocks_path
+          li.active
+            = @stock.name_with_sku
 
-  .row
-    section.col-sm-8
-      = render 'form'
-      hr
-      .panel.panel-danger
-        .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger" aria-expanded="false" aria-controls="comable-danger"
-          strong
-            span.fa.fa-angle-down>
-            = Comable.t('admin.actions.destroy')
-        #comable-danger.collapse
-          .panel-body
-            p
-              = Comable.t('admin.confirmation_to_remove_stock')
-            = link_to Comable.t('admin.actions.destroy'), comable.admin_product_stock_path(@product, @stock), method: :delete, class: 'btn btn-danger'
-
-    nav.col-sm-4
-      #comable-affix data-spy="affix"
-        .panel
-          .list-group
-            = link_to Comable.t('admin.nav.products.detail'), comable.admin_product_path(@product), class: 'list-group-item'
-            = link_to Comable.t('admin.nav.products.stock'), comable.admin_product_stocks_path(@product), class: 'list-group-item disabled'
-
-        .panel
-          .list-group
-            - if @product.sku?
-                = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path, class: 'list-group-item'
-            = link_to comable.product_path(@product), class: 'list-group-item' do
-              span.fa.fa-external-link>
-              = Comable.t('admin.check_this_product_in_frontend')
+  .comable-page-body
+    = render 'form'
+    hr
+    .panel.panel-danger
+      .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger"
+        strong
+          span.fa.fa-angle-down>
+          = Comable.t('admin.actions.destroy')
+      #comable-danger.collapse
+        .panel-body
+          p
+            = Comable.t('admin.confirmation_to_remove_stock')
+          = link_to Comable.t('admin.actions.destroy'), comable.admin_stock_path(@stock), method: :delete, class: 'btn btn-danger'

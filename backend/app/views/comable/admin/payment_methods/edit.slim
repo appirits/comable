@@ -1,28 +1,27 @@
-#comable-payment-method
-  ol.breadcrumb
-    li
-      = link_to Comable.t('admin.nav.dashboard'), comable.admin_root_path
-    li
-      = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
-    li.active
-      = @payment_method.name
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
 
-  h1.page-header
-    = @payment_method.name
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.payment_method'), comable.admin_payment_methods_path
+          li.active
+            = @payment_method.name
 
-  .row
-    section.col-sm-8
-      = render 'form'
-      hr
-      .panel.panel-danger
-        .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger" aria-expanded="false" aria-controls="comable-danger"
-          strong
-            span.fa.fa-angle-down>
-            = Comable.t('admin.actions.destroy')
-        #comable-danger.collapse
-          .panel-body
-            p
-              = Comable.t('admin.confirmation_to_remove_product')
-            = link_to Comable.t('admin.actions.destroy'), comable.admin_payment_method_path(@payment_method), method: :delete, class: 'btn btn-danger'
-
-    nav.col-sm-4
+  .comable-page-body
+    = render 'form'
+    hr
+    .panel.panel-danger
+      .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger"
+        strong
+          span.fa.fa-angle-down>
+          = Comable.t('admin.actions.destroy')
+      #comable-danger.collapse
+        .panel-body
+          p
+            = Comable.t('admin.confirmation_to_remove_product')
+          = link_to Comable.t('admin.actions.destroy'), comable.admin_payment_method_path(@payment_method), method: :delete, class: 'btn btn-danger'

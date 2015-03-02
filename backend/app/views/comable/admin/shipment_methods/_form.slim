@@ -1,49 +1,29 @@
+= error_messages_for @shipment_method
+
 = form_for [comable, :admin, @shipment_method] do |f|
-  / TODO: Standardize
-  - if @shipment_method.errors.any?
-    #error_explanation
-      h2
-        = pluralize(@shipment_method.errors.count, 'error')
-        | prohibited this shipment_method from being saved:
+  .hidden
+    = f.submit
 
-      ul
-        - @shipment_method.errors.full_messages.each do |message|
-          li = message
+  fieldset
+    .col-sm-3
+      legend
+        = Comable.t('admin.general')
 
-  .panel.panel-inverse
-    .panel-heading
-      .panel-title
-        = Comable.t('admin.nav.shipment_methods.edit')
+    .col-sm-9
+      .form-group
+        = f.label :name
+        = f.text_field :name
 
-    .panel-body
-      .form-horizontal
-        fieldset
-          .form-group
-            .col-sm-3.control-label
-              = f.label :name
-            .col-sm-6
-              = f.text_field :name
+      .form-group
+        = f.label :fee
+        = f.text_field :fee
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :fee
-            .col-sm-6
-              = f.text_field :fee
+      .form-group
+        = f.label :traking_url
+        = f.text_field :traking_url, placeholder: 'http://'
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :traking_url
-            .col-sm-6
-              = f.text_field :traking_url, placeholder: 'http://'
-
-          .form-group
-            .col-sm-offset-3.col-sm-6
-              .checkbox
-                = f.label :activate_flag do
-                  = f.check_box :activate_flag
-                  = f.object.class.human_attribute_name(:activate_flag)
-
-    .panel-footer
-      = link_to Comable.t('admin.actions.cancel'), comable.admin_shipment_methods_path, class: 'btn btn-default'
-      .pull-right
-        = f.submit
+      .form-group
+        .checkbox
+          = f.label :activate_flag do
+            = f.check_box :activate_flag
+            = f.object.class.human_attribute_name(:activate_flag)

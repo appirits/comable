@@ -1,50 +1,34 @@
-- if @store.errors.any?
-  #error_explanation
-    h2
-      = pluralize(@store.errors.count, "error")
-      | prohibited this store from being saved:
-    ul
-      - @store.errors.full_messages.each do |message|
-        li = message
+= error_messages_for @store
 
 = form_for @store, url: comable.admin_store_path, method: :patch do |f|
-  .panel.panel-inverse
-    .panel-heading
-      .panel-title
-        = Comable.t('admin.nav.stores.edit')
+  .hidden
+    = f.submit
 
-    .panel-body
-      .form-horizontal
-        .form-group
-          .col-sm-3.control-label
-            = f.label :name
-          .col-sm-6
-            = f.text_field :name, placeholder: f.object.class.default_name
+  fieldset
+    .col-sm-3
+      legend
+        = Comable.t('admin.general')
+      .help-block
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :meta_keywords
-          .col-sm-6
-            = f.text_field :meta_keywords
+    .col-sm-9
+      .form-group
+        = f.label :name
+        = f.text_field :name, placeholder: f.object.class.default_name
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :meta_description
-          .col-sm-6
-            = f.text_field :meta_description
+      .form-group
+        = f.label :meta_keywords
+        = f.text_field :meta_keywords
 
-        .form-group
-          .col-sm-3.control-label
-            = f.label :email_sender
-          .col-sm-6
-            = f.email_field :email_sender
+      .form-group
+        = f.label :meta_description
+        = f.text_field :meta_description
 
-        .form-group
-          .col-sm-offset-3.col-sm-6
-            .checkbox
-              = f.label :email_activate_flag do
-                = f.check_box :email_activate_flag
-                = f.object.class.human_attribute_name(:email_activate_flag)
+      .form-group
+        = f.label :email_sender
+        = f.email_field :email_sender
 
-    .panel-footer.text-right
-      = f.submit Comable.t('admin.actions.update')
+      .form-group
+        .checkbox
+          = f.label :email_activate_flag do
+            = f.check_box :email_activate_flag
+            = f.object.class.human_attribute_name(:email_activate_flag)

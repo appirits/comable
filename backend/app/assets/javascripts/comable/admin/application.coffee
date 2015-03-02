@@ -5,12 +5,27 @@
 #= require raphael
 #= require morris
 #= require pace/pace
+#= require gritter
 #= require_tree .
 
 $( ->
   # ---
   # functions
   # ---
+
+  initialize_beforeunload_event = ->
+    $form = $('form[method!="get"]')
+    $form.change(->
+      $(window).on('beforeunload', (event) ->
+        # TODO: Install 'i18n-js' gem
+        confirmation_message = 'The changes not saved. Are you sure you want to move from this page?'
+        (event || window.event).returnValue = confirmation_message # for Gecko and Trident
+        confirmation_message                                       # for Gecko and WebKit
+      )
+    )
+    $form.submit(->
+      $(window).off('beforeunload')
+    )
 
   initialize_vertical_navigation = ->
     $vnavigation = $('.vnavigation').find('ul')
@@ -59,23 +74,16 @@ $( ->
     $affix = $('#comable-affix')
     $affix.css('width', $affix.parent().width())
 
-  notify_flash_message = ->
-    $notifier = $('#comable-notifier')
-    return if $notifier.length <= 0
-    $notifier.on('click', -> $(this).clearQueue().animate({ height: 0 }))
-    height = $notifier.css('height')
-    $notifier
-      .removeClass('hidden')
-      .css({ height: 0 })
-      .delay(400)
-      .animate({ height: height })
-      .delay(5 * 1000)
-      .animate({ height: 0 })
+  window.add_fields = (_this, association, content) ->
+    new_id = new Date().getTime()
+    regexp = new RegExp('new_' + association, 'g')
+    $(_this).parent().before(content.replace(regexp, new_id))
 
   # ---
   # main
   # ---
 
+  initialize_beforeunload_event()
   initialize_vertical_navigation()
 
   if $('#comable-affix').length != 0
@@ -83,5 +91,5 @@ $( ->
     resize_comable_affix()
     $(window).on('resize', resize_comable_affix)
 
-  notify_flash_message()
+  $('[data-toggle="tooltip"]').tooltip()
 )

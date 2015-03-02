@@ -1,0 +1,31 @@
+header.navbar.navbar-default.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      = link_to comable.admin_root_path, class: 'navbar-brand' do
+        | Comable
+
+      button.navbar-toggle type="button" data-click="sidebar-toggled" onclick='$(".sidebar").toggleClass("sidebar-open");'
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+
+    ul.nav.navbar-nav.navbar-right
+      li
+        = link_to comable.root_path do
+          = Comable.t('admin.back_to_store')
+      li.dropdown.navbar-user
+        a href="#" class="dropdown-toggle" data-toggle="dropdown"
+          span.hidden-xs
+            = current_customer.email
+          span.caret<
+        ul.dropdown-menu.animated.fadeInLeft
+          li.arrow
+          li
+            = link_to comable.edit_admin_customer_path(current_customer) do
+              span.fa.fa-edit>
+              = Comable.t('admin.edit_profile')
+          li.divider
+          li
+            = link_to comable.destroy_customer_session_path, method: :delete do
+              span.fa.fa-sign-in>
+              = Comable.t('admin.sign_out')

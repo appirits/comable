@@ -53,6 +53,16 @@ describe Comable::Admin::ProductsController do
         post :create, product: valid_attributes
         expect(response).to redirect_to([comable, :admin, Comable::Product.last])
       end
+
+      context 'and a image' do
+        let(:file) { Rack::Test::UploadedFile.new(Rails.root.join('public/favicon.ico'), 'image/vnd.microsoft.icon') }
+
+        it 'assigns a newly created product as @product with a image' do
+          post :create, product: valid_attributes.merge(images_attributes: { '0' => { file: file } })
+          expect(assigns(:product)).to be_persisted
+          expect(assigns(:product).images.count).to eq(1)
+        end
+      end
     end
 
     describe 'with invalid params' do

@@ -1,0 +1,83 @@
+body {
+  margin-top: $navbar-height;
+}
+
+.navbar {
+  @include box-shadow(rgba(0, 0, 0, 0.3) 0 0 2px);
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  @include transition(color 250ms ease, background-color 250ms ease);
+}
+
+.panel.panel-inverse {
+  border: none;
+
+  & > .panel-heading {
+    background-color: #313239;
+    color: #fff;
+  }
+}
+
+.page-header {
+  font-size: 24px;
+  margin: 0 0 20px;
+  padding: 0;
+  border: none;
+  line-height: 28px;
+}
+
+.panel > .panel-footer {
+  form {
+    @extend .text-right;
+  }
+}
+
+.page-header > .breadcrumb {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+
+  & > li {
+    color: $text-color;
+
+    & > a {
+      color: darken($breadcrumb-color, 20%);
+    }
+  }
+}
+
+label {
+  @extend .control-label;
+}
+
+select,
+input[type="password"],
+input[type="email"],
+input[type="text"] {
+  @extend .form-control;
+  margin-right: 0.5em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+table {
+  @extend .table;
+
+  th > a {
+    &:link, &:visited, &:hover, &:active {
+      color: $text-color;
+    }
+  }
+}
+
+legend {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+table > tbody > tr > td > ul {
+  margin-bottom: 0;
+}

@@ -1,46 +1,31 @@
+= error_messages_for @payment_method
+
 = form_for [comable, :admin, @payment_method] do |f|
-  / TODO: Standardize
-  - if @payment_method.errors.any?
-    #error_explanation
-      h2
-        = pluralize(@payment_method.errors.count, 'error')
-        | prohibited this payment_method from being saved:
+  .hidden
+    = f.submit
 
-      ul
-        - @payment_method.errors.full_messages.each do |message|
-          li = message
+  fieldset
+    .col-sm-3
+      legend
+        = Comable.t('admin.general')
 
-  .panel.panel-inverse
-    .panel-heading
-      .panel-title
-        = Comable.t('admin.nav.payment_methods.edit')
+    .col-sm-9
+      .form-group
+          = f.label :name
+          = f.text_field :name
 
-    .panel-body
-      .form-horizontal
-        fieldset
-          .form-group
-            .col-sm-3.control-label
-              = f.label :name
-            .col-sm-6
-              = f.text_field :name
+      .form-group
+        = f.label :payment_provider
+        .row
+          .col-sm-6
+            = f.select :payment_provider_type, Comable::PaymentProvider.all.map { |provider_class| [provider_class.display_name, provider_class.name] }
+          .col-sm-6
+            = f.select :payment_provider_kind, Comable::PaymentProvider::General.kind.map.with_index { |(_, value), index| [value, index] }
 
-          .form-group
-            .col-sm-3.control-label
-              = f.label :payment_provider
-            .col-sm-3
-              = f.select :payment_provider_type, Comable::PaymentProvider.all.map { |provider_class| [provider_class.display_name, provider_class.name] }
-            .col-sm-3
-              = f.select :payment_provider_kind, Comable::PaymentProvider::General.kind.map.with_index { |(_, value), index| [value, index] }
-
-          .form-group
-            .col-sm-3.control-label
-              = f.label :enable_price
-            .col-sm-3
-              = f.text_field :enable_price_from
-            .col-sm-3
-              = f.text_field :enable_price_to
-
-    .panel-footer
-      = link_to Comable.t('admin.actions.cancel'), comable.admin_payment_methods_path, class: 'btn btn-default'
-      .pull-right
-        = f.submit
+      .form-group
+        = f.label :enable_price
+        .row
+          .col-sm-6
+            = f.text_field :enable_price_from
+          .col-sm-6
+            = f.text_field :enable_price_to

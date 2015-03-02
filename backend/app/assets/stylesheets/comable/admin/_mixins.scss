@@ -1,0 +1,16 @@
+// from https://github.com/FortAwesome/Font-Awesome/issues/213
+@mixin glyphicon($name, $float: none) {
+  &:before {
+    @extend .glyphicon;
+    float: $float;
+  }
+  @extend .glyphicon-#{$name};
+}
+
+@mixin fa($name, $float: none) {
+  &:before {
+    float: $float;
+    @extend .fa;
+  }
+  @extend .fa-#{$name};
+}
