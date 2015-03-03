@@ -16,3 +16,5 @@ doc/
 vendor/
 tags
 .ruby-version
+spec/dummy/public/assets/
+spec/dummy/public/uploads/
