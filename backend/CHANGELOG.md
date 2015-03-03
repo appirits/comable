@@ -1,3 +1,16 @@
+## Comable 0.3.3 (March 03, 2015) ##
+
+*   Support Ruby 2.2.0
+
+*   Support Rails 4.2
+
+*   Improve look and feel
+
+*   Fix manager of categories to work
+
+*   Fix the problem that would be created two images when add a new product.
+
+
 ## Comable 0.3.2 (February 10, 2015) ##
 
 *   Remove gems of rails-asstes.org.

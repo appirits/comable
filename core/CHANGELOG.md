@@ -1,3 +1,14 @@
+## Comable 0.3.3 (March 03, 2015) ##
+
+*   Support Ruby 2.2.0
+
+*   Support Rails 4.2
+
+*   Add required_ruby_version to gemspec
+
+*   Add version specifiers to gemspec
+
+
 ## Comable 0.3.2 (February 10, 2015) ##
 
 *   Remove jquery-rails.
