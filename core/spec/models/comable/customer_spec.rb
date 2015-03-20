@@ -9,7 +9,7 @@ describe Comable::Customer do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:email) }
 
-    it { is_expected.to ensure_length_of(:email).is_at_most(255) }
+    it { is_expected.to validate_length_of(:email).is_at_most(255) }
   end
 
   describe 'incomplete order' do
