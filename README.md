@@ -31,7 +31,7 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 
   ```bash
   Rails.application.routes.draw do
-    mount Comable::Core::Engine => '/comable'
+    mount Comable::Core::Engine, at: '/comable'
   end
   ```
 
