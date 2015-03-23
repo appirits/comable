@@ -15,6 +15,11 @@ Eval:
   Exclude:
     - '**/Gemfile'
 
+# W: Unused block argument. You can omit the argument if you don't care about it.
+UnusedBlockArgument:
+  Exclude:
+    - core/lib/generators/comable/install/templates/config/initializers/comable.rb
+
 # C: Use the new Ruby 1.9 hash syntax.
 HashSyntax:
   Exclude:
@@ -46,4 +51,5 @@ AllCops:
   Exclude:
     - vendor/**/*
     - spec/dummy/db/schema.rb
+    - spec/dummy/tmp/**/*
     - gemfiles/**/*
