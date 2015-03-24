@@ -123,7 +123,7 @@ ja:
       stocks: 在庫
       clear_search_conditions: 検索条件をクリア
       add_search_condition: 検索条件を追加
-      remove_search_condition: 削除
+      remove_search_condition: '×'
       advanced_search: 詳細検索
       bill: 請求先
       ship: 配送先

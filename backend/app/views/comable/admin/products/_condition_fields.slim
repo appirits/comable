@@ -5,8 +5,8 @@
         = content_tag(:span, a.attribute_select(associations: :stocks), { class: 'fields', 'data-object-name' => a.object_name }, false)
     .col-sm-2
       = f.predicate_select only: %i(gteq lteq eq_any_splitted cont_any_splitted), compounds: false
-    .col-sm-6
+    .col-sm-7
       = f.value_fields do |v|
         = render 'value_fields', f: v
-    .col-sm-2
-      = button_to_remove_fields Comable.t('admin.remove_search_condition'), class: 'btn btn-default btn-block'
+    .col-sm-1
+      = button_to_remove_fields Comable.t('admin.remove_search_condition'), class: 'comable-remove-button'
