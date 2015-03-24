@@ -15,11 +15,21 @@ module Comable
 
     # @!scope class
     # 品切れでない在庫インスタンスを返す
-    scope :unsold, -> { where('quantity > ?', 0) }
+    scope :stocked, -> { where('quantity > ?', 0) }
+
+    class << self
+      alias_method :unsold, :stocked
+      deprecate :unsold, deprecator: Comable::Deprecator.instance
+    end
 
     # @!scope class
     # 品切れの在庫インスタンスを返す
-    scope :soldout, -> { where('quantity <= ?', 0) }
+    scope :unstocked, -> { where('quantity <= ?', 0) }
+
+    class << self
+      alias_method :soldout, :unstocked
+      deprecate :soldout, deprecator: Comable::Deprecator.instance
+    end
 
     #
     # @!endgroup
@@ -40,25 +50,33 @@ module Comable
     # 在庫の有無を取得する
     #
     # @example
-    #   stock.unsold? #=> true
+    #   stock.quanaity = 1
+    #   stock.stocked? #=> true
     #
     # @param quantity [Fixnum] 減算する在庫数を指定する
     # @return [Boolean] 在庫があれば true を返す
-    # @see #soldout?
-    def unsold?(quantity: 1)
+    # @see #unstocked?
+    def stocked?(quantity: 1)
       (self.quantity - quantity) >= 0
     end
+
+    alias_method :unsold?, :stocked?
+    deprecate :unsold?, deprecator: Comable::Deprecator.instance
 
     # 在庫の有無を取得する
     #
     # @example
-    #   stock.soldout? #=> false
+    #   stock.quanaity = 1
+    #   stock.unstocked? #=> false
     #
     # @param quantity [Fixnum] 減算する在庫数を指定する
-    # @return [Boolean] {#unsold?} の逆。在庫がなければ true を返す
-    # @see #unsold?
-    def soldout?(quantity: 1)
-      !unsold?(quantity: quantity)
+    # @return [Boolean] {#stocked?} の逆。在庫がなければ true を返す
+    # @see #stocked?
+    def unstocked?(quantity: 1)
+      !stocked?(quantity: quantity)
     end
+
+    alias_method :soldout?, :unstocked?
+    deprecate :soldout?, deprecator: Comable::Deprecator.instance
   end
 end
