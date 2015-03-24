@@ -65,7 +65,7 @@ module Comable
     end
 
     def stocked_items
-      order_details.to_a.select(&:soldout_stock?)
+      order_details.to_a.select(&:unstocked?)
     end
 
     alias_method :soldout_stocks, :stocked_items

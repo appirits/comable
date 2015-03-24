@@ -44,11 +44,14 @@ module Comable
       price * quantity
     end
 
-    def soldout_stock?
+    def unstocked?
       stock_with_clean_quantity do |stock|
         stock.unstocked?(quantity: quantity)
       end
     end
+
+    alias_method :soldout_stock?, :unstocked?
+    deprecate :soldout_stock?, deprecator: Comable::Deprecator.instance
 
     private
 
