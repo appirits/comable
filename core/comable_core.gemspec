@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'acts_as_list', '~> 0.6.0'
   s.add_dependency 'carrierwave', '~> 0.10.0'
   s.add_dependency 'cancancan', '~> 1.10'
+  s.add_dependency 'highline', '~> 1.6.21'
 end

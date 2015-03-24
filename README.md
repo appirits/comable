@@ -21,19 +21,19 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
   bundle install
   ```
 
-3. Get gem migrations:
+3. Run the generator:
 
   ```bash
-  bundle exec rake comable:install:migrations
+  bundle exec rails generate comable:install
   ```
 
-4. Add routes in the `config/routes.rb`
+4. Start up your application:
 
   ```bash
-  Rails.application.routes.draw do
-    mount Comable::Core::Engine => '/comable'
-  end
+  bundle exec rails server
   ```
+
+  Go to your browser and open `http://localhost:3000`.
 
 ## Requirements
 

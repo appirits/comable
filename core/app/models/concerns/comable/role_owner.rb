@@ -9,7 +9,7 @@ module Comable
         admin
         reporter
         customer
-      ), default: :customer, predicates: true
+      ), default: :customer, predicates: true, scope: true
     end
   end
 end

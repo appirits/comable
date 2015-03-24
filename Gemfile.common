@@ -8,8 +8,9 @@ gem 'rspec-example_steps', require: false
 gem 'shoulda-matchers', require: false
 gem 'factory_girl_rails', require: false
 gem 'capybara', require: false
-gem 'coveralls', require: false
+gem 'generator_spec', require: false
 
+gem 'coveralls', require: false
 gem 'rubocop', require: false
 
 gem 'bullet', require: false
