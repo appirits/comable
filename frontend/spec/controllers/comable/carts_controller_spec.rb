@@ -96,8 +96,8 @@ describe Comable::CartsController do
           expect(flash[:notice]).to eq Comable.t('carts.added')
         end
 
-        context 'when soldout' do
-          let(:stock) { FactoryGirl.create(:stock, :soldout) }
+        context 'when product unstocked' do
+          let(:stock) { FactoryGirl.create(:stock, :unstocked) }
           let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
 
           its(:response) { is_expected.to render_template(:show) }

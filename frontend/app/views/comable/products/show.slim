@@ -36,14 +36,14 @@
           .sku
             = sku_table @product
 
-        - if @product.unsold?
+        - if @product.stocked?
           .add_cart.form-inline.form-group
             = hidden_field_tag :product_id, @product.id
             = select_tag :quantity, options_for_select(1.upto(10).to_a)
             = submit_tag Comable.t('add_to_cart')
         - else
-          .sold_out
-            = Comable.t('soldout')
+          .soldout
+            = Comable.t('unstocked')
 
   - if @product.categories.any?
     .row

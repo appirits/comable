@@ -2,7 +2,7 @@ describe Comable::OrdersController do
   render_views
 
   let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
-  let(:stock) { FactoryGirl.create(:stock, :unsold) }
+  let(:stock) { FactoryGirl.create(:stock, :stocked) }
   let(:address_attributes) { FactoryGirl.attributes_for(:address) }
   let(:current_order) { controller.current_order }
 
@@ -27,7 +27,7 @@ describe Comable::OrdersController do
     let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
 
     let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
-    let(:stock) { FactoryGirl.create(:stock, :unsold) }
+    let(:stock) { FactoryGirl.create(:stock, :stocked) }
     let(:address_attributes) { FactoryGirl.attributes_for(:address) }
     let(:current_order) { controller.current_order }
 
@@ -225,7 +225,7 @@ describe Comable::OrdersController do
       end
 
       context 'when out of stock' do
-        let(:stock) { FactoryGirl.create(:stock, :soldout) }
+        let(:stock) { FactoryGirl.create(:stock, :unstocked) }
 
         its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
       end

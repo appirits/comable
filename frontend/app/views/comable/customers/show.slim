@@ -50,7 +50,7 @@
                         = link_to order_detail.name_with_sku, comable.product_path(order_detail.product)
                       .comable-repeat
                         = form_tag comable.add_cart_path do
-                          - if order_detail.stock.unsold?
+                          - if order_detail.stock.stocked?
                             .add_cart.form-inline.form-group
                               = hidden_field_tag :stock_id, order_detail.stock_id
                               = hidden_field_tag :quantity, order_detail.quantity

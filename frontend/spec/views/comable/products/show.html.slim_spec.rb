@@ -12,7 +12,7 @@ describe 'comable/products/show.html.slim' do
   end
 
   context '在庫あり商品の場合' do
-    let(:stock) { FactoryGirl.create(:stock, :unsold) }
+    let(:stock) { FactoryGirl.create(:stock, :stocked) }
     let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
 
     it 'カート投入ボタンが存在すること' do
@@ -21,7 +21,7 @@ describe 'comable/products/show.html.slim' do
   end
 
   context '在庫なし商品の場合' do
-    let(:stock) { FactoryGirl.create(:stock, :soldout) }
+    let(:stock) { FactoryGirl.create(:stock, :unstocked) }
     let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
 
     it 'カート投入ボタンが存在しないこと' do

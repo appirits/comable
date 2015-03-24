@@ -5,7 +5,7 @@ FactoryGirl.define do
     price 100
 
     trait :with_stock do
-      stocks { [FactoryGirl.create(:stock, :unsold)] }
+      stocks { [create(:stock, :stocked)] }
     end
 
     trait :sku do
@@ -13,16 +13,16 @@ FactoryGirl.define do
       sku_v_item_name 'サイズ'
       stocks do
         [
-          FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド', sku_v_choice_name: 'S'),
-          FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド', sku_v_choice_name: 'M'),
-          FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド', sku_v_choice_name: 'L')
+          create(:stock, :stocked, sku_h_choice_name: 'レッド', sku_v_choice_name: 'S'),
+          create(:stock, :stocked, sku_h_choice_name: 'レッド', sku_v_choice_name: 'M'),
+          create(:stock, :stocked, sku_h_choice_name: 'レッド', sku_v_choice_name: 'L')
         ]
       end
     end
 
     trait :sku_h do
       sku_h_item_name 'カラー'
-      stocks { [FactoryGirl.create(:stock, :unsold, sku_h_choice_name: 'レッド')] }
+      stocks { [create(:stock, :stocked, sku_h_choice_name: 'レッド')] }
     end
   end
 end

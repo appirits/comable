@@ -62,7 +62,7 @@ module Comable
       content_tag(:div, class: 'radio') do
         content_tag(:label) do
           html = ''
-          html << radio_button_tag(:stock_id, stock.id, false, disabled: stock.soldout?)
+          html << radio_button_tag(:stock_id, stock.id, false, disabled: stock.unstocked?)
           html << stock.code
           html.html_safe
         end

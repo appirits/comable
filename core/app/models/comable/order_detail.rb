@@ -46,16 +46,16 @@ module Comable
 
     def soldout_stock?
       stock_with_clean_quantity do |stock|
-        stock.soldout?(quantity: quantity)
+        stock.unstocked?(quantity: quantity)
       end
     end
 
+    private
+
     def valid_stock_quantity
       return unless soldout_stock?
-      errors.add :quantity, Comable.t('errors.messages.product_soldout', name: stock.name_with_sku)
+      errors.add :quantity, Comable.t('errors.messages.product_unstocked', name: stock.name_with_sku)
     end
-
-    private
 
     def stock_with_clean_quantity
       quantity_will = stock.quantity

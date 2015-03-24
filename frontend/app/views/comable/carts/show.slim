@@ -33,7 +33,7 @@
                 .caption
                   = product.caption
                 - if cart_item.soldout_stock?
-                  .error.soldout = Comable.t('carts.soldout')
+                  .error.soldout = Comable.t('unstocked')
               td.price
                 = number_to_currency product.price
               td.quantity
