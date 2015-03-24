@@ -64,9 +64,12 @@ module Comable
       completed_at && completed_at_was.nil?
     end
 
-    def soldout_stocks
+    def stocked_items
       order_details.to_a.select(&:soldout_stock?)
     end
+
+    alias_method :soldout_stocks, :stocked_items
+    deprecate :soldout_stocks, deprecator: Comable::Deprecator.instance
 
     # 時価商品合計を取得
     def current_item_total_price

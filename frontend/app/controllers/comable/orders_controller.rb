@@ -54,7 +54,7 @@ module Comable
     end
 
     def ensure_saleable_stocks
-      return if current_order.soldout_stocks.empty?
+      return if current_order.stocked_items.empty?
       flash[:alert] = Comable.t('errors.messages.products_unstocked')
       redirect_to comable.cart_path
     end
