@@ -56,7 +56,13 @@ module Comable
       end
 
       def enable_advanced_search?
-        params[:q] && params[:q][:g]
+        grouping_params = params[:q][:g]
+        conditions_params = grouping_params.values.first[:c]
+        value_params = conditions_params.values.first[:v]
+
+        value_params.values.first[:value].present?
+      rescue NoMethodError
+        false
       end
     end
   end
