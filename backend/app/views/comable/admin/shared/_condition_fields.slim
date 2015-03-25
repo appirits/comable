@@ -7,6 +7,6 @@
       = f.predicate_select only: %i(gteq lteq eq_any_splitted cont_any_splitted), compounds: false
     .col-sm-7
       = f.value_fields do |v|
-        = render 'value_fields', f: v
+        = render 'comable/admin/shared/value_fields', f: v
     .col-sm-1
       = button_to_remove_fields Comable.t('admin.remove_search_condition'), class: 'comable-remove-button'

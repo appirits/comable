@@ -42,7 +42,7 @@
             .well
               = setup_search_form f
               = f.grouping_fields do |g|
-                = render 'grouping_fields', f: g
+                = render 'comable/admin/shared/grouping_fields', f: g
               - unless enable_advanced_search?
                 = build_fields f, :grouping
 

@@ -147,7 +147,7 @@
           .row
             - sub_images.each.with_index(1) do |image, index|
               = f.fields_for :images, image do |ff|
-                = render 'image_fields', ff: ff, index: index
+                = render 'comable/admin/shared/image_fields', ff: ff, index: index
 
             .col-sm-6
               = link_to_add_fields Comable.t('admin.add_sub_image'), f, :images

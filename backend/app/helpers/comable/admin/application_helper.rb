@@ -13,7 +13,7 @@ module Comable
       def link_to_add_fields(name, f, association, options = {})
         new_object = f.object.class.reflect_on_association(association).klass.new
         fields = f.fields_for(association, new_object, child_index: "new_#{association}") do |builder|
-          render("#{association.to_s.singularize}_fields", ff: builder)
+          render("comable/admin/shared/#{association.to_s.singularize}_fields", ff: builder)
         end
         link_to(name, 'javascript:void(0)', options.merge(onclick: "add_fields(this, '#{association}', '#{escape_javascript(fields)}')"))
       end
@@ -51,7 +51,7 @@ module Comable
         new_object = f.object.send("build_#{type}")
 
         f.send("#{type}_fields", new_object, child_index: "new_#{type}") do |builder|
-          render("#{type}_fields", f: builder)
+          render("comable/admin/shared/#{type}_fields", f: builder)
         end
       end
 
