@@ -26,6 +26,8 @@
               span.caret<
             ul.dropdown-menu role="menu"
               li
+                = link_to Comable.t('admin.advanced_search'), 'javascript:void(0)', 'data-toggle' => 'collapse', 'data-target' => '#comable-advanced-search'
+              li
                 = link_to Comable.t('admin.clear_search_conditions'), comable.admin_orders_path
           = f.text_field :code_cont, class: 'form-control'
           span.input-group-btn
@@ -33,6 +35,8 @@
         .hidden
           = f.label :customer_id
           = f.text_field :customer_id_eq
+
+        = render 'comable/admin/shared/advanced_search', f: f
 
     section
       - if @orders.empty?
