@@ -66,7 +66,7 @@ module Comable
     end
 
     def incomplete_order
-      @incomplete_order ||= find_or_initialize_incomplete_order
+      @incomplete_order ||= find_incomplete_order || initialize_incomplete_order
     end
 
     def order(order_params = {})
@@ -95,10 +95,6 @@ module Comable
 
     def current_guest_token
       @cookies.signed[:guest_token] if @cookies
-    end
-
-    def find_or_initialize_incomplete_order
-      find_incomplete_order || initialize_incomplete_order
     end
 
     def initialize_incomplete_order

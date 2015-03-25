@@ -17,7 +17,7 @@ module Comable
         klass.ransackable_attributes(auth_object).include? str
       end
 
-      def ransackable_attributes(auth_object = nil)
+      def ransackable_attributes(_auth_object = nil)
         ransackable_attributes_options = ransack_options[:ransackable_attributes] || {}
         if ransackable_attributes_options[:only]
           [ransackable_attributes_options[:only]].flatten.map(&:to_s)
@@ -30,7 +30,7 @@ module Comable
         klass.ransackable_associations(auth_object).include? str
       end
 
-      def ransackable_associations(auth_object = nil)
+      def ransackable_associations(_auth_object = nil)
         reflect_on_all_associations.map { |a| a.name.to_s }
       end
     end

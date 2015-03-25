@@ -18,24 +18,8 @@ module Comable
         link_to(name, 'javascript:void(0)', options.merge(onclick: "add_fields(this, '#{association}', '#{escape_javascript(fields)}')"))
       end
 
-      def setup_search_form(builder)
-        %Q{
-          <script type="text/javascript">
-            jQuery(document).ready(function() {
-              var search = new Search();
-
-              $(document).on("click", ".ransack.add_fields", function() {
-                search.add_fields(this, $(this).data('fieldType'), $(this).data('content'));
-                return false;
-              });
-
-              $(document).on("click", ".ransack.remove_fields", function() {
-                search.remove_fields(this);
-                return false;
-              });
-            });
-          </script>
-        }.html_safe
+      def setup_search_form
+        render('comable/admin/shared/setup_search_form')
       end
 
       def button_to_remove_fields(name, options = {})

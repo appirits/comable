@@ -33,19 +33,23 @@ module Comable
 
       initializer 'comable.ransack.configure' do
         Ransack.configure do |config|
-          config.add_predicate 'eq_any_splitted',
+          config.add_predicate(
+            'eq_any_splitted',
             arel_predicate: 'eq_any',
             formatter: proc { |v| v.split(' ') },
             validator: proc { |v| v.present? },
             compounds: false,
             type: :string
+          )
 
-          config.add_predicate 'cont_any_splitted',
+          config.add_predicate(
+            'cont_any_splitted',
             arel_predicate: 'matches_any',
-            formatter: proc { |v| v.split(' ').map { |s| "%#{s}%"} },
+            formatter: proc { |v| v.split(' ').map { |s| "%#{s}%" } },
             validator: proc { |v| v.present? },
             compounds: false,
             type: :string
+          )
         end
       end
     end
