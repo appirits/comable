@@ -8,5 +8,5 @@
     .col-sm-7
       = f.value_fields do |v|
         = render 'comable/admin/shared/value_fields', f: v
-    .col-sm-1
+    .col-sm-1.text-center
       = button_to_remove_fields Comable.t('admin.remove_search_condition'), class: 'comable-remove-button'
