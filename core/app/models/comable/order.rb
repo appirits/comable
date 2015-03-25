@@ -1,6 +1,7 @@
 module Comable
   class Order < ActiveRecord::Base
     include Comable::Checkout
+    include Comable::Ransackable
 
     belongs_to :customer, class_name: Comable::Customer.name, autosave: false
     belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
@@ -24,6 +25,8 @@ module Comable
     scope :this_month, -> { where(completed_at: Time.now.beginning_of_month..Time.now.end_of_month) }
     scope :this_week, -> { where(completed_at: Time.now.beginning_of_week..Time.now.end_of_week) }
     scope :last_week, -> { where(completed_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week) }
+
+    ransack_options ransackable_attributes: { except: [:shipment_method_id, :payment_method_id, :bill_address_id, :ship_address_id] }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship

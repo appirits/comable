@@ -18,7 +18,12 @@ module Comable
       end
 
       def ransackable_attributes(auth_object = nil)
-        column_names + _ransackers.keys
+        ransackable_attributes_options = ransack_options[:ransackable_attributes] || {}
+        if ransackable_attributes_options[:only]
+          [ransackable_attributes_options[:only]].flatten.map(&:to_s)
+        else
+          column_names + _ransackers.keys - [ransackable_attributes_options[:except]].flatten.map(&:to_s)
+        end
       end
 
       def ransackable_association?

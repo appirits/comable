@@ -1,7 +1,8 @@
 module Comable
   class Customer < ActiveRecord::Base
-    include CartOwner
-    include RoleOwner
+    include Comable::CartOwner
+    include Comable::RoleOwner
+    include Comable::Ransackable
 
     has_many :orders, class_name: Comable::Order.name
     has_many :addresses, class_name: Comable::Address.name, dependent: :destroy
@@ -15,6 +16,8 @@ module Comable
     validates :email, presence: true, length: { maximum: 255 }
 
     devise(*Comable::Config.devise_strategies[:customer])
+
+    ransack_options ransackable_attributes: { except: [:encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at, :bill_address_id, :ship_address_id] }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
