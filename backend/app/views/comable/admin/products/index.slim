@@ -36,15 +36,7 @@
           span.input-group-btn
             = f.submit Comable.t('admin.search'), class: 'btn btn-default'
 
-        fieldset
-          legend
-          .collapse#comable-advanced-search class="#{'in' if enable_advanced_search? }"
-            .well
-              = setup_search_form f
-              = f.grouping_fields do |g|
-                = render 'comable/admin/shared/grouping_fields', f: g
-              - unless enable_advanced_search?
-                = build_fields f, :grouping
+        = render 'comable/admin/shared/advanced_search', f: f
 
     section
       - if @products.empty?
