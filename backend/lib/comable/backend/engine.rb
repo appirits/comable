@@ -52,6 +52,9 @@ module Comable
           )
         end
       end
+
+      # Add support Rails 4.1.x, 4.2.x for gritter
+      config.assets.precompile += %w( error.png gritter-close.png gritter.png ie-spacer.gif notice.png progress.gif success.png warning.png ) if Rails::VERSION::MAJOR == 4
     end
   end
 end
