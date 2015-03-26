@@ -13,9 +13,40 @@ module Comable
       def link_to_add_fields(name, f, association, options = {})
         new_object = f.object.class.reflect_on_association(association).klass.new
         fields = f.fields_for(association, new_object, child_index: "new_#{association}") do |builder|
-          render("#{association.to_s.singularize}_fields", ff: builder)
+          render("comable/admin/shared/#{association.to_s.singularize}_fields", ff: builder)
         end
         link_to(name, 'javascript:void(0)', options.merge(onclick: "add_fields(this, '#{association}', '#{escape_javascript(fields)}')"))
+      end
+
+      def setup_search_form
+        render('comable/admin/shared/setup_search_form')
+      end
+
+      def button_to_remove_fields(name, options = {})
+        content_tag(:button, name, options.merge(class: "ransack remove_fields #{options[:class]}"))
+      end
+
+      def button_to_add_fields(name, f, type, options = {})
+        new_fields = build_fields(f, type)
+        content_tag(:button, name, options.merge(class: "ransack add_fields #{options[:class]}", 'data-field-type' => type, 'data-content' => "#{new_fields}"))
+      end
+
+      def build_fields(f, type)
+        new_object = f.object.send("build_#{type}")
+
+        f.send("#{type}_fields", new_object, child_index: "new_#{type}") do |builder|
+          render("comable/admin/shared/#{type}_fields", f: builder)
+        end
+      end
+
+      def enable_advanced_search?
+        grouping_params = params[:q][:g]
+        conditions_params = grouping_params.values.first[:c]
+        value_params = conditions_params.values.first[:v]
+
+        value_params.values.first[:value].present?
+      rescue NoMethodError
+        false
       end
     end
   end

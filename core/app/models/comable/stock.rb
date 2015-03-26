@@ -6,6 +6,7 @@ module Comable
   class Stock < ActiveRecord::Base
     include Comable::SkuItem
     include Comable::SkuChoice
+    include Comable::Ransackable
 
     belongs_to :product, class_name: Comable::Product.name
 
@@ -46,6 +47,8 @@ module Comable
     delegate :price, to: :product
     delegate :sku_h_item_name, to: :product
     delegate :sku_v_item_name, to: :product
+
+    ransack_options attribute_select: { associations: :product }, ransackable_attributes: { except: :product_id }
 
     # 在庫の有無を取得する
     #

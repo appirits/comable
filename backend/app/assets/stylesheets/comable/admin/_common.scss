@@ -262,3 +262,31 @@ footer {
     padding-top: 89px + 20px;
   }
 }
+
+
+#comable-advanced-search {
+  margin-top: 10px;
+
+  fieldset > fieldset {
+    margin-bottom: 10px;
+  }
+
+  button.comable-remove-button {
+    @include appearance(none);
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    height: $input-height-base;
+    outline: none;
+  }
+
+  .comable-remove-button {
+    @include text-shadow(0 1px 0 #fff);
+    @include opacity(0.2);
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+  }
+}

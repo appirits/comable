@@ -2,6 +2,7 @@ module Comable
   class Product < ActiveRecord::Base
     include Comable::SkuItem
     include Comable::Product::Search
+    include Comable::Ransackable
 
     has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
@@ -14,6 +15,8 @@ module Comable
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
     validates :sku_h_item_name, length: { maximum: 255 }
     validates :sku_v_item_name, length: { maximum: 255 }
+
+    ransack_options attribute_select: { associations: :stocks }
 
     # Add conditions for the images association.
     # Override method of the images association to support Rails 3.x.

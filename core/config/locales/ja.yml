@@ -121,6 +121,9 @@ ja:
       operation: 操作
       stocks: 在庫
       clear_search_conditions: 検索条件をクリア
+      add_search_condition: 検索条件を追加
+      remove_search_condition: '×'
+      advanced_search: 詳細検索
       bill: 請求先
       ship: 配送先
       add_sub_image: サブ画像を追加
@@ -195,7 +198,13 @@ ja:
         bill_full_name: 配送先氏名
         orders: 注文数
         role: 権限
+        sign_in_count: ログイン回数
+        current_sign_in_at: ログイン日時
+        last_sign_in_at: 最終ログイン日時
+        current_sign_in_ip: ログインIP
+        last_sign_in_ip: 最終ログインIP
       comable/order:
+        id: ID
         code: 注文番号
         email: メールアドレス
         bill_address: ご請求先
@@ -212,6 +221,9 @@ ja:
         ship_address: 配送先住所
         bill_full_name: 配送先氏名
         order_details: 注文明細
+        customer_id: ユーザーID
+        guest_token: ゲストトークン
+        shipment_tracking_number: 発送トラッキング番号
       comable/order_detail: &comable_order_detail
         quantity: *quantity
         price: *price
@@ -227,6 +239,7 @@ ja:
         detail: その他
         phone_number: 電話番号
       comable/product:
+        id: ID
         code: 商品コード
         name: 商品名
         price: 価格
@@ -235,6 +248,7 @@ ja:
         sku_h_item_name: SKU横軸項目名
         sku_v_item_name: SKU縦軸項目名
       comable/stock:
+        id: ID
         code: SKU商品コード
         quantity: 在庫
         sku_h_choice_name: SKU横軸選択肢名
@@ -275,3 +289,10 @@ ja:
       next: "次 &rsaquo;"
       previous: "&lsaquo; 前"
       truncate: "&hellip;"
+
+  ransack:
+    predicates:
+      gteq: 以上
+      lteq: 以下
+      eq_any_splitted: 完全一致
+      cont_any_splitted: 部分一致

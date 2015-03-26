@@ -1,0 +1,15 @@
+= content_tag :fieldset, { class: 'fields condition', 'data-object-name' => f.object_name } do
+  .row
+    .col-sm-2
+      = f.attribute_fields do |a|
+        - klass = f.object.context.object
+        - options = {}
+        - options = klass.ransack_options[:attribute_select] if klass.respond_to? :ransack_options
+        = content_tag(:span, a.attribute_select(options), { class: 'fields', 'data-object-name' => a.object_name }, false)
+    .col-sm-2
+      = f.predicate_select only: %i(gteq lteq eq_any_splitted cont_any_splitted), compounds: false
+    .col-sm-7
+      = f.value_fields do |v|
+        = render 'comable/admin/shared/value_fields', f: v
+    .col-sm-1.text-center
+      = button_to_remove_fields Comable.t('admin.remove_search_condition'), class: 'comable-remove-button'
