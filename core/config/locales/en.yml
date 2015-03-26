@@ -1,0 +1,277 @@
+en:
+  comable:
+    cart: 'Cart'
+    shopping_cart: 'Shopping Cart'
+    checkout: 'Checkout'
+    show_cart: 'Show Cart'
+    search: 'Search'
+    category: 'Category'
+    my_account: 'My Account'
+    sign_in: 'Login'
+    sign_out: 'Logout'
+    guest: 'Guest'
+    guest_order: 'Guest Checkout'
+    add_to_cart: 'Add to Cart'
+    browse_related_products: 'Browse related products'
+    reorder: 'Buy it Again'
+    change_email_or_password: 'Change email address or password'
+    edit_your_address_book: 'Edit your address book'
+    address_book: 'Address book'
+    order_history: 'Order history'
+    next_step: 'Continue'
+    use_this_address: 'Use this address'
+    complete_order: 'Place your order'
+    use_as_billing_address: 'Use as Billing Address'
+    use_as_shipping_address: 'Use as Shipping Address'
+    new_billing_address: 'New billing address'
+    new_shipping_address: 'New shiping address'
+    edit_billing_address: 'Edit billing address'
+    edit_shipping_address: 'Edit shiping address'
+    other_addresses: 'Other addresses'
+    new_address: 'New address'
+    successful: 'Successful'
+    failure: 'Failure'
+
+    price: &price
+      'Price'
+    quantity: &quantity
+      'Quantity'
+    item_total_price: &item_total_price
+      'Item total'
+    item_total_quantity: &item_total_quantity
+      'Item total quantity'
+    soldout:
+      'Soldout'
+    honorific: &honorific
+      'Dear %{name}'
+
+    checkout_flow:
+      sign_in: 'Login'
+      address_and_payment: 'Address & Payment'
+      confirm: 'Confirm'
+      complete: 'Place Order'
+
+    actions:
+      new: 'New'
+      edit: 'Edit'
+      create: 'Create'
+      update: 'Update'
+      destroy: 'Destroy'
+      cancel: 'Cancel'
+      continue: 'Continue'
+
+    errors:
+      messages:
+        out_of_stock: '(%{name}) was Sold Out.'
+        out_of_stocks: 'Sold Out Items.'
+        product_not_found: '%{name} could not be found or has been deleted.'
+        products_not_found: 'This item could not be found or has been deleted.'
+
+    carts:
+      added: 'An item is added to Cart'
+      empty: 'Cart is empty.'
+      updated: 'Cart Updated'
+      invalid: 'Cart Errored'
+
+    orders:
+      success: 'Your order has been placed.'
+      failure: 'Your order has failed. Please check your order again.'
+
+    order_mailer:
+      complete:
+        subject: 'Your %{store_name} order has been placed (Order: %{order_code})'
+        dear: *honorific
+        introductions: |-
+          Thank you for shopping with %{store_name}.
+          Your order details:
+        outroductions: |-
+          We hope to see you again soon.
+          %{store_name}
+
+    admin:
+      not_found: 'Record not found.'
+      general: 'General'
+      images: 'Images'
+      main_image: 'Main image'
+      sub_image: 'Sub image'
+      home: 'Home'
+      product: 'Product'
+      index: 'List'
+      search: 'Search'
+      back_to_store: 'Back to Store'
+      confirmation_to_remove_product: 'This operation cannot be undone. Would you like to proceed?'
+      confirmation_to_remove_stock: 'This operation cannot be undone. Would you like to proceed?'
+      you_can_drag_and_drop: 'You can edit the category tree by drag-and-drop'
+      you_can_right_click: 'You can open the context menu by right click'
+      link_to_add_new_node: 'You can add a new category from the following link: '
+      link_to_add_new_stock: 'You can add a new stock from the following link: '
+      check_this_product_in_frontend: 'Check this product in Store'
+      note: 'NOTE:'
+      results: 'results'
+      times: 'times'
+      more: 'More'
+      access_denied: 'Access denied'
+      order_count: 'Order count'
+      new_orders: 'New Order'
+      new_users: 'New User'
+      sales: 'Sales'
+      better_than_last_week: 'Better than last week (%{percentage}%)'
+      edit_profile: 'Edit profile'
+      please_fill_when_using_sku: 'Please fill the text fielde when using sku.'
+      operation: 'Operation'
+      stocks: 'Stocks'
+      clear_search_conditions: 'Clear search conditions'
+      bill: 'Billing address'
+      ship: 'Shipping address'
+      add_sub_image: 'Add a sub image'
+      sign_in: 'Login'
+      sign_out: 'Logout'
+      nav:
+        dashboard: 'Dashboard'
+        order: 'Orders'
+        product: 'Products'
+        stock: 'Stocks'
+        category: 'Category'
+        customer: 'User'
+        general_settings: 'General settings'
+        store: 'Store'
+        shipment_method: 'Shipment method'
+        payment_method: 'Payment method'
+        products:
+          detail: 'Product details'
+        orders:
+          detail: 'Order details'
+          cart: 'Cart infomation'
+          customer: 'User details'
+          shipment: 'Shipment fee'
+          payment: 'Payment charge'
+        customers:
+          detail: 'User details'
+          edit: 'Editing user'
+          new_orders: 'Recently orders (%{count})'
+        stores:
+          edit: 'Editing store'
+        shipment_methods:
+          edit: 'Editing shipment method'
+        payment_methods:
+          edit: 'Editing payment method'
+      actions:
+        index: 'List'
+        new: 'New'
+        edit: 'Edit'
+        update: 'Update'
+        destroy: 'Destroy'
+        save: 'Save'
+        cancel: 'Cancel'
+      categories:
+        new_node: 'New category'
+
+  activerecord:
+    state_machines:
+      comable/order:
+        state:
+          states:
+            cart: 'Cart'
+            orderer: 'Billing address'
+            delivery: 'Shipping address'
+            shipment: 'Shipment method'
+            payment: 'Payment method'
+            confirm: 'Order confirmed'
+            complete: 'Order placed'
+
+    models:
+      comable/order: 'Orders'
+      comable/order_details: 'Order details'
+
+    attributes:
+      comable/customer:
+        id: 'ID'
+        email: 'Email address'
+        password: 'Password'
+        password_confirmation: 'Password (confirmation)'
+        current_password: 'Current password'
+        bill_address: 'Billing address'
+        ship_address: 'Shipping address'
+        bill_full_name: 'Full name of the billing address'
+        orders: 'Orders'
+        role: 'Role'
+      comable/order:
+        code: 'Order number'
+        email: 'Email address'
+        bill_address: 'Billing address'
+        ship_address: 'Shipping address'
+        payment_method: 'Payment method'
+        shipment_method: 'Shipment method'
+        shipment_fee: 'Shipment fee'
+        item_total_price: 'Item total'
+        total_price: 'Total'
+        order_details: 'Order details'
+        completed_at: 'Comleted at'
+        state: 'State'
+        bill_address: 'Billing address'
+        ship_address: 'Shipping adress'
+        bill_full_name: 'Full name of the billing address'
+        order_details: 'Order details'
+      comable/order_detail: &comable_order_detail
+        quantity: *quantity
+        price: *price
+        product: 'Product'
+        subtotal_price: 'Subtotal'
+      comable/address: &comable_address
+        full_name: 'Full name'
+        family_name: 'Last name'
+        first_name: 'First name'
+        state_name: 'State name'
+        zip_code: 'Zip code'
+        city: 'City'
+        detail: 'Detail'
+        phone_number: 'Phone number'
+      comable/product:
+        code: 'Code'
+        name: 'Name'
+        price: 'Price'
+        caption: 'Caption'
+        categories: 'Categories'
+        sku_h_item_name: 'SKU Horizontal item name'
+        sku_v_item_name: 'SKU Vertical item name'
+      comable/stock:
+        code: 'SKU Code'
+        quantity: 'Quantity'
+        sku_h_choice_name: 'SKU Horizontal choice name'
+        sku_v_choice_name: 'SKU Vertical choice name'
+      comable/store:
+        name: 'Name'
+        meta_keywords: 'Meta keywords'
+        meta_description: 'Meta description'
+        email_sender: 'Email sender'
+        email_activate_flag: 'Email activated'
+      comable/shipment_method:
+        name: 'Name'
+        fee: 'Fee'
+        activate_flag: 'Activated'
+        traking_url: 'Tracking URL'
+      comable/payment_method:
+        name: 'Name'
+        payment_provider: 'Oayment provider'
+        enable_price: 'Enable price range'
+      comable/order/order_details:
+        <<: *comable_order_detail
+      comable/order/bill_address:
+        <<: *comable_address
+      comable/order/ship_address:
+        <<: *comable_address
+
+  enumerize:
+    comable/customer:
+      role:
+        customer: 'Customer'
+        reporter: 'Reporter'
+        admin: 'Administrator'
+
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      next: "Next &rsaquo;"
+      previous: "&lsaquo; Previous"
+      truncate: "&hellip;"
