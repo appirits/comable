@@ -11,7 +11,7 @@ describe Comable::Order do
       let!(:order_detail) { FactoryGirl.create(:order_detail, stock: stock, order: order) }
 
       context 'when out of stock' do
-        let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+        let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
 
         it 'has errors' do
           stock.update_attributes(quantity: 0)

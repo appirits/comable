@@ -44,18 +44,21 @@ module Comable
       price * quantity
     end
 
-    def soldout_stock?
+    def unstocked?
       stock_with_clean_quantity do |stock|
-        stock.soldout?(quantity: quantity)
+        stock.unstocked?(quantity: quantity)
       end
     end
 
-    def valid_stock_quantity
-      return unless soldout_stock?
-      errors.add :quantity, Comable.t('errors.messages.product_soldout', name: stock.name_with_sku)
-    end
+    alias_method :soldout_stock?, :unstocked?
+    deprecate :soldout_stock?, deprecator: Comable::Deprecator.instance
 
     private
+
+    def valid_stock_quantity
+      return unless unstocked?
+      errors.add :quantity, Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku)
+    end
 
     def stock_with_clean_quantity
       quantity_will = stock.quantity

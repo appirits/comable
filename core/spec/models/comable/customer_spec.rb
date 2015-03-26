@@ -14,7 +14,7 @@ describe Comable::Customer do
 
   describe 'incomplete order' do
     context 'when guest' do
-      let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product) }
+      let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
 
       subject { described_class.new.with_cookies(cookies) }
 
@@ -46,7 +46,7 @@ describe Comable::Customer do
   end
 
   context 'カート処理' do
-    let(:stocks) { FactoryGirl.create_list(:stock, 5, :unsold, :with_product) }
+    let(:stocks) { FactoryGirl.create_list(:stock, 5, :stocked, :with_product) }
     let(:stock) { stocks.first }
 
     # when guest
@@ -91,8 +91,8 @@ describe Comable::Customer do
       expect(subject.cart.count).to eq(0)
     end
 
-    context 'when soldout' do
-      let(:stocks) { FactoryGirl.create_list(:stock, 5, :soldout, :with_product) }
+    context 'when product unstocked' do
+      let(:stocks) { FactoryGirl.create_list(:stock, 5, :unstocked, :with_product) }
 
       it 'has a error in cart' do
         subject.add_cart_item(stock)
@@ -101,13 +101,13 @@ describe Comable::Customer do
 
       it 'has a error message in cart' do
         subject.add_cart_item(stock)
-        expect(subject.cart.errors.full_messages.join).to include(Comable.t('errors.messages.product_soldout', name: stock.name_with_sku))
+        expect(subject.cart.errors.full_messages.join).to include(Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku))
       end
     end
   end
 
   context '注文処理' do
-    let(:stock) { FactoryGirl.create(:stock, :unsold, :with_product, quantity: order_quantity) }
+    let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product, quantity: order_quantity) }
     let(:address) { FactoryGirl.create(:address) }
     let(:order_quantity) { 10 }
 
@@ -154,7 +154,7 @@ describe Comable::Customer do
       it '商品を購入できないこと' do
         order = subject.incomplete_order
         order.complete
-        expect(order.errors.full_messages.join).to include(Comable.t('errors.messages.product_soldout', name: stock.name_with_sku))
+        expect(order.errors.full_messages.join).to include(Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku))
       end
     end
   end

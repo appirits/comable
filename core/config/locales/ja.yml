@@ -40,7 +40,7 @@ ja:
       '合計価格'
     item_total_quantity: &item_total_quantity
       '合計商品数'
-    soldout: &soldout
+    soldout:
       '品切れ'
     honorific: &honorific
       '%{name} 様'
@@ -62,8 +62,8 @@ ja:
 
     errors:
       messages:
-        product_soldout: '(%{name})が在庫を超過しています。'
-        products_soldout: '在庫を超過する個数の注文が含まれている可能性があります。'
+        out_of_stock: '(%{name})が在庫を超過しています。'
+        out_of_stocks: '在庫を超過する個数の注文が含まれている可能性があります。'
         product_not_found: '%{name}は存在しないか削除された可能性があります。'
         products_not_found: 'ご指定の商品は存在しないか削除された可能性があります。'
 
@@ -72,7 +72,6 @@ ja:
       empty: 'カートに商品が入っていません'
       updated: 'カートの内容が変更されました'
       invalid: 'カートにいくつかのエラーがあります'
-      soldout: *soldout
 
     orders:
       success: '注文が完了しました'

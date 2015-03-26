@@ -21,11 +21,11 @@ FactoryGirl.define do
       end
     end
 
-    trait :soldout do
+    trait :unstocked do
       quantity 0
     end
 
-    trait :unsold do
+    trait :stocked do
       quantity 10
     end
   end

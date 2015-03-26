@@ -27,13 +27,19 @@ module Comable
       'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjU4IiB5PSI5MCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE3MXgxODA8L3RleHQ+PC9nPjwvc3ZnPg=='
     end
 
-    def unsold?
-      stocks.unsold.exists?
+    def stocked?
+      stocks.stocked.exists?
     end
 
-    def soldout?
-      !unsold?
+    alias_method :unsold?, :stocked?
+    deprecate :unsold?, deprecator: Comable::Deprecator.instance
+
+    def unstocked?
+      !stocked?
     end
+
+    alias_method :soldout?, :unstocked?
+    deprecate :soldout?, deprecator: Comable::Deprecator.instance
 
     def category_path_names=(category_path_names, delimiter: Comable::Category::DEFAULT_PATH_NAME_DELIMITER)
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)

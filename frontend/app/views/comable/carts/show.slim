@@ -32,8 +32,8 @@
                   = link_to stock.name_with_sku, comable.product_path(product)
                 .caption
                   = product.caption
-                - if cart_item.soldout_stock?
-                  .error.soldout = Comable.t('carts.soldout')
+                - if cart_item.unstocked?
+                  .error.soldout = Comable.t('soldout')
               td.price
                 = number_to_currency product.price
               td.quantity
