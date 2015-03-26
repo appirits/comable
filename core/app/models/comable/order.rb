@@ -2,6 +2,7 @@ module Comable
   class Order < ActiveRecord::Base
     include Comable::Checkout
     include Comable::Ransackable
+    include Comable::Order::Morrisable
 
     belongs_to :customer, class_name: Comable::Customer.name, autosave: false
     belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
@@ -30,19 +31,6 @@ module Comable
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
-
-    class << self
-      def morris_keys
-        %w( count price )
-      end
-
-      def to_morris
-        this = (Rails::VERSION::MAJOR == 3) ? scoped : all
-        this.group_by { |order| order.completed_at.to_date }.map do |date, orders|
-          { date: date, count: orders.count, price: orders.sum(&:total_price) }
-        end.to_json
-      end
-    end
 
     def complete
       ActiveRecord::Base.transaction do
