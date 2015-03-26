@@ -13,8 +13,7 @@
     h1.page-header
       = Comable.t('admin.nav.customer')
       small<
-        = @customers.total_count
-        = Comable.t('admin.results')
+        | #{@customers.total_count} #{Comable.t('admin.results')}
 
   .comable-page-body
     .comable-search
@@ -66,8 +65,7 @@
                     span> = customer.bill_address.city
                     span> = customer.bill_address.detail
                 td
-                  = customer.orders.count
-                  = Comable.t('admin.times')
+                  | #{customer.orders.count} #{Comable.t('admin.times')}
 
         .text-center
           = paginate @customers, theme: :comable_backend

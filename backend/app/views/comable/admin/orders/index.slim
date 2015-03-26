@@ -13,8 +13,7 @@
     h1.page-header
       = Comable.t('admin.nav.order')
       small<
-        = @orders.total_count
-        = Comable.t('admin.results')
+        | #{@orders.total_count} #{Comable.t('admin.results')}
 
   .comable-page-body
     .comable-search

@@ -7,8 +7,7 @@
     h1.page-header
       = Comable.t('admin.nav.payment_method')
       small<
-        = @payment_methods.total_count
-        = Comable.t('admin.results')
+        | #{@payment_methods.total_count} #{Comable.t('admin.results')}
 
   .comable-page-body
     - if @payment_methods.empty?
