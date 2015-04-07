@@ -66,8 +66,14 @@
                 td
                   = number_to_currency product.price
                 td
-                  strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
-                    = number_with_delimiter product.stocks.to_a.sum(&:quantity)
+                  ul.list-unstyled
+                    - product.stocks.each do |stock|
+                      li
+                        strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
+                          = number_with_delimiter stock.quantity
+                        - if stock.sku?
+                          span<
+                            | (#{stock.sku_name})
 
         .text-center
           = paginate @products, theme: :comable_backend
