@@ -22,7 +22,7 @@ module Comable
       def find_by_path_name(path_name, root: nil, delimiter: DEFAULT_PATH_NAME_DELIMITER)
         names = path_name.split(delimiter)
         names.inject(root) do |category, name|
-          (category ? category.children : roots).find_by(name: name) || return
+          (category ? category.children : roots).find_by(name: name) || break
         end
       end
 

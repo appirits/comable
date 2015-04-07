@@ -37,10 +37,9 @@ def create_admin_user
   if Comable::Customer.where(email: email).exists?
     puts "WARNING: The email address has already existed: #{email}"
   else
-    Comable::Customer.new do |obj|
+    Comable::Customer.with_role(:admin).new do |obj|
       obj.email = email
       obj.password = password
-      obj.role = :admin
     end.save!
   end
 end
