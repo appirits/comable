@@ -1,3 +1,8 @@
+## Comable 0.3.4 (April 07, 2015) ##
+
+*   Add locales for English.
+
+
 ## Comable 0.3.3 (March 03, 2015) ##
 
 *   Support Ruby 2.2.0

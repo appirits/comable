@@ -1,3 +1,14 @@
+## Comable 0.3.4 (April 07, 2015) ##
+
+*   Fix the problem that pace-rails does not work.
+
+*   Implement advanced search.
+
+*   Add locales for English.
+
+*   Add gritter assets to precompile.
+
+
 ## Comable 0.3.3 (March 03, 2015) ##
 
 *   Support Ruby 2.2.0
