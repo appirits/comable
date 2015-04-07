@@ -51,7 +51,7 @@
             th
               = sort_link [:comable, @q], :price
             th
-              = sort_link [:comable, @q], :stocks_quantity
+              = Comable.t('admin.stocks')
           tbody
             - @products.each do |product|
               - quantity = product.stocks.to_a.sum(&:quantity)
