@@ -40,6 +40,7 @@ def create_admin_user
     Comable::Customer.new do |obj|
       obj.email = email
       obj.password = password
+      obj.role = :admin
     end.save!
   end
 end
