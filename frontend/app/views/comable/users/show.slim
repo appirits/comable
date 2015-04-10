@@ -1,16 +1,16 @@
-#comable-customer
+#comable-user
   h1
     = Comable.t('my_account')
 
   .comable-name
-    = current_customer.email
+    = current_user.email
 
   .comable-member-menu
     ul
       li
-        = link_to Comable.t('change_email_or_password'), comable.edit_customer_path
+        = link_to Comable.t('change_email_or_password'), comable.edit_user_path
       li
-        = link_to Comable.t('edit_your_address_book'), comable.addresses_customer_path
+        = link_to Comable.t('edit_your_address_book'), comable.addresses_user_path
 
   .coamble-orders
     h2

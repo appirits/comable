@@ -4,7 +4,7 @@ module Comable
     include Comable::Ransackable
     include Comable::Order::Morrisable
 
-    belongs_to :customer, class_name: Comable::Customer.name, autosave: false
+    belongs_to :user, class_name: Comable::User.name, autosave: false
     belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
@@ -17,12 +17,12 @@ module Comable
 
     define_model_callbacks :complete
     before_validation :generate_guest_token, on: :create
-    before_validation :clone_addresses_from_customer, on: :create
-    after_complete :clone_addresses_to_customer
+    before_validation :clone_addresses_from_user, on: :create
+    after_complete :clone_addresses_to_user
 
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
-    scope :by_customer, -> (customer) { where(customer_id: customer) }
+    scope :by_user, -> (user) { where(user_id: user) }
     scope :this_month, -> { where(completed_at: Time.now.beginning_of_month..Time.now.end_of_month) }
     scope :this_week, -> { where(completed_at: Time.now.beginning_of_week..Time.now.end_of_week) }
     scope :last_week, -> { where(completed_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week) }
@@ -103,23 +103,23 @@ module Comable
     end
 
     def generate_guest_token
-      return if customer
+      return if user
       self.guest_token ||= loop do
         random_token = SecureRandom.urlsafe_base64(nil, false)
         break random_token unless self.class.exists?(guest_token: random_token)
       end
     end
 
-    def clone_addresses_from_customer
-      return unless customer
-      self.bill_address ||= customer.bill_address.try(:clone)
-      self.ship_address ||= customer.ship_address.try(:clone)
+    def clone_addresses_from_user
+      return unless user
+      self.bill_address ||= user.bill_address.try(:clone)
+      self.ship_address ||= user.ship_address.try(:clone)
     end
 
-    def clone_addresses_to_customer
-      return unless customer
-      customer.update_bill_address_by bill_address
-      customer.update_ship_address_by ship_address
+    def clone_addresses_to_user
+      return unless user
+      user.update_bill_address_by bill_address
+      user.update_ship_address_by ship_address
     end
   end
 end

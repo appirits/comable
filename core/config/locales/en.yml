@@ -135,7 +135,7 @@ en:
         product: 'Products'
         stock: 'Stocks'
         category: 'Categories'
-        customer: 'Users'
+        user: 'Users'
         general_settings: 'General settings'
         store: 'Store'
         shipment_method: 'Shipment methods'
@@ -145,10 +145,10 @@ en:
         orders:
           detail: 'Order details'
           cart: 'Cart infomation'
-          customer: 'User details'
+          user: 'User details'
           shipment: 'Shipment fee'
           payment: 'Payment charge'
-        customers:
+        users:
           detail: 'User details'
           edit: 'Editing user'
           new_orders: 'Recently orders (%{count})'
@@ -187,7 +187,7 @@ en:
       comable/order_details: 'Order details'
 
     attributes:
-      comable/customer:
+      comable/user:
         id: 'ID'
         email: 'Email address'
         password: 'Password'
@@ -265,7 +265,7 @@ en:
         <<: *comable_address
 
   enumerize:
-    comable/customer:
+    comable/user:
       role:
         customer: 'Customer'
         reporter: 'Reporter'

@@ -32,8 +32,8 @@
           span.input-group-btn
             = f.submit Comable.t('admin.search'), class: 'btn btn-default'
         .hidden
-          = f.label :customer_id
-          = f.text_field :customer_id_eq
+          = f.label :user_id
+          = f.text_field :user_id_eq
 
         = render 'comable/admin/shared/advanced_search', f: f
 

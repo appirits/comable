@@ -2,14 +2,14 @@ require_dependency 'comable/admin/application_controller'
 
 module Comable
   module Admin
-    class CustomersController < Comable::Admin::ApplicationController
+    class UsersController < Comable::Admin::ApplicationController
       include Comable::PermittedAttributes
 
-      load_and_authorize_resource class: Comable::Customer.name, except: :index
+      load_and_authorize_resource class: Comable::User.name, except: :index
 
       def index
-        @q = Comable::Customer.ransack(params[:q])
-        @customers = @q.result.page(params[:page]).accessible_by(current_ability)
+        @q = Comable::User.ransack(params[:q])
+        @users = @q.result.page(params[:page]).accessible_by(current_ability)
       end
 
       def show
@@ -19,8 +19,8 @@ module Comable
       end
 
       def update
-        if @customer.update_attributes(customer_params)
-          redirect_to comable.admin_customer_path(@customer), notice: Comable.t('successful')
+        if @user.update_attributes(user_params)
+          redirect_to comable.admin_user_path(@user), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
           render :edit
@@ -29,8 +29,8 @@ module Comable
 
       private
 
-      def customer_params
-        params.require(:customer).permit(
+      def user_params
+        params.require(:user).permit(
           :email,
           :password,
           :role,

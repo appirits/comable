@@ -1,4 +1,4 @@
-describe Comable::Customer do
+describe Comable::User do
   let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
   let(:signed_cookies) { Hash.new }
 
@@ -50,7 +50,7 @@ describe Comable::Customer do
     let(:stock) { stocks.first }
 
     # when guest
-    subject { FactoryGirl.build(:customer).with_cookies(cookies) }
+    subject { FactoryGirl.build(:user).with_cookies(cookies) }
 
     it '商品を投入できること' do
       subject.add_cart_item(stock)
@@ -111,7 +111,7 @@ describe Comable::Customer do
     let(:address) { FactoryGirl.create(:address) }
     let(:order_quantity) { 10 }
 
-    subject { FactoryGirl.create(:customer) }
+    subject { FactoryGirl.create(:user) }
 
     before { subject.incomplete_order.update_attributes(bill_address: address, ship_address: address) }
     before { subject.add_cart_item(stock, quantity: order_quantity) }
@@ -160,7 +160,7 @@ describe Comable::Customer do
   end
 
   describe 'Associations' do
-    subject { FactoryGirl.build_stubbed(:customer) }
+    subject { FactoryGirl.build_stubbed(:user) }
 
     it 'has one bill_address' do
       subject.build_bill_address

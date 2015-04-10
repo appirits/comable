@@ -45,9 +45,9 @@ describe Comable::InstallGenerator do
   end
 
   it 'load seeds' do
-    expect(Comable::Customer.count).to eq(1)
-    expect(Comable::Customer.first.email).to eq('admin@example.com')
-    expect(Comable::Customer.first.role).to eq('admin')
+    expect(Comable::User.count).to eq(1)
+    expect(Comable::User.first.email).to eq('admin@example.com')
+    expect(Comable::User.first.role).to eq('admin')
   end
 
   it 'creates routes' do

@@ -1,4 +1,4 @@
-describe Comable::CustomersController do
+describe Comable::UsersController do
   render_views
 
   before { request }
@@ -6,7 +6,7 @@ describe Comable::CustomersController do
   context 'Guest' do
     describe "GET 'index'" do
       let(:request) { get :show }
-      its(:response) { is_expected.to redirect_to(controller.comable.new_customer_session_path) }
+      its(:response) { is_expected.to redirect_to(controller.comable.new_user_session_path) }
     end
   end
 end

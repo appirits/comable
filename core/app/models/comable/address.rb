@@ -1,6 +1,6 @@
 module Comable
   class Address < ActiveRecord::Base
-    belongs_to :customer, class_name: Comable::Customer.name, autosave: false
+    belongs_to :user, class_name: Comable::User.name, autosave: false
 
     validates :family_name, presence: true, length: { maximum: 255 }
     validates :first_name, presence: true, length: { maximum: 255 }
@@ -25,7 +25,7 @@ module Comable
     end
 
     def attributes_without_id
-      attributes.except('id', 'customer_id')
+      attributes.except('id', 'user_id')
     end
 
     def full_name

@@ -95,9 +95,9 @@
                 = @order.bill_address.phone_number
 
             dt
-              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:customer)}"
+              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
             dd
-              = link_to_if @order.customer, @order.bill_address.full_name, [comable, :admin, @order.customer]
+              = link_to_if @order.user, @order.bill_address.full_name, [comable, :admin, @order.user]
 
             dt
               i.fa.fa-envelope.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:email)}"
@@ -126,7 +126,7 @@
                 = @order.ship_address.phone_number
 
             dt
-              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:customer)}"
+              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
             dd
               = @order.bill_address.full_name
 

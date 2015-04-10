@@ -1,4 +1,4 @@
-class DummyCustomer
+class DummyUser
   include ActiveModel::Validations
   include Comable::CartOwner
 end
@@ -7,7 +7,7 @@ describe Comable::CartOwner do
   let(:quantity) { 2 }
   let(:order_details) { FactoryGirl.build_list(:order_detail, 5, quantity: quantity) }
 
-  subject { DummyCustomer.new }
+  subject { DummyUser.new }
 
   before { allow(subject).to receive(:cart_items).and_return(order_details) }
 

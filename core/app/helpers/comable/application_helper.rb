@@ -7,12 +7,12 @@ module Comable
     # Override the devise method.
     # The below codes move to core/lib/comable/core/engine.rb:
     #
-    # def current_customer
+    # def current_user
     #   ...
     # end
 
     def current_order
-      current_customer.incomplete_order
+      current_user.incomplete_order
     end
 
     def next_order_path
@@ -25,7 +25,7 @@ module Comable
     end
 
     def store_location
-      session[:customer_return_to] = request.fullpath.gsub('//', '/')
+      session[:user_return_to] = request.fullpath.gsub('//', '/')
     end
 
     def name_with_honorific(name)
@@ -44,11 +44,11 @@ module Comable
     private
 
     def after_sign_in_path_for(_resource)
-      session.delete(:customer_return_to) || comable.root_path
+      session.delete(:user_return_to) || comable.root_path
     end
 
     def after_sign_out_path_for(_resource)
-      session.delete(:customer_return_to) || comable.root_path
+      session.delete(:user_return_to) || comable.root_path
     end
 
     def after_sign_up_path_for(resource)

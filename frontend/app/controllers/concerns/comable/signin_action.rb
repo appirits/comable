@@ -29,11 +29,11 @@ module Comable
     end
 
     def resource
-      current_customer
+      current_user
     end
 
     def resource_name
-      :customer
+      :user
     end
 
     def devise_mapping

@@ -1,5 +1,5 @@
 module Comable
-  class Customer < ActiveRecord::Base
+  class User < ActiveRecord::Base
     include Comable::CartOwner
     include Comable::RoleOwner
     include Comable::Ransackable
@@ -15,7 +15,7 @@ module Comable
 
     validates :email, presence: true, length: { maximum: 255 }
 
-    devise(*Comable::Config.devise_strategies[:customer])
+    devise(*Comable::Config.devise_strategies[:user])
 
     ransack_options ransackable_attributes: { except: [:encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at, :bill_address_id, :ship_address_id] }
 
@@ -70,7 +70,7 @@ module Comable
     end
 
     def order(order_params = {})
-      Rails.logger.debug '[DEPRECATED] Comable::Customer#order is deprecated. Please use Comable::Order#next_state method.'
+      Rails.logger.debug '[DEPRECATED] Comable::User#order is deprecated. Please use Comable::Order#next_state method.'
       incomplete_order.attributes = order_params
       incomplete_order.state = 'complete'
       incomplete_order.complete!
@@ -106,7 +106,7 @@ module Comable
 
     def incomplete_order_attributes
       {
-        customer_id: id,
+        user_id: id,
         email: email
       }
     end
@@ -117,7 +117,7 @@ module Comable
         .incomplete
         .preload(:order_details)
         .where(guest_token: guest_token)
-        .by_customer(self)
+        .by_user(self)
         .first
     end
 

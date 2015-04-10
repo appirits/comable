@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :customer, class: 'Comable::Customer' do
+  factory :user, class: 'Comable::User' do
     sequence(:email) { |n| "test+#{n}@example.com" }
 
     trait :with_addresses do

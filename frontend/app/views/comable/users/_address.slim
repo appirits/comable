@@ -1,14 +1,14 @@
 = render 'comable/shared/address', address: address
 
 ul.buttons.list-inline
-  - if address != address.customer.bill_address
+  - if address != address.user.bill_address
     li.use_bill_address
-      = form_for current_customer, as: :customer, url: comable.addresses_customer_url, method: :put do |f|
+      = form_for current_user, as: :user, url: comable.addresses_user_url, method: :put do |f|
         = f.hidden_field :bill_address_id, value: address.id
         = f.submit Comable.t('use_as_billing_address'), class: 'btn btn-default'
 
-  - if address != address.customer.ship_address
+  - if address != address.user.ship_address
     li.use_ship_address
-      = form_for current_customer, as: :customer, url: comable.addresses_customer_url, method: :put do |f|
+      = form_for current_user, as: :user, url: comable.addresses_user_url, method: :put do |f|
         = f.hidden_field :ship_address_id, value: address.id
         = f.submit Comable.t('use_as_shipping_address'), class: 'btn btn-default'

@@ -10,10 +10,10 @@ module Comable
         authorize! :read, @this_month_orders
 
         # TODO: Comment out after adding timestamp columns
-        # @this_month_customers = Comable::Customer.with_role(:customer).this_month
-        # @this_week_customers = Comable::Customer.with_role(:customer).this_week
-        # @last_week_customers = Comable::Customer.with_role(:customer).last_week
-        # authorize! :read, @this_week_customers
+        # @this_month_users = Comable::User.with_role(:user).this_month
+        # @this_week_users = Comable::User.with_role(:user).this_week
+        # @last_week_users = Comable::User.with_role(:user).last_week
+        # authorize! :read, @this_week_users
       end
     end
   end

@@ -135,7 +135,7 @@ ja:
         product: 商品管理
         stock: 在庫管理
         category: カテゴリ
-        customer: ユーザー
+        user: ユーザー
         general_settings: 一般設定
         store: ストア設定
         shipment_method: 配送管理
@@ -145,10 +145,10 @@ ja:
         orders:
           detail: 注文明細
           cart: カート情報
-          customer: ユーザー詳細
+          user: ユーザー詳細
           shipment: 送料
           payment: 支払手数料
-        customers:
+        users:
           detail: ユーザー詳細
           edit: 編集
           new_orders: '最新の注文 (%{count}件)'
@@ -187,7 +187,7 @@ ja:
       comable/order_details: ご注文明細
 
     attributes:
-      comable/customer:
+      comable/user:
         id: ID
         email: メールアドレス
         password: パスワード
@@ -221,7 +221,7 @@ ja:
         ship_address: 配送先住所
         bill_full_name: 配送先氏名
         order_details: 注文明細
-        customer_id: ユーザーID
+        user_id: ユーザーID
         guest_token: ゲストトークン
         shipment_tracking_number: 発送トラッキング番号
       comable/order_detail: &comable_order_detail
@@ -276,7 +276,7 @@ ja:
         <<: *comable_address
 
   enumerize:
-    comable/customer:
+    comable/user:
       role:
         customer: 顧客
         reporter: 報告者

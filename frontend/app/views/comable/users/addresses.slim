@@ -1,15 +1,15 @@
-.customer
+.user
   .addresses
     h1
       = Comable.t('address_book')
 
-    - if current_customer.errors.any?
+    - if current_user.errors.any?
       .errors
         ul
-          - current_customer.errors.full_messages.each do |full_message|
+          - current_user.errors.full_messages.each do |full_message|
             li = full_message
 
-    - if current_customer.addresses.empty?
+    - if current_user.addresses.empty?
       .not_found
         p
           = Comable.t('not_found')
@@ -17,9 +17,9 @@
       .row
         .bill_address.col-sm-6
           h2
-            = current_customer.class.human_attribute_name(:bill_address)
-          - if current_customer.bill_address
-            = render 'address', address: current_customer.bill_address
+            = current_user.class.human_attribute_name(:bill_address)
+          - if current_user.bill_address
+            = render 'address', address: current_user.bill_address
           - else
             .not_found
               p
@@ -27,9 +27,9 @@
 
         .ship_address.col-sm-6
           h2
-            = current_customer.class.human_attribute_name(:ship_address)
-          - if current_customer.ship_address
-            = render 'address', address: current_customer.ship_address
+            = current_user.class.human_attribute_name(:ship_address)
+          - if current_user.ship_address
+            = render 'address', address: current_user.ship_address
           - else
             .not_found
               p
@@ -40,15 +40,15 @@
           h2
             = Comable.t('other_addresses')
           ul.list-unstyled
-            - current_customer.other_addresses.each do |address|
+            - current_user.other_addresses.each do |address|
               li.col-sm-4
                 = render 'address', address: address
 
   .new_address
     h2
       = Comable.t('new_address')
-    = form_for current_customer, as: :customer, url: comable.addresses_customer_url, method: :put do |f|
-      = f.fields_for :addresses, current_customer.addresses.build do |ff|
+    = form_for current_user, as: :user, url: comable.addresses_user_url, method: :put do |f|
+      = f.fields_for :addresses, current_user.addresses.build do |ff|
         = render 'comable/shared/address_form', address: ff
       .submit
         = f.submit Comable.t('actions.create')

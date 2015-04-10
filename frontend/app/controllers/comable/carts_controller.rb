@@ -4,7 +4,7 @@ module Comable
     before_filter :ensure_found_cart_item, only: [:add, :update]
 
     def add
-      if current_customer.add_cart_item(@cart_item, cart_item_options)
+      if current_user.add_cart_item(@cart_item, cart_item_options)
         redirect_to comable.cart_path, notice: Comable.t('carts.added')
       else
         flash.now[:alert] = Comable.t('carts.invalid')
@@ -13,7 +13,7 @@ module Comable
     end
 
     def update
-      if current_customer.reset_cart_item(@cart_item, cart_item_options)
+      if current_user.reset_cart_item(@cart_item, cart_item_options)
         redirect_to comable.cart_path, notice: Comable.t('carts.updated')
       else
         flash.now[:alert] = Comable.t('carts.invalid')
@@ -25,7 +25,7 @@ module Comable
       cart_item = find_cart_item
       return redirect_by_product_not_found unless cart_item
 
-      if current_customer.reset_cart_item(cart_item)
+      if current_user.reset_cart_item(cart_item)
         redirect_to comable.cart_path, notice: Comable.t('carts.updated')
       else
         flash.now[:alert] = Comable.t('carts.invalid')
