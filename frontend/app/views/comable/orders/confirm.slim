@@ -30,28 +30,28 @@
           = @order.shipment_method.name
 
     .row
-      .col-sm-12.comable-order_details
+      .col-sm-12.comable-order_items
         table
           thead
             tr
               th
               th
-                = @order.order_details.human_attribute_name(:price)
+                = @order.order_items.human_attribute_name(:price)
               th
-                = @order.order_details.human_attribute_name(:quantity)
+                = @order.order_items.human_attribute_name(:quantity)
 
           tbody
-            - @order.order_details.each do |order_detail|
+            - @order.order_items.each do |order_item|
               tr
                 td
                   .name
-                    = order_detail.name_with_sku
+                    = order_item.name_with_sku
                   .caption
-                    = order_detail.product.caption
+                    = order_item.product.caption
                 td.price
-                  = number_to_currency order_detail.price
+                  = number_to_currency order_item.price
                 td.quantity
-                  = number_with_delimiter order_detail.quantity
+                  = number_with_delimiter order_item.quantity
 
   aside.col-sm-4
     table

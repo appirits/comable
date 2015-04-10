@@ -60,7 +60,7 @@
                 th
                   = @user.orders.klass.human_attribute_name(:bill_full_name)
                 th
-                  = @user.orders.klass.human_attribute_name(:order_details)
+                  = @user.orders.klass.human_attribute_name(:order_items)
                 th
                   = @user.orders.klass.human_attribute_name(:total_price)
                 th
@@ -76,9 +76,9 @@
                     = order.bill_full_name
                   td
                     ul.list-unstyled
-                      - order.order_details.each do |order_detail|
+                      - order.order_items.each do |order_item|
                         li
-                          | #{order_detail.name_with_sku} x #{order_detail.quantity}
+                          | #{order_item.name_with_sku} x #{order_item.quantity}
                   td
                     = number_to_currency order.total_price
                   td

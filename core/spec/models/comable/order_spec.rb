@@ -7,8 +7,8 @@ describe Comable::Order do
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
   describe 'validations' do
-    describe 'for order details' do
-      let!(:order_detail) { FactoryGirl.create(:order_detail, stock: stock, order: order) }
+    describe 'for order items' do
+      let!(:order_item) { FactoryGirl.create(:order_item, stock: stock, order: order) }
 
       context 'when out of stock' do
         let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
@@ -16,7 +16,7 @@ describe Comable::Order do
         it 'has errors' do
           stock.update_attributes(quantity: 0)
           order.complete
-          expect(order.errors['order_details.quantity'].any?).to be
+          expect(order.errors['order_items.quantity'].any?).to be
         end
       end
     end
@@ -25,11 +25,11 @@ describe Comable::Order do
   describe 'attributes' do
     describe '#save' do
       context 'complete order' do
-        let!(:order_detail) { FactoryGirl.create(:order_detail, order: order, quantity: 10) }
+        let!(:order_item) { FactoryGirl.create(:order_item, order: order, quantity: 10) }
 
-        let(:stock) { order_detail.stock }
+        let(:stock) { order_item.stock }
         let(:product) { stock.product }
-        let(:item_total_price) { product.price * order_detail.quantity }
+        let(:item_total_price) { product.price * order_item.quantity }
 
         before { subject.complete }
         before { subject.reload }
@@ -39,7 +39,7 @@ describe Comable::Order do
         its(:total_price) { should eq(item_total_price) }
 
         it 'has been subtracted stock' do
-          expect { stock.reload }.to change { stock.quantity }.from(order_detail.quantity).to(0)
+          expect { stock.reload }.to change { stock.quantity }.from(order_item.quantity).to(0)
         end
 
         context 'with shipment method' do

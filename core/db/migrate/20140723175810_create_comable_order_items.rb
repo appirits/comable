@@ -1,6 +1,6 @@
-class CreateComableOrderDetails < ActiveRecord::Migration
+class CreateComableOrderItems < ActiveRecord::Migration
   def change
-    create_table :comable_order_details do |t|
+    create_table :comable_order_items do |t|
       t.references :order, null: false
       t.references :stock, null: false
       t.string :name, null: false
@@ -13,6 +13,6 @@ class CreateComableOrderDetails < ActiveRecord::Migration
       t.integer :quantity, default: 1, null: false
     end
 
-    add_index :comable_order_details, [:order_id, :stock_id], unique: true, name: :comable_order_details_idx_01
+    add_index :comable_order_items, [:order_id, :stock_id], unique: true, name: :comable_order_items_idx_01
   end
 end

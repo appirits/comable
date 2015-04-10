@@ -1,8 +1,8 @@
 feature 'Checkout' do
   given!(:persisted_user) { FactoryGirl.create(:user, :with_addresses, password: 'raw-passowrd') }
-  given!(:order) { FactoryGirl.create(:order, :for_confirm, order_details: [order_detail]) }
+  given!(:order) { FactoryGirl.create(:order, :for_confirm, order_items: [order_item]) }
 
-  given(:order_detail) { FactoryGirl.build(:order_detail) }
+  given(:order_item) { FactoryGirl.build(:order_item) }
   given(:current_comable_user) { FactoryGirl.build(:user) }
 
   background do

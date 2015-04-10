@@ -220,8 +220,8 @@ describe Comable::OrdersController do
         expect(assigns(:order).completed?).to be true
       end
 
-      it 'has assigned completed @order with a detail' do
-        expect(assigns(:order).order_details.count).to eq(1)
+      it 'has assigned completed @order with a item' do
+        expect(assigns(:order).order_items.count).to eq(1)
       end
 
       context 'when out of stock' do

@@ -19,27 +19,27 @@ describe Comable::User do
       subject { described_class.new.with_cookies(cookies) }
 
       # TODO: Refactoring
-      it 'has the order detail that is same object in different accesses' do
+      it 'has the order item that is same object in different accesses' do
         order = subject.incomplete_order
-        order_detail = order.order_details.first
-        expect(order_detail.object_id).to eq(order.order_details.first.object_id)
+        order_item = order.order_items.first
+        expect(order_item.object_id).to eq(order.order_items.first.object_id)
       end
 
-      it 'has the order detail that is same object in different accesses' do
+      it 'has the order item that is same object in different accesses' do
         order = subject.incomplete_order
-        expect(order.order_details.size).to eq(0)
+        expect(order.order_items.size).to eq(0)
 
-        order.order_details.create(stock: stock, quantity: 1)
-        expect(order.order_details.size).to eq(1)
-        expect(order.reload.order_details.size).to eq(1)
+        order.order_items.create(stock: stock, quantity: 1)
+        expect(order.order_items.size).to eq(1)
+        expect(order.reload.order_items.size).to eq(1)
       end
 
-      it 'has the order detail that is same object in different accesses' do
+      it 'has the order item that is same object in different accesses' do
         order = subject.incomplete_order
         expect(subject.cart.size).to eq(0)
 
         subject.add_cart_item(stock)
-        expect(order.order_details.size).to eq(1)
+        expect(order.order_items.size).to eq(1)
         expect(subject.cart.size).to eq(1)
       end
     end
@@ -132,12 +132,12 @@ describe Comable::User do
 
     it '受注詳細レコードが１つ存在すること' do
       subject.order
-      expect(subject.orders.last.order_details.count).to eq(1)
+      expect(subject.orders.last.order_items.count).to eq(1)
     end
 
     it '受注詳細レコードが１つ存在すること' do
       subject.order
-      expect(subject.orders.last.order_details.last.stock).to eq(stock)
+      expect(subject.orders.last.order_items.last.stock).to eq(stock)
     end
 
     it '在庫が減っていること' do

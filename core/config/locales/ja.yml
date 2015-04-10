@@ -184,7 +184,7 @@ ja:
 
     models:
       comable/order: ご注文
-      comable/order_details: ご注文明細
+      comable/order_items: ご注文明細
 
     attributes:
       comable/user:
@@ -214,17 +214,17 @@ ja:
         shipment_fee: 送料
         item_total_price: 商品合計
         total_price: 合計
-        order_details: 商品
+        order_items: 商品
         completed_at: 注文日時
         state: ステータス
         bill_address: 請求先住所
         ship_address: 配送先住所
         bill_full_name: 配送先氏名
-        order_details: 注文明細
+        order_items: 注文明細
         user_id: ユーザーID
         guest_token: ゲストトークン
         shipment_tracking_number: 発送トラッキング番号
-      comable/order_detail: &comable_order_detail
+      comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
         product: 商品情報
@@ -268,8 +268,8 @@ ja:
         name: 決済方法名
         payment_provider: 決済プロバイダ
         enable_price: 利用可能な価格範囲
-      comable/order/order_details:
-        <<: *comable_order_detail
+      comable/order/order_items:
+        <<: *comable_order_item
       comable/order/bill_address:
         <<: *comable_address
       comable/order/ship_address:

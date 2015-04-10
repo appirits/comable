@@ -9,11 +9,11 @@ module Comable
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
-    has_many :order_details, dependent: :destroy, class_name: Comable::OrderDetail.name, inverse_of: :order
+    has_many :order_items, dependent: :destroy, class_name: Comable::OrderItem.name, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
-    accepts_nested_attributes_for :order_details
+    accepts_nested_attributes_for :order_items
 
     define_model_callbacks :complete
     before_validation :generate_guest_token, on: :create
@@ -56,7 +56,7 @@ module Comable
     end
 
     def stocked_items
-      order_details.to_a.select(&:unstocked?)
+      order_items.to_a.select(&:unstocked?)
     end
 
     alias_method :soldout_stocks, :stocked_items
@@ -64,12 +64,12 @@ module Comable
 
     # 時価商品合計を取得
     def current_item_total_price
-      order_details.to_a.sum(&:current_subtotal_price)
+      order_items.to_a.sum(&:current_subtotal_price)
     end
 
     # 売価商品合計を取得
     def item_total_price
-      order_details.to_a.sum(&:subtotal_price)
+      order_items.to_a.sum(&:subtotal_price)
     end
 
     # 時価送料を取得
@@ -90,7 +90,7 @@ module Comable
       self.total_price = current_total_price
       generate_code
 
-      order_details.each(&:complete)
+      order_items.each(&:complete)
 
       save
     end

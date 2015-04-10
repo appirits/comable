@@ -37,23 +37,23 @@
               = order.bill_address.full_name
             td
               = order.code
-          - order.order_details.each do |order_detail|
+          - order.order_items.each do |order_item|
             tr
               td colspan="4"
                 .comable-detail
                   .row
                     .col-sm-2.comable-image
-                      = link_to comable.product_path(order_detail.product), class: 'thumbnail' do
-                        = image_tag order_detail.product.image_url, width: '100%'
+                      = link_to comable.product_path(order_item.product), class: 'thumbnail' do
+                        = image_tag order_item.product.image_url, width: '100%'
                     .col-sm-10
                       .comable-name
-                        = link_to order_detail.name_with_sku, comable.product_path(order_detail.product)
+                        = link_to order_item.name_with_sku, comable.product_path(order_item.product)
                       .comable-repeat
                         = form_tag comable.add_cart_path do
-                          - if order_detail.stock.stocked?
+                          - if order_item.stock.stocked?
                             .add_cart.form-inline.form-group
-                              = hidden_field_tag :stock_id, order_detail.stock_id
-                              = hidden_field_tag :quantity, order_detail.quantity
+                              = hidden_field_tag :stock_id, order_item.stock_id
+                              = hidden_field_tag :quantity, order_item.quantity
                               = submit_tag Comable.t('reorder'), class: 'btn btn-default'
 
     .text-center

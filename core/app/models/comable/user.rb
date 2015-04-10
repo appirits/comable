@@ -62,7 +62,7 @@ module Comable
     end
 
     def cart_items
-      @cart_items ||= incomplete_order.order_details
+      @cart_items ||= incomplete_order.order_items
     end
 
     def incomplete_order
@@ -80,7 +80,7 @@ module Comable
     def after_set_user
       return unless current_guest_token
 
-      guest_order = Comable::Order.incomplete.preload(:order_details).where(guest_token: current_guest_token).first
+      guest_order = Comable::Order.incomplete.preload(:order_items).where(guest_token: current_guest_token).first
       return unless guest_order
 
       inherit_order_state(guest_order)
@@ -115,7 +115,7 @@ module Comable
       guest_token ||= current_guest_token unless signed_in?
       Comable::Order
         .incomplete
-        .preload(:order_details)
+        .preload(:order_items)
         .where(guest_token: guest_token)
         .by_user(self)
         .first
@@ -127,8 +127,8 @@ module Comable
     end
 
     def inherit_cart_items(guest_order)
-      guest_order.order_details.each do |order_detail|
-        move_cart_item(order_detail)
+      guest_order.order_items.each do |order_item|
+        move_cart_item(order_item)
       end
     end
   end

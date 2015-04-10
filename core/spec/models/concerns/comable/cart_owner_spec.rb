@@ -5,14 +5,14 @@ end
 
 describe Comable::CartOwner do
   let(:quantity) { 2 }
-  let(:order_details) { FactoryGirl.build_list(:order_detail, 5, quantity: quantity) }
+  let(:order_items) { FactoryGirl.build_list(:order_item, 5, quantity: quantity) }
 
   subject { DummyUser.new }
 
-  before { allow(subject).to receive(:cart_items).and_return(order_details) }
+  before { allow(subject).to receive(:cart_items).and_return(order_items) }
 
   it 'has cart items' do
-    expect(subject.cart.count).to eq(order_details.count * quantity)
+    expect(subject.cart.count).to eq(order_items.count * quantity)
   end
 
   context 'with errors' do
