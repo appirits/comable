@@ -5,12 +5,12 @@ module Comable
     before_filter :authenticate_user!
 
     def show
-      @orders = current_user.orders.page(params[:page]).per(Comable::Config.orders_per_page)
+      @orders = current_comable_user.orders.page(params[:page]).per(Comable::Config.orders_per_page)
     end
 
     def update_addresses
-      current_user.attributes = user_params
-      if current_user.save
+      current_comable_user.attributes = user_params
+      if current_comable_user.save
         flash.now[:notice] = Comable.t('successful')
       else
         flash.now[:alert] = Comable.t('failure')

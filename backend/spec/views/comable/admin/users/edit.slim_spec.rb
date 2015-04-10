@@ -1,4 +1,6 @@
 describe 'comable/admin/users/edit' do
+  helper Comable::ApplicationHelper
+
   let(:user) { FactoryGirl.create(:user) }
 
   before { assign(:user, user) }

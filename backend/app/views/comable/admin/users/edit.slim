@@ -31,7 +31,7 @@
           .col-sm-9
             .form-group
               = f.label :role
-              = f.select :role, @user.class.role.options, {}, disabled: (@user == current_user)
+              = f.select :role, @user.class.role.options, {}, disabled: (@user == current_comable_user)
 
             .form-group
               = f.label :email

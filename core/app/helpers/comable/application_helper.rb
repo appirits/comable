@@ -4,15 +4,13 @@ module Comable
       @current_store ||= Comable::Store.instance
     end
 
-    # Override the devise method.
-    # The below codes move to core/lib/comable/core/engine.rb:
-    #
-    # def current_user
-    #   ...
-    # end
+    def current_comable_user
+      resource = current_admin_user || current_user || Comable::User.new
+      resource.with_cookies(cookies)
+    end
 
     def current_order
-      current_user.incomplete_order
+      current_comable_user.incomplete_order
     end
 
     def next_order_path

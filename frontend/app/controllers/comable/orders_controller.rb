@@ -48,7 +48,7 @@ module Comable
     end
 
     def ensure_cart_not_empty
-      return if current_user.cart.any?
+      return if current_comable_user.cart.any?
       flash[:alert] = Comable.t('carts.empty')
       redirect_to comable.cart_path
     end

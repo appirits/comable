@@ -31,7 +31,7 @@ describe Comable::OrdersController do
     let(:address_attributes) { FactoryGirl.attributes_for(:address) }
     let(:current_order) { controller.current_order }
 
-    before { allow(controller).to receive(:current_user).and_return(user) }
+    before { allow(controller).to receive(:current_comable_user).and_return(user) }
     before { user.add_cart_item(product) }
 
     describe "GET 'signin'" do
@@ -264,7 +264,7 @@ describe Comable::OrdersController do
     let(:user) { Comable::User.new.with_cookies(cookies) }
 
     before { controller.current_order.update_attributes(order_attributes) }
-    before { allow(controller).to receive(:current_user).and_return(user) }
+    before { allow(controller).to receive(:current_comable_user).and_return(user) }
     before { user.add_cart_item(product) }
 
     it 'sent a mail' do

@@ -29,7 +29,7 @@ module Comable
     end
 
     def resource
-      current_user
+      current_comable_user
     end
 
     def resource_name

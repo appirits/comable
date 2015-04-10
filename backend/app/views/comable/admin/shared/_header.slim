@@ -16,12 +16,12 @@ header.navbar.navbar-default.navbar-fixed-top
       li.dropdown.navbar-user
         a href="#" class="dropdown-toggle" data-toggle="dropdown"
           span.hidden-xs
-            = current_user.email
+            = current_comable_user.email
           span.caret<
         ul.dropdown-menu.animated.fadeInLeft
           li.arrow
           li
-            = link_to comable.edit_admin_user_path(current_user) do
+            = link_to comable.edit_admin_user_path(current_comable_user) do
               span.fa.fa-edit>
               = Comable.t('admin.edit_profile')
           li.divider

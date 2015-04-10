@@ -12,7 +12,7 @@ html
   body id="#{"comable-#{controller_name.singularize}"}"
     = render 'comable/admin/shared/notifier'
 
-    - if current_user.signed_in?
+    - if current_comable_user.signed_in?
       = render 'comable/admin/shared/header'
 
       #wrapper

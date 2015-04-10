@@ -12,7 +12,7 @@ header
             li
               = link_to Comable.t('my_account'), comable.user_path
             li
-              - if current_user.signed_in?
+              - if current_comable_user.signed_in?
                 = link_to comable.destroy_user_session_path, method: :delete do
                   i.glyphicon.glyphicon-log-out>
                   = Comable.t('sign_out')
@@ -51,10 +51,10 @@ header
               span
                 = Comable.t('cart')
               span<
-                | (#{current_user.cart.size})
+                | (#{current_comable_user.cart.size})
               span.caret<
             ul.dropdown-menu.comable-mini-cart role="menu"
-              - current_user.cart.take(5).each do |cart_item|
+              - current_comable_user.cart.take(5).each do |cart_item|
                 li
                   = link_to comable.product_path(cart_item.product) do
                     .comable-image

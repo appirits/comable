@@ -1,7 +1,7 @@
 describe Comable::CartsController do
   render_views
 
-  let(:current_user) { controller.current_user }
+  let(:current_comable_user) { controller.current_comable_user }
 
   before { @request.env['devise.mapping'] = Devise.mappings[:user] }
   before { controller.request.env['HTTP_REFERER'] = controller.comable.product_path(product) }
@@ -11,7 +11,7 @@ describe Comable::CartsController do
     let(:product) { FactoryGirl.create(:product, :with_stock) }
     let(:user) { FactoryGirl.create(:user) }
 
-    subject { current_user }
+    subject { current_comable_user }
 
     context 'when sign in' do
       let(:request) do
@@ -79,7 +79,7 @@ describe Comable::CartsController do
         its(:response) { should be_success }
 
         it 'カートに商品が投入されていないこと' do
-          expect(current_user.cart.count).to be_zero
+          expect(current_comable_user.cart.count).to be_zero
         end
       end
 
@@ -89,7 +89,7 @@ describe Comable::CartsController do
         its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
 
         it 'カートに１つの商品が投入されていること' do
-          expect(current_user.cart.count).to eq(1)
+          expect(current_comable_user.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
@@ -117,7 +117,7 @@ describe Comable::CartsController do
         its(:response) { should be_success }
 
         it 'カートに商品が投入されていないこと' do
-          expect(current_user.cart.count).to be_zero
+          expect(current_comable_user.cart.count).to be_zero
         end
       end
 
@@ -127,7 +127,7 @@ describe Comable::CartsController do
         its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
 
         it 'カートに１つの商品が投入されていること' do
-          expect(current_user.cart.count).to eq(1)
+          expect(current_comable_user.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
@@ -138,7 +138,7 @@ describe Comable::CartsController do
           let(:request) { post :add, product_id: product.id }
 
           it 'カートに商品が投入されていないこと' do
-            expect(current_user.cart.count).to eq(0)
+            expect(current_comable_user.cart.count).to eq(0)
           end
 
           it 'flashにメッセージが格納されていること' do
@@ -154,6 +154,6 @@ describe Comable::CartsController do
   # TODO: Move to the support directory.
   # HACK: for calling Comable::User#after_set_user method form 'after_set_user' callback of warden.
   def sign_in(*_)
-    super.tap { controller.current_user.after_set_user }
+    super.tap { controller.current_comable_user.after_set_user }
   end
 end

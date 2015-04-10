@@ -3,11 +3,11 @@ feature 'Checkout' do
   given!(:order) { FactoryGirl.create(:order, :for_confirm, order_details: [order_detail]) }
 
   given(:order_detail) { FactoryGirl.build(:order_detail) }
-  given(:current_user) { FactoryGirl.build(:user) }
+  given(:current_comable_user) { FactoryGirl.build(:user) }
 
   background do
-    allow(Comable::User).to receive(:new).and_return(current_user)
-    allow(current_user).to receive(:incomplete_order).and_return(order)
+    allow(Comable::User).to receive(:new).and_return(current_comable_user)
+    allow(current_comable_user).to receive(:incomplete_order).and_return(order)
     allow_any_instance_of(Comable::User).to receive(:current_guest_token).and_return(order.guest_token)
   end
 
