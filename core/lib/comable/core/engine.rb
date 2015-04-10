@@ -37,31 +37,6 @@ module Comable
         end
       end
 
-      initializer 'comable.devise.helpers' do
-        module DeviseHelperPrepender
-          def define_helpers(mapping)
-            super.tap do
-              return if mapping.name.to_sym != :customer
-              define_comable_helper
-            end
-          end
-
-          private
-
-          def define_comable_helper
-            class_eval <<-METHODS, __FILE__, __LINE__ + 1
-              alias_method :devise_current_customer, :current_customer
-              def current_customer
-                resource = current_admin_customer || devise_current_customer || Comable::Customer.new
-                resource.with_cookies(cookies)
-              end
-            METHODS
-          end
-        end
-
-        Devise::Controllers::Helpers.singleton_class.send(:prepend, DeviseHelperPrepender)
-      end
-
       initializer 'comable.devise.warden.manager' do
         Warden::Manager.after_set_user except: :fetch do |record, warden, options|
           if record.respond_to?(:after_set_user) && warden.authenticated?(options[:scope])

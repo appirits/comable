@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :order_detail, class: Comable::OrderDetail do
+  factory :order_item, class: Comable::OrderItem do
     sequence(:name) { |n| "test_product#{n.next}" }
     sequence(:code) { |n| format('%07d', n.next) }
     quantity 10

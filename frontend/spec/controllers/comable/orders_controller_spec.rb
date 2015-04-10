@@ -31,25 +31,25 @@ describe Comable::OrdersController do
     let(:address_attributes) { FactoryGirl.attributes_for(:address) }
     let(:current_order) { controller.current_order }
 
-    before { allow(controller).to receive(:current_customer).and_return(customer) }
-    before { customer.add_cart_item(product) }
+    before { allow(controller).to receive(:current_comable_user).and_return(user) }
+    before { user.add_cart_item(product) }
 
     describe "GET 'signin'" do
-      before { skip 'Unnecessary test case' if customer.signed_in? }
+      before { skip 'Unnecessary test case' if user.signed_in? }
       before { get :signin }
 
       its(:response) { is_expected.to render_template(:signin) }
       its(:response) { is_expected.not_to be_redirect }
 
       it 'cart has any items' do
-        expect(customer.cart.count).to be_nonzero
+        expect(user.cart.count).to be_nonzero
       end
     end
 
     describe "PUT 'guest'" do
       let(:order_attributes) { { email: 'test@example.com' } }
 
-      before { skip 'Unnecessary test case' if customer.signed_in? }
+      before { skip 'Unnecessary test case' if user.signed_in? }
       before { put :guest, order: order_attributes }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :orderer)) }
@@ -220,8 +220,8 @@ describe Comable::OrdersController do
         expect(assigns(:order).completed?).to be true
       end
 
-      it 'has assigned completed @order with a detail' do
-        expect(assigns(:order).order_details.count).to eq(1)
+      it 'has assigned completed @order with a item' do
+        expect(assigns(:order).order_items.count).to eq(1)
       end
 
       context 'when out of stock' do
@@ -247,13 +247,13 @@ describe Comable::OrdersController do
 
   context 'when guest' do
     it_behaves_like 'checkout' do
-      let(:customer) { Comable::Customer.new.with_cookies(cookies) }
+      let(:user) { Comable::User.new.with_cookies(cookies) }
     end
   end
 
-  context 'when customer is signed in' do
+  context 'when user is signed in' do
     it_behaves_like 'checkout' do
-      let(:customer) { FactoryGirl.create(:customer) }
+      let(:user) { FactoryGirl.create(:user) }
     end
   end
 
@@ -261,11 +261,11 @@ describe Comable::OrdersController do
     let!(:store) { FactoryGirl.create(:store, :email_activate) }
 
     let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
-    let(:customer) { Comable::Customer.new.with_cookies(cookies) }
+    let(:user) { Comable::User.new.with_cookies(cookies) }
 
     before { controller.current_order.update_attributes(order_attributes) }
-    before { allow(controller).to receive(:current_customer).and_return(customer) }
-    before { customer.add_cart_item(product) }
+    before { allow(controller).to receive(:current_comable_user).and_return(user) }
+    before { user.add_cart_item(product) }
 
     it 'sent a mail' do
       expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(1)

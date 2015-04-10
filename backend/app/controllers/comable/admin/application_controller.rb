@@ -9,7 +9,7 @@ module Comable
       layout 'comable/admin/application'
 
       def current_ability
-        Comable::Ability.new(current_customer)
+        Comable::Ability.new(current_comable_user)
       end
 
       private
@@ -17,17 +17,17 @@ module Comable
       rescue_from CanCan::AccessDenied, with: :unauthorized
 
       def unauthorized
-        if current_customer.signed_in?
+        if current_comable_user.signed_in?
           flash[:alert] = Comable.t('admin.access_denied')
           redirect_to after_access_denied_path
         else
           store_location
-          redirect_to comable.new_admin_customer_session_path
+          redirect_to comable.new_admin_user_session_path
         end
       end
 
       def after_access_denied_path
-        if current_customer.customer?
+        if current_comable_user.user?
           comable.root_path
         else
           comable.admin_root_path

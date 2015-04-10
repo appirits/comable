@@ -1,4 +1,4 @@
-describe Comable::Customer do
+describe Comable::User do
   let(:cookies) { OpenStruct.new(signed: signed_cookies, permanent: OpenStruct.new(signed: signed_cookies)) }
   let(:signed_cookies) { Hash.new }
 
@@ -19,27 +19,27 @@ describe Comable::Customer do
       subject { described_class.new.with_cookies(cookies) }
 
       # TODO: Refactoring
-      it 'has the order detail that is same object in different accesses' do
+      it 'has the order item that is same object in different accesses' do
         order = subject.incomplete_order
-        order_detail = order.order_details.first
-        expect(order_detail.object_id).to eq(order.order_details.first.object_id)
+        order_item = order.order_items.first
+        expect(order_item.object_id).to eq(order.order_items.first.object_id)
       end
 
-      it 'has the order detail that is same object in different accesses' do
+      it 'has the order item that is same object in different accesses' do
         order = subject.incomplete_order
-        expect(order.order_details.size).to eq(0)
+        expect(order.order_items.size).to eq(0)
 
-        order.order_details.create(stock: stock, quantity: 1)
-        expect(order.order_details.size).to eq(1)
-        expect(order.reload.order_details.size).to eq(1)
+        order.order_items.create(stock: stock, quantity: 1)
+        expect(order.order_items.size).to eq(1)
+        expect(order.reload.order_items.size).to eq(1)
       end
 
-      it 'has the order detail that is same object in different accesses' do
+      it 'has the order item that is same object in different accesses' do
         order = subject.incomplete_order
         expect(subject.cart.size).to eq(0)
 
         subject.add_cart_item(stock)
-        expect(order.order_details.size).to eq(1)
+        expect(order.order_items.size).to eq(1)
         expect(subject.cart.size).to eq(1)
       end
     end
@@ -50,7 +50,7 @@ describe Comable::Customer do
     let(:stock) { stocks.first }
 
     # when guest
-    subject { FactoryGirl.build(:customer).with_cookies(cookies) }
+    subject { FactoryGirl.build(:user).with_cookies(cookies) }
 
     it '商品を投入できること' do
       subject.add_cart_item(stock)
@@ -111,7 +111,7 @@ describe Comable::Customer do
     let(:address) { FactoryGirl.create(:address) }
     let(:order_quantity) { 10 }
 
-    subject { FactoryGirl.create(:customer) }
+    subject { FactoryGirl.create(:user) }
 
     before { subject.incomplete_order.update_attributes(bill_address: address, ship_address: address) }
     before { subject.add_cart_item(stock, quantity: order_quantity) }
@@ -132,12 +132,12 @@ describe Comable::Customer do
 
     it '受注詳細レコードが１つ存在すること' do
       subject.order
-      expect(subject.orders.last.order_details.count).to eq(1)
+      expect(subject.orders.last.order_items.count).to eq(1)
     end
 
     it '受注詳細レコードが１つ存在すること' do
       subject.order
-      expect(subject.orders.last.order_details.last.stock).to eq(stock)
+      expect(subject.orders.last.order_items.last.stock).to eq(stock)
     end
 
     it '在庫が減っていること' do
@@ -160,7 +160,7 @@ describe Comable::Customer do
   end
 
   describe 'Associations' do
-    subject { FactoryGirl.build_stubbed(:customer) }
+    subject { FactoryGirl.build_stubbed(:user) }
 
     it 'has one bill_address' do
       subject.build_bill_address

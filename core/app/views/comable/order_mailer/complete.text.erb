@@ -22,9 +22,9 @@
 <%= "#{@order.class.human_attribute_name(:code)}: #{@order.code}" %>
 <%= "#{@order.class.human_attribute_name(:completed_at)}: #{I18n.l @order.completed_at.to_date}" %>
 
-<%- @order.order_details.each do |order_detail| %>
-            <%= name_with_quantity order_detail.name_with_sku, order_detail.quantity %>
-            <%= number_to_currency order_detail.subtotal_price %>
+<%- @order.order_items.each do |order_item| %>
+            <%= name_with_quantity order_item.name_with_sku, order_item.quantity %>
+            <%= number_to_currency order_item.subtotal_price %>
 
 <%- end %>
 ----------------------------------------------------------------------

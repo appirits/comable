@@ -1,14 +1,14 @@
 feature 'Checkout' do
-  given!(:persisted_customer) { FactoryGirl.create(:customer, :with_addresses, password: 'raw-passowrd') }
-  given!(:order) { FactoryGirl.create(:order, :for_confirm, order_details: [order_detail]) }
+  given!(:persisted_user) { FactoryGirl.create(:user, :with_addresses, password: 'raw-passowrd') }
+  given!(:order) { FactoryGirl.create(:order, :for_confirm, order_items: [order_item]) }
 
-  given(:order_detail) { FactoryGirl.build(:order_detail) }
-  given(:current_customer) { FactoryGirl.build(:customer) }
+  given(:order_item) { FactoryGirl.build(:order_item) }
+  given(:current_comable_user) { FactoryGirl.build(:user) }
 
   background do
-    allow(Comable::Customer).to receive(:new).and_return(current_customer)
-    allow(current_customer).to receive(:incomplete_order).and_return(order)
-    allow_any_instance_of(Comable::Customer).to receive(:current_guest_token).and_return(order.guest_token)
+    allow(Comable::User).to receive(:new).and_return(current_comable_user)
+    allow(current_comable_user).to receive(:incomplete_order).and_return(order)
+    allow_any_instance_of(Comable::User).to receive(:current_guest_token).and_return(order.guest_token)
   end
 
   context "when order state was 'cart'" do
@@ -21,9 +21,9 @@ feature 'Checkout' do
 
       expect(current_url).to eq(comable.signin_order_url)
 
-      within('form#new_customer') do
-        fill_in :customer_email, with: persisted_customer.email
-        fill_in :customer_password, with: persisted_customer.password
+      within('form#new_user') do
+        fill_in :user_email, with: persisted_user.email
+        fill_in :user_password, with: persisted_user.password
       end
       click_button 'Log in'
 

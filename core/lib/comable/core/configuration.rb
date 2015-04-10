@@ -3,7 +3,7 @@ module Comable
     module Configuration
       mattr_accessor :devise_strategies
       @@devise_strategies = {
-        customer: [:database_authenticatable, :registerable, :recoverable, :rememberable, :trackable]
+        user: [:database_authenticatable, :registerable, :recoverable, :rememberable, :trackable]
       }
 
       mattr_accessor :products_per_page

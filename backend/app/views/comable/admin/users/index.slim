@@ -3,21 +3,21 @@
     ul.pull-right.list-inline
       li
         .btn-group role="group"
-          = link_to_previous_page @customers, '<', class: 'btn btn-default' do
+          = link_to_previous_page @users, '<', class: 'btn btn-default' do
             .btn.btn-default disabled="disabled"
               | <
-          = link_to_next_page @customers, '>', class: 'btn btn-default' do
+          = link_to_next_page @users, '>', class: 'btn btn-default' do
             .btn.btn-default disabled="disabled"
               | >
 
     h1.page-header
-      = Comable.t('admin.nav.customer')
+      = Comable.t('admin.nav.user')
       small<
-        | #{@customers.total_count} #{Comable.t('admin.results')}
+        | #{@users.total_count} #{Comable.t('admin.results')}
 
   .comable-page-body
     .comable-search
-      = search_form_for @q, url: comable.admin_customers_path do |f|
+      = search_form_for @q, url: comable.admin_users_path do |f|
         .input-group
           span.input-group-btn
             button.btn.btn-default.dropdown-toggle type="button" data-toggle="dropdown"
@@ -27,7 +27,7 @@
               li
                 = link_to Comable.t('admin.advanced_search'), 'javascript:void(0)', 'data-toggle' => 'collapse', 'data-target' => '#comable-advanced-search'
               li
-                = link_to Comable.t('admin.clear_search_conditions'), comable.admin_customers_path
+                = link_to Comable.t('admin.clear_search_conditions'), comable.admin_users_path
           = f.text_field :email_cont, class: 'form-control'
           span.input-group-btn
             = f.submit Comable.t('admin.search'), class: 'btn btn-default'
@@ -35,7 +35,7 @@
         = render 'comable/admin/shared/advanced_search', f: f
 
     section
-      - if @customers.empty?
+      - if @users.empty?
         = Comable.t('admin.not_found')
       - else
         table.table.table-striped
@@ -45,27 +45,27 @@
             th
               = sort_link [:comable, @q], :email
             th
-              = @customers.klass.human_attribute_name(:bill_full_name)
+              = @users.klass.human_attribute_name(:bill_full_name)
             th
-              = @customers.klass.human_attribute_name(:bill_address)
+              = @users.klass.human_attribute_name(:bill_address)
             th
-              = @customers.klass.human_attribute_name(:orders)
+              = @users.klass.human_attribute_name(:orders)
           tbody
-            - @customers.each do |customer|
+            - @users.each do |user|
               tr
                 td
-                  = link_to customer.human_id, comable.admin_customer_path(customer)
+                  = link_to user.human_id, comable.admin_user_path(user)
                 td
-                  = customer.email
+                  = user.email
                 td
-                  = customer.bill_full_name
+                  = user.bill_full_name
                 td
-                  - if customer.bill_address
-                    span> = customer.bill_address.state_name
-                    span> = customer.bill_address.city
-                    span> = customer.bill_address.detail
+                  - if user.bill_address
+                    span> = user.bill_address.state_name
+                    span> = user.bill_address.city
+                    span> = user.bill_address.detail
                 td
-                  | #{customer.orders.count} #{Comable.t('admin.times')}
+                  | #{user.orders.count} #{Comable.t('admin.times')}
 
         .text-center
-          = paginate @customers, theme: :comable_backend
+          = paginate @users, theme: :comable_backend

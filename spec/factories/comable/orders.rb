@@ -7,8 +7,8 @@ FactoryGirl.define do
       ship_address { build(:address) }
     end
 
-    trait :with_customer do
-      customer { build(:customer) }
+    trait :with_user do
+      user { build(:user) }
     end
 
     trait :for_orderer do

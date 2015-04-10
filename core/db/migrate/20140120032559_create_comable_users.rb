@@ -1,6 +1,6 @@
-class CreateComableCustomers < ActiveRecord::Migration
+class CreateComableUsers < ActiveRecord::Migration
   def change
-    create_table :comable_customers do |t|
+    create_table :comable_users do |t|
       ## Database authenticatable
       t.string :email, null: false
       t.string :role, null: false
@@ -36,9 +36,9 @@ class CreateComableCustomers < ActiveRecord::Migration
       t.references :ship_address
     end
 
-    add_index :comable_customers, :email, unique: true
-    add_index :comable_customers, :reset_password_token, unique: true
-    # add_index :comable_customers, :confirmation_token, unique: true
-    # add_index :comable_customers, :unlock_token, unique: true
+    add_index :comable_users, :email, unique: true
+    add_index :comable_users, :reset_password_token, unique: true
+    # add_index :comable_users, :confirmation_token, unique: true
+    # add_index :comable_users, :unlock_token, unique: true
   end
 end

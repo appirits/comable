@@ -3,13 +3,13 @@
     h1
       = Comable.t('shopping_cart')
 
-    - if current_customer.cart.errors.any?
+    - if current_comable_user.cart.errors.any?
       .errors
         ul
-          - current_customer.cart.errors.full_messages.each do |message|
+          - current_comable_user.cart.errors.full_messages.each do |message|
             li = message
 
-    - if current_customer.cart.empty?
+    - if current_comable_user.cart.empty?
       = Comable.t('carts.empty')
     - else
       table
@@ -23,7 +23,7 @@
             th
 
         tbody
-          - current_customer.cart.each do |cart_item|
+          - current_comable_user.cart.each do |cart_item|
             - stock = cart_item.stock
             - product = stock.product
             tr
@@ -46,7 +46,7 @@
               td
                 = link_to Comable.t('actions.destroy'), comable.cart_path(stock_id: stock.id), method: :delete
 
-  - if current_customer.cart.any?
+  - if current_comable_user.cart.any?
     section.order.col-sm-4
       table
         thead
@@ -59,9 +59,9 @@
             th.text-right
               = Comable.t('item_total_price')
             td
-              = number_to_currency current_customer.cart.price
+              = number_to_currency current_comable_user.cart.price
           tr.count
             th.text-right
               = Comable.t('item_total_quantity')
             td
-              = number_with_delimiter current_customer.cart.count
+              = number_with_delimiter current_comable_user.cart.count

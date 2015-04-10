@@ -3,7 +3,7 @@ module Comable
     include CanCan::Ability
 
     def initialize(user)
-      user ||= Comable::Customer.new # guest user (not logged in)
+      user ||= Comable::User.new # guest user (not logged in)
 
       case user.role.to_sym
       when :admin

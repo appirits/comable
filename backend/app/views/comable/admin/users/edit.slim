@@ -8,17 +8,17 @@
       h1.page-header
         ol.breadcrumb
           li>
-            = link_to Comable.t('admin.nav.customer'), comable.admin_customers_path
+            = link_to Comable.t('admin.nav.user'), comable.admin_users_path
           li>
-            = link_to @customer.human_id, comable.admin_customer_path(@customer)
+            = link_to @user.human_id, comable.admin_user_path(@user)
           li.active
             = Comable.t('admin.actions.edit')
 
   .comable-page-body
     section
-      = error_messages_for @customer
+      = error_messages_for @user
 
-      = form_for @customer, url: comable.admin_customer_path(@customer) do |f|
+      = form_for @user, url: comable.admin_user_path(@user) do |f|
         .hidden
           = f.submit
 
@@ -31,7 +31,7 @@
           .col-sm-9
             .form-group
               = f.label :role
-              = f.select :role, @customer.class.role.options, {}, disabled: (@customer == current_customer)
+              = f.select :role, @user.class.role.options, {}, disabled: (@user == current_comable_user)
 
             .form-group
               = f.label :email
@@ -41,7 +41,7 @@
               = f.label :password
               = f.password_field :password
 
-        - if @customer.bill_address
+        - if @user.bill_address
           fieldset
             .col-sm-3
               legend

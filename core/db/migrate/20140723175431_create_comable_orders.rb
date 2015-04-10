@@ -1,7 +1,7 @@
 class CreateComableOrders < ActiveRecord::Migration
   def change
     create_table :comable_orders do |t|
-      t.references :customer
+      t.references :user
       t.string :guest_token
       t.string :code
       t.string :email

@@ -24,12 +24,12 @@
 
           = f.submit Comable.t('next_step')
 
-      - if current_customer.other_addresses.any?
+      - if current_comable_user.other_addresses.any?
         .other_addresses.row
           h2
             = Comable.t('other_addresses')
           ul.list-unstyled
-            - current_customer.addresses.each do |address|
+            - current_comable_user.addresses.each do |address|
               - next if @order.bill_address.same_as? address
               li.col-sm-4
                 = render 'comable/shared/address', address: address

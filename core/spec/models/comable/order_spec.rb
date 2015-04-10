@@ -7,8 +7,8 @@ describe Comable::Order do
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
   describe 'validations' do
-    describe 'for order details' do
-      let!(:order_detail) { FactoryGirl.create(:order_detail, stock: stock, order: order) }
+    describe 'for order items' do
+      let!(:order_item) { FactoryGirl.create(:order_item, stock: stock, order: order) }
 
       context 'when out of stock' do
         let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
@@ -16,7 +16,7 @@ describe Comable::Order do
         it 'has errors' do
           stock.update_attributes(quantity: 0)
           order.complete
-          expect(order.errors['order_details.quantity'].any?).to be
+          expect(order.errors['order_items.quantity'].any?).to be
         end
       end
     end
@@ -25,11 +25,11 @@ describe Comable::Order do
   describe 'attributes' do
     describe '#save' do
       context 'complete order' do
-        let!(:order_detail) { FactoryGirl.create(:order_detail, order: order, quantity: 10) }
+        let!(:order_item) { FactoryGirl.create(:order_item, order: order, quantity: 10) }
 
-        let(:stock) { order_detail.stock }
+        let(:stock) { order_item.stock }
         let(:product) { stock.product }
-        let(:item_total_price) { product.price * order_detail.quantity }
+        let(:item_total_price) { product.price * order_item.quantity }
 
         before { subject.complete }
         before { subject.reload }
@@ -39,7 +39,7 @@ describe Comable::Order do
         its(:total_price) { should eq(item_total_price) }
 
         it 'has been subtracted stock' do
-          expect { stock.reload }.to change { stock.quantity }.from(order_detail.quantity).to(0)
+          expect { stock.reload }.to change { stock.quantity }.from(order_item.quantity).to(0)
         end
 
         context 'with shipment method' do
@@ -51,28 +51,28 @@ describe Comable::Order do
           its(:total_price) { should eq(item_total_price + shipment_method.fee) }
         end
 
-        context 'with customer' do
-          subject(:order) { FactoryGirl.build(:order, customer: customer, bill_address: address, ship_address: address) }
+        context 'with user' do
+          subject(:order) { FactoryGirl.build(:order, user: user, bill_address: address, ship_address: address) }
 
           let(:address) { FactoryGirl.create(:address) }
 
           context 'has addresses used in order' do
-            let(:customer) { FactoryGirl.create(:customer, addresses: [address]) }
+            let(:user) { FactoryGirl.create(:user, addresses: [address]) }
 
-            it 'has copied address from order to customer' do
-              customer.reload
-              expect(customer.bill_address).to eq(address)
-              expect(customer.ship_address).to eq(address)
+            it 'has copied address from order to user' do
+              user.reload
+              expect(user.bill_address).to eq(address)
+              expect(user.ship_address).to eq(address)
             end
           end
 
           context 'has addresses not used in order' do
-            let(:customer) { FactoryGirl.create(:customer, :with_addresses) }
+            let(:user) { FactoryGirl.create(:user, :with_addresses) }
 
-            it 'has cloned address from order to customer' do
-              customer.reload
-              expect(customer.bill_address.attributes_without_id).to eq(address.attributes_without_id)
-              expect(customer.ship_address.attributes_without_id).to eq(address.attributes_without_id)
+            it 'has cloned address from order to user' do
+              user.reload
+              expect(user.bill_address.attributes_without_id).to eq(address.attributes_without_id)
+              expect(user.ship_address.attributes_without_id).to eq(address.attributes_without_id)
             end
           end
         end
@@ -85,10 +85,10 @@ describe Comable::Order do
         its(:completed_at) { should be_nil }
         its(:code) { should be_nil }
 
-        context 'with customer address' do
-          subject(:order) { FactoryGirl.build(:order, customer: customer) }
+        context 'with user address' do
+          subject(:order) { FactoryGirl.build(:order, user: user) }
 
-          let(:customer) { FactoryGirl.create(:customer, :with_addresses) }
+          let(:user) { FactoryGirl.create(:user, :with_addresses) }
 
           its(:bill_address) { is_expected.to be }
           its(:ship_address) { is_expected.to be }

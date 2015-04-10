@@ -23,28 +23,28 @@
           thead
             tr
               th colspan="2"
-                = @order.order_details.klass.human_attribute_name(:product)
+                = @order.order_items.klass.human_attribute_name(:product)
               th
-                = @order.order_details.klass.human_attribute_name(:price)
+                = @order.order_items.klass.human_attribute_name(:price)
               th
-                = @order.order_details.klass.human_attribute_name(:quantity)
+                = @order.order_items.klass.human_attribute_name(:quantity)
               th
-                = @order.order_details.klass.human_attribute_name(:subtotal_price)
+                = @order.order_items.klass.human_attribute_name(:subtotal_price)
           tbody
-            - @order.order_details.each do |order_detail|
+            - @order.order_items.each do |order_item|
               tr
                 td width="180"
-                  = image_tag order_detail.image_url, width: '100%'
+                  = image_tag order_item.image_url, width: '100%'
                 td
-                  = order_detail.name_with_sku
+                  = order_item.name_with_sku
                   .text-muted
-                    small = order_detail.code
+                    small = order_item.code
                 td
-                  = number_to_currency order_detail.price
+                  = number_to_currency order_item.price
                 td
-                  = number_with_delimiter order_detail.quantity
+                  = number_with_delimiter order_item.quantity
                 td
-                  = number_to_currency order_detail.subtotal_price
+                  = number_to_currency order_item.subtotal_price
             tr
               th.text-right colspan="4"
                 = @order.class.human_attribute_name(:item_total_price)
@@ -95,9 +95,9 @@
                 = @order.bill_address.phone_number
 
             dt
-              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:customer)}"
+              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
             dd
-              = link_to_if @order.customer, @order.bill_address.full_name, [comable, :admin, @order.customer]
+              = link_to_if @order.user, @order.bill_address.full_name, [comable, :admin, @order.user]
 
             dt
               i.fa.fa-envelope.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:email)}"
@@ -126,7 +126,7 @@
                 = @order.ship_address.phone_number
 
             dt
-              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:customer)}"
+              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
             dd
               = @order.bill_address.full_name
 

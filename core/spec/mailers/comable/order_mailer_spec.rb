@@ -1,8 +1,8 @@
 describe Comable::OrderMailer do
   describe 'instructions' do
     let!(:store) { FactoryGirl.create(:store, :email_activate) }
-    let(:order) { FactoryGirl.build(:order, :with_addresses, order_details: [order_detail]) }
-    let(:order_detail) { FactoryGirl.build(:order_detail, :sku, quantity: 2) }
+    let(:order) { FactoryGirl.build(:order, :with_addresses, order_items: [order_item]) }
+    let(:order_item) { FactoryGirl.build(:order_item, :sku, quantity: 2) }
     let(:mail) { described_class.complete(order) }
 
     before { order.complete }
@@ -24,7 +24,7 @@ describe Comable::OrderMailer do
     end
 
     it 'renders the product name with sku' do
-      expect(mail.body.encoded).to include(order_detail.stock.name_with_sku)
+      expect(mail.body.encoded).to include(order_item.stock.name_with_sku)
     end
   end
 end

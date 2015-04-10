@@ -1,7 +1,7 @@
 class CreateComableAddresses < ActiveRecord::Migration
   def change
     create_table :comable_addresses do |t|
-      t.references :customer
+      t.references :user
       t.string :family_name, null: false
       t.string :first_name, null: false
       t.string :zip_code, null: false, limit: 8

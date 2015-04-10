@@ -10,14 +10,14 @@ header
                 | descriptions
           ul.nav.navbar-nav.navbar-right
             li
-              = link_to Comable.t('my_account'), comable.customer_path
+              = link_to Comable.t('my_account'), comable.user_path
             li
-              - if current_customer.signed_in?
-                = link_to comable.destroy_customer_session_path, method: :delete do
+              - if current_comable_user.signed_in?
+                = link_to comable.destroy_user_session_path, method: :delete do
                   i.glyphicon.glyphicon-log-out>
                   = Comable.t('sign_out')
               - else
-                = link_to comable.new_customer_session_path do
+                = link_to comable.new_user_session_path do
                   i.glyphicon.glyphicon-log-in>
                   = Comable.t('sign_in')
     .container
@@ -51,10 +51,10 @@ header
               span
                 = Comable.t('cart')
               span<
-                | (#{current_customer.cart.size})
+                | (#{current_comable_user.cart.size})
               span.caret<
             ul.dropdown-menu.comable-mini-cart role="menu"
-              - current_customer.cart.take(5).each do |cart_item|
+              - current_comable_user.cart.take(5).each do |cart_item|
                 li
                   = link_to comable.product_path(cart_item.product) do
                     .comable-image

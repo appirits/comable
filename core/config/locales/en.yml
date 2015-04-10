@@ -83,7 +83,7 @@ en:
         dear: *honorific
         introductions: |-
           Thank you for shopping with %{store_name}.
-          Your order details:
+          Your order items:
         outroductions: |-
           We hope to see you again soon.
           %{store_name}
@@ -135,7 +135,7 @@ en:
         product: 'Products'
         stock: 'Stocks'
         category: 'Categories'
-        customer: 'Users'
+        user: 'Users'
         general_settings: 'General settings'
         store: 'Store'
         shipment_method: 'Shipment methods'
@@ -145,10 +145,10 @@ en:
         orders:
           detail: 'Order details'
           cart: 'Cart infomation'
-          customer: 'User details'
+          user: 'User details'
           shipment: 'Shipment fee'
           payment: 'Payment charge'
-        customers:
+        users:
           detail: 'User details'
           edit: 'Editing user'
           new_orders: 'Recently orders (%{count})'
@@ -184,10 +184,10 @@ en:
 
     models:
       comable/order: 'Orders'
-      comable/order_details: 'Order details'
+      comable/order_items: 'Order items'
 
     attributes:
-      comable/customer:
+      comable/user:
         id: 'ID'
         email: 'Email address'
         password: 'Password'
@@ -208,14 +208,14 @@ en:
         shipment_fee: 'Shipment fee'
         item_total_price: 'Item total'
         total_price: 'Total'
-        order_details: 'Order details'
+        order_items: 'Order items'
         completed_at: 'Comleted at'
         state: 'State'
         bill_address: 'Billing address'
         ship_address: 'Shipping adress'
         bill_full_name: 'Full name of the billing address'
-        order_details: 'Order details'
-      comable/order_detail: &comable_order_detail
+        order_items: 'Order items'
+      comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
         product: 'Product'
@@ -257,15 +257,15 @@ en:
         name: 'Name'
         payment_provider: 'Oayment provider'
         enable_price: 'Enable price range'
-      comable/order/order_details:
-        <<: *comable_order_detail
+      comable/order/order_items:
+        <<: *comable_order_item
       comable/order/bill_address:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
 
   enumerize:
-    comable/customer:
+    comable/user:
       role:
         customer: 'Customer'
         reporter: 'Reporter'

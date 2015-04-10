@@ -1,26 +1,26 @@
 describe Comable::CartsController do
   render_views
 
-  let(:current_customer) { controller.current_customer }
+  let(:current_comable_user) { controller.current_comable_user }
 
-  before { @request.env['devise.mapping'] = Devise.mappings[:customer] }
+  before { @request.env['devise.mapping'] = Devise.mappings[:user] }
   before { controller.request.env['HTTP_REFERER'] = controller.comable.product_path(product) }
   before { request }
 
   describe 'inherit cart items' do
     let(:product) { FactoryGirl.create(:product, :with_stock) }
-    let(:customer) { FactoryGirl.create(:customer) }
+    let(:user) { FactoryGirl.create(:user) }
 
-    subject { current_customer }
+    subject { current_comable_user }
 
     context 'when sign in' do
       let(:request) do
         post :add, product_id: product.id
-        sign_in :customer, customer
+        sign_in :user, user
         get :show
       end
 
-      it 'is signed in customer' do
+      it 'is signed in user' do
         expect(subject.signed_in?).to be true
       end
 
@@ -31,9 +31,9 @@ describe Comable::CartsController do
 
     context 'when sign out' do
       let(:request) do
-        sign_in customer
+        sign_in user
         post :add, product_id: product.id
-        sign_out customer
+        sign_out user
       end
 
       it 'is guest' do
@@ -50,17 +50,17 @@ describe Comable::CartsController do
       let(:product) { products.first }
 
       let(:request) do
-        sign_in customer
+        sign_in user
         post :add, product_id: products.first.id
 
-        sign_out customer
+        sign_out user
         post :add, product_id: products.last.id
 
-        sign_in customer
+        sign_in user
         get :show
       end
 
-      it 'is signed in customer' do
+      it 'is signed in user' do
         expect(subject.signed_in?).to be true
       end
 
@@ -79,7 +79,7 @@ describe Comable::CartsController do
         its(:response) { should be_success }
 
         it 'カートに商品が投入されていないこと' do
-          expect(current_customer.cart.count).to be_zero
+          expect(current_comable_user.cart.count).to be_zero
         end
       end
 
@@ -89,7 +89,7 @@ describe Comable::CartsController do
         its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
 
         it 'カートに１つの商品が投入されていること' do
-          expect(current_customer.cart.count).to eq(1)
+          expect(current_comable_user.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
@@ -117,7 +117,7 @@ describe Comable::CartsController do
         its(:response) { should be_success }
 
         it 'カートに商品が投入されていないこと' do
-          expect(current_customer.cart.count).to be_zero
+          expect(current_comable_user.cart.count).to be_zero
         end
       end
 
@@ -127,7 +127,7 @@ describe Comable::CartsController do
         its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
 
         it 'カートに１つの商品が投入されていること' do
-          expect(current_customer.cart.count).to eq(1)
+          expect(current_comable_user.cart.count).to eq(1)
         end
 
         it 'flashにメッセージが格納されていること' do
@@ -138,7 +138,7 @@ describe Comable::CartsController do
           let(:request) { post :add, product_id: product.id }
 
           it 'カートに商品が投入されていないこと' do
-            expect(current_customer.cart.count).to eq(0)
+            expect(current_comable_user.cart.count).to eq(0)
           end
 
           it 'flashにメッセージが格納されていること' do
@@ -152,8 +152,8 @@ describe Comable::CartsController do
   private
 
   # TODO: Move to the support directory.
-  # HACK: for calling Comable::Customer#after_set_user method form 'after_set_user' callback of warden.
+  # HACK: for calling Comable::User#after_set_user method form 'after_set_user' callback of warden.
   def sign_in(*_)
-    super.tap { controller.current_customer.after_set_user }
+    super.tap { controller.current_comable_user.after_set_user }
   end
 end
