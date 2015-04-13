@@ -9,7 +9,6 @@ require 'cancancan'
 require 'comable/core/configuration'
 require 'comable/core/engine'
 
-require 'comable/errors'
 require 'comable/payment_provider'
 require 'comable/state_machine_patch'
 require 'comable/deprecator'
