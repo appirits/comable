@@ -62,19 +62,12 @@ module Comable
     end
 
     def cart_items
-      @cart_items ||= incomplete_order.order_items
+      incomplete_order.order_items
     end
 
     def incomplete_order
+      @incomplete_order = nil if @incomplete_order.try(:completed?)
       @incomplete_order ||= find_incomplete_order || initialize_incomplete_order
-    end
-
-    def order(order_params = {})
-      Rails.logger.debug '[DEPRECATED] Comable::User#order is deprecated. Please use Comable::Order#next_state method.'
-      incomplete_order.attributes = order_params
-      incomplete_order.state = 'complete'
-      incomplete_order.complete!
-      incomplete_order.tap { reload }
     end
 
     def after_set_user

@@ -40,12 +40,6 @@ module Comable
       end
     end
 
-    def complete!
-      Rails.logger.debug '[DEPRECATED] #complete! is deprecated. Please use #next_state method.'
-      fail Comable::InvalidOrder unless complete
-      self
-    end
-
     def completed?
       !completed_at.nil?
     end
@@ -58,9 +52,6 @@ module Comable
     def stocked_items
       order_items.to_a.select(&:unstocked?)
     end
-
-    alias_method :soldout_stocks, :stocked_items
-    deprecate :soldout_stocks, deprecator: Comable::Deprecator.instance
 
     # 時価商品合計を取得
     def current_item_total_price

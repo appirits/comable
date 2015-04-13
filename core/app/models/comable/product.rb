@@ -34,15 +34,9 @@ module Comable
       stocks.stocked.exists?
     end
 
-    alias_method :unsold?, :stocked?
-    deprecate :unsold?, deprecator: Comable::Deprecator.instance
-
     def unstocked?
       !stocked?
     end
-
-    alias_method :soldout?, :unstocked?
-    deprecate :soldout?, deprecator: Comable::Deprecator.instance
 
     def category_path_names=(category_path_names, delimiter: Comable::Category::DEFAULT_PATH_NAME_DELIMITER)
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)

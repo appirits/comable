@@ -50,9 +50,6 @@ module Comable
       end
     end
 
-    alias_method :soldout_stock?, :unstocked?
-    deprecate :soldout_stock?, deprecator: Comable::Deprecator.instance
-
     private
 
     def valid_stock_quantity
