@@ -18,19 +18,9 @@ module Comable
     # 品切れでない在庫インスタンスを返す
     scope :stocked, -> { where('quantity > ?', 0) }
 
-    class << self
-      alias_method :unsold, :stocked
-      deprecate :unsold, deprecator: Comable::Deprecator.instance
-    end
-
     # @!scope class
     # 品切れの在庫インスタンスを返す
     scope :unstocked, -> { where('quantity <= ?', 0) }
-
-    class << self
-      alias_method :soldout, :unstocked
-      deprecate :soldout, deprecator: Comable::Deprecator.instance
-    end
 
     #
     # @!endgroup
@@ -63,9 +53,6 @@ module Comable
       (self.quantity - quantity) >= 0
     end
 
-    alias_method :unsold?, :stocked?
-    deprecate :unsold?, deprecator: Comable::Deprecator.instance
-
     # 在庫の有無を取得する
     #
     # @example
@@ -78,8 +65,5 @@ module Comable
     def unstocked?(quantity: 1)
       !stocked?(quantity: quantity)
     end
-
-    alias_method :soldout?, :unstocked?
-    deprecate :soldout?, deprecator: Comable::Deprecator.instance
   end
 end
