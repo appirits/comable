@@ -110,6 +110,7 @@ describe Comable::User do
     let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product, quantity: order_quantity) }
     let(:address) { FactoryGirl.create(:address) }
     let(:order_quantity) { 10 }
+    let(:current_order) { subject.incomplete_order }
 
     subject { FactoryGirl.create(:user) }
 
@@ -117,44 +118,39 @@ describe Comable::User do
     before { subject.add_cart_item(stock, quantity: order_quantity) }
 
     it '商品を購入できること' do
-      subject.order
+      current_order.complete
     end
 
     it '商品を購入後はカートが空になること' do
-      subject.order
+      current_order.complete
       expect(subject.cart_items).to be_empty
     end
 
     it '受注レコードが正しく存在すること' do
-      subject.order
+      current_order.complete
       expect(subject.orders.last).to be
     end
 
     it '受注詳細レコードが１つ存在すること' do
-      subject.order
+      current_order.complete
       expect(subject.orders.last.order_items.count).to eq(1)
     end
 
     it '受注詳細レコードが１つ存在すること' do
-      subject.order
+      current_order.complete
       expect(subject.orders.last.order_items.last.stock).to eq(stock)
     end
 
     it '在庫が減っていること' do
-      expect { subject.order }.to change { stock.reload.quantity }.by(-order_quantity)
+      expect { current_order.complete }.to change { stock.reload.quantity }.by(-order_quantity)
     end
 
     context '在庫がない場合' do
       before { stock.update_attributes(quantity: 0) }
 
       it '商品を購入できないこと' do
-        expect { subject.order }.to raise_error(Comable::InvalidOrder)
-      end
-
-      it '商品を購入できないこと' do
-        order = subject.incomplete_order
-        order.complete
-        expect(order.errors.full_messages.join).to include(Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku))
+        current_order.complete
+        expect(current_order.errors.full_messages.join).to include(Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku))
       end
     end
   end
