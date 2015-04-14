@@ -26,12 +26,6 @@ module Comable
         end
       end
 
-      # TODO: Remove with_options
-      with_options if: -> { state?(:cart) } do |context|
-        context.validates :user_id, presence: true, uniqueness: { scope: :completed_at }, unless: :guest_token
-        context.validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user_id
-      end
-
       with_options if: -> { stated?(:cart) } do |context|
         context.validates :email, presence: true
       end

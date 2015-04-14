@@ -7,6 +7,21 @@ describe Comable::Order do
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
 
   describe 'validations' do
+    context 'when user is registered' do
+      before { subject.attributes = { guest_token: nil, user: FactoryGirl.create(:user) } }
+      before { subject.save }
+
+      it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:completed_at) }
+    end
+
+    context 'when user is guest' do
+      before { subject.attributes = { guest_token: 'abc123', user: nil } }
+      before { allow(subject).to receive(:generate_guest_token) }
+
+      it { is_expected.to validate_presence_of(:guest_token) }
+      it { is_expected.to validate_uniqueness_of(:guest_token).scoped_to(:completed_at) }
+    end
+
     describe 'for order items' do
       let!(:order_item) { FactoryGirl.create(:order_item, stock: stock, order: order) }
 
