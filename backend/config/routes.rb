@@ -18,8 +18,13 @@ Comable::Core::Engine.routes.draw do
       end
     end
 
+    resources :orders do
+      collection do
+        get :export
+      end
+    end
+
     resources :categories
-    resources :orders
     resources :users
     resources :shipment_methods
     resources :payment_methods

@@ -222,6 +222,12 @@ en:
         price: *price
         product: 'Product'
         subtotal_price: 'Subtotal'
+        name: 'Product name'
+        code: 'SKU code'
+        sku_h_choice_name: 'SKU Horizontal item name'
+        sku_v_choice_name: 'SKU Vertical item name'
+        sku_h_choice_name: 'SKU Horizontal choice name'
+        sku_v_choice_name: 'SKU Vertical choice name'
       comable/address: &comable_address
         full_name: 'Full name'
         family_name: 'Last name'

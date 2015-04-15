@@ -2,6 +2,7 @@ module Comable
   class OrderItem < ActiveRecord::Base
     include Comable::SkuItem
     include Comable::SkuChoice
+    include Comable::OrderItem::Csvable
 
     belongs_to :stock, class_name: Comable::Stock.name, autosave: true
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :order_items

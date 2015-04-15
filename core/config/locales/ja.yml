@@ -231,6 +231,12 @@ ja:
         price: *price
         product: 商品情報
         subtotal_price: 小計
+        name: 商品名
+        code: SKU商品コード
+        sku_h_item_name: SKU横軸項目名
+        sku_v_item_name: SKU縦軸項目名
+        sku_h_choice_name: SKU横軸選択肢名
+        sku_v_choice_name: SKU縦軸選択肢名
       comable/address: &comable_address
         full_name: お名前
         family_name: 姓
