@@ -12,6 +12,10 @@ module Comable
         Comable::Ability.new(current_comable_user)
       end
 
+      def filename
+        "#{timestamp}_#{controller_name}"
+      end
+
       private
 
       rescue_from CanCan::AccessDenied, with: :unauthorized
@@ -32,6 +36,10 @@ module Comable
         else
           comable.admin_root_path
         end
+      end
+
+      def timestamp
+        Time.now.strftime('%Y%m%d%H%M%S')
       end
     end
   end

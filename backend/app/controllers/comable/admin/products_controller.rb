@@ -48,28 +48,20 @@ module Comable
       end
 
       def export
-        @q = Comable::Product.ransack(params[:q])
-        @products = @q.result.accessible_by(current_ability)
+        q = Comable::Product.ransack(params[:q])
+        products = q.result.accessible_by(current_ability)
 
         respond_to do |format|
           format.csv {
-            render csv: @products, filename: filename
+            render csv: products, filename: filename
           }
           format.xlsx {
-            render layout: false, xlsx: 'export', filename: filename
+            render xlsx: 'export', filename: filename, locals: { records: products }, template: 'comable/admin/shared/export', layout: false
           }
         end
       end
 
       private
-
-      def filename
-        "#{timestamp}_products"
-      end
-
-      def timestamp
-        Time.now.strftime('%Y%m%d%H%M%S')
-      end
 
       def product_params
         params.require(:product).permit(
