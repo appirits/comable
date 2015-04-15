@@ -12,6 +12,15 @@
       li
         = link_to comable.root_path do
           = link_to Comable.t('admin.actions.new'), comable.new_admin_product_path, class: 'btn btn-default'
+      li.dropdown
+        = link_to '#', class: 'btn btn-default', 'data-toggle' => 'dropdown' do
+          = Comable.t('admin.more')
+          i.fa.fa-angle-down<
+        ul.dropdown-menu.dropdown-menu-right
+          li
+            = link_to Comable.t('admin.export_to_csv'), comable.export_admin_products_path(format: :csv, q: params[:q])
+          li
+            = link_to Comable.t('admin.export_to_excel'), comable.export_admin_products_path(format: :xlsx, q: params[:q])
 
     h1.page-header
       = Comable.t('admin.nav.product')

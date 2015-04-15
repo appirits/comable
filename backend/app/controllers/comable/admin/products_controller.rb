@@ -48,7 +48,8 @@ module Comable
       end
 
       def export
-        @products = Comable::Product.accessible_by(current_ability)
+        @q = Comable::Product.ransack(params[:q])
+        @products = @q.result.accessible_by(current_ability)
 
         respond_to do |format|
           format.csv {

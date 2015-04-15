@@ -129,6 +129,8 @@ en:
       add_sub_image: 'Add a sub image'
       sign_in: 'Login'
       sign_out: 'Logout'
+      export_to_csv: 'Export to CSV'
+      export_to_excel: 'Export to Excel'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'

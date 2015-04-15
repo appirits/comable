@@ -109,7 +109,7 @@ ja:
       note: 'NOTE:'
       results: 件
       times: 回
-      more: もっと見る
+      more: その他
       access_denied: アクセス権がありません
       order_count: 注文数
       new_orders: 新規受注
@@ -129,6 +129,8 @@ ja:
       add_sub_image: サブ画像を追加
       sign_in: ログイン
       sign_out: ログアウト
+      export_to_csv: 'CSV形式でエクスポート'
+      export_to_excel: 'Excel形式でエクスポート'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
