@@ -7,7 +7,7 @@ style = Comable::Config.export_xlsx_style
 style_handle = wb.styles.add_style(style) if style
 
 wb.add_worksheet(name: @products.klass.model_name.human) do |sheet|
-  sheet.add_row @products.klass.to_comma_headers
+  sheet.add_row @products.klass.new.to_comma_headers
   sheet.row_style 0, header_style_handle if header_style_handle
 
   @products.each do |product|
