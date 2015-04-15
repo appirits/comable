@@ -5,6 +5,8 @@ require 'ancestry'
 require 'acts_as_list'
 require 'carrierwave'
 require 'cancancan'
+require 'comma'
+require 'axlsx_rails'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'

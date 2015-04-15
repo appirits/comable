@@ -47,6 +47,13 @@ module Comable
         end
       end
 
+      def export
+        q = Comable::Product.ransack(params[:q])
+        products = q.result.accessible_by(current_ability)
+
+        respond_to_export_with products
+      end
+
       private
 
       def product_params

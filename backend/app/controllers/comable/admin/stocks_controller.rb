@@ -50,6 +50,13 @@ module Comable
         end
       end
 
+      def export
+        q = @stocks.ransack(params[:q])
+        stocks = q.result.includes(:product).accessible_by(current_ability)
+
+        respond_to_export_with stocks
+      end
+
       private
 
       def stock_params

@@ -9,6 +9,15 @@
           = link_to_next_page @orders, '>', class: 'btn btn-default' do
             .btn.btn-default disabled="disabled"
               | >
+      li.dropdown
+        = link_to '#', class: 'btn btn-default', 'data-toggle' => 'dropdown' do
+          = Comable.t('admin.more')
+          i.fa.fa-angle-down<
+        ul.dropdown-menu.dropdown-menu-right
+          li
+            = link_to Comable.t('admin.export_to_csv'), comable.export_admin_orders_path(format: :csv, q: params[:q])
+          li
+            = link_to Comable.t('admin.export_to_excel'), comable.export_admin_orders_path(format: :xlsx, q: params[:q])
 
     h1.page-header
       = Comable.t('admin.nav.order')
