@@ -6,6 +6,10 @@ Comable::Core::Engine.routes.draw do
 
     resources :products do
       resources :stocks
+
+      collection do
+        get :export
+      end
     end
     resources :stocks
 

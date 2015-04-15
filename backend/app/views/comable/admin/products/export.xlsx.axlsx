@@ -1,0 +1,17 @@
+wb = xlsx_package.workbook
+
+header_style = Comable::Config.export_xlsx_header_style
+header_style_handle = wb.styles.add_style(header_style) if header_style
+
+style = Comable::Config.export_xlsx_style
+style_handle = wb.styles.add_style(style) if style
+
+wb.add_worksheet(name: @products.klass.model_name.human) do |sheet|
+  sheet.add_row @products.klass.to_comma_headers
+  sheet.row_style 0, header_style_handle if header_style_handle
+
+  @products.each do |product|
+    sheet.add_row product.to_comma
+  end
+  sheet.row_style (1..-1), style_handle if style_handle
+end
