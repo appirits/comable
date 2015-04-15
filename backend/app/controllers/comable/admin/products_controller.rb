@@ -51,14 +51,7 @@ module Comable
         q = Comable::Product.ransack(params[:q])
         products = q.result.accessible_by(current_ability)
 
-        respond_to do |format|
-          format.csv {
-            render csv: products, filename: filename
-          }
-          format.xlsx {
-            render xlsx: 'export', filename: filename, locals: { records: products }, template: 'comable/admin/shared/export', layout: false
-          }
-        end
+        respond_to_export_with products
       end
 
       private

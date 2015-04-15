@@ -18,14 +18,7 @@ module Comable
         orders = q.result.recent.accessible_by(current_ability)
         order_items = Comable::OrderItem.joins(:order).merge(orders)
 
-        respond_to do |format|
-          format.csv {
-            render csv: order_items, filename: filename
-          }
-          format.xlsx {
-            render xlsx: 'export', filename: filename, locals: { records: order_items }, template: 'comable/admin/shared/export', layout: false
-          }
-        end
+        respond_to_export_with order_items
       end
     end
   end

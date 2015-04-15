@@ -12,8 +12,16 @@ module Comable
         Comable::Ability.new(current_comable_user)
       end
 
-      def filename
-        "#{timestamp}_#{controller_name}"
+      def respond_to_export_with(records)
+        respond_to do |format|
+          format.csv do
+            render csv: records, filename: filename
+          end
+
+          format.xlsx do
+            render xlsx: 'export', filename: filename, locals: { records: records }, template: 'comable/admin/shared/export', layout: false
+          end
+        end
       end
 
       private
@@ -36,6 +44,10 @@ module Comable
         else
           comable.admin_root_path
         end
+      end
+
+      def filename
+        "#{timestamp}_#{controller_name}"
       end
 
       def timestamp
