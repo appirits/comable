@@ -1,8 +1,9 @@
 module Comable
   class Product < ActiveRecord::Base
     include Comable::SkuItem
-    include Comable::Product::Search
     include Comable::Ransackable
+    include Comable::Product::Search
+    include Comable::Product::Csvable
 
     has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
