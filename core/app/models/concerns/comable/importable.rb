@@ -51,7 +51,7 @@ module Comable
 
       def human_attributes_to_attributes(human_attributes)
         comma_column_names.each.with_object({}) do |(key, _value), result|
-          human_key = human_attribute_name(key)
+          human_key = Comma::HeaderExtractor.value_humanizer.call(key, self)
           result[key.to_sym] = human_attributes[human_key] if human_attributes[human_key]
           result
         end
