@@ -30,7 +30,7 @@ module Comable
 
       def open_spreadsheet(file)
         case File.extname(file.original_filename)
-        when '.csv' then Roo::Csv.new(file.path, nil, :ignore)
+        when '.csv' then Roo::CSV.new(file.path)
         when '.xls' then Roo::Excel.new(file.path, nil, :ignore)
         when '.xlsx' then Roo::Excelx.new(file.path, nil, :ignore)
         else fail UnknownFileType, Comable.t('admin.unknown_file_type', filename: file.original_filename)
