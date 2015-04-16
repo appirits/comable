@@ -92,6 +92,10 @@ $( ->
     $(window).on('resize', resize_comable_affix)
 
   $('[data-toggle="tooltip"]').tooltip()
+
+  $(document).on('change', '.btn-file :file', ->
+    $(this).closest('form').submit()
+  )
 )
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.

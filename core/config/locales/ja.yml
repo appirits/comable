@@ -131,6 +131,7 @@ ja:
       sign_out: ログアウト
       export_to_csv: 'CSV形式でエクスポート'
       export_to_excel: 'Excel形式でエクスポート'
+      import: 'ファイルからインポート...'
       nav:
         dashboard: ダッシュボード
         order: 注文管理

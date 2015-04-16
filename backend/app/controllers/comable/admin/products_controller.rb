@@ -54,6 +54,11 @@ module Comable
         respond_to_export_with products
       end
 
+      def import
+        Comable::Product.import_from(params[:file])
+        redirect_to comable.admin_products_path, notice: Comable.t('successful')
+      end
+
       private
 
       def product_params
