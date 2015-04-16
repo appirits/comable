@@ -132,6 +132,7 @@ en:
       export_to_csv: 'Export to CSV'
       export_to_excel: 'Export to Excel'
       import: 'Import from file...'
+      unknown_file_type: 'Unknown file type: %{filename}'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'

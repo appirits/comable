@@ -2,15 +2,27 @@ module Comable
   module Importable
     extend ActiveSupport::Concern
 
+    class Exception < StandardError
+    end
+
+    class UnknownFileType < Comable::Importable::Exception
+    end
+
+    class RecordInvalid < Comable::Importable::Exception
+    end
+
     # from http://railscasts.com/episodes/396-importing-csv-and-excel
     module ClassMethods
       def import_from(file, primary_key: :code)
         spreadsheet = open_spreadsheet(file)
         read_spreadsheet(spreadsheet) do |header, row|
-          human_attributes = Hash[[header, row].transpose].to_hash
-          attributes = human_attributes_to_attributes(human_attributes)
-          product = find_by(primary_key => attributes[primary_key]) || new
-          product.update_attributes!(attributes)
+          attributes = attributes_from_header_and_row(header, row)
+          record = find_by(primary_key => attributes[primary_key]) || new
+          begin
+            record.update_attributes!(attributes)
+          rescue ActiveRecord::RecordInvalid => e
+            raise RecordInvalid, "#{record.class.human_attribute_name(primary_key)} \"#{record.send(primary_key)}\": #{e.message}"
+          end
         end
       end
 
@@ -21,7 +33,7 @@ module Comable
         when '.csv' then Roo::Csv.new(file.path, nil, :ignore)
         when '.xls' then Roo::Excel.new(file.path, nil, :ignore)
         when '.xlsx' then Roo::Excelx.new(file.path, nil, :ignore)
-        else fail "Unknown file type: #{file.original_filename}"
+        else fail UnknownFileType, Comable.t('admin.unknown_file_type', filename: file.original_filename)
         end
       end
 
@@ -30,6 +42,11 @@ module Comable
         (2..spreadsheet.last_row).each do |i|
           yield header, spreadsheet.row(i)
         end
+      end
+
+      def attributes_from_header_and_row(header, row)
+        human_attributes = Hash[[header, row].transpose].to_hash
+        human_attributes_to_attributes(human_attributes)
       end
 
       def human_attributes_to_attributes(human_attributes)

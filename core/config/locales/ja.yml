@@ -132,6 +132,7 @@ ja:
       export_to_csv: 'CSV形式でエクスポート'
       export_to_excel: 'Excel形式でエクスポート'
       import: 'ファイルからインポート...'
+      unknown_file_type: '対応していないファイル形式です: %{filename}'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
