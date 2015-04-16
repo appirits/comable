@@ -7,6 +7,7 @@ require 'carrierwave'
 require 'cancancan'
 require 'comma'
 require 'axlsx_rails'
+require 'roo'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'
