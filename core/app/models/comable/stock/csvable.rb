@@ -3,8 +3,11 @@ module Comable
     module Csvable
       extend ActiveSupport::Concern
 
+      include Comable::Importable
+
       included do
         comma do
+          product :code
           product :name
           code
           quantity

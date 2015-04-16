@@ -57,6 +57,15 @@ module Comable
         respond_to_export_with stocks
       end
 
+      def import
+        ActiveRecord::Base.transaction do
+          Comable::Stock.import_from(params[:file])
+        end
+        redirect_to comable.admin_stocks_path, notice: Comable.t('successful')
+      rescue Comable::Importable::Exception => e
+        redirect_to comable.admin_stocks_path, alert: e.message
+      end
+
       private
 
       def stock_params

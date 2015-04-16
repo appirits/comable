@@ -16,6 +16,7 @@ Comable::Core::Engine.routes.draw do
     resources :stocks do
       collection do
         get :export
+        post :import
       end
     end
 
