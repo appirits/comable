@@ -7,8 +7,8 @@ module Comable
 
       included do
         comma do
-          product :code
-          product :name
+          __association__ product: :code
+          __association__ product: :name
           code
           quantity
           sku_h_choice_name

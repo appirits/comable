@@ -239,6 +239,7 @@ ja:
         sku_v_item_name: SKU縦軸項目名
         sku_h_choice_name: SKU横軸選択肢名
         sku_v_choice_name: SKU縦軸選択肢名
+        order: 注文
       comable/address: &comable_address
         full_name: お名前
         family_name: 姓

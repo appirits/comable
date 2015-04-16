@@ -4,19 +4,18 @@ module Comable
       extend ActiveSupport::Concern
 
       included do
-        klass = self
         comma do
-          order :code
-          order :email
-          order :shipment_fee
-          order :total_price
-          klass.comma_nested_attribute(self, order: { bill_address: :family_name })
-          klass.comma_nested_attribute(self, order: { bill_address: :first_name })
-          klass.comma_nested_attribute(self, order: { bill_address: :zip_code })
-          klass.comma_nested_attribute(self, order: { bill_address: :state_name })
-          klass.comma_nested_attribute(self, order: { bill_address: :city })
-          klass.comma_nested_attribute(self, order: { bill_address: :detail })
-          klass.comma_nested_attribute(self, order: { bill_address: :phone_number })
+          __association__ order: :code
+          __association__ order: :email
+          __association__ order: :shipment_fee
+          __association__ order: :total_price
+          __association__ order: { bill_address: :family_name }
+          __association__ order: { bill_address: :first_name }
+          __association__ order: { bill_address: :zip_code }
+          __association__ order: { bill_address: :state_name }
+          __association__ order: { bill_address: :city }
+          __association__ order: { bill_address: :detail }
+          __association__ order: { bill_address: :phone_number }
           name
           code
           price
