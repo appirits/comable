@@ -4,6 +4,7 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/hyoshida/comable.svg?style=flat-square)](https://codeclimate.com/github/hyoshida/comable)
 [![Coverage Status](https://img.shields.io/coveralls/hyoshida/comable.svg?style=flat-square)](https://coveralls.io/r/hyoshida/comable)
 [![Dependency Status](https://img.shields.io/gemnasium/hyoshida/comable.svg?style=flat-square)](https://gemnasium.com/hyoshida/comable)
+[![Gem Version](https://img.shields.io/gem/v/comable.svg?style=flat-square)](https://rubygems.org/gems/comable)
 
 Comable provides a simple way to add e-commerce features to your Ruby on Rails application.
 
