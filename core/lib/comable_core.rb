@@ -16,6 +16,8 @@ require 'comable/payment_provider'
 require 'comable/state_machine_patch'
 require 'comable/deprecator'
 
+require 'comma_extractor_extentions'
+
 module Comable
   class << self
     def setup(&_)
