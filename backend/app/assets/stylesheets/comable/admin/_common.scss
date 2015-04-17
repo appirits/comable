@@ -290,3 +290,26 @@ footer {
     color: #000;
   }
 }
+
+// for File Inputs
+// refs: http://www.abeautifulsite.net/whipping-file-inputs-into-shape-with-bootstrap-3/
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn-file input[type=file] {
+  @include opacity(0);
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}

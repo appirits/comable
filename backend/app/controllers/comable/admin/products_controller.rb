@@ -54,6 +54,15 @@ module Comable
         respond_to_export_with products
       end
 
+      def import
+        ActiveRecord::Base.transaction do
+          Comable::Product.import_from(params[:file])
+        end
+        redirect_to comable.admin_products_path, notice: Comable.t('successful')
+      rescue Comable::Importable::Exception => e
+        redirect_to comable.admin_products_path, alert: e.message
+      end
+
       private
 
       def product_params

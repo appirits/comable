@@ -12,7 +12,7 @@ describe Comable::Stock do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:product) }
+    it { is_expected.to validate_presence_of(:product).with_message(Comable.t('admin.is_not_exists')) }
     it { is_expected.to validate_presence_of(:code) }
 
     it { is_expected.to validate_length_of(:code).is_at_most(255) }

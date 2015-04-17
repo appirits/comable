@@ -131,6 +131,9 @@ en:
       sign_out: 'Logout'
       export_to_csv: 'Export to CSV'
       export_to_excel: 'Export to Excel'
+      import: 'Import from file...'
+      unknown_file_type: 'Unknown file type: %{filename}'
+      is_not_exists: 'is not exists.'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -228,6 +231,7 @@ en:
         sku_v_choice_name: 'SKU Vertical item name'
         sku_h_choice_name: 'SKU Horizontal choice name'
         sku_v_choice_name: 'SKU Vertical choice name'
+        order: 'Order'
       comable/address: &comable_address
         full_name: 'Full name'
         family_name: 'Last name'
@@ -250,6 +254,8 @@ en:
         quantity: 'Quantity'
         sku_h_choice_name: 'SKU Horizontal choice name'
         sku_v_choice_name: 'SKU Vertical choice name'
+        product: 'Product'
+        product_code: 'Product code'
       comable/store:
         name: 'Name'
         meta_keywords: 'Meta keywords'

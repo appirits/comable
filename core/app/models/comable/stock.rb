@@ -27,7 +27,7 @@ module Comable
     # @!endgroup
     #
 
-    validates :product, presence: true
+    validates :product, presence: { message: Comable.t('admin.is_not_exists') }
     validates :code, presence: true, length: { maximum: 255 }
     validates :sku_h_choice_name, length: { maximum: 255 }
     validates :sku_v_choice_name, length: { maximum: 255 }

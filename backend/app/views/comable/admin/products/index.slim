@@ -21,6 +21,13 @@
             = link_to Comable.t('admin.export_to_csv'), comable.export_admin_products_path(format: :csv, q: params[:q])
           li
             = link_to Comable.t('admin.export_to_excel'), comable.export_admin_products_path(format: :xlsx, q: params[:q])
+          li.divider
+          li
+            a.btn-file
+              span>
+                = Comable.t('admin.import')
+              = form_tag comable.import_admin_products_path, multipart: true do
+                = file_field_tag :file
 
     h1.page-header
       = Comable.t('admin.nav.product')

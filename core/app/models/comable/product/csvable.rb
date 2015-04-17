@@ -3,6 +3,8 @@ module Comable
     module Csvable
       extend ActiveSupport::Concern
 
+      include Comable::Importable
+
       included do
         comma do
           name

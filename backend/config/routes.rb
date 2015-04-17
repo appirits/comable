@@ -9,12 +9,14 @@ Comable::Core::Engine.routes.draw do
 
       collection do
         get :export
+        post :import
       end
     end
 
     resources :stocks do
       collection do
         get :export
+        post :import
       end
     end
 
