@@ -133,6 +133,7 @@ ja:
       export_to_excel: 'Excel形式でエクスポート'
       import: 'ファイルからインポート...'
       unknown_file_type: '対応していないファイル形式です: %{filename}'
+      is_not_exists: 'が存在しません。'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -264,6 +265,8 @@ ja:
         quantity: 在庫
         sku_h_choice_name: SKU横軸選択肢名
         sku_v_choice_name: SKU縦軸選択肢名
+        product: 商品
+        product_code: 商品コード
       comable/store:
         name: ストア名
         meta_keywords: メタキーワード
