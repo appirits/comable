@@ -26,7 +26,7 @@ describe Comma::Extractor do
       expect(subject.send(:nested_human_attribute_name, target_class, source)).to eq(destination)
     end
 
-    # NOTE: Dependent `OrderItem`, `Order` and `Address` models
+    # NOTE: This test depends on `OrderItem`, `Order` and `Address` models
     it 'converts complicated array to human attribute name correctly' do
       source = [:order, :bill_address, :family_name]
       destination = [
