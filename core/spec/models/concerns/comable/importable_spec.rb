@@ -62,7 +62,8 @@ describe Comable::Importable do
 
   describe '.comma_column_names' do
     it 'returns column names' do
-      expect(subject.send(:comma_column_names)).to eq(['foo', 'bar'])
+      column_names = %w( foo bar )
+      expect(subject.send(:comma_column_names)).to eq(column_names)
     end
   end
 
