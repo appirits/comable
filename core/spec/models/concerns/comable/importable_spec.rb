@@ -1,14 +1,20 @@
-class DummyProduct
-  include Comable::Importable
-
-  comma do
-    foo
-    bar
-  end
-end
-
 describe Comable::Importable do
-  subject { DummyProduct }
+  before(:all) do
+    class DummyModel
+      include Comable::Importable
+
+      comma do
+        foo
+        bar
+      end
+    end
+  end
+
+  after(:all) do
+    Object.send(:remove_const, :DummyModel)
+  end
+
+  subject { DummyModel }
 
   describe '.open_spreadsheet' do
     context 'when format is csv' do
