@@ -119,4 +119,20 @@ describe Comable::Admin::StocksController do
       expect(response).to redirect_to([comable, :admin, :stocks])
     end
   end
+
+  describe 'GET export' do
+    it 'exports the csv file' do
+      stock = FactoryGirl.create(:stock, product: product)
+      get :export, format: :csv
+      expect(response.body).to include(product.code)
+      expect(response.body).to include(stock.code)
+      expect(response.body).to include(stock.quantity.to_s)
+    end
+
+    it 'exports the xlsx file' do
+      FactoryGirl.create(:stock, product: product)
+      get :export, format: :xlsx
+      expect(response.content_type).to eq(Mime::XLSX)
+    end
+  end
 end

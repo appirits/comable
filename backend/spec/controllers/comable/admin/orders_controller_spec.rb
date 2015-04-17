@@ -18,4 +18,23 @@ describe Comable::Admin::OrdersController do
       expect(assigns(:order)).to eq(order)
     end
   end
+
+  describe 'GET export' do
+    it 'exports the csv file' do
+      order = FactoryGirl.create(:order, :completed)
+      order_item = FactoryGirl.create(:order_item, order: order)
+      get :export, format: :csv
+      expect(response.body).to include(order.code)
+      expect(response.body).to include(order.bill_address.first_name)
+      expect(response.body).to include(order.bill_address.family_name)
+      expect(response.body).to include(order_item.code)
+    end
+
+    it 'exports the xlsx file' do
+      order = FactoryGirl.create(:order, :completed)
+      FactoryGirl.create(:order_item, order: order)
+      get :export, format: :xlsx
+      expect(response.content_type).to eq(Mime::XLSX)
+    end
+  end
 end
