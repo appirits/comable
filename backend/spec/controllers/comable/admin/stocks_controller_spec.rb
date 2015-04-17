@@ -135,4 +135,35 @@ describe Comable::Admin::StocksController do
       expect(response.content_type).to eq(Mime::XLSX)
     end
   end
+
+  describe 'POST import' do
+    context 'successful' do
+      it 'redirects to the stocks list' do
+        allow(Comable::Stock).to receive(:import_from)
+        post :import
+        expect(response).to redirect_to([comable, :admin, :stocks])
+      end
+
+      it 'assigns the message as flash[:notine]' do
+        allow(Comable::Stock).to receive(:import_from)
+        post :import
+        expect(flash[:notice]).to eq(Comable.t('successful'))
+      end
+    end
+
+    context 'failure' do
+      it 'redirects to the stocks list' do
+        allow(Comable::Stock).to receive(:import_from) { fail Comable::Importable::Exception }
+        post :import
+        expect(response).to redirect_to([comable, :admin, :stocks])
+      end
+
+      it 'assigns the message as flash[:alert]' do
+        alert_message = 'message'
+        allow(Comable::Stock).to receive(:import_from) { fail Comable::Importable::Exception, alert_message }
+        post :import
+        expect(flash[:alert]).to eq(alert_message)
+      end
+    end
+  end
 end
