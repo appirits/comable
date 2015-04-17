@@ -58,6 +58,20 @@ describe Comable::Importable do
         subject.send(:open_spreadsheet, file)
       end
     end
+
+    context 'when format is unknown' do
+      let(:extname) { '.txt' }
+      let(:mine_type) { 'text/csv' }
+
+      it 'raise error with message' do
+        file = Rack::Test::UploadedFile.new(Rails.root.join('public/favicon.ico'), mine_type)
+        allow(File).to receive(:extname).and_return(file.original_filename).and_return(extname)
+
+        exception = described_class::UnknownFileType
+        message = Comable.t('admin.unknown_file_type', filename: file.original_filename)
+        expect { subject.send(:open_spreadsheet, file) }.to raise_error(exception, message)
+      end
+    end
   end
 
   describe '.comma_column_names' do
