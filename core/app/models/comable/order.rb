@@ -28,14 +28,8 @@ module Comable
     scope :last_week, -> { where(completed_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week) }
     scope :recent, -> { order('completed_at DESC, id DESC') }
 
-    with_options if: :user do |context|
-      context.validates :user_id, uniqueness: { scope: :completed_at }
-    end
-
-    with_options unless: :user do |context|
-      context.validates :guest_token, presence: true
-      context.validates :guest_token, uniqueness: { scope: :completed_at }
-    end
+    validates :user_id, uniqueness: { scope: :completed_at }, if: :user
+    validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
     ransack_options ransackable_attributes: { except: [:shipment_method_id, :payment_method_id, :bill_address_id, :ship_address_id] }
 
