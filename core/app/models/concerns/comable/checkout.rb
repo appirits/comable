@@ -11,6 +11,9 @@ module Comable
         state :payment
         state :confirm
         state :complete
+        state :canceled
+        state :returned
+        state :resumed
 
         event :next_state do
           transition :cart => :orderer, if: :orderer_required?
@@ -19,6 +22,18 @@ module Comable
           transition [:cart, :orderer, :delivery, :shipment] => :payment, if: :payment_required?
           transition all - [:confirm, :complete] => :confirm
           transition :confirm => :complete
+        end
+
+        event :cancel do
+          transition to: :canceled, from: :complete, if: :allow_cancel?
+        end
+
+        event :return do
+          transition to: :returned, from: :complete, if: :allow_return?
+        end
+
+        event :resume do
+          transition to: :resumed, from: :canceled
         end
 
         before_transition to: :complete do |order, _transition|
@@ -79,6 +94,18 @@ module Comable
 
     def shipment_required?
       Comable::ShipmentMethod.activated.exists?
+    end
+
+    def allow_cancel?
+      # TODO: Implement shipments
+      # !shipments.exists?
+      true
+    end
+
+    def allow_return?
+      # TODO: Implement shipments
+      # shipments.exists?
+      false
     end
   end
 end
