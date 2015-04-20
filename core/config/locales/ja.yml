@@ -134,6 +134,7 @@ ja:
       import: 'ファイルからインポート...'
       unknown_file_type: '対応していないファイル形式です: %{filename}'
       is_not_exists: 'が存在しません。'
+      ship: '発送'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -186,6 +187,11 @@ ja:
             payment: 決済方法の選択
             confirm: 注文内容を確認
             complete: 注文完了
+            canceled: 'キャンセル'
+            resumed: '再開'
+          events:
+            cancel: 'キャンセル'
+            resume: '再開'
 
     models:
       comable/order: ご注文

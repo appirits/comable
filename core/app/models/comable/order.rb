@@ -53,6 +53,13 @@ module Comable
       completed_at && completed_at_was.nil?
     end
 
+    def restock
+      ActiveRecord::Base.transaction do
+        order_items.each(&:restock)
+        save!
+      end
+    end
+
     def stocked_items
       order_items.to_a.select(&:unstocked?)
     end

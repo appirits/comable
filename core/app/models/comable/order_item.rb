@@ -25,6 +25,10 @@ module Comable
       decrement_stock
     end
 
+    def restock
+      order.canceled? ? increment_stock : decrement_stock
+    end
+
     # TODO: カート投入時との差額表示
     def copy_attributes
       self.attributes = current_attributes
@@ -69,6 +73,11 @@ module Comable
     def decrement_stock
       stock.lock!
       stock.quantity -= quantity
+    end
+
+    def increment_stock
+      stock.lock!
+      stock.quantity += quantity
     end
 
     def current_attributes

@@ -134,6 +134,7 @@ en:
       import: 'Import from file...'
       unknown_file_type: 'Unknown file type: %{filename}'
       is_not_exists: 'is not exists.'
+      ship: 'Ship'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -186,6 +187,11 @@ en:
             payment: 'Payment method'
             confirm: 'Order confirmed'
             complete: 'Order placed'
+            canceled: 'Canceled'
+            resumed: 'Resumed'
+          events:
+            cancel: 'Cancel'
+            resume: 'Resume'
 
     models:
       comable/order: 'Orders'

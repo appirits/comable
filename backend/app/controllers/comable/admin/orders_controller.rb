@@ -20,6 +20,28 @@ module Comable
 
         respond_to_export_with order_items
       end
+
+      def cancel
+        order = find_order
+        order.cancel
+        redirect_to comable.admin_order_path(order), notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to comable.admin_order_path(order), alert: e.message
+      end
+
+      def resume
+        order = find_order
+        order.resume
+        redirect_to comable.admin_order_path(order), notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to comable.admin_order_path(order), alert: e.message
+      end
+
+      private
+
+      def find_order
+        Comable::Order.accessible_by(current_ability).find(params[:id])
+      end
     end
   end
 end

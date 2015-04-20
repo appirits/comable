@@ -25,11 +25,11 @@ module Comable
         end
 
         event :cancel do
-          transition to: :canceled, from: :complete, if: :allow_cancel?
+          transition to: :canceled, from: [:complete, :resumed], if: :allow_cancel?
         end
 
         event :return do
-          transition to: :returned, from: :complete, if: :allow_return?
+          transition to: :returned, from: [:complete, :resumed], if: :allow_return?
         end
 
         event :resume do
@@ -39,6 +39,9 @@ module Comable
         before_transition to: :complete do |order, _transition|
           order.complete
         end
+
+        after_transition to: :canceled, do: :restock
+        after_transition to: :resumed, do: :restock
       end
 
       with_options if: -> { stated?(:cart) } do |context|
