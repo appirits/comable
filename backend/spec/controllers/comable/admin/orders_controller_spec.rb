@@ -3,6 +3,8 @@ describe Comable::Admin::OrdersController do
 
   let(:comable) { controller.comable }
 
+  before { request.env['HTTP_REFERER'] = 'http://localhost:3000' }
+
   describe 'GET index' do
     it 'assigns all orders as @orders' do
       order = FactoryGirl.create(:order, :completed)
@@ -55,9 +57,9 @@ describe Comable::Admin::OrdersController do
       expect { post :cancel, id: order.to_param }.to change { stock.reload.quantity }.by(order_item.quantity)
     end
 
-    it 'redirects to the order' do
+    it 'redirects back' do
       post :cancel, id: order.to_param
-      expect(response).to redirect_to([comable, :admin, order])
+      expect(response).to redirect_to(:back)
     end
   end
 
@@ -81,9 +83,9 @@ describe Comable::Admin::OrdersController do
         expect { post :resume, id: order.to_param }.to change { stock.reload.quantity }.by(-order_item.quantity)
       end
 
-      it 'redirects to the order' do
+      it 'redirects back' do
         post :resume, id: order.to_param
-        expect(response).to redirect_to([comable, :admin, order])
+        expect(response).to redirect_to(:back)
       end
     end
 
@@ -99,9 +101,9 @@ describe Comable::Admin::OrdersController do
         expect(order).to be_canceled
       end
 
-      it 'redirects to the order' do
+      it 'redirects back' do
         post :resume, id: order.to_param
-        expect(response).to redirect_to([comable, :admin, order])
+        expect(response).to redirect_to(:back)
       end
 
       it 'assigns the message as flash[:alert]' do

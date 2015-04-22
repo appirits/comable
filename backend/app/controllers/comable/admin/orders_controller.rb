@@ -22,25 +22,17 @@ module Comable
       end
 
       def cancel
-        order = find_order
-        order.cancel
-        redirect_to comable.admin_order_path(order), notice: Comable.t('successful')
+        @order.cancel!
+        redirect_to :back, notice: Comable.t('successful')
       rescue ActiveRecord::RecordInvalid => e
-        redirect_to comable.admin_order_path(order), alert: e.message
+        redirect_to :back, alert: e.message
       end
 
       def resume
-        order = find_order
-        order.resume
-        redirect_to comable.admin_order_path(order), notice: Comable.t('successful')
+        @order.resume!
+        redirect_to :back, notice: Comable.t('successful')
       rescue ActiveRecord::RecordInvalid => e
-        redirect_to comable.admin_order_path(order), alert: e.message
-      end
-
-      private
-
-      def find_order
-        Comable::Order.accessible_by(current_ability).find(params[:id])
+        redirect_to :back, alert: e.message
       end
     end
   end

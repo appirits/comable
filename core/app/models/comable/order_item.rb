@@ -22,11 +22,15 @@ module Comable
 
     def complete
       copy_attributes
+      unstock
+    end
+
+    def unstock
       decrement_stock
     end
 
     def restock
-      order.canceled? ? increment_stock : decrement_stock
+      increment_stock
     end
 
     # TODO: カート投入時との差額表示

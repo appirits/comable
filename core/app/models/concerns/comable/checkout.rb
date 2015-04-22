@@ -40,8 +40,8 @@ module Comable
           order.complete
         end
 
-        after_transition to: :canceled, do: :restock
-        after_transition to: :resumed, do: :restock
+        after_transition to: :canceled, do: :restock!
+        after_transition to: :resumed, do: :unstock!
       end
 
       with_options if: -> { stated?(:cart) } do |context|
