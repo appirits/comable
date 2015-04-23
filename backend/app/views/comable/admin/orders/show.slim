@@ -4,19 +4,19 @@
       - case @order.state.to_sym
       - when :complete, :resumed
         li
-          = button_to comable.admin_order_path(@order), class: 'btn btn-primary' do
+          = link_to comable.admin_order_path(@order), class: 'btn btn-primary' do
             i.fa.fa-truck>
             = Comable.t('admin.ship')
         li
-          = button_to comable.cancel_admin_order_path(@order), class: 'btn btn-default' do
+          = link_to comable.cancel_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:cancel)
       - when :canceled
         li
-          = button_to comable.admin_order_path(@order), class: 'btn btn-primary', disabled: true do
+          = link_to comable.admin_order_path(@order), class: 'btn btn-primary', disabled: true do
             i.fa.fa-truck>
             = Comable.t('admin.ship')
         li
-          = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default' do
+          = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:resume)
       - else
 
