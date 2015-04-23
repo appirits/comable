@@ -1,6 +1,25 @@
 .comable-page
   .comable-page-heading
     ul.pull-right.list-inline
+      - case @order.state.to_sym
+      - when :complete, :resumed
+        li
+          = link_to comable.admin_order_path(@order), class: 'btn btn-primary' do
+            i.fa.fa-truck>
+            = Comable.t('admin.ship')
+        li
+          = link_to comable.cancel_admin_order_path(@order), class: 'btn btn-default', method: :post do
+            = @order.class.human_state_event_name(:cancel)
+      - when :canceled
+        li
+          = link_to comable.admin_order_path(@order), class: 'btn btn-primary', disabled: true do
+            i.fa.fa-truck>
+            = Comable.t('admin.ship')
+        li
+          = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default', method: :post do
+            = @order.class.human_state_event_name(:resume)
+      - else
+
       li.btn-group
         / TODO: Comment out after implemented.
         / = link_to Comable.t('admin.nav.orders.cart'), '#', class: 'btn btn-default'

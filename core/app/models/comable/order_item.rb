@@ -22,7 +22,15 @@ module Comable
 
     def complete
       copy_attributes
+      unstock
+    end
+
+    def unstock
       decrement_stock
+    end
+
+    def restock
+      increment_stock
     end
 
     # TODO: カート投入時との差額表示
@@ -69,6 +77,11 @@ module Comable
     def decrement_stock
       stock.lock!
       stock.quantity -= quantity
+    end
+
+    def increment_stock
+      stock.lock!
+      stock.quantity += quantity
     end
 
     def current_attributes

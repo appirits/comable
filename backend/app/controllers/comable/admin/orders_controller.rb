@@ -20,6 +20,20 @@ module Comable
 
         respond_to_export_with order_items
       end
+
+      def cancel
+        @order.cancel!
+        redirect_to :back, notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to :back, alert: e.message
+      end
+
+      def resume
+        @order.resume!
+        redirect_to :back, notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to :back, alert: e.message
+      end
     end
   end
 end

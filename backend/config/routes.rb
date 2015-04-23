@@ -24,6 +24,11 @@ Comable::Core::Engine.routes.draw do
       collection do
         get :export
       end
+
+      member do
+        post :cancel
+        post :resume
+      end
     end
 
     resources :categories
