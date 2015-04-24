@@ -10,6 +10,7 @@ module Comable
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     has_many :order_items, dependent: :destroy, class_name: Comable::OrderItem.name, inverse_of: :order
+    has_one :shipment, dependent: :destroy, class_name: Comable::Shipment.name, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address

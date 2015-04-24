@@ -5,6 +5,7 @@ describe Comable::Order do
 
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
+  it { is_expected.to have_one(:shipment).class_name(Comable::Shipment.name).dependent(:destroy).inverse_of(:order) }
 
   describe 'validations' do
     context 'when user is registered' do
