@@ -164,8 +164,8 @@ describe Comable::OrdersController do
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :payment)) }
 
-      it 'has assigned @order with ship address' do
-        expect(assigns(:order).shipment_method).to eq(shipment_method)
+      it 'has assigned @order with shipemnt method' do
+        expect(assigns(:order).shipment.shipment_method).to eq(shipment_method)
       end
     end
 
@@ -187,7 +187,7 @@ describe Comable::OrdersController do
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :confirm)) }
 
-      it 'has assigned @order with ship address' do
+      it 'has assigned @order with payment method' do
         expect(assigns(:order).payment_method).to eq(payment_method)
       end
     end

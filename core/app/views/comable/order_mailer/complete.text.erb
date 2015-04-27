@@ -6,10 +6,10 @@
 
 <%= Comable.t('order_mailer.complete.introductions', store_name: current_store.name) %>
 
-    <%- shipment_method = @order.shipment_method %>
-    <%- if shipment_method %>
-    <%= shipment_method.class.model_name.human %>:
-            <%= shipment_method.name %>
+    <%- shipment = @order.shipment %>
+    <%- if shipment %>
+    <%= @order.class.human_attribute_name(:shipment_method) %>:
+            <%= shipment.name %>
     <%- end %>
 
     <%= @order.class.human_attribute_name(:ship_address) %>:

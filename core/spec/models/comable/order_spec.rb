@@ -47,7 +47,6 @@ describe Comable::Order do
         let(:product) { stock.product }
         let(:item_total_price) { product.price * order_item.quantity }
 
-        before { subject.next_state! }
         before { subject.complete }
         before { subject.reload }
 
@@ -60,12 +59,12 @@ describe Comable::Order do
         end
 
         context 'with shipment method' do
-          subject(:order) { FactoryGirl.build(:order, :for_shipment, shipment_method: shipment_method) }
+          subject(:order) { FactoryGirl.build(:order, :for_shipment, shipment: shipment) }
 
-          let(:shipment_method) { FactoryGirl.create(:shipment_method) }
+          let(:shipment) { FactoryGirl.build(:shipment) }
 
-          its(:shipment_fee) { is_expected.to eq(shipment_method.fee) }
-          its(:total_price) { is_expected.to eq(item_total_price + shipment_method.fee) }
+          its(:shipment_fee) { is_expected.to eq(shipment.fee) }
+          its(:total_price) { is_expected.to eq(item_total_price + shipment.fee) }
         end
 
         context 'with user' do

@@ -76,7 +76,7 @@ module Comable
       guest_order = Comable::Order.incomplete.preload(:order_items).where(guest_token: current_guest_token).first
       return unless guest_order
 
-      inherit_order_attributes(guest_order)
+      incomplete_order.inherit!(guest_order)
       inherit_cart_items(guest_order)
     end
 
@@ -112,19 +112,6 @@ module Comable
         .where(guest_token: guest_token)
         .by_user(self)
         .first
-    end
-
-    def inherit_order_attributes(guest_order)
-      incomplete_order.bill_address ||= guest_order.bill_address
-      incomplete_order.ship_address ||= guest_order.ship_address
-      incomplete_order.shipment ||= guest_order.shipment
-      incomplete_order.payment_method ||= guest_order.payment_method
-
-      if incomplete_order.stated?(guest_order.state)
-        incomplete_order.save!
-      else
-        incomplete_order.next_state!
-      end
     end
 
     def inherit_cart_items(guest_order)

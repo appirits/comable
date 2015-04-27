@@ -31,13 +31,11 @@ module Comable
     validates :user_id, uniqueness: { scope: :completed_at }, if: :user
     validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
-    ransack_options ransackable_attributes: { except: [:shipment_method_id, :payment_method_id, :bill_address_id, :ship_address_id] }
+    ransack_options ransackable_attributes: { except: [:payment_method_id, :bill_address_id, :ship_address_id] }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
-    delegate :shipment_method, to: :shipment, allow_nil: true
 
-    # TODO: Remove
     attr_accessor :shipment_method_id
 
     def complete
@@ -87,7 +85,7 @@ module Comable
 
     # 時価送料を取得
     def current_shipment_fee
-      shipment_method.try(:fee) || 0
+      shipment.try(:fee) || 0
     end
 
     # 時価合計を取得
@@ -95,9 +93,14 @@ module Comable
       current_item_total_price + current_shipment_fee
     end
 
-    # TODO: Remove
-    def shipment_method=(shipment_method)
-      self.shipment_method_id = shipment_method.id
+    # Inherit from other Order
+    def inherit!(order)
+      self.bill_address ||= order.bill_address
+      self.ship_address ||= order.ship_address
+      self.shipment ||= order.shipment
+      self.payment_method ||= order.payment_method
+
+      stated?(order.state) ? save! : next_state!
     end
 
     private
