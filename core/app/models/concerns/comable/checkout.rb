@@ -36,12 +36,8 @@ module Comable
           transition to: :resumed, from: :canceled
         end
 
-        before_transition to: :complete do |order, _transition|
-          order.complete
-        end
-
+        before_transition to: :complete, do: :complete!
         before_transition from: :shipment, do: :build_pending_shipment
-
         after_transition to: :canceled, do: :restock!
         after_transition to: :resumed, do: :unstock!
       end

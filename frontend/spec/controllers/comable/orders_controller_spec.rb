@@ -204,43 +204,67 @@ describe Comable::OrdersController do
 
     describe "POST 'create'" do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
-
-      before { current_order.update_attributes(order_attributes) }
-      before { post :create }
-
       let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
 
-      its(:response) { should be_success }
+      before { current_order.update_attributes(order_attributes) }
+
+      it "renders the 'create' template" do
+        post :create
+        expect(response).to render_template(:create)
+      end
 
       it 'has flash messages' do
+        post :create
         expect(flash[:notice]).to eq Comable.t('orders.success')
       end
 
       it 'has assigned completed @order' do
+        post :create
         expect(assigns(:order).completed?).to be true
       end
 
       it 'has assigned completed @order with a item' do
+        post :create
         expect(assigns(:order).order_items.count).to eq(1)
       end
 
-      context 'when out of stock' do
+      context 'when product is out of stock' do
         let(:stock) { FactoryGirl.create(:stock, :unstocked) }
 
-        its(:response) { is_expected.to redirect_to(controller.comable.cart_path) }
+        it 'redirects to the shopping cart' do
+          post :create
+          expect(response).to redirect_to(controller.comable.cart_path)
+        end
+
+        it 'has flash messages' do
+          post :create
+          expect(flash[:alert]).to eq(Comable.t('errors.messages.out_of_stocks'))
+        end
+      end
+
+      context 'when just became out of stock' do
+        before { stock.update_attributes(quantity: 0) }
+
+        it "redirects to 'confirm' page" do
+          post :create
+          expect(response).to redirect_to(controller.comable.next_order_path(state: :confirm))
+        end
+
+        it 'has flash messages' do
+          post :create
+          expect(flash[:alert]).to eq(assigns(:order).errors.full_messages.join)
+        end
       end
     end
 
-    context 'when order invalid' do
+    context 'when checkout flow is incorrect' do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
 
       before { current_order.update_attributes(order_attributes) }
-      before { post :create }
 
-      its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :orderer)) }
-
-      it 'has flash messages' do
-        expect(flash[:alert]).to eq Comable.t('orders.failure')
+      it "redirects the 'orderer' page" do
+        post :create
+        expect(response).to redirect_to(controller.comable.next_order_path(state: :orderer))
       end
     end
   end

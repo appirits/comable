@@ -31,7 +31,7 @@ describe Comable::Order do
 
         it 'has errors' do
           stock.update_attributes(quantity: 0)
-          order.complete
+          expect { order.complete! }.to raise_error(ActiveRecord::RecordInvalid, /#{stock.name_with_sku}/)
           expect(order.errors['order_items.quantity'].any?).to be
         end
       end

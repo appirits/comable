@@ -18,6 +18,7 @@ module Comable
     define_model_callbacks :complete
     before_validation :generate_guest_token, on: :create
     before_validation :clone_addresses_from_user, on: :create
+    before_complete :generate_code
     after_complete :clone_addresses_to_user
 
     scope :complete, -> { where.not(completed_at: nil) }
@@ -36,37 +37,34 @@ module Comable
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
+    alias_method :completed?, :complete?
+
     attr_accessor :shipment_method_id
 
-    def complete
+    def complete!
       ActiveRecord::Base.transaction do
         run_callbacks :complete do
-          save_to_complete.tap { |completed| self.completed_at = nil unless completed }
+          self.shipment_fee = current_shipment_fee
+          self.total_price = current_total_price
+          order_items.each(&:complete)
+          save!
+
+          touch(:completed_at)
         end
       end
     end
 
-    def completed?
-      !completed_at.nil?
-    end
-
-    # TODO: switch to state_machine
-    def completing?
-      completed_at && completed_at_was.nil?
-    end
+    alias_method :complete, :complete!
+    deprecate :complete, deprecator: Comable::Deprecator.instance
 
     def restock!
-      ActiveRecord::Base.transaction do
-        order_items.each(&:restock)
-        save!
-      end
+      order_items.each(&:restock)
+      save!
     end
 
     def unstock!
-      ActiveRecord::Base.transaction do
-        order_items.each(&:unstock)
-        save!
-      end
+      order_items.each(&:unstock)
+      save!
     end
 
     def stocked_items
@@ -104,17 +102,6 @@ module Comable
     end
 
     private
-
-    def save_to_complete
-      self.completed_at = Time.now
-      self.shipment_fee = current_shipment_fee
-      self.total_price = current_total_price
-      generate_code
-
-      order_items.each(&:complete)
-
-      save
-    end
 
     def generate_code
       self.code = loop do

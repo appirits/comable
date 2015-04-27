@@ -4,6 +4,7 @@ module Comable
     before_filter :load_order
     before_filter :ensure_cart_not_empty
     before_filter :ensure_saleable_stocks
+    before_filter :ensure_correct_flow, only: :create
 
     prepend Comable::SigninAction
     prepend Comable::ShipmentAction
@@ -27,13 +28,13 @@ module Comable
     end
 
     def create
-      if @order.state?(:confirm) && @order.next_state
-        flash.now[:notice] = Comable.t('orders.success')
-        send_order_complete_mail
-      else
-        flash[:alert] = Comable.t('orders.failure')
-        redirect_to next_order_path
-      end
+      @order.next_state!
+
+      flash.now[:notice] = Comable.t('orders.success')
+      send_order_complete_mail
+    rescue ActiveRecord::RecordInvalid
+      flash[:alert] = @order.errors.full_messages.join
+      redirect_to next_order_path
     end
 
     private
@@ -57,6 +58,11 @@ module Comable
       return if current_order.stocked_items.empty?
       flash[:alert] = Comable.t('errors.messages.out_of_stocks')
       redirect_to comable.cart_path
+    end
+
+    def ensure_correct_flow
+      return if @order.state?(:confirm)
+      redirect_to next_order_path
     end
 
     def load_order
