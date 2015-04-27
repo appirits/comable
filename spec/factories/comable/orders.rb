@@ -30,14 +30,14 @@ FactoryGirl.define do
       state 'payment'
       bill_address { build(:address) }
       ship_address { build(:address) }
-      shipment_method { build(:shipment_method) }
+      shipment { build(:shipment) }
     end
 
     trait :for_confirm do
       state 'confirm'
       bill_address { build(:address) }
       ship_address { build(:address) }
-      shipment_method { build(:shipment_method) }
+      shipment { build(:shipment) }
       payment_method { build(:payment_method) }
     end
 
@@ -45,7 +45,7 @@ FactoryGirl.define do
       state 'complete'
       bill_address { build(:address) }
       ship_address { build(:address) }
-      shipment_method { build(:shipment_method) }
+      shipment { build(:shipment) }
       payment_method { build(:payment_method) }
 
       sequence(:code) { |n| format('%011d', n.next) }

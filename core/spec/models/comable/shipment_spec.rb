@@ -1,4 +1,6 @@
 RSpec.describe Comable::Shipment do
+  subject { FactoryGirl.create(:shipment) }
+
   it { is_expected.to belong_to(:order).class_name(Comable::Order.name).inverse_of(:shipment) }
   it { is_expected.to belong_to(:shipment_method).class_name(Comable::ShipmentMethod.name) }
 

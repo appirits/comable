@@ -40,6 +40,8 @@ module Comable
           order.complete
         end
 
+        before_transition from: :shipment, do: :build_pending_shipment
+
         after_transition to: :canceled, do: :restock!
         after_transition to: :resumed, do: :unstock!
       end
@@ -92,11 +94,11 @@ module Comable
     end
 
     def payment_required?
-      Comable::PaymentMethod.exists?
+      Comable::PaymentMethod.exists? && payment_method.nil?
     end
 
     def shipment_required?
-      Comable::ShipmentMethod.activated.exists?
+      Comable::ShipmentMethod.activated.exists? && shipment.nil?
     end
 
     def allow_cancel?
@@ -109,6 +111,10 @@ module Comable
       # TODO: Implement shipments
       # shipments.exists?
       false
+    end
+
+    def build_pending_shipment
+      build_shipment(shipment_method_id: shipment_method_id)
     end
   end
 end

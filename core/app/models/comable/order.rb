@@ -6,7 +6,6 @@ module Comable
 
     belongs_to :user, class_name: Comable::User.name, autosave: false
     belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
-    belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     has_many :order_items, dependent: :destroy, class_name: Comable::OrderItem.name, inverse_of: :order
@@ -36,6 +35,10 @@ module Comable
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
+    delegate :shipment_method, to: :shipment, allow_nil: true
+
+    # TODO: Remove
+    attr_accessor :shipment_method_id
 
     def complete
       ActiveRecord::Base.transaction do
@@ -90,6 +93,11 @@ module Comable
     # 時価合計を取得
     def current_total_price
       current_item_total_price + current_shipment_fee
+    end
+
+    # TODO: Remove
+    def shipment_method=(shipment_method)
+      self.shipment_method_id = shipment_method.id
     end
 
     private
