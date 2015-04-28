@@ -3,7 +3,7 @@ module Comable
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipment
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name
 
-    before_validation :copy_attributes_from_shipment_method, on: :create
+    before_validation :copy_attributes_from_shipment_method, unless: :payment_completed?
 
     validates :order, presence: true
     validates :shipment_method, presence: true
@@ -28,6 +28,11 @@ module Comable
     end
 
     private
+
+    def payment_completed?
+      # TODO: Implement payments
+      order.completed?
+    end
 
     def copy_attributes_from_shipment_method
       self.attributes = {
