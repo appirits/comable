@@ -7,9 +7,10 @@ module Comable
 
     validates :order, presence: true
     validates :shipment_method, presence: true
-    validates :name, presence: true, length: { maximum: 255 }
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :tracking_number, length: { maximum: 255 }
+
+    delegate :name, to: :shipment_method
 
     # The #state attribute assigns the following values:
     #
@@ -30,7 +31,6 @@ module Comable
 
     def copy_attributes_from_shipment_method
       self.attributes = {
-        name: shipment_method.name,
         fee: shipment_method.fee
       }
     end
