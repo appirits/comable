@@ -1,5 +1,7 @@
 module Comable
   class Shipment < ActiveRecord::Base
+    include Comable::Ransackable
+
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipment
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name
 
@@ -11,6 +13,8 @@ module Comable
     validates :tracking_number, length: { maximum: 255 }
 
     delegate :name, to: :shipment_method
+
+    ransack_options ransackable_attributes: { except: [:order_id, :shipment_method_id] }
 
     # The #state attribute assigns the following values:
     #

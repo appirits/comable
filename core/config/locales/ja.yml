@@ -294,6 +294,14 @@ ja:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+      comable/shipment:
+        id: 'ID'
+        order_id: '注文ID'
+        shipment_method_id: '発送方法ID'
+        fee: '手数料'
+        state: 'ステータス'
+        tracking_number: 'トラッキング番号'
+        completed_at: '発送日時'
 
   enumerize:
     comable/user:

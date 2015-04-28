@@ -283,6 +283,14 @@ en:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+      comable/shipment:
+        id: 'ID'
+        order_id: 'Order ID'
+        shipment_method_id: 'Shipment method ID'
+        fee: 'Fee'
+        state: 'Status'
+        tracking_number: 'Tracking number'
+        completed_at: 'Completed at'
 
   enumerize:
     comable/user:
