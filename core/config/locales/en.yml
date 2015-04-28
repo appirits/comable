@@ -209,7 +209,13 @@ en:
         bill_full_name: 'Full name of the billing address'
         orders: 'Orders'
         role: 'Role'
+        sign_in_count: 'Sign in count'
+        current_sign_in_at: 'Current sign in at'
+        last_sign_in_at: 'Last sign in at'
+        current_sign_in_ip: 'Current sign in ip'
+        last_sign_in_ip: 'Last sign in ip'
       comable/order:
+        id: 'ID'
         code: 'Order number'
         email: 'Email address'
         bill_address: 'Billing address'
@@ -220,12 +226,14 @@ en:
         item_total_price: 'Item total'
         total_price: 'Total'
         order_items: 'Order items'
-        completed_at: 'Comleted at'
+        completed_at: 'Completed at'
         state: 'State'
         bill_address: 'Billing address'
         ship_address: 'Shipping adress'
         bill_full_name: 'Full name of the billing address'
         order_items: 'Order items'
+        user_id: 'User ID'
+        guest_token: 'Guest token'
       comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
@@ -248,6 +256,7 @@ en:
         detail: 'Detail'
         phone_number: 'Phone number'
       comable/product:
+        id: 'ID'
         code: 'Code'
         name: 'Name'
         price: 'Price'
@@ -256,6 +265,7 @@ en:
         sku_h_item_name: 'SKU Horizontal item name'
         sku_v_item_name: 'SKU Vertical item name'
       comable/stock:
+        id: 'ID'
         code: 'SKU Code'
         quantity: 'Quantity'
         sku_h_choice_name: 'SKU Horizontal choice name'
@@ -306,3 +316,10 @@ en:
       next: "Next &rsaquo;"
       previous: "&lsaquo; Previous"
       truncate: "&hellip;"
+
+  ransack:
+    predicates:
+      gteq: 'Greater than or equal to'
+      lteq: 'Less than or equal to'
+      eq_any_splitted: 'Exact match'
+      cont_any_splitted: 'Partial match'

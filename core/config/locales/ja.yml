@@ -144,7 +144,7 @@ ja:
         user: ユーザー
         general_settings: 一般設定
         store: ストア設定
-        shipment_method: 配送管理
+        shipment_method: 発送管理
         payment_method: 決済管理
         products:
           detail: 商品詳細
@@ -183,7 +183,7 @@ ja:
             cart: カート
             orderer: 請求先住所の選択
             delivery: 配送先住所の選択
-            shipment: 配送方法の選択
+            shipment: 発送方法の選択
             payment: 決済方法の選択
             confirm: 注文内容を確認
             complete: 注文完了
@@ -234,7 +234,6 @@ ja:
         order_items: 注文明細
         user_id: ユーザーID
         guest_token: ゲストトークン
-        shipment_tracking_number: 発送トラッキング番号
       comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
@@ -280,9 +279,9 @@ ja:
         email_sender: 送信元メールアドレス
         email_activate_flag: メール送信を有効にする
       comable/shipment_method:
-        name: 配送方法名
+        name: 発送方法名
         fee: 手数料
-        activate_flag: この配送方法を有効にする
+        activate_flag: この発送方法を有効にする
         traking_url: トラッキングURL
       comable/payment_method:
         name: 決済方法名
