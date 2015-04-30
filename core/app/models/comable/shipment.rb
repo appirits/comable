@@ -28,7 +28,20 @@ module Comable
       state :ready
       state :complete
       state :canceled
-      state :resume
+      state :resumed
+
+      event :next_state do
+        transition :pending => :ready
+        transition :ready => :complete
+      end
+
+      event :cancel do
+        transition [:complete, :resumed] => :canceled
+      end
+
+      event :resume do
+        transition :canceled => :resumed
+      end
     end
 
     private

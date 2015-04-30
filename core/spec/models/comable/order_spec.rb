@@ -65,6 +65,10 @@ describe Comable::Order do
 
           its(:shipment_fee) { is_expected.to eq(shipment.fee) }
           its(:total_price) { is_expected.to eq(item_total_price + shipment.fee) }
+
+          it 'shipment has been ready' do
+            expect(order.shipment.state).to eq('ready')
+          end
         end
 
         context 'with user' do

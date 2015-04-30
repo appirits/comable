@@ -50,6 +50,8 @@ module Comable
           order_items.each(&:complete)
           save!
 
+          shipment.next_state!
+
           touch(:completed_at)
         end
       end
