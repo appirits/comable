@@ -38,7 +38,7 @@
             = time_ago_in_words @order.completed_at
 
   .comable-page-body
-    - if@order.shipment
+    - if @order.can_ship?
       = render 'shipment_state', shipment: @order.shipment
 
     section.row
