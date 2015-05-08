@@ -192,6 +192,14 @@ ja:
           events:
             cancel: 'キャンセル'
             resume: '再開'
+      comable/shipment:
+        state:
+          states:
+            pending: '準備中'
+            ready: '準備完了'
+            complete: '発送完了'
+            canceled: 'キャンセル'
+            resumed: '再開'
 
     models:
       comable/order: ご注文
@@ -234,6 +242,7 @@ ja:
         order_items: 注文明細
         user_id: ユーザーID
         guest_token: ゲストトークン
+        shipment_state: '配送ステータス'
       comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
