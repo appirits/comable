@@ -28,6 +28,9 @@ Comable::Core::Engine.routes.draw do
       member do
         post :cancel
         post :resume
+        post :ship
+        post :cancel_shipment
+        post :resume_shipment
       end
     end
 

@@ -3,18 +3,20 @@
     ul.pull-right.list-inline
       - case @order.state.to_sym
       - when :complete, :resumed
-        li
-          = link_to comable.admin_order_path(@order), class: 'btn btn-primary' do
-            i.fa.fa-truck>
-            = Comable.t('admin.ship')
+        - if @order.shipment && @order.shipment.state?(:ready)
+          li
+            = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post do
+              i.fa.fa-truck>
+              = Comable.t('admin.ship')
         li
           = link_to comable.cancel_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:cancel)
       - when :canceled
         li
-          = link_to comable.admin_order_path(@order), class: 'btn btn-primary', disabled: true do
-            i.fa.fa-truck>
-            = Comable.t('admin.ship')
+          - if @order.shipment && @order.shipment.state?(:ready)
+            = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post, disabled: true do
+              i.fa.fa-truck>
+              = Comable.t('admin.ship')
         li
           = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:resume)
@@ -36,33 +38,8 @@
             = time_ago_in_words @order.completed_at
 
   .comable-page-body
-    section.row
-      - shipment = @order.shipment
-      - if shipment
-        .col-sm-2
-          .comable-flow-label
-            .comable-flow-label-container
-              label
-                | #{@order.class.human_attribute_name(:shipment_state)}:
-              p
-                = shipment.human_state_name
-        .col-sm-10
-          ul.comable-flow
-            - shipment.class.state_machine.states.each do |state|
-              li
-                - next if state.name.to_sym.in?([:canceled, :resumed]) && !shipment.state.to_sym.in?([:canceled, :resumed])
-                .comable-badge class="#{shipment_badge_class_for(shipment, state: state.name)}" data-toggle="tooltip" data-placement="top" title="#{state.human_name}"
-                  - case state.name.to_sym
-                  - when :pending
-                    i.fa.fa-circle
-                  - when :ready
-                    i.fa.fa-check-circle
-                  - when :complete
-                    i.fa.fa-truck
-                  - when :canceled
-                    i.fa.fa-close
-                  - when :resumed
-                    i.fa.fa-refresh
+    - if@order.shipment
+      = render 'shipment_state', shipment: @order.shipment
 
     section.row
       .col-sm-8

@@ -35,6 +35,10 @@ module Comable
         transition :ready => :complete
       end
 
+      event :ship do
+        transition :ready => :complete
+      end
+
       event :cancel do
         transition [:complete, :resumed] => :canceled
       end
