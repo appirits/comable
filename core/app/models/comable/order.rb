@@ -14,6 +14,7 @@ module Comable
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
     accepts_nested_attributes_for :order_items
+    accepts_nested_attributes_for :shipment
 
     define_model_callbacks :complete
     before_validation :generate_guest_token, on: :create
@@ -32,15 +33,13 @@ module Comable
     validates :user_id, uniqueness: { scope: :completed_at }, if: :user
     validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
-    ransack_options attribute_select: { associations: :shipment }, ransackable_attributes: { except: [:shipment_method_id, :payment_method_id, :bill_address_id, :ship_address_id] }
+    ransack_options attribute_select: { associations: :shipment }, ransackable_attributes: { except: [:payment_method_id, :bill_address_id, :ship_address_id] }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
     delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
 
     alias_method :completed?, :complete?
-
-    attr_accessor :shipment_method_id
 
     def complete!
       ActiveRecord::Base.transaction do
@@ -50,7 +49,7 @@ module Comable
           order_items.each(&:complete)
           save!
 
-          shipment.next_state!
+          shipment.next_state! if shipment
 
           touch(:completed_at)
         end

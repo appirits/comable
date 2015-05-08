@@ -89,17 +89,6 @@ describe Comable::Checkout do
     context "when state is 'shipment'" do
       before { subject.state = 'shipment' }
 
-      before do
-        allow(subject).to receive(:build_pending_shipment)
-
-        # Override `arity` method for the stubbed `build_pending_shipment` method.
-        # refs: https://github.com/rspec/rspec-expectations/issues/583
-        method = double('Method')
-        allow(subject).to receive(:method).and_call_original
-        allow(subject).to receive(:method).with(:build_pending_shipment).and_return(method)
-        allow(method).to receive(:arity).and_return(0)
-      end
-
       it "state change to 'confirm'" do
         expect { subject.next_state }.to change { subject.state }.to eq('confirm')
       end

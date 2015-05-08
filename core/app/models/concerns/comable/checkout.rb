@@ -37,7 +37,6 @@ module Comable
         end
 
         before_transition to: :complete, do: :complete!
-        before_transition from: :shipment, do: :build_pending_shipment
         after_transition to: :canceled, do: :restock!
         after_transition to: :resumed, do: :unstock!
       end
@@ -59,7 +58,7 @@ module Comable
       end
 
       with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
-        context.validates :shipment_method, presence: true
+        context.validates :shipment, presence: true
       end
 
       with_options if: -> { stated?(:complete) } do |context|
@@ -107,10 +106,6 @@ module Comable
       # TODO: Implement shipments
       # shipments.exists?
       false
-    end
-
-    def build_pending_shipment
-      build_shipment(shipment_method_id: shipment_method_id)
     end
   end
 end

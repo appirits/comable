@@ -58,7 +58,7 @@ describe Comable::Order do
           expect { stock.reload }.to change { stock.quantity }.from(order_item.quantity).to(0)
         end
 
-        context 'with shipment method' do
+        context 'with shipment' do
           subject(:order) { FactoryGirl.build(:order, :for_shipment, shipment: shipment) }
 
           let(:shipment) { FactoryGirl.build(:shipment) }
