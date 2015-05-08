@@ -14,14 +14,10 @@ module Comable
     delegate :image_url, to: :product
     delegate :guest_token, to: :order
     delegate :completed?, to: :order, allow_nil: true
-    delegate :completing?, to: :order, allow_nil: true
 
-    with_options if: -> { !completed? || completing? } do |incomplete|
-      incomplete.before_validation :copy_attributes
-    end
+    before_validation :copy_attributes, unless: :completed?
 
     def complete
-      copy_attributes
       unstock
     end
 

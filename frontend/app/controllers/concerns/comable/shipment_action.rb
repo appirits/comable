@@ -10,7 +10,7 @@ module Comable
 
     def order_params_for_shipment
       params.fetch(:order, {}).permit(
-        :shipment_method_id
+        shipment_attributes: [:shipment_method_id]
       )
     end
   end

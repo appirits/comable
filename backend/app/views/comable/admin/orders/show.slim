@@ -149,11 +149,11 @@
             dd
               = @order.bill_address.full_name
 
-            - if @order.shipment_method
+            - if @order.shipment
               dt
                 i.fa.fa-truck.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:shipment_method)}"
               dd
-                = @order.shipment_method.name
+                = @order.shipment.name
 
             - if @order.payment_method
               dt

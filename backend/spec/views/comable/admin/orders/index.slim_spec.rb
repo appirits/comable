@@ -1,10 +1,9 @@
 describe 'comable/admin/orders/index' do
-  let!(:orders) { FactoryGirl.create_list(:order, 2, :completed) }
-
+  let(:orders) { FactoryGirl.create_list(:order, 2, :completed) }
   let(:q) { Comable::Order.ransack }
 
   before { assign(:q, q) }
-  before { assign(:orders, q.result.page(1)) }
+  before { assign(:orders, q.result.where(id: orders).page(1)) }
 
   it 'renders a list of orders' do
     render

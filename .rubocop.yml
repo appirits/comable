@@ -25,6 +25,7 @@ HashSyntax:
   Exclude:
     - tasks/*
     - core/app/models/concerns/comable/checkout.rb
+    - core/app/models/comable/shipment.rb
 
 # C: Method has too many lines.
 MethodLength:

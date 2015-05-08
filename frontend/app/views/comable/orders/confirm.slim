@@ -22,12 +22,12 @@
             = @order.class.human_attribute_name(:payment_method)
           = @order.payment_method.name
 
-    - if @order.shipment_method
+    - if @order.shipment
       .row
-        .col-sm-12.comable-shipment_method
+        .col-sm-12.comable-shipment
           h2
             = @order.class.human_attribute_name(:shipment_method)
-          = @order.shipment_method.name
+          = @order.shipment.name
 
     .row
       .col-sm-12.comable-order_items

@@ -14,7 +14,7 @@ feature 'Checkout' do
   context "when order state was 'cart'" do
     background { order.update_attributes(state: 'cart', email: nil) }
 
-    scenario 'Sign in while checkout flow' do
+    scenario 'Sign in via checkout flow' do
       visit comable.cart_path
 
       click_button Comable.t('checkout')

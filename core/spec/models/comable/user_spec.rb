@@ -122,6 +122,7 @@ describe Comable::User do
     end
 
     it '商品を購入後はカートが空になること' do
+      current_order.state = 'complete'
       current_order.complete
       expect(subject.cart_items).to be_empty
     end
@@ -149,8 +150,7 @@ describe Comable::User do
       before { stock.update_attributes(quantity: 0) }
 
       it '商品を購入できないこと' do
-        current_order.complete
-        expect(current_order.errors.full_messages.join).to include(Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku))
+        expect { current_order.complete! }.to raise_error(ActiveRecord::RecordInvalid, /#{stock.name_with_sku}/)
       end
     end
   end

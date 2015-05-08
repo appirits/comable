@@ -5,6 +5,7 @@ describe Comable::Order do
 
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
+  it { is_expected.to have_one(:shipment).class_name(Comable::Shipment.name).dependent(:destroy).inverse_of(:order) }
 
   describe 'validations' do
     context 'when user is registered' do
@@ -30,7 +31,7 @@ describe Comable::Order do
 
         it 'has errors' do
           stock.update_attributes(quantity: 0)
-          order.complete
+          expect { order.complete! }.to raise_error(ActiveRecord::RecordInvalid, /#{stock.name_with_sku}/)
           expect(order.errors['order_items.quantity'].any?).to be
         end
       end
@@ -57,13 +58,17 @@ describe Comable::Order do
           expect { stock.reload }.to change { stock.quantity }.from(order_item.quantity).to(0)
         end
 
-        context 'with shipment method' do
-          subject(:order) { FactoryGirl.build(:order, shipment_method: shipment_method) }
+        context 'with shipment' do
+          subject(:order) { FactoryGirl.build(:order, :for_shipment, shipment: shipment) }
 
-          let(:shipment_method) { FactoryGirl.create(:shipment_method) }
+          let(:shipment) { FactoryGirl.build(:shipment) }
 
-          its(:shipment_fee) { is_expected.to eq(shipment_method.fee) }
-          its(:total_price) { should eq(item_total_price + shipment_method.fee) }
+          its(:shipment_fee) { is_expected.to eq(shipment.fee) }
+          its(:total_price) { is_expected.to eq(item_total_price + shipment.fee) }
+
+          it 'shipment has been ready' do
+            expect(order.shipment.state).to eq('ready')
+          end
         end
 
         context 'with user' do

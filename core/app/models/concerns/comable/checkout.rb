@@ -36,10 +36,7 @@ module Comable
           transition to: :resumed, from: :canceled
         end
 
-        before_transition to: :complete do |order, _transition|
-          order.complete
-        end
-
+        before_transition to: :complete, do: :complete!
         after_transition to: :canceled, do: :restock!
         after_transition to: :resumed, do: :unstock!
       end
@@ -61,7 +58,7 @@ module Comable
       end
 
       with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
-        context.validates :shipment_method, presence: true
+        context.validates :shipment, presence: true
       end
 
       with_options if: -> { stated?(:complete) } do |context|
@@ -92,11 +89,11 @@ module Comable
     end
 
     def payment_required?
-      Comable::PaymentMethod.exists?
+      Comable::PaymentMethod.exists? && payment_method.nil?
     end
 
     def shipment_required?
-      Comable::ShipmentMethod.activated.exists?
+      Comable::ShipmentMethod.activated.exists? && shipment.nil?
     end
 
     def allow_cancel?

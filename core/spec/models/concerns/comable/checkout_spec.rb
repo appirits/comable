@@ -5,12 +5,13 @@ class DummyOrder
   attr_accessor :state
   attr_accessor :bill_address
   attr_accessor :ship_address
+  attr_accessor :shipment
+  attr_accessor :payment_method
 
   def initialize(_ = {})
   end
 
-  def complete
-    true
+  def complete!
   end
 end
 
@@ -98,12 +99,23 @@ describe Comable::Checkout do
     context "when state is 'confirm'" do
       before { subject.state = 'confirm' }
 
+      before do
+        allow(subject).to receive(:complete!).and_return(true)
+
+        # Override `arity` method for the stubbed `complete!` method.
+        # refs: https://github.com/rspec/rspec-expectations/issues/583
+        method = double('Method')
+        allow(subject).to receive(:method).and_call_original
+        allow(subject).to receive(:method).with(:complete!).and_return(method)
+        allow(method).to receive(:arity).and_return(0)
+      end
+
       it "state change to 'complete'" do
         expect { subject.next_state }.to change { subject.state }.to eq('complete')
       end
 
-      it 'call the complete method' do
-        expect(subject).to receive(:complete).exactly(1).times.and_return(true)
+      it 'call the #complete! method' do
+        expect(subject).to receive(:complete!).exactly(1).times.and_return(true)
         subject.next_state
       end
     end

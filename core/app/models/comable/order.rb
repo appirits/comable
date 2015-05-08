@@ -6,18 +6,20 @@ module Comable
 
     belongs_to :user, class_name: Comable::User.name, autosave: false
     belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
-    belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     has_many :order_items, dependent: :destroy, class_name: Comable::OrderItem.name, inverse_of: :order
+    has_one :shipment, dependent: :destroy, class_name: Comable::Shipment.name, inverse_of: :order
 
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
     accepts_nested_attributes_for :order_items
+    accepts_nested_attributes_for :shipment
 
     define_model_callbacks :complete
     before_validation :generate_guest_token, on: :create
     before_validation :clone_addresses_from_user, on: :create
+    before_complete :generate_code
     after_complete :clone_addresses_to_user
 
     scope :complete, -> { where.not(completed_at: nil) }
@@ -31,40 +33,40 @@ module Comable
     validates :user_id, uniqueness: { scope: :completed_at }, if: :user
     validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
-    ransack_options ransackable_attributes: { except: [:shipment_method_id, :payment_method_id, :bill_address_id, :ship_address_id] }
+    ransack_options attribute_select: { associations: :shipment }, ransackable_attributes: { except: [:payment_method_id, :bill_address_id, :ship_address_id] }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
+    delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
 
-    def complete
+    alias_method :completed?, :complete?
+
+    def complete!
       ActiveRecord::Base.transaction do
         run_callbacks :complete do
-          save_to_complete.tap { |completed| self.completed_at = nil unless completed }
+          self.shipment_fee = current_shipment_fee
+          self.total_price = current_total_price
+          order_items.each(&:complete)
+          save!
+
+          shipment.next_state! if shipment
+
+          touch(:completed_at)
         end
       end
     end
 
-    def completed?
-      !completed_at.nil?
-    end
-
-    # TODO: switch to state_machine
-    def completing?
-      completed_at && completed_at_was.nil?
-    end
+    alias_method :complete, :complete!
+    deprecate :complete, deprecator: Comable::Deprecator.instance
 
     def restock!
-      ActiveRecord::Base.transaction do
-        order_items.each(&:restock)
-        save!
-      end
+      order_items.each(&:restock)
+      save!
     end
 
     def unstock!
-      ActiveRecord::Base.transaction do
-        order_items.each(&:unstock)
-        save!
-      end
+      order_items.each(&:unstock)
+      save!
     end
 
     def stocked_items
@@ -83,7 +85,7 @@ module Comable
 
     # 時価送料を取得
     def current_shipment_fee
-      shipment_method.try(:fee) || 0
+      shipment.try(:fee) || 0
     end
 
     # 時価合計を取得
@@ -91,18 +93,17 @@ module Comable
       current_item_total_price + current_shipment_fee
     end
 
-    private
+    # Inherit from other Order
+    def inherit!(order)
+      self.bill_address ||= order.bill_address
+      self.ship_address ||= order.ship_address
+      self.shipment ||= order.shipment
+      self.payment_method ||= order.payment_method
 
-    def save_to_complete
-      self.completed_at = Time.now
-      self.shipment_fee = current_shipment_fee
-      self.total_price = current_total_price
-      generate_code
-
-      order_items.each(&:complete)
-
-      save
+      stated?(order.state) ? save! : next_state!
     end
+
+    private
 
     def generate_code
       self.code = loop do
