@@ -35,131 +35,160 @@
           small< data-toggle="tooltip" data-placement="right" title="#{l @order.completed_at}"
             = time_ago_in_words @order.completed_at
 
-  .comable-page-body.row
-    section.col-sm-8
-      .panel.panel-default
-        table.table
-          thead
-            tr
-              th colspan="2"
-                = @order.order_items.klass.human_attribute_name(:product)
-              th
-                = @order.order_items.klass.human_attribute_name(:price)
-              th
-                = @order.order_items.klass.human_attribute_name(:quantity)
-              th
-                = @order.order_items.klass.human_attribute_name(:subtotal_price)
-          tbody
-            - @order.order_items.each do |order_item|
+  .comable-page-body
+    section.row
+      - shipment = @order.shipment
+      - if shipment
+        .col-sm-2
+          .comable-flow-label
+            .comable-flow-label-container
+              label
+                | #{@order.class.human_attribute_name(:shipment_state)}:
+              p
+                = shipment.human_state_name
+        .col-sm-10
+          ul.comable-flow
+            - shipment.class.state_machine.states.each do |state|
+              li
+                - next if state.name.to_sym.in?([:canceled, :resumed]) && !shipment.state.to_sym.in?([:canceled, :resumed])
+                .comable-badge class="#{shipment_badge_class_for(shipment, state: state.name)}" data-toggle="tooltip" data-placement="top" title="#{state.human_name}"
+                  - case state.name.to_sym
+                  - when :pending
+                    i.fa.fa-circle
+                  - when :ready
+                    i.fa.fa-check-circle
+                  - when :complete
+                    i.fa.fa-truck
+                  - when :canceled
+                    i.fa.fa-close
+                  - when :resumed
+                    i.fa.fa-refresh
+
+    section.row
+      .col-sm-8
+        .panel.panel-default
+          table.table
+            thead
               tr
-                td width="180"
-                  = image_tag order_item.image_url, width: '100%'
+                th colspan="2"
+                  = @order.order_items.klass.human_attribute_name(:product)
+                th
+                  = @order.order_items.klass.human_attribute_name(:price)
+                th
+                  = @order.order_items.klass.human_attribute_name(:quantity)
+                th
+                  = @order.order_items.klass.human_attribute_name(:subtotal_price)
+            tbody
+              - @order.order_items.each do |order_item|
+                tr
+                  td width="180"
+                    = image_tag order_item.image_url, width: '100%'
+                  td
+                    = order_item.name_with_sku
+                    .text-muted
+                      small = order_item.code
+                  td
+                    = number_to_currency order_item.price
+                  td
+                    = number_with_delimiter order_item.quantity
+                  td
+                    = number_to_currency order_item.subtotal_price
+              tr
+                th.text-right colspan="4"
+                  = @order.class.human_attribute_name(:item_total_price)
                 td
-                  = order_item.name_with_sku
-                  .text-muted
-                    small = order_item.code
+                  = number_to_currency @order.item_total_price
+              tr
+                th.text-right colspan="4"
+                  = @order.class.human_attribute_name(:shipment_fee)
                 td
-                  = number_to_currency order_item.price
+                  = number_to_currency @order.shipment_fee
+              tr
+                th.text-right colspan="4"
+                  = @order.class.human_attribute_name(:total_price)
                 td
-                  = number_with_delimiter order_item.quantity
-                td
-                  = number_to_currency order_item.subtotal_price
-            tr
-              th.text-right colspan="4"
-                = @order.class.human_attribute_name(:item_total_price)
-              td
-                = number_to_currency @order.item_total_price
-            tr
-              th.text-right colspan="4"
-                = @order.class.human_attribute_name(:shipment_fee)
-              td
-                = number_to_currency @order.shipment_fee
-            tr
-              th.text-right colspan="4"
+                  = number_to_currency @order.total_price
+
+      nav.col-sm-4
+        .panel.panel-default
+          .panel-body
+            h3.text-center
+              small>
                 = @order.class.human_attribute_name(:total_price)
-              td
-                = number_to_currency @order.total_price
+              = number_to_currency @order.total_price
 
-    nav.col-sm-4
-      .panel.panel-default
-        .panel-body
-          h3.text-center
-            small>
-              = @order.class.human_attribute_name(:total_price)
-            = number_to_currency @order.total_price
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.bill')
+          .panel-body
+            .pull-right
+              .comable-avatar
+                = gravatar_tag @order.email, class: 'thumbnail'
 
-      .panel.panel-default
-        .panel-heading
-          .panel-title
-            = Comable.t('admin.bill')
-        .panel-body
-          .pull-right
-            .comable-avatar
-              = gravatar_tag @order.email, class: 'thumbnail'
-
-          dl.dl-horizontal.comable-address-with-icon
-            dt
-              i.fa.fa-map-marker.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:bill_address)}"
-            dd
-              ul.list-unstyled
-                li = @order.bill_address.zip_code
-                li = @order.bill_address.state_name
-                li = @order.bill_address.city
-                li = @order.bill_address.detail
-
-            - if @order.bill_address.phone_number.present?
+            dl.dl-horizontal.comable-address-with-icon
               dt
-                i.fa.fa-phone.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.bill_address.class.human_attribute_name(:phone_number)}"
+                i.fa.fa-map-marker.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:bill_address)}"
               dd
-                = @order.bill_address.phone_number
+                ul.list-unstyled
+                  li = @order.bill_address.zip_code
+                  li = @order.bill_address.state_name
+                  li = @order.bill_address.city
+                  li = @order.bill_address.detail
 
-            dt
-              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
-            dd
-              = link_to_if @order.user, @order.bill_address.full_name, [comable, :admin, @order.user]
+              - if @order.bill_address.phone_number.present?
+                dt
+                  i.fa.fa-phone.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.bill_address.class.human_attribute_name(:phone_number)}"
+                dd
+                  = @order.bill_address.phone_number
 
-            dt
-              i.fa.fa-envelope.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:email)}"
-            dd
-              = mail_to @order.email
-
-      .panel.panel-default
-        .panel-heading
-          .panel-title
-            = Comable.t('admin.ship')
-        .panel-body
-          dl.dl-horizontal.comable-address-with-icon
-            dt
-              i.fa.fa-map-marker.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:ship_address)}"
-            dd
-              ul.list-unstyled
-                li = @order.ship_address.zip_code
-                li = @order.ship_address.state_name
-                li = @order.ship_address.city
-                li = @order.ship_address.detail
-
-            - if @order.ship_address.phone_number.present?
               dt
-                i.fa.fa-phone.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.ship_address.class.human_attribute_name(:phone_number)}"
+                i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
               dd
-                = @order.ship_address.phone_number
+                = link_to_if @order.user, @order.bill_address.full_name, [comable, :admin, @order.user]
 
-            dt
-              i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
-            dd
-              = @order.bill_address.full_name
-
-            - if @order.shipment
               dt
-                i.fa.fa-truck.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:shipment_method)}"
+                i.fa.fa-envelope.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:email)}"
               dd
-                = @order.shipment.name
+                = mail_to @order.email
 
-            - if @order.payment_method
+        .panel.panel-default
+          .panel-heading
+            .panel-title
+              = Comable.t('admin.ship')
+          .panel-body
+            dl.dl-horizontal.comable-address-with-icon
               dt
-                i.fa.fa-money.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:payment_method)}"
+                i.fa.fa-map-marker.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:ship_address)}"
               dd
-                = @order.payment_method.name
+                ul.list-unstyled
+                  li = @order.ship_address.zip_code
+                  li = @order.ship_address.state_name
+                  li = @order.ship_address.city
+                  li = @order.ship_address.detail
 
-        .panel-footer
-          = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address
+              - if @order.ship_address.phone_number.present?
+                dt
+                  i.fa.fa-phone.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.ship_address.class.human_attribute_name(:phone_number)}"
+                dd
+                  = @order.ship_address.phone_number
+
+              dt
+                i.fa.fa-user.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:user)}"
+              dd
+                = @order.bill_address.full_name
+
+              - if @order.shipment
+                dt
+                  i.fa.fa-truck.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:shipment_method)}"
+                dd
+                  = @order.shipment.name
+
+              - if @order.payment_method
+                dt
+                  i.fa.fa-money.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:payment_method)}"
+                dd
+                  = @order.payment_method.name
+
+          .panel-footer
+            = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address

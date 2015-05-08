@@ -44,6 +44,18 @@ module Comable
       end
     end
 
+    class << self
+      def state_names
+        state_machine.states.keys
+      end
+    end
+
+    def stated?(target_state)
+      target_state_index = self.class.state_names.index(target_state.to_sym)
+      current_state_index = self.class.state_names.index(state_name)
+      target_state_index < current_state_index
+    end
+
     private
 
     def payment_completed?
