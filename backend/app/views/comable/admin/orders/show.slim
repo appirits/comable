@@ -166,11 +166,11 @@
                 dd
                   = @order.shipment.name
 
-              - if @order.payment_method
+              - if @order.payment
                 dt
                   i.fa.fa-money.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:payment_method)}"
                 dd
-                  = @order.payment_method.name
+                  = @order.payment.name
 
           .panel-footer
             = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address

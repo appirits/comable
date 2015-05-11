@@ -5,7 +5,6 @@ module Comable
     include Comable::Order::Morrisable
 
     belongs_to :user, class_name: Comable::User.name, autosave: false
-    belongs_to :payment_method, class_name: Comable::PaymentMethod.name, autosave: false
     belongs_to :bill_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     belongs_to :ship_address, class_name: Comable::Address.name, autosave: true, dependent: :destroy
     has_many :order_items, dependent: :destroy, class_name: Comable::OrderItem.name, inverse_of: :order
@@ -35,7 +34,7 @@ module Comable
     validates :user_id, uniqueness: { scope: :completed_at }, if: :user
     validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
-    ransack_options attribute_select: { associations: :shipment }, ransackable_attributes: { except: [:payment_method_id, :bill_address_id, :ship_address_id] }
+    ransack_options attribute_select: { associations: [:payment, :shipment] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
@@ -92,7 +91,7 @@ module Comable
 
     # Get the current payment fee
     def current_payment_fee
-      payment_method.try(:fee) || 0
+      payment.try(:fee) || 0
     end
 
     # 時価合計を取得
@@ -104,8 +103,8 @@ module Comable
     def inherit!(order)
       self.bill_address ||= order.bill_address
       self.ship_address ||= order.ship_address
+      self.payment ||= order.payment
       self.shipment ||= order.shipment
-      self.payment_method ||= order.payment_method
 
       stated?(order.state) ? save! : next_state!
     end
@@ -141,6 +140,7 @@ module Comable
 
     def current_attributes
       {
+        payment_fee: current_payment_fee,
         shipment_fee: current_shipment_fee,
         total_price: current_total_price
       }

@@ -6,7 +6,7 @@ class DummyOrder
   attr_accessor :bill_address
   attr_accessor :ship_address
   attr_accessor :shipment
-  attr_accessor :payment_method
+  attr_accessor :payment
 
   def initialize(_ = {})
   end

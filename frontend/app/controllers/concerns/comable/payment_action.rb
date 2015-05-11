@@ -10,7 +10,7 @@ module Comable
 
     def order_params_for_payment
       params.fetch(:order, {}).permit(
-        :payment_method_id
+        payment_attributes: [:payment_method_id]
       )
     end
   end

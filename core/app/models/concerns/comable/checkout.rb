@@ -54,7 +54,7 @@ module Comable
       end
 
       with_options if: -> { stated?(:payment) && payment_required? } do |context|
-        context.validates :payment_method, presence: true
+        context.validates :payment, presence: true
       end
 
       with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
@@ -90,7 +90,7 @@ module Comable
     end
 
     def payment_required?
-      Comable::PaymentMethod.exists? && payment_method.nil?
+      Comable::PaymentMethod.exists? && payment.nil?
     end
 
     def shipment_required?

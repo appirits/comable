@@ -7,7 +7,6 @@ class CreateComableOrders < ActiveRecord::Migration
       t.string :email
       t.integer :payment_fee, null: false, default: 0
       t.integer :shipment_fee, null: false, default: 0
-      t.references :payment_method
       t.integer :total_price
       t.references :bill_address
       t.references :ship_address

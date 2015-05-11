@@ -183,12 +183,12 @@ describe Comable::OrdersController do
       let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
 
       before { current_order.update_attributes(order_attributes) }
-      before { put :update, state: :payment, order: { payment_method_id: payment_method.id } }
+      before { put :update, state: :payment, order: { payment_attributes: { payment_method_id: payment_method.id } } }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :confirm)) }
 
       it 'has assigned @order with payment method' do
-        expect(assigns(:order).payment_method).to eq(payment_method)
+        expect(assigns(:order).payment.payment_method).to eq(payment_method)
       end
     end
 
