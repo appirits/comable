@@ -7,6 +7,7 @@ module Comable
         comma do
           __association__ order: :code
           __association__ order: :email
+          __association__ order: :payment_fee
           __association__ order: :shipment_fee
           __association__ order: :total_price
           __association__ order: { bill_address: :family_name }

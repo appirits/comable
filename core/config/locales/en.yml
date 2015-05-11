@@ -230,6 +230,7 @@ en:
         ship_address: 'Shipping address'
         payment_method: 'Payment method'
         shipment_method: 'Shipment method'
+        payment_fee: 'Payment fee'
         shipment_fee: 'Shipment fee'
         item_total_price: 'Item total'
         total_price: 'Total'

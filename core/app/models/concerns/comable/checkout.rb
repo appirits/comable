@@ -63,6 +63,7 @@ module Comable
 
       with_options if: -> { stated?(:complete) } do |context|
         context.validates :code, presence: true
+        context.validates :payment_fee, presence: true
         context.validates :shipment_fee, presence: true
         context.validates :total_price, presence: true
       end

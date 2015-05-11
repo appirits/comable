@@ -5,6 +5,7 @@ class CreateComableOrders < ActiveRecord::Migration
       t.string :guest_token
       t.string :code
       t.string :email
+      t.integer :payment_fee, null: false, default: 0
       t.integer :shipment_fee, null: false, default: 0
       t.references :payment_method
       t.integer :total_price

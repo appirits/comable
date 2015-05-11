@@ -230,6 +230,7 @@ ja:
         ship_address: お届け先
         payment_method: お支払い方法
         shipment_method: 発送方法
+        payment_fee: '支払い手数料'
         shipment_fee: 送料
         item_total_price: 商品合計
         total_price: 合計

@@ -77,6 +77,11 @@
                   = number_to_currency @order.item_total_price
               tr
                 th.text-right colspan="4"
+                  = @order.class.human_attribute_name(:payment_fee)
+                td
+                  = number_to_currency @order.pyament_fee
+              tr
+                th.text-right colspan="4"
                   = @order.class.human_attribute_name(:shipment_fee)
                 td
                   = number_to_currency @order.shipment_fee

@@ -68,6 +68,11 @@
             = number_to_currency @order.current_item_total_price
         tr
           th.text-right
+            = @order.class.human_attribute_name(:payment_fee)
+          td
+            = number_to_currency @order.current_payment_fee
+        tr
+          th.text-right
             = @order.class.human_attribute_name(:shipment_fee)
           td
             = number_to_currency @order.current_shipment_fee
