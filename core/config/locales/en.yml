@@ -295,6 +295,7 @@ en:
       comable/payment_method:
         name: 'Name'
         payment_provider: 'Oayment provider'
+        fee: 'Fee'
         enable_price: 'Enable price range'
       comable/order/order_items:
         <<: *comable_order_item

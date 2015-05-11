@@ -295,6 +295,7 @@ ja:
       comable/payment_method:
         name: 決済方法名
         payment_provider: 決済プロバイダ
+        fee: '手数料'
         enable_price: 利用可能な価格範囲
       comable/order/order_items:
         <<: *comable_order_item

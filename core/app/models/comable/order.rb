@@ -44,8 +44,8 @@ module Comable
     def complete!
       ActiveRecord::Base.transaction do
         run_callbacks :complete do
-          self.shipment_fee = current_shipment_fee
-          self.total_price = current_total_price
+          self.attributes = current_attributes
+
           order_items.each(&:complete)
           save!
 
@@ -88,9 +88,14 @@ module Comable
       shipment.try(:fee) || 0
     end
 
+    # Get the current payment fee
+    def current_payment_fee
+      payment_method.try(:fee) || 0
+    end
+
     # 時価合計を取得
     def current_total_price
-      current_item_total_price + current_shipment_fee
+      current_item_total_price + current_payment_fee + current_shipment_fee
     end
 
     # Inherit from other Order
@@ -130,6 +135,13 @@ module Comable
       return unless user
       user.update_bill_address_by bill_address
       user.update_ship_address_by ship_address
+    end
+
+    def current_attributes
+      {
+        shipment_fee: current_shipment_fee,
+        total_price: current_total_price
+      }
     end
   end
 end

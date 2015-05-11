@@ -49,6 +49,7 @@ module Comable
           :name,
           :payment_provider_type,
           :payment_provider_kind,
+          :fee,
           :enable_price_from,
           :enable_price_to
         )
