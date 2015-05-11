@@ -79,7 +79,7 @@
                 th.text-right colspan="4"
                   = @order.class.human_attribute_name(:payment_fee)
                 td
-                  = number_to_currency @order.pyament_fee
+                  = number_to_currency @order.payment_fee
               tr
                 th.text-right colspan="4"
                   = @order.class.human_attribute_name(:shipment_fee)
