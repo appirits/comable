@@ -114,6 +114,41 @@ describe Comable::Admin::OrdersController do
     end
   end
 
+  describe 'POST cancel_shipment' do
+    let(:order) { FactoryGirl.create(:order, :completed) }
+
+    before { order.payment.next_state! }
+
+    it 'cancel the shipment of the requested order' do
+      post :cancel_payment, id: order.to_param
+      order.reload
+      expect(order.payment).to be_canceled
+    end
+
+    it 'redirects back' do
+      post :cancel_payment, id: order.to_param
+      expect(response).to redirect_to(:back)
+    end
+  end
+
+  describe 'POST resume_shipment' do
+    let(:order) { FactoryGirl.create(:order, :completed) }
+
+    before { order.payment.next_state! }
+    before { order.payment.cancel! }
+
+    it 'resume the payment of the requested order' do
+      post :resume_payment, id: order.to_param
+      order.reload
+      expect(order.payment).to be_resumed
+    end
+
+    it 'redirects back' do
+      post :resume_payment, id: order.to_param
+      expect(response).to redirect_to(:back)
+    end
+  end
+
   describe 'POST ship' do
     let(:order) { FactoryGirl.create(:order, :completed) }
 

@@ -38,6 +38,7 @@ module Comable
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
+    delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
     delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
 
     alias_method :completed?, :complete?
@@ -50,6 +51,7 @@ module Comable
           order_items.each(&:complete)
           save!
 
+          payment.next_state! if payment
           shipment.next_state! if shipment
 
           touch(:completed_at)

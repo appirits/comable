@@ -192,6 +192,14 @@ ja:
           events:
             cancel: 'キャンセル'
             resume: '再開'
+      comable/payment:
+        state:
+          states:
+            pending: '準備中'
+            ready: 'オーソリ完了'
+            complete: '決済完了'
+            canceled: 'キャンセル'
+            resumed: '再開'
       comable/shipment:
         state:
           states:
@@ -243,6 +251,7 @@ ja:
         order_items: 注文明細
         user_id: ユーザーID
         guest_token: ゲストトークン
+        payment_state: '決済ステータス'
         shipment_state: '配送ステータス'
       comable/order_item: &comable_order_item
         quantity: *quantity

@@ -12,6 +12,8 @@ module Comable
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
     delegate :name, to: :payment_method
+    delegate :payment_provider, to: :payment_method
+    delegate :authorize!, :complete!, :cancel!, :resume!, to: :payment_provider, prefix: :provider
 
     ransack_options ransackable_attributes: { except: [:order_id, :payment_method_id] }
 
@@ -29,11 +31,8 @@ module Comable
       state :canceled
       state :resumed
 
-      event :ready do
+      event :next_state do
         transition :pending => :ready
-      end
-
-      event :pay do
         transition :ready => :complete
       end
 
@@ -44,6 +43,12 @@ module Comable
       event :resume do
         transition :canceled => :resumed
       end
+
+      after_transition to: :ready, do: :next_state!
+      before_transition to: :ready, do: -> (s) { s.provider_authorize! }
+      before_transition to: :complete, do: -> (s) { s.provider_complete! }
+      before_transition to: :canceled, do: -> (s) { s.provider_cancel! }
+      before_transition to: :canceled, do: -> (s) { s.provider_resume! }
     end
 
     class << self

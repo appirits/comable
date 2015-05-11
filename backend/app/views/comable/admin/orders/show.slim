@@ -38,6 +38,8 @@
             = time_ago_in_words @order.completed_at
 
   .comable-page-body
+    - if @order.payment
+      = render 'payment_state', payment: @order.payment
     - if @order.can_ship?
       = render 'shipment_state', shipment: @order.shipment
 

@@ -57,6 +57,8 @@
             th
               = sort_link [:comable, @q], :state
             th
+              = @orders.klass.human_attribute_name(:payment_state)
+            th
               = @orders.klass.human_attribute_name(:shipment_state)
             th
               = @orders.klass.human_attribute_name(:bill_full_name)
@@ -73,6 +75,8 @@
                   = link_to order.code, comable.admin_order_path(order)
                 td
                   = order.human_state_name
+                td
+                  = order.payment_human_state_name
                 td
                   = order.shipment_human_state_name
                 td

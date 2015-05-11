@@ -1,0 +1,40 @@
+section.row
+  .col-sm-2
+    .comable-flow-label
+      .comable-flow-label-container
+        label
+          | #{payment.order.class.human_attribute_name(:payment_state)}:
+        p
+          = payment.human_state_name
+
+  .col-sm-10
+    ul.comable-flow
+      li
+        = content_tag :div, options_of_payment_badge_for(payment, state: :pending) do
+          i.fa.fa-circle
+
+      li
+        = content_tag :div, options_of_payment_badge_for(payment, state: :ready) do
+          i.fa.fa-check-circle
+
+      li
+        = content_tag :div, options_of_payment_badge_for(payment, state: :complete) do
+          i.fa.fa-money
+
+      - if payment.state?(:resumed)
+        li
+          = content_tag :div, options_of_payment_badge_for(payment, state: :resumed) do
+            i.fa.fa-refresh
+
+      - if payment.state?(:complete) || payment.state?(:resumed)
+        li
+          = link_to comable.cancel_payment_admin_order_path(payment.order), options_of_payment_badge_for(payment, state: :canceled).merge(method: :post) do
+            i.fa.fa-close
+
+      - if payment.state?(:canceled)
+        li
+          = content_tag :div, options_of_payment_badge_for(payment, state: :canceled) do
+            i.fa.fa-close
+        li
+          = link_to comable.resume_payment_admin_order_path(payment.order), options_of_payment_badge_for(payment, state: :resumed).merge(method: :post) do
+            i.fa.fa-refresh
