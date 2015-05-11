@@ -113,4 +113,54 @@ describe Comable::Admin::OrdersController do
       end
     end
   end
+
+  describe 'POST ship' do
+    let(:order) { FactoryGirl.create(:order, :completed) }
+
+    it 'ship the requested order' do
+      post :ship, id: order.to_param
+      order.reload
+      expect(order.shipment).to be_complete
+    end
+
+    it 'redirects back' do
+      post :ship, id: order.to_param
+      expect(response).to redirect_to(:back)
+    end
+  end
+
+  describe 'POST cancel_shipment' do
+    let(:order) { FactoryGirl.create(:order, :completed) }
+
+    before { order.shipment.ship! }
+
+    it 'cancel the shipment of the requested order' do
+      post :cancel_shipment, id: order.to_param
+      order.reload
+      expect(order.shipment).to be_canceled
+    end
+
+    it 'redirects back' do
+      post :cancel_shipment, id: order.to_param
+      expect(response).to redirect_to(:back)
+    end
+  end
+
+  describe 'POST resume_shipment' do
+    let(:order) { FactoryGirl.create(:order, :completed) }
+
+    before { order.shipment.ship! }
+    before { order.shipment.cancel! }
+
+    it 'resume the shipment of the requested order' do
+      post :resume_shipment, id: order.to_param
+      order.reload
+      expect(order.shipment).to be_resumed
+    end
+
+    it 'redirects back' do
+      post :resume_shipment, id: order.to_param
+      expect(response).to redirect_to(:back)
+    end
+  end
 end

@@ -1,0 +1,96 @@
+// Variables
+$comable-flow-border: #eee;
+$comable-badge-border: $comable-flow-border;
+$comable-badge-size: 50px;
+$comable-badge-default-color: $gray;
+$comable-badge-default-bg: #fff;
+$comable-badge-disable-color: #fff;
+$comable-badge-disable-bg: #ddd;
+$comable-badge-primary-color: $btn-primary-color;
+$comable-badge-primary-bg: $btn-primary-bg;
+$comable-badge-warning-color: $btn-warning-color;
+$comable-badge-warning-bg: $btn-warning-bg;
+$comable-badge-danger-color: $btn-danger-color;
+$comable-badge-danger-bg: $btn-danger-bg;
+
+// Rules
+.comable-flow {
+  list-style: none;
+  margin-bottom: 20px;
+  padding: 20px 0;
+  position: relative;
+
+  &:before {
+    content: ' ';
+    margin-top: -1.5px;
+    height: 3px;
+    background-color: $comable-flow-border;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+  }
+
+  li {
+    @include inline-block;
+    margin-right: $comable-badge-size + 50px;
+    position: relative;
+  }
+}
+
+.comable-badge {
+  @include border-radius(50%);
+  margin-top: -($comable-badge-size / 2);
+  height: $comable-badge-size;
+  width: $comable-badge-size;
+  line-height: $comable-badge-size;
+  font-size: 1.4em;
+  text-align: center;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  z-index: 100;
+  border: 1px solid $comable-badge-border;
+}
+
+.comable-badge-default {
+  background-color: $comable-badge-default-bg;
+  color: $comable-badge-default-color;
+}
+
+.comable-badge-disable {
+  background-color: $comable-badge-disable-bg;
+  color: $comable-badge-disable-color;
+}
+
+.comable-badge-primary {
+  background-color: $comable-badge-primary-bg;
+  color: $comable-badge-primary-color;
+}
+
+.comable-badge-danger {
+  background-color: $comable-badge-danger-bg;
+  color: $comable-badge-danger-color;
+}
+
+.comable-badge-warning {
+  background-color: $comable-badge-warning-bg;
+  color: $comable-badge-warning-color;
+}
+
+.comable-flow-label {
+  display: table;
+  height: $comable-badge-size + 5px;
+  margin: 0 0 0 auto;
+  text-align: right;
+}
+
+.comable-flow-label-container {
+  display: table-cell;
+  vertical-align: middle;
+
+  *:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}

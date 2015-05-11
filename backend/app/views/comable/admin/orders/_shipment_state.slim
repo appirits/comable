@@ -1,0 +1,44 @@
+section.row
+  .col-sm-2
+    .comable-flow-label
+      .comable-flow-label-container
+        label
+          | #{shipment.order.class.human_attribute_name(:shipment_state)}:
+        p
+          = shipment.human_state_name
+
+  .col-sm-10
+    ul.comable-flow
+      li
+        = content_tag :div, options_of_shipment_badge_for(shipment, state: :pending) do
+          i.fa.fa-circle
+
+      li
+        = content_tag :div, options_of_shipment_badge_for(shipment, state: :ready) do
+          i.fa.fa-check-circle
+
+      li
+        - if shipment.state?(:ready)
+          = link_to comable.ship_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :complete).merge(method: :post) do
+            i.fa.fa-truck
+        - else
+          = content_tag :div, options_of_shipment_badge_for(shipment, state: :complete) do
+            i.fa.fa-truck
+
+      - if shipment.state?(:resumed)
+        li
+          = content_tag :div, options_of_shipment_badge_for(shipment, state: :resumed) do
+            i.fa.fa-refresh
+
+      - if shipment.state?(:complete) || shipment.state?(:resumed)
+        li
+          = link_to comable.cancel_shipment_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :canceled).merge(method: :post) do
+            i.fa.fa-close
+
+      - if shipment.state?(:canceled)
+        li
+          = content_tag :div, options_of_shipment_badge_for(shipment, state: :canceled) do
+            i.fa.fa-close
+        li
+          = link_to comable.resume_shipment_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :resumed).merge(method: :post) do
+            i.fa.fa-refresh

@@ -107,5 +107,9 @@ module Comable
       # shipments.exists?
       false
     end
+
+    def can_ship?
+      shipment && (state?(:complete) || state?(:resumed))
+    end
   end
 end

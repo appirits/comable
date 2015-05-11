@@ -192,6 +192,14 @@ en:
           events:
             cancel: 'Cancel'
             resume: 'Resume'
+      comable/shipment:
+        state:
+          states:
+            pending: 'Pending'
+            ready: 'Ready'
+            complete: 'Complete'
+            canceled: 'Canceled'
+            resumed: 'Resumed'
 
     models:
       comable/order: 'Orders'
@@ -234,6 +242,7 @@ en:
         order_items: 'Order items'
         user_id: 'User ID'
         guest_token: 'Guest token'
+        shipment_state: 'Shipment state'
       comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price

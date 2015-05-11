@@ -34,6 +34,27 @@ module Comable
       rescue ActiveRecord::RecordInvalid => e
         redirect_to :back, alert: e.message
       end
+
+      def ship
+        @order.shipment.ship!
+        redirect_to :back, notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to :back, alert: e.message
+      end
+
+      def cancel_shipment
+        @order.shipment.cancel!
+        redirect_to :back, notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to :back, alert: e.message
+      end
+
+      def resume_shipment
+        @order.shipment.resume!
+        redirect_to :back, notice: Comable.t('successful')
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to :back, alert: e.message
+      end
     end
   end
 end
