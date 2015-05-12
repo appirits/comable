@@ -38,7 +38,7 @@ FactoryGirl.define do
       bill_address { build(:address) }
       ship_address { build(:address) }
       shipment { build(:shipment) }
-      payment_method { build(:payment_method) }
+      payment { build(:payment) }
     end
 
     trait :completed do
@@ -46,7 +46,7 @@ FactoryGirl.define do
       bill_address { build(:address) }
       ship_address { build(:address) }
       shipment { build(:shipment, state: :ready) }
-      payment_method { build(:payment_method) }
+      payment { build(:payment) }
 
       sequence(:code) { |n| format('%011d', n.next) }
       completed_at Time.now

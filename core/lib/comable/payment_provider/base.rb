@@ -14,6 +14,22 @@ module Comable
           please_implement_method
         end
 
+        def authorize!
+          true
+        end
+
+        def complete!
+          true
+        end
+
+        def cancel!
+          true
+        end
+
+        def resume!
+          true
+        end
+
         private
 
         def please_implement_method

@@ -40,32 +40,6 @@ module Comable
         after_transition to: :canceled, do: :restock!
         after_transition to: :resumed, do: :unstock!
       end
-
-      with_options if: -> { stated?(:cart) } do |context|
-        context.validates :email, presence: true
-      end
-
-      with_options if: -> { stated?(:orderer) } do |context|
-        context.validates :bill_address, presence: true
-      end
-
-      with_options if: -> { stated?(:delivery) } do |context|
-        context.validates :ship_address, presence: true
-      end
-
-      with_options if: -> { stated?(:payment) && payment_required? } do |context|
-        context.validates :payment_method, presence: true
-      end
-
-      with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
-        context.validates :shipment, presence: true
-      end
-
-      with_options if: -> { stated?(:complete) } do |context|
-        context.validates :code, presence: true
-        context.validates :shipment_fee, presence: true
-        context.validates :total_price, presence: true
-      end
     end
 
     module ClassMethods
@@ -89,7 +63,7 @@ module Comable
     end
 
     def payment_required?
-      Comable::PaymentMethod.exists? && payment_method.nil?
+      Comable::PaymentMethod.exists? && payment.nil?
     end
 
     def shipment_required?

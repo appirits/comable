@@ -192,6 +192,14 @@ ja:
           events:
             cancel: 'キャンセル'
             resume: '再開'
+      comable/payment:
+        state:
+          states:
+            pending: '準備中'
+            ready: 'オーソリ完了'
+            complete: '決済完了'
+            canceled: 'キャンセル'
+            resumed: '再開'
       comable/shipment:
         state:
           states:
@@ -230,6 +238,7 @@ ja:
         ship_address: お届け先
         payment_method: お支払い方法
         shipment_method: 発送方法
+        payment_fee: '支払い手数料'
         shipment_fee: 送料
         item_total_price: 商品合計
         total_price: 合計
@@ -242,6 +251,7 @@ ja:
         order_items: 注文明細
         user_id: ユーザーID
         guest_token: ゲストトークン
+        payment_state: '決済ステータス'
         shipment_state: '配送ステータス'
       comable/order_item: &comable_order_item
         quantity: *quantity
@@ -295,6 +305,7 @@ ja:
       comable/payment_method:
         name: 決済方法名
         payment_provider: 決済プロバイダ
+        fee: '手数料'
         enable_price: 利用可能な価格範囲
       comable/order/order_items:
         <<: *comable_order_item
@@ -302,6 +313,13 @@ ja:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+      comable/payment:
+        id: 'ID'
+        order_id: '注文ID'
+        payment_method_id: '決済方法ID'
+        fee: '手数料'
+        state: 'ステータス'
+        completed_at: '決済日時'
       comable/shipment:
         id: 'ID'
         order_id: '注文ID'

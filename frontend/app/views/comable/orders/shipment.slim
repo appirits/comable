@@ -9,7 +9,7 @@
         ul
           - Comable::ShipmentMethod.activated.each.with_index do |shipment_method, index|
             li
-              - checked_flag = shipment.shipment_method ? (@order.shipment.shipment_method == shipment_method) : index.zero?
+              - checked_flag = shipment.shipment_method ? (shipment.shipment_method == shipment_method) : index.zero?
               = ff.radio_button :shipment_method_id, shipment_method.id, checked: checked_flag
               = ff.label :shipment_method_id, shipment_method.name, value: shipment_method.id
       = f.submit Comable.t('next_step')

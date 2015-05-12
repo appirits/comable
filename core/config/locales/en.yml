@@ -192,6 +192,14 @@ en:
           events:
             cancel: 'Cancel'
             resume: 'Resume'
+      comable/payment:
+        state:
+          states:
+            pending: 'Pending'
+            ready: 'Authorized'
+            complete: 'Complete'
+            canceled: 'Canceled'
+            resumed: 'Resumed'
       comable/shipment:
         state:
           states:
@@ -230,6 +238,7 @@ en:
         ship_address: 'Shipping address'
         payment_method: 'Payment method'
         shipment_method: 'Shipment method'
+        payment_fee: 'Payment fee'
         shipment_fee: 'Shipment fee'
         item_total_price: 'Item total'
         total_price: 'Total'
@@ -242,6 +251,7 @@ en:
         order_items: 'Order items'
         user_id: 'User ID'
         guest_token: 'Guest token'
+        payment_state: 'Payment state'
         shipment_state: 'Shipment state'
       comable/order_item: &comable_order_item
         quantity: *quantity
@@ -295,6 +305,7 @@ en:
       comable/payment_method:
         name: 'Name'
         payment_provider: 'Oayment provider'
+        fee: 'Fee'
         enable_price: 'Enable price range'
       comable/order/order_items:
         <<: *comable_order_item
@@ -302,6 +313,13 @@ en:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+      comable/payment:
+        id: 'ID'
+        order_id: 'Order ID'
+        payment_method_id: 'Payment method ID'
+        fee: 'Fee'
+        state: 'Status'
+        completed_at: 'Completed at'
       comable/shipment:
         id: 'ID'
         order_id: 'Order ID'

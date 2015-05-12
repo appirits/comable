@@ -38,6 +38,8 @@
             = time_ago_in_words @order.completed_at
 
   .comable-page-body
+    - if @order.payment
+      = render 'payment_state', payment: @order.payment
     - if @order.can_ship?
       = render 'shipment_state', shipment: @order.shipment
 
@@ -75,6 +77,11 @@
                   = @order.class.human_attribute_name(:item_total_price)
                 td
                   = number_to_currency @order.item_total_price
+              tr
+                th.text-right colspan="4"
+                  = @order.class.human_attribute_name(:payment_fee)
+                td
+                  = number_to_currency @order.payment_fee
               tr
                 th.text-right colspan="4"
                   = @order.class.human_attribute_name(:shipment_fee)
@@ -161,11 +168,11 @@
                 dd
                   = @order.shipment.name
 
-              - if @order.payment_method
+              - if @order.payment
                 dt
                   i.fa.fa-money.fa-lg data-toggle="tooltip" data-placement="left" title="#{@order.class.human_attribute_name(:payment_method)}"
                 dd
-                  = @order.payment_method.name
+                  = @order.payment.name
 
           .panel-footer
             = render 'google_map', id: 'comable-google-map-for-ship-address', address: @order.ship_address

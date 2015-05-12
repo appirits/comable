@@ -4,6 +4,7 @@ class CreateComablePaymentMethods < ActiveRecord::Migration
       t.string :name, null: false
       t.string :payment_provider_type, null: false
       t.integer :payment_provider_kind, null: false
+      t.integer :fee, null: false
       t.integer :enable_price_from
       t.integer :enable_price_to
     end

@@ -30,11 +30,12 @@
 ----------------------------------------------------------------------
 
             <%= "#{@order.class.human_attribute_name(:item_total_price)}: #{number_to_currency @order.item_total_price}" %>
+            <%= "#{@order.class.human_attribute_name(:payment_fee)}: #{number_to_currency @order.payment_fee}" %>
             <%= "#{@order.class.human_attribute_name(:shipment_fee)}: #{number_to_currency @order.shipment_fee}" %>
 
             <%= "#{@order.class.human_attribute_name(:total_price)}: #{number_to_currency @order.total_price}" %>
 
-            <%= "#{@order.class.human_attribute_name(:payment_method)}: #{@order.payment_method.name}\n" if @order.payment_method -%>
+            <%= "#{@order.class.human_attribute_name(:payment_method)}: #{@order.payment.name}\n" if @order.payment -%>
 
 ======================================================================
 

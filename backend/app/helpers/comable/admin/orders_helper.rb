@@ -15,6 +15,9 @@ module Comable
           (!can_cancel && shipment.stated?(state)) ? 'comable-badge comable-badge-disable' : 'comable-badge comable-badge-default'
         end
       end
+
+      alias_method :options_of_payment_badge_for, :options_of_shipment_badge_for
+      alias_method :payment_badge_class_for, :shipment_badge_class_for
     end
   end
 end

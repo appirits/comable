@@ -23,6 +23,10 @@
             = f.select :payment_provider_kind, Comable::PaymentProvider::General.kind.map.with_index { |(_, value), index| [value, index] }
 
       .form-group
+        = f.label :fee
+        = f.text_field :fee
+
+      .form-group
         = f.label :enable_price
         .row
           .col-sm-6
