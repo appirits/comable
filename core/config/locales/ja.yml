@@ -313,6 +313,13 @@ ja:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+      comable/payment:
+        id: 'ID'
+        order_id: '注文ID'
+        payment_method_id: '決済方法ID'
+        fee: '手数料'
+        state: 'ステータス'
+        completed_at: '決済日時'
       comable/shipment:
         id: 'ID'
         order_id: '注文ID'

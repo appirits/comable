@@ -313,6 +313,13 @@ en:
         <<: *comable_address
       comable/order/ship_address:
         <<: *comable_address
+      comable/payment:
+        id: 'ID'
+        order_id: 'Order ID'
+        payment_method_id: 'Payment method ID'
+        fee: 'Fee'
+        state: 'Status'
+        completed_at: 'Completed at'
       comable/shipment:
         id: 'ID'
         order_id: 'Order ID'
