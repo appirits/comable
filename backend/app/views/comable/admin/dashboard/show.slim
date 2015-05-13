@@ -4,8 +4,8 @@
       = Comable.t('admin.nav.dashboard')
 
   .comable-page-body
-    section
-      .col-sm-4
+    section.row
+      .col-md-4
         - number = @this_week_orders.count
         = render 'widget',
           title: Comable.t('admin.new_orders'),
@@ -14,7 +14,7 @@
           color: 'green',
           fa: 'shopping-cart'
 
-      .col-sm-4
+      .col-md-4
         - number = @this_week_orders.sum(:total_price)
         = render 'widget',
           title: Comable.t('admin.sales'),
@@ -24,7 +24,7 @@
           fa: 'dollar'
 
     / TODO: Comment out after adding timestamp columns
-      .col-sm-4
+      .col-md-4
         - number = @this_week_users.count
         = render 'widget',
           title: Comable.t('admin.new_users'),
@@ -34,10 +34,9 @@
           fa: 'user'
 
     section
-      .col-sm-12
-        .panel.panel-default
-          .panel-body
-            #comable-morris.morris style="height: 300px;"
+      .panel.panel-default
+        .panel-body
+          #comable-morris.morris style="height: 300px;"
 
       javascript:
         morris_data = #{raw @this_month_orders.to_morris};

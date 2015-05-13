@@ -5,12 +5,12 @@
     = f.submit
 
   fieldset
-    .col-sm-3
+    .col-md-3
       legend
         = Comable.t('admin.general')
       .help-block
 
-    .col-sm-9
+    .col-md-9
       .form-group
         = f.label :name
         = f.text_field :name, placeholder: f.object.class.default_name

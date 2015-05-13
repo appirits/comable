@@ -44,7 +44,7 @@
       = render 'shipment_state', shipment: @order.shipment
 
     section.row
-      .col-sm-8
+      .col-lg-8
         .panel.panel-default
           table.table
             thead
@@ -93,8 +93,8 @@
                 td
                   = number_to_currency @order.total_price
 
-      nav.col-sm-4
-        .panel.panel-default
+      nav.col-lg-4
+        .panel.panel-default.visible-lg-block
           .panel-body
             h3.text-center
               small>

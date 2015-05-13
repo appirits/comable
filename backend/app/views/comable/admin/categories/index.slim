@@ -70,7 +70,7 @@ coffee:
 
   .comable-page-body
     fieldset
-      .col-sm-3
+      .col-md-3
         legend
           = Comable.t('admin.note')
         .help-block
@@ -83,7 +83,7 @@ coffee:
               = Comable.t('admin.link_to_add_new_node')
               = link_to Comable.t('admin.actions.new'), 'javascript:create_new_node()'
 
-      .col-sm-9
+      .col-md-9
         #comable-jstree
         = form_tag comable.admin_categories_path do
           .hidden

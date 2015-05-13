@@ -8,12 +8,12 @@
     = f.submit
 
   fieldset
-    .col-sm-3
+    .col-md-3
       legend
         = Comable.t('admin.general')
       .help-block
 
-    .col-sm-9
+    .col-md-9
       .form-group
         = f.label :code
         = f.text_field :code
@@ -60,7 +60,7 @@
   hr
 
   fieldset
-    .col-sm-3
+    .col-md-3
       legend
         = Comable.t('admin.stocks')
       .help-block
@@ -68,7 +68,7 @@
           = Comable.t('admin.link_to_add_new_stock')
           = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
 
-    .col-sm-9
+    .col-md-9
       - if @product.stocks.any?
         table.table.table-striped
           thead
@@ -118,18 +118,18 @@
   hr
 
   fieldset
-    .col-sm-3
+    .col-md-3
       legend
         = Comable.t('admin.images')
       .help-block
 
-    .col-sm-9
+    .col-md-9
       - images = @product.images
       - main_image = images.first || @product.images.build
       - sub_images = images - [main_image]
 
       .row
-        .col-sm-6
+        .col-md-6
           = f.fields_for :images, main_image do |ff|
             label
               = Comable.t('admin.main_image')
@@ -143,11 +143,11 @@
                     span> = ff.check_box :_destroy
                     span> = Comable.t('admin.actions.destroy')
 
-        .col-sm-6
+        .col-md-6
           .row
             - sub_images.each.with_index(1) do |image, index|
               = f.fields_for :images, image do |ff|
                 = render 'comable/admin/shared/image_fields', ff: ff, index: index
 
-            .col-sm-6
+            .col-md-6
               = link_to_add_fields Comable.t('admin.add_sub_image'), f, :images
