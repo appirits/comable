@@ -14,7 +14,12 @@
         li
           = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:resume)
-      - else
+
+    ul.pull-right.list-inline
+      li
+        = link_to comable.edit_admin_order_path(@order), class: 'btn btn-default' do
+          span.fa.fa-edit>
+          = Comable.t('admin.actions.edit')
 
       li.btn-group
         / TODO: Comment out after implemented.

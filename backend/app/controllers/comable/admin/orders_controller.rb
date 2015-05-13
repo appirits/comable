@@ -3,6 +3,8 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class OrdersController < Comable::Admin::ApplicationController
+      include Comable::PermittedAttributes
+
       load_and_authorize_resource class: Comable::Order.name, except: :index
 
       def index
@@ -11,6 +13,18 @@ module Comable
       end
 
       def show
+      end
+
+      def edit
+      end
+
+      def update
+        if @order.update_attributes(order_params)
+          redirect_to comable.admin_order_path(@order), notice: Comable.t('successful')
+        else
+          flash.now[:alert] = Comable.t('failure')
+          render :edit
+        end
       end
 
       def export
@@ -68,6 +82,16 @@ module Comable
         redirect_to :back, notice: Comable.t('successful')
       rescue ActiveRecord::RecordInvalid => e
         redirect_to :back, alert: e.message
+      end
+
+      private
+
+      def order_params
+        params.require(:order).permit(
+          :email,
+          bill_address_attributes: permitted_address_attributes,
+          ship_address_attributes: permitted_address_attributes
+        )
       end
     end
   end
