@@ -122,7 +122,7 @@ describe Comable::User do
     end
 
     it '商品を購入後はカートが空になること' do
-      current_order.state = 'complete'
+      current_order.state = 'completed'
       current_order.complete
       expect(subject.cart_items).to be_empty
     end

@@ -37,8 +37,8 @@ RSpec.describe Comable::Payment do
   end
 
   describe '#next_state!' do
-    it 'should change the state form `pending` to `complete`' do
-      expect { subject.next_state! }.to change(subject, :state).from('pending').to('complete')
+    it 'should change the state form `pending` to `completed`' do
+      expect { subject.next_state! }.to change(subject, :state).from('pending').to('completed')
     end
   end
 end

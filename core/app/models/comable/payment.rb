@@ -21,23 +21,23 @@ module Comable
     #
     # pending   when Order is not able to pay (default)
     # ready     when Order is able to pay
-    # complete  when Order is already paid
+    # completed when Order is already paid
     # canceled  when Order is canceled
     # resumed   when Order is resumed from the "canceled" state
     state_machine initial: :pending do
       state :pending
       state :ready
-      state :complete
+      state :completed
       state :canceled
       state :resumed
 
       event :next_state do
         transition :pending => :ready
-        transition :ready => :complete
+        transition :ready => :completed
       end
 
       event :cancel do
-        transition [:complete, :resumed] => :canceled
+        transition [:completed, :resumed] => :canceled
       end
 
       event :resume do
@@ -46,7 +46,7 @@ module Comable
 
       after_transition to: :ready, do: :next_state!
       before_transition to: :ready, do: -> (s) { s.provider_authorize! }
-      before_transition to: :complete, do: -> (s) { s.provider_complete! }
+      before_transition to: :completed, do: -> (s) { s.provider_complete! }
       before_transition to: :canceled, do: -> (s) { s.provider_cancel! }
       before_transition to: :canceled, do: -> (s) { s.provider_resume! }
     end

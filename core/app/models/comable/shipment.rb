@@ -20,27 +20,27 @@ module Comable
     #
     # pending   when Order is not able to ship (default)
     # ready     when Order is able to ship
-    # complete  when Order is already shipped
+    # completed when Order is already shipped
     # canceled  when Order is canceled
     # resumed   when Order is resumed from the "canceled" state
     state_machine initial: :pending do
       state :pending
       state :ready
-      state :complete
+      state :completed
       state :canceled
       state :resumed
 
       event :next_state do
         transition :pending => :ready
-        transition :ready => :complete
+        transition :ready => :completed
       end
 
       event :ship do
-        transition :ready => :complete
+        transition :ready => :completed
       end
 
       event :cancel do
-        transition [:complete, :resumed] => :canceled
+        transition [:completed, :resumed] => :canceled
       end
 
       event :resume do

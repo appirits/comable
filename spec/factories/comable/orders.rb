@@ -42,7 +42,7 @@ FactoryGirl.define do
     end
 
     trait :completed do
-      state 'complete'
+      state 'completed'
       bill_address { build(:address) }
       ship_address { build(:address) }
       shipment { build(:shipment, state: :ready) }

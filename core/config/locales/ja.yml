@@ -186,7 +186,7 @@ ja:
             shipment: 発送方法の選択
             payment: 決済方法の選択
             confirm: 注文内容を確認
-            complete: 注文完了
+            completed: '注文完了'
             canceled: 'キャンセル'
             resumed: '再開'
           events:
@@ -197,7 +197,7 @@ ja:
           states:
             pending: '準備中'
             ready: 'オーソリ完了'
-            complete: '決済完了'
+            completed: '決済完了'
             canceled: 'キャンセル'
             resumed: '再開'
       comable/shipment:
@@ -205,7 +205,7 @@ ja:
           states:
             pending: '準備中'
             ready: '準備完了'
-            complete: '発送完了'
+            completed: '発送完了'
             canceled: 'キャンセル'
             resumed: '再開'
 

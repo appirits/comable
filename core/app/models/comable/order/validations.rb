@@ -27,7 +27,7 @@ module Comable
           context.validates :shipment, presence: true
         end
 
-        with_options if: -> { stated?(:complete) } do |context|
+        with_options if: -> { stated?(:completed) } do |context|
           context.validates :code, presence: true
           context.validates :payment_fee, presence: true
           context.validates :shipment_fee, presence: true

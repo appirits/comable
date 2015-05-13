@@ -155,7 +155,7 @@ describe Comable::Admin::OrdersController do
     it 'ship the requested order' do
       post :ship, id: order.to_param
       order.reload
-      expect(order.shipment).to be_complete
+      expect(order.shipment).to be_completed
     end
 
     it 'redirects back' do

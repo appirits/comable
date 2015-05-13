@@ -2,7 +2,7 @@
   .comable-page-heading
     ul.pull-right.list-inline
       - case @order.state.to_sym
-      - when :complete, :resumed
+      - when :completed, :resumed
         - if @order.shipment && @order.shipment.state?(:ready)
           li
             = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post do

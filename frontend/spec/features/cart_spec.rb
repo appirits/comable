@@ -84,7 +84,7 @@ feature 'カート処理' do
       Then '注文できること' do
         visit comable.next_order_path(state: :confirm)
         click_button Comable.t('complete_order')
-        expect(page).to have_content order.class.human_state_name(:complete)
+        expect(page).to have_content order.class.human_state_name(:completed)
       end
     end
   end

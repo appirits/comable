@@ -110,8 +110,8 @@ describe Comable::Checkout do
         allow(method).to receive(:arity).and_return(0)
       end
 
-      it "state change to 'complete'" do
-        expect { subject.next_state }.to change { subject.state }.to eq('complete')
+      it "state change to 'completed'" do
+        expect { subject.next_state }.to change { subject.state }.to eq('completed')
       end
 
       it 'call the #complete! method' do

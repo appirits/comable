@@ -21,8 +21,6 @@ module Comable
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
     delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
 
-    alias_method :completed?, :complete?
-
     def complete!
       ActiveRecord::Base.transaction do
         run_callbacks :complete do

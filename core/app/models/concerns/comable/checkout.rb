@@ -10,7 +10,7 @@ module Comable
         state :shipment
         state :payment
         state :confirm
-        state :complete
+        state :completed
         state :canceled
         state :returned
         state :resumed
@@ -20,23 +20,23 @@ module Comable
           transition [:cart, :orderer] => :delivery, if: :delivery_required?
           transition [:cart, :orderer, :delivery] => :shipment, if: :shipment_required?
           transition [:cart, :orderer, :delivery, :shipment] => :payment, if: :payment_required?
-          transition all - [:confirm, :complete] => :confirm
-          transition :confirm => :complete
+          transition all - [:confirm, :completed] => :confirm
+          transition :confirm => :completed
         end
 
         event :cancel do
-          transition to: :canceled, from: [:complete, :resumed], if: :allow_cancel?
+          transition to: :canceled, from: [:completed, :resumed], if: :allow_cancel?
         end
 
         event :return do
-          transition to: :returned, from: [:complete, :resumed], if: :allow_return?
+          transition to: :returned, from: [:completed, :resumed], if: :allow_return?
         end
 
         event :resume do
           transition to: :resumed, from: :canceled
         end
 
-        before_transition to: :complete, do: :complete!
+        before_transition to: :completed, do: :complete!
         after_transition to: :canceled, do: :restock!
         after_transition to: :resumed, do: :unstock!
       end
@@ -83,7 +83,7 @@ module Comable
     end
 
     def can_ship?
-      shipment && (state?(:complete) || state?(:resumed))
+      shipment && (state?(:completed) || state?(:resumed))
     end
   end
 end

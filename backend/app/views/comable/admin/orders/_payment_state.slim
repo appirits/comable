@@ -18,7 +18,7 @@ section.row
           i.fa.fa-check-circle
 
       li
-        = content_tag :div, options_of_payment_badge_for(payment, state: :complete) do
+        = content_tag :div, options_of_payment_badge_for(payment, state: :completed) do
           i.fa.fa-money
 
       - if payment.state?(:resumed)
@@ -26,7 +26,7 @@ section.row
           = content_tag :div, options_of_payment_badge_for(payment, state: :resumed) do
             i.fa.fa-refresh
 
-      - if payment.state?(:complete) || payment.state?(:resumed)
+      - if payment.state?(:completed) || payment.state?(:resumed)
         li
           = link_to comable.cancel_payment_admin_order_path(payment.order), options_of_payment_badge_for(payment, state: :canceled).merge(method: :post) do
             i.fa.fa-close
