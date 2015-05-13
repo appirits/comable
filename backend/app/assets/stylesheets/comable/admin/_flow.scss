@@ -1,17 +1,40 @@
 // Variables
 $comable-flow-border: #eee;
-$comable-badge-border: $comable-flow-border;
 $comable-badge-size: 50px;
 $comable-badge-default-color: $gray;
 $comable-badge-default-bg: #fff;
+$comable-badge-default-border: $btn-default-border;
 $comable-badge-disable-color: #fff;
 $comable-badge-disable-bg: #ddd;
+$comable-badge-disable-border: $btn-default-border;
 $comable-badge-primary-color: $btn-primary-color;
 $comable-badge-primary-bg: $btn-primary-bg;
+$comable-badge-primary-border: $btn-primary-border;
+$comable-badge-success-color: $btn-success-color;
+$comable-badge-success-bg: $btn-success-bg;
+$comable-badge-success-border: $btn-success-border;
 $comable-badge-warning-color: $btn-warning-color;
 $comable-badge-warning-bg: $btn-warning-bg;
+$comable-badge-warning-border: $btn-warning-border;
 $comable-badge-danger-color: $btn-danger-color;
 $comable-badge-danger-bg: $btn-danger-bg;
+$comable-badge-danger-border: $btn-danger-border;
+
+// Mixins
+@mixin comable-badge($color, $background-color, $border-color) {
+  color: $color;
+  background-color: $background-color;
+  border-color: $border-color;
+
+  &:hover, &:focus {
+    color: $color;
+  }
+
+  @at-root a#{&}:hover, a#{&}:focus {
+    background-color: darken($background-color, 10%);
+    border-color: darken($border-color, 10%);
+  }
+}
 
 // Rules
 .comable-flow {
@@ -50,7 +73,7 @@ $comable-badge-danger-bg: $btn-danger-bg;
   left: 16px;
   top: 50%;
   z-index: 100;
-  border: 1px solid $comable-badge-border;
+  border: 1px solid transparent;
 
   &[disabled] {
     @include opacity(0.65);
@@ -61,28 +84,51 @@ $comable-badge-danger-bg: $btn-danger-bg;
 }
 
 .comable-badge-default {
-  background-color: $comable-badge-default-bg;
-  color: $comable-badge-default-color;
+  @include comable-badge(
+    $color: $comable-badge-default-color,
+    $background-color: $comable-badge-default-bg,
+    $border-color: $comable-badge-default-border
+  );
 }
 
 .comable-badge-disable {
-  background-color: $comable-badge-disable-bg;
-  color: $comable-badge-disable-color;
+  @include comable-badge(
+    $color: $comable-badge-disable-color,
+    $background-color: $comable-badge-disable-bg,
+    $border-color: $comable-badge-default-border
+  );
 }
 
 .comable-badge-primary {
-  background-color: $comable-badge-primary-bg;
-  color: $comable-badge-primary-color;
+  @include comable-badge(
+    $color: $comable-badge-primary-color,
+    $background-color: $comable-badge-primary-bg,
+    $border-color: $comable-badge-primary-border
+  );
+}
+
+.comable-badge-success {
+  @include comable-badge(
+    $color: $comable-badge-success-color,
+    $background-color: $comable-badge-success-bg,
+    $border-color: $comable-badge-success-border
+  );
 }
 
 .comable-badge-danger {
-  background-color: $comable-badge-danger-bg;
-  color: $comable-badge-danger-color;
+  @include comable-badge(
+    $color: $comable-badge-danger-color,
+    $background-color: $comable-badge-danger-bg,
+    $border-color: $comable-badge-danger-border
+  );
 }
 
 .comable-badge-warning {
-  background-color: $comable-badge-warning-bg;
-  color: $comable-badge-warning-color;
+  @include comable-badge(
+    $color: $comable-badge-warning-color,
+    $background-color: $comable-badge-warning-bg,
+    $border-color: $comable-badge-warning-border
+  );
 }
 
 .comable-flow-label {
