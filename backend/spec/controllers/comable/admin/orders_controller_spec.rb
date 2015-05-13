@@ -3,6 +3,9 @@ describe Comable::Admin::OrdersController do
 
   let(:comable) { controller.comable }
 
+  let(:valid_attributes) { FactoryGirl.attributes_for(:order, :completed) }
+  let(:invalid_attributes) { valid_attributes.merge(email: 'x' * 1024) }
+
   before { request.env['HTTP_REFERER'] = 'http://localhost:3000' }
 
   describe 'GET index' do
@@ -18,6 +21,50 @@ describe Comable::Admin::OrdersController do
       order = FactoryGirl.create(:order, :completed)
       get :show, id: order.to_param
       expect(assigns(:order)).to eq(order)
+    end
+  end
+
+  describe 'GET edit' do
+    it 'assigns the requested order as @order' do
+      order = FactoryGirl.create(:order, :completed)
+      get :edit, id: order.to_param
+      expect(assigns(:order)).to eq(order)
+    end
+  end
+
+  describe 'PUT update' do
+    let!(:order) { FactoryGirl.create(:order, :completed) }
+
+    describe 'with valid params' do
+      let(:new_attributes) { { email: "NEW: #{order.email}" } }
+
+      it 'updates the requested order' do
+        put :update, id: order.to_param, order: new_attributes
+        order.reload
+        expect(order).to have_attributes(new_attributes)
+      end
+
+      it 'assigns the requested order as @order' do
+        put :update, id: order.to_param, order: valid_attributes
+        expect(assigns(:order)).to eq(order)
+      end
+
+      it 'redirects to the order' do
+        put :update, id: order.to_param, order: valid_attributes
+        expect(response).to redirect_to([comable, :admin, order])
+      end
+    end
+
+    describe 'with invalid params' do
+      it 'assigns the order as @order' do
+        put :update, id: order.to_param, order: invalid_attributes
+        expect(assigns(:order)).to eq(order)
+      end
+
+      it "re-renders the 'edit' template" do
+        put :update, id: order.to_param, order: invalid_attributes
+        expect(response).to render_template(:edit)
+      end
     end
   end
 
