@@ -2,7 +2,7 @@ RSpec.describe Comable::Shipment do
   subject { FactoryGirl.create(:shipment) }
 
   # Disable the automatic change of attributes.
-  before { allow(subject).to receive(:payment_completed?).and_return(true) }
+  before { allow(subject).to receive(:order_completed?).and_return(true) }
 
   it { is_expected.to belong_to(:order).class_name(Comable::Order.name).inverse_of(:shipment) }
   it { is_expected.to belong_to(:shipment_method).class_name(Comable::ShipmentMethod.name) }
@@ -15,7 +15,7 @@ RSpec.describe Comable::Shipment do
 
   describe '#copy_attributes_from_shipment_method' do
     context 'when the order is paid' do
-      before { allow(subject).to receive(:payment_completed?).and_return(true) }
+      before { allow(subject).to receive(:order_completed?).and_return(true) }
 
       it 'not copy the fee' do
         original_fee = subject.fee
@@ -26,7 +26,7 @@ RSpec.describe Comable::Shipment do
     end
 
     context 'when the order is not paid' do
-      before { allow(subject).to receive(:payment_completed?).and_return(false) }
+      before { allow(subject).to receive(:order_completed?).and_return(false) }
 
       it 'copy the fee' do
         original_fee = subject.fee
