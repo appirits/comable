@@ -8,7 +8,7 @@ module Comable
         validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
         with_options if: -> { stated?(:cart) } do |context|
-          context.validates :email, presence: true
+          context.validates :email, presence: true, length: { maximum: 255 }
         end
 
         with_options if: -> { stated?(:orderer) } do |context|
@@ -19,15 +19,15 @@ module Comable
           context.validates :ship_address, presence: true
         end
 
-        with_options if: -> { stated?(:payment) && payment_required? } do |context|
-          context.validates :payment, presence: true
-        end
-
         with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
           context.validates :shipment, presence: true
         end
 
-        with_options if: -> { stated?(:completed) } do |context|
+        with_options if: -> { stated?(:payment) && payment_required? } do |context|
+          context.validates :payment, presence: true
+        end
+
+        with_options if: -> { stated?(:confirm) } do |context|
           context.validates :code, presence: true
           context.validates :payment_fee, presence: true
           context.validates :shipment_fee, presence: true

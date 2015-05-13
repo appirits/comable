@@ -8,6 +8,48 @@ describe Comable::Order do
   it { is_expected.to have_one(:shipment).class_name(Comable::Shipment.name).dependent(:destroy).inverse_of(:order) }
 
   describe 'validations' do
+    context "when state is 'orderer'" do
+      before { order.state = 'orderer' }
+
+      it { is_expected.to validate_presence_of(:email) }
+      it { is_expected.to validate_length_of(:email).is_at_most(255) }
+    end
+
+    context "when state is 'delivery'" do
+      before { order.state = 'delivery' }
+
+      it { is_expected.to validate_presence_of(:bill_address) }
+    end
+
+    context "when state is 'shipment'" do
+      before { order.state = 'shipment' }
+
+      it { is_expected.to validate_presence_of(:ship_address) }
+    end
+
+    context "when state is 'payment'" do
+      before { order.state = 'payment' }
+      before { allow(order).to receive(:shipment_required?).and_return(true) }
+
+      it { is_expected.to validate_presence_of(:shipment) }
+    end
+
+    context "when state is 'confirm'" do
+      before { order.state = 'confirm' }
+      before { allow(order).to receive(:payment_required?).and_return(true) }
+
+      it { is_expected.to validate_presence_of(:payment) }
+    end
+
+    context "when state is 'completed'" do
+      before { order.state = 'completed' }
+
+      it { is_expected.to validate_presence_of(:code) }
+      it { is_expected.to validate_presence_of(:payment_fee) }
+      it { is_expected.to validate_presence_of(:shipment_fee) }
+      it { is_expected.to validate_presence_of(:total_price) }
+    end
+
     context 'when user is registered' do
       before { subject.attributes = { guest_token: nil, user: FactoryGirl.create(:user) } }
       before { subject.save }
