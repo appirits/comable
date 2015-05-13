@@ -36,6 +36,16 @@ Comable provides a simple way to add e-commerce features to your Ruby on Rails a
 
   Go to your browser and open `http://localhost:3000`.
 
+## Access the admin panel
+
+You will need to import the seed data if admin user does not exist.
+
+```bash
+bundle exec rake db:seed
+```
+
+Go to your browser and open `http://localhost:3000/admin`.
+
 ## Requirements
 
 * Ruby on Rails 3.2, 4.1, 4.2
