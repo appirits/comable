@@ -60,6 +60,10 @@ module Comable
       target_state_index < current_state_index
     end
 
+    def completed?
+      state?(:completed) || state?(:resumed)
+    end
+
     private
 
     def order_completed?

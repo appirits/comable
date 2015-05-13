@@ -1,22 +1,16 @@
 .comable-page
   .comable-page-heading
     ul.pull-right.list-inline
-      - case @order.state.to_sym
-      - when :completed, :resumed
-        - if @order.shipment && @order.shipment.state?(:ready)
-          li
-            = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post do
-              i.fa.fa-truck>
-              = Comable.t('admin.ship')
+      li
+      - if !@order.shipped?
+        = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post, disabled: !@order.can_ship? do
+          i.fa.fa-truck>
+          = Comable.t('admin.ship')
+      - if @order.completed?
         li
           = link_to comable.cancel_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:cancel)
-      - when :canceled
-        li
-          - if @order.shipment && @order.shipment.state?(:ready)
-            = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post, disabled: true do
-              i.fa.fa-truck>
-              = Comable.t('admin.ship')
+      - if @order.canceled?
         li
           = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:resume)
@@ -40,7 +34,7 @@
   .comable-page-body
     - if @order.payment
       = render 'payment_state', payment: @order.payment
-    - if @order.can_ship?
+    - if @order.shipment
       = render 'shipment_state', shipment: @order.shipment
 
     section.row

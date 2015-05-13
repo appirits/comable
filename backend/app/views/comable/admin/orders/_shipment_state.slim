@@ -19,7 +19,7 @@ section.row
 
       li
         - if shipment.state?(:ready)
-          = link_to comable.ship_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :completed).merge(method: :post) do
+          = link_to comable.ship_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :completed).merge(method: :post, disabled: !@order.can_ship?) do
             i.fa.fa-truck
         - else
           = content_tag :div, options_of_shipment_badge_for(shipment, state: :completed) do

@@ -54,6 +54,10 @@ module Comable
       target_state_index < current_state_index
     end
 
+    def completed?
+      state?(:completed) || state?(:resumed)
+    end
+
     def orderer_required?
       bill_address.nil? || bill_address.new_record?
     end
@@ -80,10 +84,6 @@ module Comable
       # TODO: Implement shipments
       # shipments.exists?
       false
-    end
-
-    def can_ship?
-      shipment && (state?(:completed) || state?(:resumed))
     end
   end
 end

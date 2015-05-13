@@ -89,6 +89,18 @@ module Comable
       stated?(order.state) ? save! : next_state!
     end
 
+    def paid?
+      payment ? payment.completed? : true
+    end
+
+    def shipped?
+      shipment ? shipment.completed? : true
+    end
+
+    def can_ship?
+      shipment && shipment.ready? && paid? && completed?
+    end
+
     private
 
     def current_attributes
