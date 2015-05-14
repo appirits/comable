@@ -31,7 +31,7 @@
               td
                 = tracker.tracker_id
               td
-                = tracker.place
+                = tracker.place.text
 
       .text-center
         = paginate @trackers, theme: :comable_backend
