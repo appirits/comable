@@ -1,0 +1,109 @@
+= error_messages_for @tracker
+
+= form_for [comable, :admin, @tracker] do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.general')
+
+    .col-md-9
+      .form-group
+        .checkbox
+          = f.label :activate_flag do
+            = f.check_box :activate_flag
+            = f.object.class.human_attribute_name(:activate_flag)
+
+      .form-group
+        = f.label :name
+        = f.text_field :name
+
+      .form-group
+        = f.label :tracker_id
+        = f.text_field :tracker_id
+
+      .form-group
+        = f.label :code
+        = f.text_area :code, rows: (f.object.code ? f.object.code.lines.count : nil)
+
+        br
+
+        .panel.panel-default
+          .panel-heading type="button" data-toggle="collapse" data-target="#comable-help-code"
+            strong
+              span.fa.fa-angle-down>
+              = Comable.t('admin.help')
+          .collapse#comable-help-code
+            .panel-body.help-block
+              p
+                == Comable.t('admin.tracker_code_help_introduction')
+              p
+                = Comable.t('admin.list_of_usable_variables')
+              dl.dl-horizontal
+                dt
+                  = Comable::Tracker.human_attribute_name(:tracker_id)
+                dd
+                  | tracker_id
+                dt
+                  = Comable::Order.human_attribute_name(:code)
+                dd
+                  | order.code
+                dt
+                  = Comable::Order.human_attribute_name(:payment_fee)
+                dd
+                  | order.payment_fee
+                dt
+                  = Comable::Order.human_attribute_name(:shipment_fee)
+                dd
+                  | order.shipment_fee
+                dt
+                  = Comable::Order.human_attribute_name(:item_total_price)
+                dd
+                  | order.item_total_price
+                dt
+                  = Comable::Order.human_attribute_name(:total_price)
+                dd
+                  | order.total_price
+                dt
+                  = Comable::Order.human_attribute_name(:order_items)
+                dd
+                  | order.order_items
+              p
+                == Comable.t('admin.tracker_code_help_additional')
+              dl.dl-horizontal
+                dt
+                  = Comable::OrderItem.human_attribute_name(:code)
+                dd
+                  | order_item.code
+                dt
+                  = Comable::OrderItem.human_attribute_name(:name)
+                dd
+                  | order_item.name
+                dt
+                  = Comable::OrderItem.human_attribute_name(:name_with_sku)
+                dd
+                  | order_item.name_with_sku
+                dt
+                  = Comable::OrderItem.human_attribute_name(:subtotal_price)
+                dd
+                  | order_item.subtotal_price
+                dt
+                  = Comable::OrderItem.human_attribute_name(:quantity)
+                dd
+                  | order_item.quantity
+                dt
+                  = Comable::OrderItem.human_attribute_name(:price)
+                dd
+                  | order_item.price
+              p
+                = Comable.t('admin.mote_infomation_for_syntax')
+                | &nbsp;
+                = link_to 'http://liquidmarkup.org/', target: :_blank do
+                  | Liquid Templating language
+                  i.fa.fa-external-link<
+
+      .form-group
+        = f.label :place
+        = f.select :place, f.object.class.place.options

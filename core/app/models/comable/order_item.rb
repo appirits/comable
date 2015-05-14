@@ -10,6 +10,8 @@ module Comable
     validates :quantity, numericality: { greater_than: 0 }
     validate :valid_stock_quantity
 
+    liquid_methods :name, :name_with_sku, :code, :quantity, :price, :subtotal_price
+
     delegate :product, to: :stock
     delegate :image_url, to: :product
     delegate :guest_token, to: :order

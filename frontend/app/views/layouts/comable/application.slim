@@ -25,6 +25,8 @@ html
 
   - mini_header_flag = controller_name == 'orders' || devise_controller?
   body class="#{'comable-checkout-layout' if mini_header_flag}"
+    = render 'comable/shared/tracker'
+
     - if mini_header_flag
       = render 'comable/shared/header_for_checkout'
     - else

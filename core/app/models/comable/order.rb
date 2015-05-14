@@ -16,6 +16,8 @@ module Comable
 
     ransack_options attribute_select: { associations: [:payment, :shipment] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
 
+    liquid_methods :code, :payment_fee, :shipment_fee, :item_total_price, :total_price
+
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true

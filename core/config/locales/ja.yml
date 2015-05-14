@@ -135,6 +135,14 @@ ja:
       unknown_file_type: '対応していないファイル形式です: %{filename}'
       is_not_exists: 'が存在しません。'
       ship: '発送'
+      help: 'ヘルプ'
+      tracker_code_help_introduction: |-
+        トラッキングコードには、特殊な記号を使うことでトラッキングIDや注文情報を埋め込むことができます。
+        たとえば <code>{{ order.total_price }}</code> のように書くと注文の合計金額を埋め込むことができます。
+        実際の画面ではこれが <code>1500</code> のように出力されます。
+      tracker_code_help_additional: '<code>order.order_items</code> は配列で、各要素から次の情報を取り出すことができます。'
+      list_of_usable_variables: '利用可能な変数は次の通りです。'
+      mote_infomation_for_syntax: '構文についての詳しい情報は次のページをご覧ください:'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -146,6 +154,7 @@ ja:
         store: ストア設定
         shipment_method: 発送管理
         payment_method: 決済管理
+        tracker: トラッキング情報
         products:
           detail: 商品詳細
         orders:
@@ -307,6 +316,12 @@ ja:
         payment_provider: 決済プロバイダ
         fee: '手数料'
         enable_price: 利用可能な価格範囲
+      comable/tracker:
+        activate_flag: 'このトラッキング情報を有効にする'
+        name: 'トラッキング名'
+        tracker_id: 'トラッキングID'
+        code: 'トラッキングコード'
+        place: '設置場所'
       comable/order/order_items:
         <<: *comable_order_item
       comable/order/bill_address:
@@ -335,6 +350,10 @@ ja:
         customer: 顧客
         reporter: 報告者
         admin: 管理者
+    comable/tracker:
+      place:
+        everywhere: 'すべて'
+        checkout: '注文完了画面'
 
   views:
     pagination:

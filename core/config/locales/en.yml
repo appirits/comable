@@ -135,6 +135,14 @@ en:
       unknown_file_type: 'Unknown file type: %{filename}'
       is_not_exists: 'is not exists.'
       ship: 'Ship'
+      help: 'Help'
+      tracker_code_help_introduction: |-
+        You can embed a Tracking ID, Order Information and many others by using a special symbol to Tracking code.
+        For example, you can embed Total Price of the order by writing <code>{{order.total_price}}</code>.
+        It will outputs as <code>1500</code> on the actual page.
+      tracker_code_help_additional: '<code>order.order_items</code> is Array. And you can retrieve the following information from each element.'
+      list_of_usable_variables: 'Available variables are as follows.'
+      mote_infomation_for_syntax: 'For more information about the syntax please refer to the following page:'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -146,6 +154,7 @@ en:
         store: 'Store'
         shipment_method: 'Shipment methods'
         payment_method: 'Payment methods'
+        tracker: 'Tracker'
         products:
           detail: 'Product details'
         orders:
@@ -307,6 +316,12 @@ en:
         payment_provider: 'Oayment provider'
         fee: 'Fee'
         enable_price: 'Enable price range'
+      comable/tracker:
+        activate_flag: 'Activated'
+        name: 'Name'
+        tracker_id: 'Tracker ID'
+        code: 'Code'
+        place: 'Place'
       comable/order/order_items:
         <<: *comable_order_item
       comable/order/bill_address:
@@ -335,6 +350,10 @@ en:
         customer: 'Customer'
         reporter: 'Reporter'
         admin: 'Administrator'
+    comable/tracker:
+      place:
+        everywhere: 'Everywhere'
+        checkout: 'Checkout'
 
   views:
     pagination:
