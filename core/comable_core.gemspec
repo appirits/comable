@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'comma', '~> 3.2.4'
   s.add_dependency 'axlsx_rails', '~> 0.3.0'
   s.add_dependency 'roo', '~> 1.13.2'
+  s.add_dependency 'liquid', '~> 3.0.2'
 end
