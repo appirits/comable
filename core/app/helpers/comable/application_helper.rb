@@ -39,6 +39,11 @@ module Comable
       ].join(' ')
     end
 
+    def liquidize(content, arguments)
+      string = Liquid::Template.parse(content).render(arguments.stringify_keys)
+      string.respond_to?(:html_safe) ? string.html_safe : string
+    end
+
     private
 
     def after_sign_in_path_for(_resource)
