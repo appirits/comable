@@ -1,0 +1,37 @@
+.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li
+        = link_to Comable.t('admin.actions.new'), comable.new_admin_tracker_path, class: 'btn btn-default'
+
+    h1.page-header
+      = Comable.t('admin.nav.tracker')
+      small<
+        | #{@trackers.total_count} #{Comable.t('admin.results')}
+
+  .comable-page-body
+    - if @trackers.empty?
+      = Comable.t('admin.not_found')
+    - else
+      table.table.table-striped
+        thead
+          th
+            = @trackers.klass.human_attribute_name(:name)
+          th
+            = @trackers.klass.human_attribute_name(:tracker_id)
+          th
+            = @trackers.klass.human_attribute_name(:place)
+        tbody
+          - @trackers.each do |tracker|
+            tr
+              td
+                = link_to tracker.name, comable.admin_tracker_path(tracker)
+                - unless tracker.activate_flag
+                  span.fa.fa-eye-slash.text-muted<
+              td
+                = tracker.tracker_id
+              td
+                = tracker.place
+
+      .text-center
+        = paginate @trackers, theme: :comable_backend
