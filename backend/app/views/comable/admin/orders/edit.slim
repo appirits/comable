@@ -1,0 +1,112 @@
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
+
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.order'), comable.admin_orders_path
+          li>
+            = link_to @order.code, comable.admin_order_path(@order)
+          li.active
+            = Comable.t('admin.actions.edit')
+
+  .comable-page-body
+    section
+      = error_messages_for @order
+
+      = form_for @order, url: comable.admin_order_path(@order) do |f|
+        .hidden
+          = f.submit
+
+        fieldset
+          .col-md-3
+            legend
+              = Comable.t('admin.general')
+            .help-block
+
+          .col-md-9
+            .form-group
+              = f.label :email
+              = f.email_field :email
+
+        hr
+
+        - if f.object.bill_address
+          fieldset
+            .col-md-3
+              legend
+                = f.object.class.human_attribute_name(:bill_address)
+              .help-block
+
+            .col-md-9
+              = f.fields_for :bill_address do |ff|
+                .form-group
+                  = ff.label :full_name
+                  .row
+                    .col-sm-6
+                      = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
+                    .col-sm-6
+                      = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
+
+                .form-group
+                  = ff.label :zip_code
+                  = ff.text_field :zip_code, max_length: 8
+
+                .form-group
+                  = ff.label :state_name
+                  = ff.text_field :state_name
+
+                .form-group
+                  = ff.label :city
+                  = ff.text_field :city
+
+                .form-group
+                  = ff.label :detail
+                  = ff.text_field :detail
+
+                .form-group
+                  = ff.label :phone_number
+                  = ff.text_field :phone_number, max_length: 18
+
+        hr
+
+        - if f.object.ship_address
+          fieldset
+            .col-md-3
+              legend
+                = f.object.class.human_attribute_name(:ship_address)
+              .help-block
+
+            .col-md-9
+              = f.fields_for :ship_address do |ff|
+                .form-group
+                  = ff.label :full_name
+                  .row
+                    .col-sm-6
+                      = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
+                    .col-sm-6
+                      = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
+
+                .form-group
+                  = ff.label :zip_code
+                  = ff.text_field :zip_code, max_length: 8
+
+                .form-group
+                  = ff.label :state_name
+                  = ff.text_field :state_name
+
+                .form-group
+                  = ff.label :city
+                  = ff.text_field :city
+
+                .form-group
+                  = ff.label :detail
+                  = ff.text_field :detail
+
+                .form-group
+                  = ff.label :phone_number
+                  = ff.text_field :phone_number, max_length: 18
