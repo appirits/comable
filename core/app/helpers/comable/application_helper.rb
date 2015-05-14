@@ -13,6 +13,10 @@ module Comable
       current_comable_user.incomplete_order
     end
 
+    def current_trackers
+      @curent_trackers ||= (controller_name == 'orders' && action_name == 'create') ? Comable::Tracker.activated : Comable::Tracker.activated.with_place(:everywhere)
+    end
+
     def next_order_path
       comable.next_order_path(state: current_order.state)
     end
