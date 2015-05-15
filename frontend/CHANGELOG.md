@@ -1,3 +1,13 @@
+## Comable 0.4.0 (May 15, 2015) ##
+
+*   Rename models.
+
+    - `Comable::Customer` => `Comable::User`
+    - `Comable::OrderDetail` => `Comable::OrderItem`
+
+*   Implement trackers.
+
+
 ## Comable 0.3.4 (April 07, 2015) ##
 
 *   Add locales for English.

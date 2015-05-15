@@ -1,3 +1,49 @@
+## Comable 0.4.0 (May 15, 2015) ##
+
+*   Rename models.
+
+    - `Comable::Customer` => `Comable::User`
+    - `Comable::OrderDetail` => `Comable::OrderItem`
+
+*   Remove deprecated methods.
+
+    - `Comable::Order#soldout_stocks`
+    - `Comable::OrderItem#soldout_stock?`
+    - `Comable::Product#unsold?`
+    - `Comable::Product#soldout?`
+    - `Comable::Stock.unsold`
+    - `Comable::Stock.soldout`
+    - `Comable::Stock#unsold?`
+    - `Comable::Stock#soldout?`
+
+*   Fix validations of Order.
+
+*   Implement functionality to export.
+
+    - products
+    - stocks
+    - orders
+
+*   Implement functionality to import.
+
+    - products
+    - stocks
+
+*   Implement functionality to change the state of orders.
+
+*   Rename the method and change to throw an exception.
+    `Comable::Order#complete` => `#complete!`
+
+*   Implement shipments and payments.
+
+*   Rename the state.
+    `complete` => `completed`
+
+*   Implement functionality to edit orders.
+
+*   Implement trackers.
+
+
 ## Comable 0.3.4 (April 07, 2015) ##
 
 *   Rename the depecated method.
