@@ -6,6 +6,7 @@ class CreateComableStores < ActiveRecord::Migration
       t.string :meta_description
       t.string :email_sender
       t.boolean :email_activate_flag, null: false, default: true
+      t.timestamps null: false
     end
   end
 end

@@ -7,6 +7,7 @@ class CreateComableTrackers < ActiveRecord::Migration
       t.string :tracker_id
       t.text :code, null: false
       t.string :place, null: false
+      t.timestamps null: false
     end
   end
 end

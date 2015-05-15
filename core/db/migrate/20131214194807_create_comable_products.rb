@@ -7,6 +7,7 @@ class CreateComableProducts < ActiveRecord::Migration
       t.text :caption
       t.string :sku_h_item_name
       t.string :sku_v_item_name
+      t.timestamps null: false
     end
 
     add_index :comable_products, :code, unique: true
