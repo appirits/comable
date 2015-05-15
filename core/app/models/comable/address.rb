@@ -17,15 +17,15 @@ module Comable
     end
 
     def same_as?(address)
-      attributes_without_id == address.attributes_without_id
+      contents == address.contents
     end
 
     def clone
-      self.class.new(attributes_without_id)
+      self.class.new(contents)
     end
 
-    def attributes_without_id
-      attributes.except('id', 'user_id')
+    def contents
+      attributes.except('id', 'user_id', 'created_at', 'updated_at')
     end
 
     def full_name

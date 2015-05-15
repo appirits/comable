@@ -133,8 +133,8 @@ describe Comable::Order do
 
             it 'has cloned address from order to user' do
               user.reload
-              expect(user.bill_address.attributes_without_id).to eq(address.attributes_without_id)
-              expect(user.ship_address.attributes_without_id).to eq(address.attributes_without_id)
+              expect(user.bill_address.contents).to eq(address.contents)
+              expect(user.ship_address.contents).to eq(address.contents)
             end
           end
         end
