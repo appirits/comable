@@ -143,6 +143,7 @@ en:
       tracker_code_help_additional: '<code>order.order_items</code> is Array. And you can retrieve the following information from each element.'
       list_of_usable_variables: 'Available variables are as follows.'
       mote_infomation_for_syntax: 'For more information about the syntax please refer to the following page:'
+      help_of_store_email: 'This field will be used as sender of mail that send to customers. The mail will not be sent when the field is empty.'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
