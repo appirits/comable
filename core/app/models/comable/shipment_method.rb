@@ -5,6 +5,5 @@ module Comable
     validates :traking_url, length: { maximum: 255 }
 
     scope :activated, -> { where(activated_flag: true) }
-    scope :deactivated, -> { where(activated_flag: false) }
   end
 end
