@@ -24,11 +24,9 @@
         = f.text_field :meta_description
 
       .form-group
-        = f.label :email_sender
-        = f.email_field :email_sender
+        = f.label :email
+        = f.email_field :email
 
-      .form-group
-        .checkbox
-          = f.label :email_activate_flag do
-            = f.check_box :email_activate_flag
-            = f.object.class.human_attribute_name(:email_activate_flag)
+        .help-block
+          p
+            = Comable.t('admin.help_of_store_email')

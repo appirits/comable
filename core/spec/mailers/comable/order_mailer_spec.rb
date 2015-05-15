@@ -16,7 +16,7 @@ describe Comable::OrderMailer do
     end
 
     it 'renders the sender email' do
-      expect(mail.from).to eq([store.email_sender])
+      expect(mail.from).to eq([store.email])
     end
 
     it 'assigns @order' do

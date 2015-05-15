@@ -3,8 +3,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Test store #{n}" }
 
     trait :email_activate do
-      email_sender 'comable@example.com'
-      email_activate_flag true
+      email 'comable@example.com'
     end
   end
 end

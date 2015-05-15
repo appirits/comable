@@ -34,8 +34,7 @@ module Comable
           :name,
           :meta_keywords,
           :meta_description,
-          :email_sender,
-          :email_activate_flag
+          :email
         )
       end
     end

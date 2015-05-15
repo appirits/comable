@@ -295,16 +295,8 @@ describe Comable::OrdersController do
       expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(1)
     end
 
-    context 'No email sender' do
-      let!(:store) { create(:store, :email_activate, email_sender: nil) }
-
-      it 'not sent a mail' do
-        expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
-      end
-    end
-
-    context 'No email activate' do
-      let!(:store) { create(:store, :email_activate, email_activate_flag: false) }
+    context 'when email is empty' do
+      let!(:store) { create(:store, :email_activate, email: nil) }
 
       it 'not sent a mail' do
         expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
