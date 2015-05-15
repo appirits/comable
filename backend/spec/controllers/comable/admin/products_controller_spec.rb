@@ -3,12 +3,12 @@ describe Comable::Admin::ProductsController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:product) }
+  let(:valid_attributes) { attributes_for(:product) }
   let(:invalid_attributes) { valid_attributes.merge(name: 'x' * 1024) }
 
   describe 'GET index' do
     it 'assigns all products as @products' do
-      product = FactoryGirl.create(:product)
+      product = create(:product)
       get :index
       expect(assigns(:products)).to eq([product])
     end
@@ -16,7 +16,7 @@ describe Comable::Admin::ProductsController do
 
   describe 'GET show' do
     it 'assigns the requested product as @product' do
-      product = FactoryGirl.create(:product)
+      product = create(:product)
       get :show, id: product.to_param
       expect(assigns(:product)).to eq(product)
     end
@@ -31,7 +31,7 @@ describe Comable::Admin::ProductsController do
 
   describe 'GET edit' do
     it 'assigns the requested product as @product' do
-      product = FactoryGirl.create(:product)
+      product = create(:product)
       get :edit, id: product.to_param
       expect(assigns(:product)).to eq(product)
     end
@@ -79,7 +79,7 @@ describe Comable::Admin::ProductsController do
   end
 
   describe 'PUT update' do
-    let!(:product) { FactoryGirl.create(:product) }
+    let!(:product) { create(:product) }
 
     describe 'with valid params' do
       let(:new_attributes) { { name: "NEW: #{product.name}" } }
@@ -116,12 +116,12 @@ describe Comable::Admin::ProductsController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested product' do
-      product = FactoryGirl.create(:product)
+      product = create(:product)
       expect { delete :destroy, id: product.to_param }.to change(Comable::Product, :count).by(-1)
     end
 
     it 'redirects to the products list' do
-      product = FactoryGirl.create(:product)
+      product = create(:product)
       delete :destroy, id: product.to_param
       expect(response).to redirect_to([comable, :admin, :products])
     end
@@ -129,14 +129,14 @@ describe Comable::Admin::ProductsController do
 
   describe 'GET export' do
     it 'exports the csv file' do
-      product = FactoryGirl.create(:product)
+      product = create(:product)
       get :export, format: :csv
       expect(response.body).to include(product.code)
       expect(response.body).to include(product.name)
     end
 
     it 'exports the xlsx file' do
-      FactoryGirl.create(:product)
+      create(:product)
       get :export, format: :xlsx
       expect(response.content_type).to eq(Mime::XLSX)
     end

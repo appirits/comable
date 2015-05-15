@@ -1,5 +1,5 @@
 describe 'comable/admin/orders/show' do
-  let!(:order) { FactoryGirl.create(:order, :completed) }
+  let!(:order) { create(:order, :completed) }
 
   before { assign(:order, order) }
 

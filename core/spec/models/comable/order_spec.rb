@@ -1,5 +1,5 @@
 describe Comable::Order do
-  subject(:order) { FactoryGirl.build(:order) }
+  subject(:order) { build(:order) }
 
   subject { order }
 
@@ -51,7 +51,7 @@ describe Comable::Order do
     end
 
     context 'when user is registered' do
-      before { subject.attributes = { guest_token: nil, user: FactoryGirl.create(:user) } }
+      before { subject.attributes = { guest_token: nil, user: create(:user) } }
       before { subject.save }
 
       it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:completed_at) }
@@ -66,10 +66,10 @@ describe Comable::Order do
     end
 
     describe 'for order items' do
-      let!(:order_item) { FactoryGirl.create(:order_item, stock: stock, order: order) }
+      let!(:order_item) { create(:order_item, stock: stock, order: order) }
 
       context 'when out of stock' do
-        let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
+        let(:stock) { create(:stock, :stocked, :with_product) }
 
         it 'has errors' do
           stock.update_attributes(quantity: 0)
@@ -83,7 +83,7 @@ describe Comable::Order do
   describe 'attributes' do
     describe '#save' do
       context 'complete order' do
-        let!(:order_item) { FactoryGirl.create(:order_item, order: order, quantity: 10) }
+        let!(:order_item) { create(:order_item, order: order, quantity: 10) }
 
         let(:stock) { order_item.stock }
         let(:product) { stock.product }
@@ -101,9 +101,9 @@ describe Comable::Order do
         end
 
         context 'with shipment' do
-          subject(:order) { FactoryGirl.build(:order, :for_shipment, shipment: shipment) }
+          subject(:order) { build(:order, :for_shipment, shipment: shipment) }
 
-          let(:shipment) { FactoryGirl.build(:shipment) }
+          let(:shipment) { build(:shipment) }
 
           its(:shipment_fee) { is_expected.to eq(shipment.fee) }
           its(:total_price) { is_expected.to eq(item_total_price + shipment.fee) }
@@ -114,12 +114,12 @@ describe Comable::Order do
         end
 
         context 'with user' do
-          subject(:order) { FactoryGirl.build(:order, user: user, bill_address: address, ship_address: address) }
+          subject(:order) { build(:order, user: user, bill_address: address, ship_address: address) }
 
-          let(:address) { FactoryGirl.create(:address) }
+          let(:address) { create(:address) }
 
           context 'has addresses used in order' do
-            let(:user) { FactoryGirl.create(:user, addresses: [address]) }
+            let(:user) { create(:user, addresses: [address]) }
 
             it 'has copied address from order to user' do
               user.reload
@@ -129,7 +129,7 @@ describe Comable::Order do
           end
 
           context 'has addresses not used in order' do
-            let(:user) { FactoryGirl.create(:user, :with_addresses) }
+            let(:user) { create(:user, :with_addresses) }
 
             it 'has cloned address from order to user' do
               user.reload
@@ -148,9 +148,9 @@ describe Comable::Order do
         its(:code) { should be_nil }
 
         context 'with user address' do
-          subject(:order) { FactoryGirl.build(:order, user: user) }
+          subject(:order) { build(:order, user: user) }
 
-          let(:user) { FactoryGirl.create(:user, :with_addresses) }
+          let(:user) { create(:user, :with_addresses) }
 
           its(:bill_address) { is_expected.to be }
           its(:ship_address) { is_expected.to be }

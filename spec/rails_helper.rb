@@ -38,4 +38,7 @@ RSpec.configure do |config|
   # for Rspec 3
   # refs: https://github.com/rspec/rspec-rails/issues/932#issuecomment-43521700
   config.infer_spec_type_from_file_location!
+
+  # Omit the prefix FactoryGirl
+  config.include FactoryGirl::Syntax::Methods
 end

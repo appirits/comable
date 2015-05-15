@@ -1,5 +1,5 @@
 RSpec.describe Comable::Tracker do
-  subject { FactoryGirl.build(:tracker) }
+  subject { build(:tracker) }
 
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:code) }

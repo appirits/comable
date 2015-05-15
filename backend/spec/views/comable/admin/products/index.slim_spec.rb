@@ -1,5 +1,5 @@
 describe 'comable/admin/products/index' do
-  let!(:products) { FactoryGirl.create_list(:product, 2) }
+  let!(:products) { create_list(:product, 2) }
 
   let(:q) { Comable::Product.ransack }
 

@@ -1,5 +1,5 @@
 describe 'comable/admin/trackers/index' do
-  let!(:trackers) { FactoryGirl.create_list(:tracker, 2) }
+  let!(:trackers) { create_list(:tracker, 2) }
 
   before { assign(:trackers, Comable::Tracker.page(1)) }
 

@@ -1,5 +1,5 @@
 describe 'comable/admin/trackers/edit' do
-  let(:tracker) { FactoryGirl.create(:tracker) }
+  let(:tracker) { create(:tracker) }
 
   before { assign(:tracker, tracker) }
 

@@ -8,12 +8,12 @@ describe Comable::ApplicationHelper do
     end
 
     it 'allows the specified method of a model to liquidize' do
-      order = FactoryGirl.build(:order, total_price: 100)
+      order = build(:order, total_price: 100)
       expect(subject.liquidize('Total price: {{ order.total_price }}', order: order)).to include(order.total_price.to_s)
     end
 
     it 'denies the specified method of a model to liquidize' do
-      order = FactoryGirl.build(:order, email: 'john@example.com')
+      order = build(:order, email: 'john@example.com')
       expect(subject.liquidize('email: {{ order.email }}', order: order)).not_to include(order.email)
     end
   end

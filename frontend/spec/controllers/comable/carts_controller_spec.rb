@@ -8,8 +8,8 @@ describe Comable::CartsController do
   before { request }
 
   describe 'inherit cart items' do
-    let(:product) { FactoryGirl.create(:product, :with_stock) }
-    let(:user) { FactoryGirl.create(:user) }
+    let(:product) { create(:product, :with_stock) }
+    let(:user) { create(:user) }
 
     subject { current_comable_user }
 
@@ -46,7 +46,7 @@ describe Comable::CartsController do
     end
 
     context 'when sign in and already existed a cart' do
-      let(:products) { FactoryGirl.create_list(:product, 2, :with_stock) }
+      let(:products) { create_list(:product, 2, :with_stock) }
       let(:product) { products.first }
 
       let(:request) do
@@ -72,7 +72,7 @@ describe Comable::CartsController do
 
   context 'ゲストの場合' do
     context '通常商品' do
-      let(:product) { FactoryGirl.create(:product, :with_stock) }
+      let(:product) { create(:product, :with_stock) }
 
       describe "GET 'show'" do
         let(:request) { get :show }
@@ -97,8 +97,8 @@ describe Comable::CartsController do
         end
 
         context 'when product unstocked' do
-          let(:stock) { FactoryGirl.create(:stock, :unstocked) }
-          let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+          let(:stock) { create(:stock, :unstocked) }
+          let(:product) { create(:product, stocks: [stock]) }
 
           its(:response) { is_expected.to render_template(:show) }
 
@@ -110,7 +110,7 @@ describe Comable::CartsController do
     end
 
     context 'SKU商品' do
-      let(:product) { FactoryGirl.create(:product, :sku) }
+      let(:product) { create(:product, :sku) }
 
       describe "GET 'show'" do
         let(:request) { get :show }

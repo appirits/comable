@@ -1,5 +1,5 @@
 describe 'comable/admin/users/index' do
-  let!(:users) { FactoryGirl.create_list(:user, 2) }
+  let!(:users) { create_list(:user, 2) }
 
   let(:q) { Comable::User.ransack }
 

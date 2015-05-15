@@ -3,12 +3,12 @@ describe Comable::Admin::TrackersController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:tracker) }
+  let(:valid_attributes) { attributes_for(:tracker) }
   let(:invalid_attributes) { valid_attributes.merge(tracker_id: 'x' * 1024) }
 
   describe 'GET index' do
     it 'assigns all trackers as @trackers' do
-      tracker = FactoryGirl.create(:tracker)
+      tracker = create(:tracker)
       get :index
       expect(assigns(:trackers)).to eq([tracker])
     end
@@ -16,7 +16,7 @@ describe Comable::Admin::TrackersController do
 
   describe 'GET show' do
     it 'assigns the requested tracker as @tracker' do
-      tracker = FactoryGirl.create(:tracker)
+      tracker = create(:tracker)
       get :show, id: tracker.to_param
       expect(assigns(:tracker)).to eq(tracker)
     end
@@ -31,7 +31,7 @@ describe Comable::Admin::TrackersController do
 
   describe 'GET edit' do
     it 'assigns the requested tracker as @tracker' do
-      tracker = FactoryGirl.create(:tracker)
+      tracker = create(:tracker)
       get :edit, id: tracker.to_param
       expect(assigns(:tracker)).to eq(tracker)
     end
@@ -69,7 +69,7 @@ describe Comable::Admin::TrackersController do
   end
 
   describe 'PUT update' do
-    let!(:tracker) { FactoryGirl.create(:tracker) }
+    let!(:tracker) { create(:tracker) }
 
     describe 'with valid params' do
       let(:new_attributes) { { tracker_id: "NEW: #{tracker.tracker_id}" } }
@@ -106,12 +106,12 @@ describe Comable::Admin::TrackersController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested tracker' do
-      tracker = FactoryGirl.create(:tracker)
+      tracker = create(:tracker)
       expect { delete :destroy, id: tracker.to_param }.to change(Comable::Tracker, :count).by(-1)
     end
 
     it 'redirects to the trackers list' do
-      tracker = FactoryGirl.create(:tracker)
+      tracker = create(:tracker)
       delete :destroy, id: tracker.to_param
       expect(response).to redirect_to([comable, :admin, :trackers])
     end

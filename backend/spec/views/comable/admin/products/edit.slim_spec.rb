@@ -1,5 +1,5 @@
 describe 'comable/admin/products/edit' do
-  let(:product) { FactoryGirl.create(:product) }
+  let(:product) { create(:product) }
 
   before { assign(:product, product) }
 

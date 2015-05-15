@@ -1,5 +1,5 @@
 describe 'comable/admin/products/new' do
-  let(:product) { FactoryGirl.build(:product) }
+  let(:product) { build(:product) }
 
   before { assign(:product, product) }
 

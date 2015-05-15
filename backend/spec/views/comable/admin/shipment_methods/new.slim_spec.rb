@@ -1,5 +1,5 @@
 describe 'comable/admin/shipment_methods/new' do
-  let(:shipment_method) { FactoryGirl.build(:shipment_method) }
+  let(:shipment_method) { build(:shipment_method) }
 
   before { assign(:shipment_method, shipment_method) }
 

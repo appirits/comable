@@ -3,7 +3,7 @@ describe Comable::Admin::StoreController, type: :controller do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:store) }
+  let(:valid_attributes) { attributes_for(:store) }
   let(:invalid_attributes) { valid_attributes.merge(name: 'x' * 1024) }
 
   describe 'GET show' do
@@ -22,7 +22,7 @@ describe Comable::Admin::StoreController, type: :controller do
     end
 
     context 'when store is persisted' do
-      let!(:store) { FactoryGirl.create(:store) }
+      let!(:store) { create(:store) }
 
       it 'assigns the requested store as @store' do
         get :edit
@@ -33,7 +33,7 @@ describe Comable::Admin::StoreController, type: :controller do
 
   describe 'PUT update' do
     context 'when store is persisted' do
-      let!(:store) { FactoryGirl.create(:store) }
+      let!(:store) { create(:store) }
 
       describe 'with valid params' do
         let(:new_attributes) { { name: "NEW: #{store.name}" } }

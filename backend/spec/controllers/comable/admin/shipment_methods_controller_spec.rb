@@ -3,12 +3,12 @@ describe Comable::Admin::ShipmentMethodsController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:shipment_method) }
+  let(:valid_attributes) { attributes_for(:shipment_method) }
   let(:invalid_attributes) { valid_attributes.merge(name: 'x' * 1024) }
 
   describe 'GET index' do
     it 'assigns all shipment_methods as @shipment_methods' do
-      shipment_method = FactoryGirl.create(:shipment_method)
+      shipment_method = create(:shipment_method)
       get :index
       expect(assigns(:shipment_methods)).to eq([shipment_method])
     end
@@ -16,7 +16,7 @@ describe Comable::Admin::ShipmentMethodsController do
 
   describe 'GET show' do
     it 'assigns the requested shipment_method as @shipment_method' do
-      shipment_method = FactoryGirl.create(:shipment_method)
+      shipment_method = create(:shipment_method)
       get :show, id: shipment_method.to_param
       expect(assigns(:shipment_method)).to eq(shipment_method)
     end
@@ -31,7 +31,7 @@ describe Comable::Admin::ShipmentMethodsController do
 
   describe 'GET edit' do
     it 'assigns the requested shipment_method as @shipment_method' do
-      shipment_method = FactoryGirl.create(:shipment_method)
+      shipment_method = create(:shipment_method)
       get :edit, id: shipment_method.to_param
       expect(assigns(:shipment_method)).to eq(shipment_method)
     end
@@ -69,7 +69,7 @@ describe Comable::Admin::ShipmentMethodsController do
   end
 
   describe 'PUT update' do
-    let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
+    let!(:shipment_method) { create(:shipment_method) }
 
     describe 'with valid params' do
       let(:new_attributes) { { name: "NEW: #{shipment_method.name}" } }
@@ -106,12 +106,12 @@ describe Comable::Admin::ShipmentMethodsController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested shipment_method' do
-      shipment_method = FactoryGirl.create(:shipment_method)
+      shipment_method = create(:shipment_method)
       expect { delete :destroy, id: shipment_method.to_param }.to change(Comable::ShipmentMethod, :count).by(-1)
     end
 
     it 'redirects to the shipment_methods list' do
-      shipment_method = FactoryGirl.create(:shipment_method)
+      shipment_method = create(:shipment_method)
       delete :destroy, id: shipment_method.to_param
       expect(response).to redirect_to([comable, :admin, :shipment_methods])
     end

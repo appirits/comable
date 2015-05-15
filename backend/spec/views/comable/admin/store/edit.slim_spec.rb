@@ -1,6 +1,6 @@
 describe 'comable/admin/store/edit' do
   context 'when sotre is persisted' do
-    let(:store) { FactoryGirl.create(:store) }
+    let(:store) { create(:store) }
 
     before { assign(:store, store) }
 
@@ -12,7 +12,7 @@ describe 'comable/admin/store/edit' do
   end
 
   context 'when sotre is not persisted' do
-    let(:store) { FactoryGirl.build(:store) }
+    let(:store) { build(:store) }
 
     before { assign(:store, store) }
 

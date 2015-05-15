@@ -3,14 +3,14 @@ describe Comable::Admin::StocksController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:stock) }
+  let(:valid_attributes) { attributes_for(:stock) }
   let(:invalid_attributes) { valid_attributes.merge(code: 'x' * 1024) }
 
-  let(:product) { FactoryGirl.create(:product) }
+  let(:product) { create(:product) }
 
   describe 'GET index' do
     it 'assigns all stocks as @stocks' do
-      stock = FactoryGirl.create(:stock, product: product)
+      stock = create(:stock, product: product)
       get :index
       expect(assigns(:stocks)).to eq([stock])
     end
@@ -18,7 +18,7 @@ describe Comable::Admin::StocksController do
 
   describe 'GET show' do
     it 'assigns the requested stock as @stock' do
-      stock = FactoryGirl.create(:stock, product: product)
+      stock = create(:stock, product: product)
       get :show, id: stock.to_param
       expect(assigns(:stock)).to eq(stock)
     end
@@ -33,7 +33,7 @@ describe Comable::Admin::StocksController do
 
   describe 'GET edit' do
     it 'assigns the requested stock as @stock' do
-      stock = FactoryGirl.create(:stock, product: product)
+      stock = create(:stock, product: product)
       get :edit, id: stock.to_param
       expect(assigns(:stock)).to eq(stock)
     end
@@ -72,7 +72,7 @@ describe Comable::Admin::StocksController do
   end
 
   describe 'PUT update' do
-    let!(:stock) { FactoryGirl.create(:stock, product: product) }
+    let!(:stock) { create(:stock, product: product) }
 
     describe 'with valid params' do
       let(:new_attributes) { { code: "new_#{stock.code}" } }
@@ -109,12 +109,12 @@ describe Comable::Admin::StocksController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested stock' do
-      stock = FactoryGirl.create(:stock, product: product)
+      stock = create(:stock, product: product)
       expect { delete :destroy, id: stock.to_param }.to change(Comable::Stock, :count).by(-1)
     end
 
     it 'redirects to the stocks list' do
-      stock = FactoryGirl.create(:stock, product: product)
+      stock = create(:stock, product: product)
       delete :destroy, id: stock.to_param
       expect(response).to redirect_to([comable, :admin, :stocks])
     end
@@ -122,7 +122,7 @@ describe Comable::Admin::StocksController do
 
   describe 'GET export' do
     it 'exports the csv file' do
-      stock = FactoryGirl.create(:stock, product: product)
+      stock = create(:stock, product: product)
       get :export, format: :csv
       expect(response.body).to include(product.code)
       expect(response.body).to include(stock.code)
@@ -130,7 +130,7 @@ describe Comable::Admin::StocksController do
     end
 
     it 'exports the xlsx file' do
-      FactoryGirl.create(:stock, product: product)
+      create(:stock, product: product)
       get :export, format: :xlsx
       expect(response.content_type).to eq(Mime::XLSX)
     end

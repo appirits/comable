@@ -14,7 +14,7 @@ describe Comable::User do
 
   describe 'incomplete order' do
     context 'when guest' do
-      let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
+      let(:stock) { create(:stock, :stocked, :with_product) }
 
       subject { described_class.new.with_cookies(cookies) }
 
@@ -46,11 +46,11 @@ describe Comable::User do
   end
 
   context 'カート処理' do
-    let(:stocks) { FactoryGirl.create_list(:stock, 5, :stocked, :with_product) }
+    let(:stocks) { create_list(:stock, 5, :stocked, :with_product) }
     let(:stock) { stocks.first }
 
     # when guest
-    subject { FactoryGirl.build(:user).with_cookies(cookies) }
+    subject { build(:user).with_cookies(cookies) }
 
     it '商品を投入できること' do
       subject.add_cart_item(stock)
@@ -92,7 +92,7 @@ describe Comable::User do
     end
 
     context 'when product unstocked' do
-      let(:stocks) { FactoryGirl.create_list(:stock, 5, :unstocked, :with_product) }
+      let(:stocks) { create_list(:stock, 5, :unstocked, :with_product) }
 
       it 'has a error in cart' do
         subject.add_cart_item(stock)
@@ -107,12 +107,12 @@ describe Comable::User do
   end
 
   context '注文処理' do
-    let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product, quantity: order_quantity) }
-    let(:address) { FactoryGirl.create(:address) }
+    let(:stock) { create(:stock, :stocked, :with_product, quantity: order_quantity) }
+    let(:address) { create(:address) }
     let(:order_quantity) { 10 }
     let(:current_order) { subject.incomplete_order }
 
-    subject { FactoryGirl.create(:user) }
+    subject { create(:user) }
 
     before { subject.incomplete_order.update_attributes(bill_address: address, ship_address: address) }
     before { subject.add_cart_item(stock, quantity: order_quantity) }
@@ -156,7 +156,7 @@ describe Comable::User do
   end
 
   describe 'Associations' do
-    subject { FactoryGirl.build_stubbed(:user) }
+    subject { build_stubbed(:user) }
 
     it 'has one bill_address' do
       subject.build_bill_address

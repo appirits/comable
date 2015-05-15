@@ -5,7 +5,7 @@ end
 
 describe Comable::CartOwner do
   let(:quantity) { 2 }
-  let(:order_items) { FactoryGirl.build_list(:order_item, 5, quantity: quantity) }
+  let(:order_items) { build_list(:order_item, 5, quantity: quantity) }
 
   subject { DummyUser.new }
 
@@ -16,7 +16,7 @@ describe Comable::CartOwner do
   end
 
   context 'with errors' do
-    let(:stock) { FactoryGirl.build(:stock, :unstocked) }
+    let(:stock) { build(:stock, :unstocked) }
     let(:cart_item) { subject.cart_items.first }
 
     before { allow(cart_item).to receive(:stock).and_return(stock) }
