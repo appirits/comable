@@ -9,6 +9,6 @@ class CreateComableProducts < ActiveRecord::Migration
       t.string :sku_v_item_name
     end
 
-    add_index :comable_products, :code, unique: true, name: :comable_products_idx_01
+    add_index :comable_products, :code, unique: true
   end
 end

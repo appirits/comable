@@ -13,6 +13,6 @@ class CreateComableOrderItems < ActiveRecord::Migration
       t.integer :quantity, default: 1, null: false
     end
 
-    add_index :comable_order_items, [:order_id, :stock_id], unique: true, name: :comable_order_items_idx_01
+    add_index :comable_order_items, [:order_id, :stock_id], unique: true
   end
 end

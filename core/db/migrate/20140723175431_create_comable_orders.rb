@@ -14,6 +14,6 @@ class CreateComableOrders < ActiveRecord::Migration
       t.datetime :completed_at
     end
 
-    add_index :comable_orders, :code, unique: true, name: :comable_orders_idx_01
+    add_index :comable_orders, :code, unique: true
   end
 end
