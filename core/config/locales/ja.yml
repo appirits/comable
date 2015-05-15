@@ -304,7 +304,7 @@ ja:
         name: ストア名
         meta_keywords: メタキーワード
         meta_description: メタディスクリプション
-        email_sender: 送信元メールアドレス
+        email: メールアドレス
       comable/shipment_method:
         name: 発送方法名
         fee: 手数料

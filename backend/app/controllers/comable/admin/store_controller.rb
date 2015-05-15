@@ -34,7 +34,7 @@ module Comable
           :name,
           :meta_keywords,
           :meta_description,
-          :email_sender,
+          :email
         )
       end
     end

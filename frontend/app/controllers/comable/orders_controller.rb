@@ -40,7 +40,7 @@ module Comable
     private
 
     def send_order_complete_mail
-      return unless current_store.email_activate?
+      return unless current_store.can_send_mail?
       if Rails.version =~ /^4.2./
         Comable::OrderMailer.complete(@order).deliver_now
       else

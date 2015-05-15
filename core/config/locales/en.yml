@@ -304,7 +304,7 @@ en:
         name: 'Name'
         meta_keywords: 'Meta keywords'
         meta_description: 'Meta description'
-        email_sender: 'Email sender'
+        email: 'Email'
       comable/shipment_method:
         name: 'Name'
         fee: 'Fee'

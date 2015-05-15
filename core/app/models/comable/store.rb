@@ -3,7 +3,7 @@ module Comable
     validates :name, length: { maximum: 255 }
     validates :meta_keywords, length: { maximum: 255 }
     validates :meta_description, length: { maximum: 255 }
-    validates :email_sender, length: { maximum: 255 }
+    validates :email, length: { maximum: 255 }
 
     class << self
       def instance
@@ -15,8 +15,8 @@ module Comable
       end
     end
 
-    def email_activate?
-      email_sender.present?
+    def can_send_mail?
+      email.present?
     end
   end
 end
