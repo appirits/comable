@@ -13,6 +13,10 @@ module Comable
     accepts_nested_attributes_for :bill_address
     accepts_nested_attributes_for :ship_address
 
+    scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
+    scope :this_week, -> { where(created_at: Time.now.beginning_of_week..Time.now.end_of_week) }
+    scope :last_week, -> { where(created_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week) }
+
     validates :email, presence: true, length: { maximum: 255 }
 
     devise(*Comable::Config.devise_strategies[:user])
