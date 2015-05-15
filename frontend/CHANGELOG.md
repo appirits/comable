@@ -1,3 +1,22 @@
+## Comable 0.4.1 (May 15, 2015) ##
+
+*   Remove database index name.
+
+*   Remove FactoryGirl prefix form tests.
+
+*   Add timestamps to all tables.
+
+*   Change the condition to send email to customer.
+
+    - Remove `Comable::Store#email_activate_flag` column.
+    - Rename column: `Comable::Store#email_sender` => `Comable::Store#email`
+
+*   Rename flag columns.
+
+    - `Comable::ShipmentMethod#activate_flag` => `#activated_flag`
+    - `Comable::Tracker#activate_flag` => `#activated_flag`
+
+
 ## Comable 0.4.0 (May 15, 2015) ##
 
 *   Rename models.
