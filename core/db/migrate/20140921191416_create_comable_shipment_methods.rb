@@ -5,6 +5,7 @@ class CreateComableShipmentMethods < ActiveRecord::Migration
       t.string :name, null: false
       t.integer :fee, null: false
       t.string :traking_url
+      t.timestamps null: false
     end
   end
 end

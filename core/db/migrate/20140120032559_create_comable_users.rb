@@ -34,6 +34,8 @@ class CreateComableUsers < ActiveRecord::Migration
       ## Others
       t.references :bill_address
       t.references :ship_address
+
+      t.timestamps null: false
     end
 
     add_index :comable_users, :email, unique: true
