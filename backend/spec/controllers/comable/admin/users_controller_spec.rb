@@ -3,12 +3,12 @@ describe Comable::Admin::UsersController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:user) }
+  let(:valid_attributes) { attributes_for(:user) }
   let(:invalid_attributes) { valid_attributes.merge(email: 'x' * 1024) }
 
   describe 'GET index' do
     it 'assigns all users as @users' do
-      user = FactoryGirl.create(:user)
+      user = create(:user)
       get :index
       expect(assigns(:users)).to include(user)
     end
@@ -16,7 +16,7 @@ describe Comable::Admin::UsersController do
 
   describe 'GET show' do
     it 'assigns the requested user as @user' do
-      user = FactoryGirl.create(:user)
+      user = create(:user)
       get :show, id: user.to_param
       expect(assigns(:user)).to eq(user)
     end
@@ -24,14 +24,14 @@ describe Comable::Admin::UsersController do
 
   describe 'GET edit' do
     it 'assigns the requested user as @user' do
-      user = FactoryGirl.create(:user)
+      user = create(:user)
       get :edit, id: user.to_param
       expect(assigns(:user)).to eq(user)
     end
   end
 
   describe 'PUT update' do
-    let!(:user) { FactoryGirl.create(:user) }
+    let!(:user) { create(:user) }
 
     describe 'with valid params' do
       let(:new_attributes) { { email: "new_#{user.email}" } }

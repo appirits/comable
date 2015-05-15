@@ -3,12 +3,12 @@ describe Comable::Admin::PaymentMethodsController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:payment_method) }
+  let(:valid_attributes) { attributes_for(:payment_method) }
   let(:invalid_attributes) { valid_attributes.merge(name: 'x' * 1024) }
 
   describe 'GET index' do
     it 'assigns all payment_methods as @payment_methods' do
-      payment_method = FactoryGirl.create(:payment_method)
+      payment_method = create(:payment_method)
       get :index
       expect(assigns(:payment_methods)).to eq([payment_method])
     end
@@ -16,7 +16,7 @@ describe Comable::Admin::PaymentMethodsController do
 
   describe 'GET show' do
     it 'assigns the requested payment_method as @payment_method' do
-      payment_method = FactoryGirl.create(:payment_method)
+      payment_method = create(:payment_method)
       get :show, id: payment_method.to_param
       expect(assigns(:payment_method)).to eq(payment_method)
     end
@@ -31,7 +31,7 @@ describe Comable::Admin::PaymentMethodsController do
 
   describe 'GET edit' do
     it 'assigns the requested payment_method as @payment_method' do
-      payment_method = FactoryGirl.create(:payment_method)
+      payment_method = create(:payment_method)
       get :edit, id: payment_method.to_param
       expect(assigns(:payment_method)).to eq(payment_method)
     end
@@ -69,7 +69,7 @@ describe Comable::Admin::PaymentMethodsController do
   end
 
   describe 'PUT update' do
-    let!(:payment_method) { FactoryGirl.create(:payment_method) }
+    let!(:payment_method) { create(:payment_method) }
 
     describe 'with valid params' do
       let(:new_attributes) { { name: "NEW: #{payment_method.name}" } }
@@ -106,12 +106,12 @@ describe Comable::Admin::PaymentMethodsController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested payment_method' do
-      payment_method = FactoryGirl.create(:payment_method)
+      payment_method = create(:payment_method)
       expect { delete :destroy, id: payment_method.to_param }.to change(Comable::PaymentMethod, :count).by(-1)
     end
 
     it 'redirects to the payment_methods list' do
-      payment_method = FactoryGirl.create(:payment_method)
+      payment_method = create(:payment_method)
       delete :destroy, id: payment_method.to_param
       expect(response).to redirect_to([comable, :admin, :payment_methods])
     end

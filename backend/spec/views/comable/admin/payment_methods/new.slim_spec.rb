@@ -1,5 +1,5 @@
 describe 'comable/admin/payment_methods/new' do
-  let(:payment_method) { FactoryGirl.build(:payment_method) }
+  let(:payment_method) { build(:payment_method) }
 
   before { assign(:payment_method, payment_method) }
 

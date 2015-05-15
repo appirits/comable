@@ -2,7 +2,7 @@ describe Comable::OrderItem do
   it { expect { described_class.new }.to_not raise_error }
 
   describe 'validations' do
-    subject(:order_item) { FactoryGirl.build(:order_item) }
+    subject(:order_item) { build(:order_item) }
 
     describe 'for quantity' do
       it 'is valid with greater than 0' do

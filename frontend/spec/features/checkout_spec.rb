@@ -1,9 +1,9 @@
 feature 'Checkout' do
-  given!(:persisted_user) { FactoryGirl.create(:user, :with_addresses, password: 'raw-passowrd') }
-  given!(:order) { FactoryGirl.create(:order, :for_confirm, order_items: [order_item]) }
+  given!(:persisted_user) { create(:user, :with_addresses, password: 'raw-passowrd') }
+  given!(:order) { create(:order, :for_confirm, order_items: [order_item]) }
 
-  given(:order_item) { FactoryGirl.build(:order_item) }
-  given(:current_comable_user) { FactoryGirl.build(:user) }
+  given(:order_item) { build(:order_item) }
+  given(:current_comable_user) { build(:user) }
 
   background do
     allow(Comable::User).to receive(:new).and_return(current_comable_user)

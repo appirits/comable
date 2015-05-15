@@ -1,5 +1,5 @@
 describe 'comable/admin/orders/index' do
-  let(:orders) { FactoryGirl.create_list(:order, 2, :completed) }
+  let(:orders) { create_list(:order, 2, :completed) }
   let(:q) { Comable::Order.ransack }
 
   before { assign(:q, q) }

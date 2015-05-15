@@ -1,5 +1,5 @@
 describe 'comable/products/index.html.slim' do
-  let(:products) { FactoryGirl.create_list(:product, 5) }
+  let(:products) { create_list(:product, 5) }
   let(:product) { products.first }
 
   context '商品が登録されている場合' do

@@ -2,7 +2,7 @@ describe Comable::ProductsController do
   render_views
 
   context '通常商品' do
-    let!(:product) { FactoryGirl.create(:product) }
+    let!(:product) { create(:product) }
 
     describe "GET 'index'" do
       before { get :index }
@@ -18,7 +18,7 @@ describe Comable::ProductsController do
   end
 
   context 'SKU商品' do
-    let(:product) { FactoryGirl.create(:product, :sku) }
+    let(:product) { create(:product, :sku) }
 
     describe "GET 'show'" do
       before { get :show, id: product.id }
@@ -28,7 +28,7 @@ describe Comable::ProductsController do
   end
 
   context 'SKU商品（横軸のみ）' do
-    let(:product) { FactoryGirl.create(:product, :sku_h) }
+    let(:product) { create(:product, :sku_h) }
 
     describe "GET 'show'" do
       before { get :show, id: product.id }
@@ -38,8 +38,8 @@ describe Comable::ProductsController do
   end
 
   context 'with images' do
-    let!(:product) { FactoryGirl.create(:product) }
-    let!(:images) { FactoryGirl.create_list(:image, 5, product: product) }
+    let!(:product) { create(:product) }
+    let!(:images) { create_list(:image, 5, product: product) }
 
     describe "GET 'index'" do
       before { get :index }
@@ -59,11 +59,11 @@ describe Comable::ProductsController do
   end
 
   context 'with category' do
-    let!(:parent_category) { FactoryGirl.create(:category, name: 'parent_category') }
-    let!(:category) { FactoryGirl.create(:category, name: 'category', parent: parent_category) }
-    let!(:child_category) { FactoryGirl.create(:category, name: 'child_category', parent: category) }
+    let!(:parent_category) { create(:category, name: 'parent_category') }
+    let!(:category) { create(:category, name: 'category', parent: parent_category) }
+    let!(:child_category) { create(:category, name: 'child_category', parent: category) }
 
-    let!(:product) { FactoryGirl.create(:product, categories: [child_category]) }
+    let!(:product) { create(:product, categories: [child_category]) }
 
     describe "GET 'index'" do
       before { get :index, category_id: category.id }
@@ -80,7 +80,7 @@ describe Comable::ProductsController do
   end
 
   context 'with pagination' do
-    let!(:products) { FactoryGirl.create_list(:product, per_page + 1) }
+    let!(:products) { create_list(:product, per_page + 1) }
 
     let(:per_page) { Comable::Config.products_per_page }
 

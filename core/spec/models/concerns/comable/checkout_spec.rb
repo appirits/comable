@@ -23,7 +23,7 @@ describe Comable::Checkout do
   end
 
   shared_examples "next state is 'shipment' if shipment method is present" do
-    let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
+    let!(:shipment_method) { create(:shipment_method) }
 
     it "state change to 'shipment'" do
       expect { subject.next_state }.to change { subject.state }.to eq('shipment')
@@ -31,7 +31,7 @@ describe Comable::Checkout do
   end
 
   shared_examples "next state is 'payment' if payment method is present" do
-    let!(:payment_method) { FactoryGirl.create(:payment_method) }
+    let!(:payment_method) { create(:payment_method) }
 
     it "state change to 'payment'" do
       expect { subject.next_state }.to change { subject.state }.to eq('payment')
@@ -47,7 +47,7 @@ describe Comable::Checkout do
       end
 
       context 'when billing address is present' do
-        let(:bill_address) { FactoryGirl.create(:address) }
+        let(:bill_address) { create(:address) }
 
         before { subject.bill_address = bill_address }
 
@@ -65,7 +65,7 @@ describe Comable::Checkout do
       end
 
       context 'when shipping address is present' do
-        let(:ship_address) { FactoryGirl.create(:address) }
+        let(:ship_address) { create(:address) }
 
         before { subject.ship_address = ship_address }
 

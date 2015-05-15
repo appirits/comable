@@ -1,5 +1,5 @@
 describe 'comable/products/show.html.slim' do
-  let(:product) { FactoryGirl.build(:product) }
+  let(:product) { build(:product) }
   let(:add_cart_button) { '.add_cart input[type=submit]' }
 
   before { assign(:product, product) }
@@ -12,8 +12,8 @@ describe 'comable/products/show.html.slim' do
   end
 
   context '在庫あり商品の場合' do
-    let(:stock) { FactoryGirl.create(:stock, :stocked) }
-    let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+    let(:stock) { create(:stock, :stocked) }
+    let(:product) { create(:product, stocks: [stock]) }
 
     it 'カート投入ボタンが存在すること' do
       expect(rendered).to have_selector add_cart_button
@@ -21,8 +21,8 @@ describe 'comable/products/show.html.slim' do
   end
 
   context '在庫なし商品の場合' do
-    let(:stock) { FactoryGirl.create(:stock, :unstocked) }
-    let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
+    let(:stock) { create(:stock, :unstocked) }
+    let(:product) { create(:product, stocks: [stock]) }
 
     it 'カート投入ボタンが存在しないこと' do
       expect(rendered).not_to have_selector add_cart_button

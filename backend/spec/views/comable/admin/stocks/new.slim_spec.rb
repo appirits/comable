@@ -1,6 +1,6 @@
 describe 'comable/admin/stocks/new' do
-  let(:product) { FactoryGirl.create(:product) }
-  let(:stock) { FactoryGirl.build(:stock, product: product) }
+  let(:product) { create(:product) }
+  let(:stock) { build(:stock, product: product) }
 
   before { assign(:product, product) }
   before { assign(:stock, stock) }

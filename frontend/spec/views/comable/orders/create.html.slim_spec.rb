@@ -1,5 +1,5 @@
 describe 'comable/orders/create.html.slim' do
-  let(:order) { FactoryGirl.create(:order) }
+  let(:order) { create(:order) }
 
   before { order.complete }
   before { assign(:order, order) }

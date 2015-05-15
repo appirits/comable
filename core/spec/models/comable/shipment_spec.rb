@@ -1,5 +1,5 @@
 RSpec.describe Comable::Shipment do
-  subject { FactoryGirl.create(:shipment) }
+  subject { create(:shipment) }
 
   # Disable the automatic change of attributes.
   before { allow(subject).to receive(:order_completed?).and_return(true) }

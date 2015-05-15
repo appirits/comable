@@ -5,7 +5,7 @@ describe Comable::Admin::CategoriesController do
 
   describe 'GET index' do
     it 'assigns all categories as @categories' do
-      category = FactoryGirl.create(:category)
+      category = create(:category)
       get :index
       expect(assigns(:categories)).to eq([category])
     end

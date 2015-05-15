@@ -1,9 +1,9 @@
 describe Comable::OrdersController do
   render_views
 
-  let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
-  let(:stock) { FactoryGirl.create(:stock, :stocked) }
-  let(:address_attributes) { FactoryGirl.attributes_for(:address) }
+  let(:product) { create(:product, stocks: [stock]) }
+  let(:stock) { create(:stock, :stocked) }
+  let(:address_attributes) { attributes_for(:address) }
   let(:current_order) { controller.current_order }
 
   describe "GET 'signin'" do
@@ -23,12 +23,12 @@ describe Comable::OrdersController do
   #   - remove 'its'
   #   - 'with state' => context
   shared_examples 'checkout' do
-    let!(:payment_method) { FactoryGirl.create(:payment_method) }
-    let!(:shipment_method) { FactoryGirl.create(:shipment_method) }
+    let!(:payment_method) { create(:payment_method) }
+    let!(:shipment_method) { create(:shipment_method) }
 
-    let(:product) { FactoryGirl.create(:product, stocks: [stock]) }
-    let(:stock) { FactoryGirl.create(:stock, :stocked) }
-    let(:address_attributes) { FactoryGirl.attributes_for(:address) }
+    let(:product) { create(:product, stocks: [stock]) }
+    let(:stock) { create(:stock, :stocked) }
+    let(:address_attributes) { attributes_for(:address) }
     let(:current_order) { controller.current_order }
 
     before { allow(controller).to receive(:current_comable_user).and_return(user) }
@@ -63,7 +63,7 @@ describe Comable::OrdersController do
     end
 
     describe "GET 'edit' with state 'orderer'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
+      let(:order_attributes) { attributes_for(:order, :for_orderer) }
 
       before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :orderer }
@@ -72,14 +72,14 @@ describe Comable::OrdersController do
       its(:response) { is_expected.not_to be_redirect }
 
       context 'when not exist email' do
-        let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer, email: nil) }
+        let(:order_attributes) { attributes_for(:order, :for_orderer, email: nil) }
 
         it { is_expected.to redirect_to(controller.comable.signin_order_path) }
       end
     end
 
     describe "PUT 'update' with state 'orderer'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
+      let(:order_attributes) { attributes_for(:order, :for_orderer) }
 
       before { current_order.update_attributes(order_attributes) }
 
@@ -108,7 +108,7 @@ describe Comable::OrdersController do
     end
 
     describe "GET 'edit' with state 'delivery'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_delivery) }
+      let(:order_attributes) { attributes_for(:order, :for_delivery) }
 
       before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :delivery }
@@ -118,7 +118,7 @@ describe Comable::OrdersController do
     end
 
     describe "PUT 'update' with state 'delivery'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_delivery) }
+      let(:order_attributes) { attributes_for(:order, :for_delivery) }
 
       before { current_order.update_attributes(order_attributes) }
 
@@ -147,7 +147,7 @@ describe Comable::OrdersController do
     end
 
     describe "GET 'edit' with state 'shipment'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
+      let(:order_attributes) { attributes_for(:order, :for_shipment) }
 
       before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :shipment }
@@ -157,7 +157,7 @@ describe Comable::OrdersController do
     end
 
     describe "PUT 'update' with state 'shipment'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_shipment) }
+      let(:order_attributes) { attributes_for(:order, :for_shipment) }
 
       before { current_order.update_attributes(order_attributes) }
       before { put :update, state: :shipment, order: { shipment_attributes: { shipment_method_id: shipment_method.id } } }
@@ -170,7 +170,7 @@ describe Comable::OrdersController do
     end
 
     describe "GET 'edit' with state 'payment'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
+      let(:order_attributes) { attributes_for(:order, :for_payment) }
 
       before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :payment }
@@ -180,7 +180,7 @@ describe Comable::OrdersController do
     end
 
     describe "PUT 'update' with state 'payment'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_payment) }
+      let(:order_attributes) { attributes_for(:order, :for_payment) }
 
       before { current_order.update_attributes(order_attributes) }
       before { put :update, state: :payment, order: { payment_attributes: { payment_method_id: payment_method.id } } }
@@ -193,7 +193,7 @@ describe Comable::OrdersController do
     end
 
     describe "GET 'edit' with state 'confirm'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
+      let(:order_attributes) { attributes_for(:order, :for_confirm) }
 
       before { current_order.update_attributes(order_attributes) }
       before { get :edit, state: :confirm }
@@ -203,7 +203,7 @@ describe Comable::OrdersController do
     end
 
     describe "POST 'create'" do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
+      let(:order_attributes) { attributes_for(:order, :for_confirm) }
       let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
 
       before { current_order.update_attributes(order_attributes) }
@@ -229,7 +229,7 @@ describe Comable::OrdersController do
       end
 
       context 'when product is out of stock' do
-        let(:stock) { FactoryGirl.create(:stock, :unstocked) }
+        let(:stock) { create(:stock, :unstocked) }
 
         it 'redirects to the shopping cart' do
           post :create
@@ -258,7 +258,7 @@ describe Comable::OrdersController do
     end
 
     context 'when checkout flow is incorrect' do
-      let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_orderer) }
+      let(:order_attributes) { attributes_for(:order, :for_orderer) }
 
       before { current_order.update_attributes(order_attributes) }
 
@@ -277,14 +277,14 @@ describe Comable::OrdersController do
 
   context 'when user is signed in' do
     it_behaves_like 'checkout' do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { create(:user) }
     end
   end
 
   describe 'order mailer' do
-    let!(:store) { FactoryGirl.create(:store, :email_activate) }
+    let!(:store) { create(:store, :email_activate) }
 
-    let(:order_attributes) { FactoryGirl.attributes_for(:order, :for_confirm) }
+    let(:order_attributes) { attributes_for(:order, :for_confirm) }
     let(:user) { Comable::User.new.with_cookies(cookies) }
 
     before { controller.current_order.update_attributes(order_attributes) }
@@ -296,7 +296,7 @@ describe Comable::OrdersController do
     end
 
     context 'No email sender' do
-      let!(:store) { FactoryGirl.create(:store, :email_activate, email_sender: nil) }
+      let!(:store) { create(:store, :email_activate, email_sender: nil) }
 
       it 'not sent a mail' do
         expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
@@ -304,7 +304,7 @@ describe Comable::OrdersController do
     end
 
     context 'No email activate' do
-      let!(:store) { FactoryGirl.create(:store, :email_activate, email_activate_flag: false) }
+      let!(:store) { create(:store, :email_activate, email_activate_flag: false) }
 
       it 'not sent a mail' do
         expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)

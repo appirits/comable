@@ -3,14 +3,14 @@ describe Comable::Admin::OrdersController do
 
   let(:comable) { controller.comable }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:order, :completed) }
+  let(:valid_attributes) { attributes_for(:order, :completed) }
   let(:invalid_attributes) { valid_attributes.merge(email: 'x' * 1024) }
 
   before { request.env['HTTP_REFERER'] = 'http://localhost:3000' }
 
   describe 'GET index' do
     it 'assigns all orders as @orders' do
-      order = FactoryGirl.create(:order, :completed)
+      order = create(:order, :completed)
       get :index
       expect(assigns(:orders)).to eq([order])
     end
@@ -18,7 +18,7 @@ describe Comable::Admin::OrdersController do
 
   describe 'GET show' do
     it 'assigns the requested order as @order' do
-      order = FactoryGirl.create(:order, :completed)
+      order = create(:order, :completed)
       get :show, id: order.to_param
       expect(assigns(:order)).to eq(order)
     end
@@ -26,14 +26,14 @@ describe Comable::Admin::OrdersController do
 
   describe 'GET edit' do
     it 'assigns the requested order as @order' do
-      order = FactoryGirl.create(:order, :completed)
+      order = create(:order, :completed)
       get :edit, id: order.to_param
       expect(assigns(:order)).to eq(order)
     end
   end
 
   describe 'PUT update' do
-    let!(:order) { FactoryGirl.create(:order, :completed) }
+    let!(:order) { create(:order, :completed) }
 
     describe 'with valid params' do
       let(:new_attributes) { { email: "NEW: #{order.email}" } }
@@ -70,8 +70,8 @@ describe Comable::Admin::OrdersController do
 
   describe 'GET export' do
     it 'exports the csv file' do
-      order = FactoryGirl.create(:order, :completed)
-      order_item = FactoryGirl.create(:order_item, order: order)
+      order = create(:order, :completed)
+      order_item = create(:order_item, order: order)
       get :export, format: :csv
       expect(response.body).to include(order.code)
       expect(response.body).to include(order.bill_address.first_name)
@@ -80,15 +80,15 @@ describe Comable::Admin::OrdersController do
     end
 
     it 'exports the xlsx file' do
-      order = FactoryGirl.create(:order, :completed)
-      FactoryGirl.create(:order_item, order: order)
+      order = create(:order, :completed)
+      create(:order_item, order: order)
       get :export, format: :xlsx
       expect(response.content_type).to eq(Mime::XLSX)
     end
   end
 
   describe 'POST cancel' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
+    let(:order) { create(:order, :completed) }
 
     it 'cancel the requested order' do
       post :cancel, id: order.to_param
@@ -97,8 +97,8 @@ describe Comable::Admin::OrdersController do
     end
 
     it 'restock the requested order' do
-      stock = FactoryGirl.create(:stock, :stocked, :with_product)
-      order_item = FactoryGirl.create(:order_item, stock: stock)
+      stock = create(:stock, :stocked, :with_product)
+      order_item = create(:order_item, stock: stock)
       order.order_items << order_item
 
       expect { post :cancel, id: order.to_param }.to change { stock.reload.quantity }.by(order_item.quantity)
@@ -111,9 +111,9 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST resume' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
-    let(:order_item) { FactoryGirl.create(:order_item, stock: stock) }
-    let(:stock) { FactoryGirl.create(:stock, :stocked, :with_product) }
+    let(:order) { create(:order, :completed) }
+    let(:order_item) { create(:order_item, stock: stock) }
+    let(:stock) { create(:stock, :stocked, :with_product) }
 
     before { order.cancel! }
 
@@ -162,7 +162,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST cancel_shipment' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
+    let(:order) { create(:order, :completed) }
 
     before { order.payment.next_state! }
 
@@ -179,7 +179,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST resume_shipment' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
+    let(:order) { create(:order, :completed) }
 
     before { order.payment.next_state! }
     before { order.payment.cancel! }
@@ -197,7 +197,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST ship' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
+    let(:order) { create(:order, :completed) }
 
     it 'ship the requested order' do
       post :ship, id: order.to_param
@@ -212,7 +212,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST cancel_shipment' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
+    let(:order) { create(:order, :completed) }
 
     before { order.shipment.ship! }
 
@@ -229,7 +229,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST resume_shipment' do
-    let(:order) { FactoryGirl.create(:order, :completed) }
+    let(:order) { create(:order, :completed) }
 
     before { order.shipment.ship! }
     before { order.shipment.cancel! }

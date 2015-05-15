@@ -1,6 +1,6 @@
 describe 'comable/admin/stocks/index' do
-  let!(:product) { FactoryGirl.create(:product) }
-  let!(:stocks) { FactoryGirl.create_list(:stock, 2, product: product) }
+  let!(:product) { create(:product) }
+  let!(:stocks) { create_list(:stock, 2, product: product) }
 
   let(:q) { product.stocks.ransack }
 

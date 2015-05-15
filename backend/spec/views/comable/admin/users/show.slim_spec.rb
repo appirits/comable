@@ -1,5 +1,5 @@
 describe 'comable/admin/users/show' do
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) { create(:user) }
 
   before { assign(:user, user) }
 
