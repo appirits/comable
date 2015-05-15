@@ -46,7 +46,7 @@ module Comable
 
       def tracker_params
         params.require(:tracker).permit(
-          :activate_flag,
+          :activated_flag,
           :name,
           :tracker_id,
           :code,

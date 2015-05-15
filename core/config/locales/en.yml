@@ -309,7 +309,7 @@ en:
       comable/shipment_method:
         name: 'Name'
         fee: 'Fee'
-        activate_flag: 'Activated'
+        activated_flag: 'Activated'
         traking_url: 'Tracking URL'
       comable/payment_method:
         name: 'Name'
@@ -317,7 +317,7 @@ en:
         fee: 'Fee'
         enable_price: 'Enable price range'
       comable/tracker:
-        activate_flag: 'Activated'
+        activated_flag: 'Activated'
         name: 'Name'
         tracker_id: 'Tracker ID'
         code: 'Code'
