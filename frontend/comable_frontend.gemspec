@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = version
   s.authors     = ['YOSHIDA Hiroki']
   s.email       = ['hyoshida@appirits.com']
-  s.homepage    = 'https://github.com/hyoshida/comable#comable'
+  s.homepage    = 'https://github.com/appirits/comable#comable'
   s.summary     = 'Provide frontend functions for Comable.'
   s.description = 'Provide frontend functions for Comable.'
   s.license     = 'MIT'
