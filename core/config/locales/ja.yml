@@ -305,7 +305,6 @@ ja:
         meta_keywords: メタキーワード
         meta_description: メタディスクリプション
         email_sender: 送信元メールアドレス
-        email_activate_flag: メール送信を有効にする
       comable/shipment_method:
         name: 発送方法名
         fee: 手数料

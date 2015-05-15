@@ -302,13 +302,5 @@ describe Comable::OrdersController do
         expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
       end
     end
-
-    context 'No email activate' do
-      let!(:store) { create(:store, :email_activate, email_activate_flag: false) }
-
-      it 'not sent a mail' do
-        expect { post :create }.to change { ActionMailer::Base.deliveries.length }.by(0)
-      end
-    end
   end
 end

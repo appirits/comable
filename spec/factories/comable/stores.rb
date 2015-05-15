@@ -4,7 +4,6 @@ FactoryGirl.define do
 
     trait :email_activate do
       email_sender 'comable@example.com'
-      email_activate_flag true
     end
   end
 end
