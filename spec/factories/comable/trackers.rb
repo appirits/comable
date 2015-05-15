@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :tracker, class: Comable::Tracker do
-    activate_flag true
+    activated_flag true
     name 'Example Tracker'
     tracker_id 'UA-XXXXXXX-X'
     code <<-_EOS_

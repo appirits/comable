@@ -26,7 +26,7 @@
             tr
               td
                 = link_to shipment_method.name, comable.admin_shipment_method_path(shipment_method)
-                - unless shipment_method.activate_flag
+                - unless shipment_method.activated_flag
                   span.fa.fa-eye-slash.text-muted<
               td
                 = number_to_currency shipment_method.fee

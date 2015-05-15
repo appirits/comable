@@ -46,7 +46,7 @@ module Comable
 
       def shipment_method_params
         params.require(:shipment_method).permit(
-          :activate_flag,
+          :activated_flag,
           :name,
           :fee,
           :traking_url

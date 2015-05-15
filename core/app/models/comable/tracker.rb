@@ -7,7 +7,7 @@ module Comable
     validates :code, presence: true
     validates :place, presence: true, length: { maximum: 255 }
 
-    scope :activated, -> { where(activate_flag: true) }
+    scope :activated, -> { where(activated_flag: true) }
 
     enumerize :place, in: %i(
       everywhere

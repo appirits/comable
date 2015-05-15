@@ -26,7 +26,7 @@
             tr
               td
                 = link_to payment_method.name, comable.admin_payment_method_path(payment_method)
-                /- unless payment_method.activate_flag
+                /- unless payment_method.activated_flag
                 /  span.fa.fa-eye-slash.text-muted<
               td
                 = payment_method.payment_provider.display_name

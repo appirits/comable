@@ -309,7 +309,7 @@ ja:
       comable/shipment_method:
         name: 発送方法名
         fee: 手数料
-        activate_flag: この発送方法を有効にする
+        activated_flag: この発送方法を有効にする
         traking_url: トラッキングURL
       comable/payment_method:
         name: 決済方法名
@@ -317,7 +317,7 @@ ja:
         fee: '手数料'
         enable_price: 利用可能な価格範囲
       comable/tracker:
-        activate_flag: 'このトラッキング情報を有効にする'
+        activated_flag: 'このトラッキング情報を有効にする'
         name: 'トラッキング名'
         tracker_id: 'トラッキングID'
         code: 'トラッキングコード'

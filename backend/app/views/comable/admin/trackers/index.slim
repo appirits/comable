@@ -26,7 +26,7 @@
             tr
               td
                 = link_to tracker.name, comable.admin_tracker_path(tracker)
-                - unless tracker.activate_flag
+                - unless tracker.activated_flag
                   span.fa.fa-eye-slash.text-muted<
               td
                 = tracker.tracker_id
