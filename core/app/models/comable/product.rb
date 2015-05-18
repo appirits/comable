@@ -17,6 +17,8 @@ module Comable
     validates :sku_h_item_name, length: { maximum: 255 }
     validates :sku_v_item_name, length: { maximum: 255 }
 
+    liquid_methods :id, :code, :name, :price, :images, :image_url
+
     ransack_options attribute_select: { associations: :stocks }
 
     # Add conditions for the images association.

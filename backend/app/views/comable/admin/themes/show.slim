@@ -1,9 +1,10 @@
 .comable-page
   .comable-main-fixed-top
     .comable-page-heading
-      ul.pull-right.list-inline
-        li
-          = link_to_save
+      - if @code
+        ul.pull-right.list-inline
+          li
+            = link_to_save
 
       h1.page-header
         ol.breadcrumb
@@ -19,29 +20,13 @@
           = display_directory_tree @directory_tree
 
       .col-md-9
-        #comable-editor
-          = @code
-
-        css:
-          #comable-editor {
-            width: 100%;
-            height: 600px;
-            border-radius: 3px;
-          }
-
-        coffee:
-          editor = ace.edit('comable-editor')
-          editor.setTheme('ace/theme/monokai')
-          editor.getSession().setMode('ace/mode/liquid')
-
-          $(->
-            $form = $('#comable-editor-form')
-            $form.submit(->
-              text = editor.getValue()
-              $(this).find('[name=code]').val(text)
-            )
-          )
-
-        = form_tag comable.admin_theme_path(params[:id]), id: 'comable-editor-form', method: :put do
-          = hidden_field_tag :code, nil
-          = hidden_field_tag :path, params[:path]
+        - if @code
+          = render 'editor', code: @code, params: params
+        - else
+          .panel.panel-default
+            .panel-body
+              .help-block.text-center
+                p
+                  | 左のファイルリストから編集したいテンプレートを選択してください。
+                p
+                  | ここにエディタが表示されてテンプレートの内容を編集できます。
