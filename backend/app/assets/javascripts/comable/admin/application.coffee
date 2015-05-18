@@ -9,6 +9,9 @@
 #= require nprogress-turbolinks
 #= require gritter
 #= require awesome_admin_layout
+#= require ace/ace
+#= require ace/worker-html
+#= require ace/mode-liquid
 #= require_tree .
 #= require_self
 #= require turbolinks

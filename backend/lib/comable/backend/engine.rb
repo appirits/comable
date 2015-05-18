@@ -19,6 +19,7 @@ require 'gritter'
 require 'turbolinks'
 require 'jquery-turbolinks'
 require 'awesome_admin_layout'
+require 'ace-rails-ap'
 
 module Comable
   module Backend
