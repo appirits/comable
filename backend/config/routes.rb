@@ -41,6 +41,7 @@ Comable::Core::Engine.routes.draw do
     resources :shipment_methods
     resources :payment_methods
     resources :trackers
+    resources :themes
     resource :store, controller: :store, only: [:show, :edit, :update]
 
     devise_for :user, path: :user, class_name: Comable::User.name, module: :devise, controllers: {

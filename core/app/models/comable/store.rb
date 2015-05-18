@@ -18,5 +18,9 @@ module Comable
     def can_send_mail?
       email.present?
     end
+
+    def theme_name
+      'default'
+    end
   end
 end

@@ -1,0 +1,53 @@
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
+
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.shipment_method'), comable.admin_shipment_methods_path
+          li.active
+            = params[:id]
+
+  .comable-page-body
+    #comable-editor
+      = @code
+
+    css:
+      #comable-editor {
+        width: 100%;
+        height: 600px;
+        border-radius: 3px;
+      }
+
+    coffee:
+      editor = ace.edit('comable-editor')
+      editor.setTheme('ace/theme/monokai')
+      editor.getSession().setMode('ace/mode/liquid')
+
+      $(->
+        $form = $('#comable-editor-form')
+        $form.submit(->
+          text = editor.getValue()
+          $(this).find('[name=code]').val(text)
+        )
+      )
+
+    = form_tag comable.admin_theme_path(params[:id]), id: 'comable-editor-form', method: :put do
+      = hidden_field_tag :code, nil
+
+    hr
+
+    .panel.panel-danger
+      .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger"
+        strong
+          span.fa.fa-angle-down>
+          = Comable.t('admin.actions.destroy')
+      #comable-danger.collapse
+        .panel-body
+          p
+            = Comable.t('admin.confirmation_to_remove_product')
+          = link_to Comable.t('admin.actions.destroy'), comable.admin_themes_path, method: :delete, class: 'btn btn-danger'
