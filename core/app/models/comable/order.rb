@@ -91,6 +91,10 @@ module Comable
       stated?(order.state) ? save! : next_state!
     end
 
+    def completed?
+      completed_at?
+    end
+
     def paid?
       payment ? payment.completed? : true
     end
