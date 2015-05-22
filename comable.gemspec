@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'comable_core', version
   s.add_dependency 'comable_frontend', version
   s.add_dependency 'comable_backend', version
+  s.add_dependency 'comable_sample', version
 end

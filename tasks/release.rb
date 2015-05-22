@@ -1,6 +1,6 @@
 # refs: https://github.com/rails/rails/blob/4-1-stable/tasks/release.rb
 
-FRAMEWORKS = %w( core frontend backend )
+FRAMEWORKS = %w( core frontend backend sample )
 
 root    = File.expand_path('../../', __FILE__)
 version = File.read("#{root}/COMABLE_VERSION").strip
