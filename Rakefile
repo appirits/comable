@@ -16,6 +16,11 @@ end
 APP_RAKEFILE = File.expand_path('../spec/dummy/Rakefile', __FILE__)
 load 'rails/tasks/engine.rake'
 
+def command(string)
+  puts string
+  system string
+end
+
 if File.exist?('comable.gemspec')
   $LOAD_PATH.unshift File.expand_path('..', __FILE__)
   require 'tasks/release'
@@ -45,9 +50,7 @@ if File.exist?('comable.gemspec')
     namespace :migrate do
       task :all do
         FRAMEWORKS.each do |framework|
-          command = "cd #{framework} && test -d db && bundle exec rake db:migrate RAILS_ENV=#{Rails.env}"
-          puts command
-          system command
+          command "cd #{framework} && test -d db/migrate && bundle exec rake db:migrate RAILS_ENV=#{Rails.env}"
         end
       end
     end
@@ -59,11 +62,8 @@ if File.exist?('comable.gemspec')
 
       namespace :reset do
         task :all do
-          FRAMEWORKS.each do |framework|
-            command = "cd #{framework} && test -d db && bundle exec rake db:migrate:reset RAILS_ENV=#{Rails.env}"
-            puts command
-            system command
-          end
+          command "bundle exec rake db:drop db:create RAILS_ENV=#{Rails.env}"
+          Rake::Task['db:migrate'].invoke
         end
       end
     end
