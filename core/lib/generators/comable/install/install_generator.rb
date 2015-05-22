@@ -106,13 +106,7 @@ Comable::Core::Engine.load_seed if defined?(Comable::Core)
     private
 
     def rake_seed
-      cmd = -> { rake("db:seed #{rake_seed_arguments.join(' ')}") }
-
-      if options[:admin_email] && options[:admin_password]
-        quietly { cmd.call }
-      else
-        cmd.call
-      end
+      rake("db:seed #{rake_seed_arguments.join(' ')}")
     end
 
     def rake_seed_arguments
