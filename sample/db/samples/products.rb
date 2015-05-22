@@ -1,6 +1,6 @@
 Comable::Sample.import('categories')
 
-clothing = Comable::Category.find_by!(name: Comable::Sample.t(:clothing))
+clothing = Comable::Category.where(name: Comable::Sample.t(:clothing)).first!
 
 products_attributes = [
   {

@@ -1,9 +1,9 @@
 Comable::Sample.import('products')
 
-suede_dress = Comable::Product.find_by!(name: Comable::Sample.t(:suede_dress))
-girly_coat = Comable::Product.find_by!(name: Comable::Sample.t(:girly_coat))
-fur_gloves = Comable::Product.find_by!(name: Comable::Sample.t(:fur_gloves))
-leather_boots = Comable::Product.find_by!(name: Comable::Sample.t(:leather_boots))
+suede_dress = Comable::Product.where(name: Comable::Sample.t(:suede_dress)).first!
+girly_coat = Comable::Product.where(name: Comable::Sample.t(:girly_coat)).first!
+fur_gloves = Comable::Product.where(name: Comable::Sample.t(:fur_gloves)).first!
+leather_boots = Comable::Product.where(name: Comable::Sample.t(:leather_boots)).first!
 
 suede_dress.update_attributes!(sku_h_item_name: Comable::Sample.t(:size), sku_v_item_name: Comable::Sample.t(:color))
 girly_coat.update_attributes!(sku_h_item_name: Comable::Sample.t(:size), sku_v_item_name: Comable::Sample.t(:color))

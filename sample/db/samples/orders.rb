@@ -3,9 +3,9 @@ Comable::Sample.import('stocks')
 Comable::Sample.import('addresses')
 
 bill_address = Comable::Address.first
-ship_address = Comable::Address.second
-suede_dress = Comable::Product.find_by!(name: Comable::Sample.t(:suede_dress))
-girly_coat = Comable::Product.find_by!(name: Comable::Sample.t(:girly_coat))
+ship_address = Comable::Address.last
+suede_dress = Comable::Product.where(name: Comable::Sample.t(:suede_dress)).first!
+girly_coat = Comable::Product.where(name: Comable::Sample.t(:girly_coat)).first!
 
 orders_attributes = [
   {
