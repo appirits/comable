@@ -90,6 +90,7 @@ end
 namespace :brakeman do
   task :all do
     FRAMEWORKS.each do |framework|
+      next unless File.directory?("#{framework}/app")
       sh "brakeman --exit-on-warn --ignore-config .brakeman.ignore #{framework}"
     end
   end
