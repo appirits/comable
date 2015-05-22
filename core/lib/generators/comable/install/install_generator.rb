@@ -6,6 +6,7 @@ module Comable
   class InstallGenerator < Rails::Generators::Base
     class_option :migrate, type: :boolean, default: true, banner: 'Run Comable migrations'
     class_option :seed, type: :boolean, default: true, banner: 'Load seed data (migrations must be run)'
+    class_option :sample, type: :boolean, default: true, banner: 'Load sample data (migrations must be run)'
     class_option :admin_email, type: :string
     class_option :admin_password, type: :string
 
@@ -20,6 +21,7 @@ module Comable
     def prepare_options
       @migrate_flag = options[:migrate]
       @seed_flag = @migrate_flag ? options[:seed] : false
+      @sample_flag = @migrate_flag ? options[:sample] : false
     end
 
     def add_files
@@ -70,6 +72,15 @@ Comable::Core::Engine.load_seed if defined?(Comable::Core)
         rake_seed
       else
         say_status :skipping, 'seed data (you can always run rake db:seed)'
+      end
+    end
+
+    def load_sample_data
+      if @sample_flag
+        say_status :loading, 'sample data'
+        quietly { rake 'comable:sample' }
+      else
+        say_status :skipping, 'sample data (you can always run rake comable:sample)'
       end
     end
 

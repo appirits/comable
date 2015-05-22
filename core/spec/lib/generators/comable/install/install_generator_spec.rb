@@ -50,6 +50,10 @@ describe Comable::InstallGenerator do
     expect(Comable::User.first.role).to eq('admin')
   end
 
+  it 'load samples' do
+    expect(Comable::Product.count).to be >= 1
+  end
+
   it 'creates routes' do
     assert_file 'config/routes.rb', /mount Comable::Core::Engine/
   end
