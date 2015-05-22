@@ -1,6 +1,12 @@
 module Comable
   module Sample
     class << self
+      def translate(key, options = {})
+        Comable.translate("sample.#{key}", options)
+      end
+
+      alias_method :t, :translate
+
       def import_all
         definitions.each do |definition|
           import(definition)

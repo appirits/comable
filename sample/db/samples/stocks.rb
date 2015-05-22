@@ -1,13 +1,13 @@
 Comable::Sample.import('products')
 
-suede_dress = Comable::Product.find_by!(name: 'Suede Dress')
-girly_coat = Comable::Product.find_by!(name: 'Double Button Girly Coat')
-fur_gloves = Comable::Product.find_by!(name: 'Fur Gloves with Side Stitching')
-leather_boots = Comable::Product.find_by!(name: 'Leather Boots')
+suede_dress = Comable::Product.find_by!(name: Comable::Sample.t(:suede_dress))
+girly_coat = Comable::Product.find_by!(name: Comable::Sample.t(:girly_coat))
+fur_gloves = Comable::Product.find_by!(name: Comable::Sample.t(:fur_gloves))
+leather_boots = Comable::Product.find_by!(name: Comable::Sample.t(:leather_boots))
 
-suede_dress.update_attributes!(sku_h_item_name: 'Size', sku_v_item_name: 'Color')
-girly_coat.update_attributes!(sku_h_item_name: 'Size', sku_v_item_name: 'Color')
-leather_boots.update_attributes!(sku_h_item_name: 'Size')
+suede_dress.update_attributes!(sku_h_item_name: Comable::Sample.t(:size), sku_v_item_name: Comable::Sample.t(:color))
+girly_coat.update_attributes!(sku_h_item_name: Comable::Sample.t(:size), sku_v_item_name: Comable::Sample.t(:color))
+leather_boots.update_attributes!(sku_h_item_name: Comable::Sample.t(:size))
 
 default_stock_attributes = {
   quantity: 10
@@ -18,37 +18,37 @@ stocks_attributes = [
     product: suede_dress,
     code: "#{suede_dress.code}-SN",
     sku_h_choice_name: 'S',
-    sku_v_choice_name: 'Navy'
+    sku_v_choice_name: Comable::Sample.t(:navy)
   },
   {
     product: suede_dress,
     code: "#{suede_dress.code}-MN",
     sku_h_choice_name: 'M',
-    sku_v_choice_name: 'Navy'
+    sku_v_choice_name: Comable::Sample.t(:navy)
   },
   {
     product: girly_coat,
     code: "#{girly_coat.code}-SB",
     sku_h_choice_name: 'S',
-    sku_v_choice_name: 'Beige'
+    sku_v_choice_name: Comable::Sample.t(:beige)
   },
   {
     product: girly_coat,
     code: "#{girly_coat.code}-MB",
     sku_h_choice_name: 'M',
-    sku_v_choice_name: 'Beige'
+    sku_v_choice_name: Comable::Sample.t(:beige)
   },
   {
     product: girly_coat,
     code: "#{girly_coat.code}-SN",
     sku_h_choice_name: 'S',
-    sku_v_choice_name: 'Navy'
+    sku_v_choice_name: Comable::Sample.t(:navy)
   },
   {
     product: girly_coat,
     code: "#{girly_coat.code}-MN",
     sku_h_choice_name: 'M',
-    sku_v_choice_name: 'Navy'
+    sku_v_choice_name: Comable::Sample.t(:navy)
   },
   {
     product: fur_gloves,

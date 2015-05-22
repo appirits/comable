@@ -1,9 +1,9 @@
 Comable::Sample.import('products')
 
-suede_dress = Comable::Product.find_by!(name: 'Suede Dress')
-girly_coat = Comable::Product.find_by!(name: 'Double Button Girly Coat')
-fur_gloves = Comable::Product.find_by!(name: 'Fur Gloves with Side Stitching')
-leather_boots = Comable::Product.find_by!(name: 'Leather Boots')
+suede_dress = Comable::Product.find_by!(name: Comable::Sample.t(:suede_dress))
+girly_coat = Comable::Product.find_by!(name: Comable::Sample.t(:girly_coat))
+fur_gloves = Comable::Product.find_by!(name: Comable::Sample.t(:fur_gloves))
+leather_boots = Comable::Product.find_by!(name: Comable::Sample.t(:leather_boots))
 
 def image(name, suffix: '.jpg')
   image_path = File.join(File.dirname(__FILE__), 'images', name + suffix)

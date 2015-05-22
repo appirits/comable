@@ -185,6 +185,19 @@ ja:
       categories:
         new_node: 新しいカテゴリ
 
+    sample:
+      suede_dress: 'スウェードワンピース'
+      girly_coat: 'ダブルボタンガーリーコート'
+      fur_gloves: 'サイドステッチファー付き手袋'
+      leather_boots: '本革ロングブーツ'
+      clothing: '衣類'
+      color: 'カラー'
+      size: 'サイズ'
+      navy: 'ネイビー'
+      beige: 'ベージュ'
+      black_cat: 'クロネコ'
+      credit_card: 'クレジットカード'
+
   activerecord:
     state_machines:
       comable/order:

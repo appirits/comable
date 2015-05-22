@@ -1,4 +1,4 @@
 Comable::ShipmentMethod.create!(
-  name: 'Black Cat',
+  name: Comable::Sample.t(:black_cat),
   fee: 300
 )

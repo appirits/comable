@@ -1,25 +1,25 @@
 Comable::Sample.import('categories')
 
-clothing = Comable::Category.find_by!(name: 'Colothing')
+clothing = Comable::Category.find_by!(name: Comable::Sample.t(:clothing))
 
 products_attributes = [
   {
-    name: 'Suede Dress',
+    name: Comable::Sample.t(:suede_dress),
     price: 6_990,
     categories: [clothing]
   },
   {
-    name: 'Double Button Girly Coat',
+    name: Comable::Sample.t(:girly_coat),
     price: 9_000,
     categories: [clothing]
   },
   {
-    name: 'Fur Gloves with Side Stitching',
+    name: Comable::Sample.t(:fur_gloves),
     price: 5_292,
     categories: [clothing]
   },
   {
-    name: 'Leather Boots',
+    name: Comable::Sample.t(:leather_boots),
     price: 28_080,
     categories: [clothing]
   }

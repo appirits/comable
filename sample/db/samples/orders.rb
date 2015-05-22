@@ -4,8 +4,8 @@ Comable::Sample.import('addresses')
 
 bill_address = Comable::Address.first
 ship_address = Comable::Address.second
-suede_dress = Comable::Product.find_by!(name: 'Suede Dress')
-girly_coat = Comable::Product.find_by!(name: 'Double Button Girly Coat')
+suede_dress = Comable::Product.find_by!(name: Comable::Sample.t(:suede_dress))
+girly_coat = Comable::Product.find_by!(name: Comable::Sample.t(:girly_coat))
 
 orders_attributes = [
   {
