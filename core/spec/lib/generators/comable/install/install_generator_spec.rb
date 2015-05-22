@@ -20,6 +20,7 @@ describe Comable::InstallGenerator do
   end
 
   after(:all) do
+    truncate_tables
     remove_link_to_dummy_directory
   end
 
@@ -63,6 +64,12 @@ describe Comable::InstallGenerator do
   def drop_tables
     ActiveRecord::Base.connection.tables.each do |table_name|
       ActiveRecord::Migration.drop_table(table_name)
+    end
+  end
+
+  def truncate_tables
+    ActiveRecord::Base.connection.tables.each do |table_name|
+      ActiveRecord::Base.connection.execute("TRUNCATE #{table_name}")
     end
   end
 
