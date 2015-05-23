@@ -185,6 +185,19 @@ en:
       categories:
         new_node: 'New category'
 
+    sample:
+      suede_dress: 'Suede Dress'
+      girly_coat: 'Double Button Girly Coat'
+      fur_gloves: 'Fur Gloves with Side Stitching'
+      leather_boots: 'Leather Boots'
+      clothing: 'Clothing'
+      color: 'Color'
+      size: 'Size'
+      navy: 'Navy'
+      beige: 'Beige'
+      black_cat: 'Balck Cat'
+      credit_card: 'Credit Card'
+
   activerecord:
     state_machines:
       comable/order:

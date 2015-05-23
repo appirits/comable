@@ -4,11 +4,11 @@ module Comable
 
     validates :family_name, presence: true, length: { maximum: 255 }
     validates :first_name, presence: true, length: { maximum: 255 }
-    validates :zip_code, presence: true, length: { maximum: 8 }
+    validates :zip_code, presence: true, length: { maximum: 255 }
     validates :state_name, presence: true, length: { maximum: 255 }
     validates :city, presence: true, length: { maximum: 255 }
     validates :detail, length: { maximum: 255 }
-    validates :phone_number, length: { maximum: 18 }
+    validates :phone_number, length: { maximum: 255 }
 
     class << self
       def find_or_clone(address)
