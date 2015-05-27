@@ -37,6 +37,7 @@ Comable::Core::Engine.routes.draw do
     end
 
     resources :categories
+    resources :pages
     resources :users
     resources :shipment_methods
     resources :payment_methods
