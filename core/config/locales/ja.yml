@@ -101,11 +101,13 @@ ja:
       back_to_store: ストアに戻る
       confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
       confirmation_to_remove_stock: この操作は元に戻せません。在庫を削除してもよろしいですか？
+      confirmation_to_remove_page: この操作は元に戻せません。ページを削除してもよろしいですか？
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
       you_can_right_click: 右クリックでメニューを表示できます。
       link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
       link_to_add_new_stock: '次のリンクから新しい在庫を追加できます: '
       check_this_product_in_frontend: 'この商品をフロントで確認する'
+      preview: プレビュー
       note: 'NOTE:'
       results: 件
       times: 回
@@ -150,6 +152,7 @@ ja:
         product: 商品管理
         stock: 在庫管理
         category: カテゴリ
+        page: ページ
         user: ユーザー
         general_settings: 一般設定
         store: ストア設定
@@ -168,6 +171,10 @@ ja:
           detail: ユーザー詳細
           edit: 編集
           new_orders: '最新の注文 (%{count}件)'
+        pages:
+          general: 一般
+          seo: SEO
+          visibility: 公開/非公開
         stores:
           edit: 編集
         shipment_methods:
@@ -343,6 +350,18 @@ ja:
         state: 'ステータス'
         tracking_number: 'トラッキング番号'
         completed_at: '発送日時'
+      comable/page:
+        id: ID
+        title: タイトル
+        content: 内容
+        seo: 検索対策
+        page_title: ページタイトル
+        meta_description: メタディスクリプション
+        meta_keywords: メタキーワード
+        slug: スラッグ
+        published_at: 公開日
+        created_at: 作成日
+        updated_at: 更新日
 
   enumerize:
     comable/user:
