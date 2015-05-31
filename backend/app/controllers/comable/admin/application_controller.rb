@@ -39,7 +39,7 @@ module Comable
       end
 
       def after_access_denied_path
-        if current_comable_user.user?
+        if current_comable_user.customer?
           comable.root_path
         else
           comable.admin_root_path
