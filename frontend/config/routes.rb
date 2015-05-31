@@ -1,6 +1,7 @@
 Comable::Core::Engine.routes.draw do
-  root to: 'products#index'
+  root to: 'home#show'
 
+  resource :home, only: :show
   resources :products
 
   resource :cart do

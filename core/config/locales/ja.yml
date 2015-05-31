@@ -31,6 +31,14 @@ ja:
     new_address: 新しい住所
     successful: 成功しました
     failure: 失敗しました
+    products: '商品'
+    pages: 'ページ'
+    home: 'ホーム'
+    support: 'サポート'
+    sample_header: 'サンプルテキスト'
+    sample_subheader: 'これはサンプルテキストです。'
+    sample_text: 'ここにあなたのお好きなメッセージを埋め込むことができます。'
+    default_store_name: 'K&B style'
 
     price: &price
       '価格'

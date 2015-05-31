@@ -50,6 +50,7 @@ body.comable-checkout-layout {
 nav {
   &.navbar {
     @include border-radius(0);
+    margin-bottom: 0;
   }
 
   .navbar-nav > li > a {
@@ -295,7 +296,8 @@ table {
 }
 
 // main
-main {
+main.container {
+  margin-top: 20px;
 }
 
 #comable-order {
@@ -309,11 +311,6 @@ main {
       @extend .col-sm-6;
     }
   }
-}
-
-footer {
-  margin: 30px;
-  text-align: center;
 }
 
 .comable-mini-cart {
@@ -418,8 +415,24 @@ footer {
     margin-bottom: 20px;
     padding-bottom: 20px;
 
-    &:not(:last-child) {
-      border-bottom: 1px solid $list-group-border;
+    a {
+      font-weight: normal;
+
+      &:link, &:visited, &:hover, &:active {
+        color: #444;
+      }
+    }
+
+    a {
+      display: block;
+      overflow: hidden;
+
+      img {
+        @include transition(all 0.5s ease 0s);
+        &:hover {
+          @include transform(scale(1.1) rotate(-1.5deg));
+        }
+      }
     }
   }
 }
@@ -431,4 +444,84 @@ footer {
 .stop-scrolling {
   height: 100%;
   overflow: hidden;
+}
+
+body.comable-checkout-layout footer {
+  margin-top: 30px;
+  text-align: center;
+
+  .container {
+    display: none;
+  }
+}
+
+body:not(.comable-checkout-layout) footer {
+  margin-top: 30px;
+  background-color: #edeff1;
+  border-top: 2px solid #e3e3e3;
+
+  .container {
+    padding: 30px;
+    color: #036;
+  }
+
+  h3 {
+    padding-bottom: 10px;
+    border-bottom: 1px solid $list-group-border;
+  }
+
+  li {
+    padding: 3px 0;
+  }
+
+  .credit {
+    border-top: 2px solid #ccc;
+    text-align: center;
+    padding: 20px;
+    background-color: #e3e3e3;
+  }
+}
+
+// home
+#comable-home {
+  section {
+    padding: 100px;
+    text-align: center;
+
+    & > h2 {
+      margin: 0;
+    }
+
+    & > *:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .comable-home-top {
+    padding: 0;
+    overflow: hidden;
+    max-height: 600px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .comable-home-one {
+    color: white;
+    background-color: #444;
+    background-image: image-url('comable/frontend/home-one.jpg');
+    background-position: top center;
+    background-size: cover;
+  }
+
+  .comable-home-two {
+  }
+
+  #comable-product {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
 }

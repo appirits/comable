@@ -11,7 +11,7 @@ module Comable
       end
 
       def default_name
-        'Comable store'
+        Comable.t('default_store_name')
       end
     end
 
