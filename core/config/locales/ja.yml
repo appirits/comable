@@ -38,6 +38,7 @@ ja:
     sample_header: 'サンプルテキスト'
     sample_subheader: 'これはサンプルテキストです。'
     sample_text: 'ここにあなたのお好きなメッセージを埋め込むことができます。'
+    default_store_name: 'K&B style'
 
     price: &price
       '価格'

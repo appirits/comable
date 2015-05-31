@@ -38,6 +38,7 @@ en:
     sample_header: 'Sample text'
     sample_subheader: 'This is sample text.'
     sample_text: 'Please write your message here.'
+    default_store_name: 'K&B style'
 
     price: &price
       'Price'
