@@ -2,7 +2,7 @@ header.navbar.navbar-default.navbar-fixed-top
   .container-fluid
     .navbar-header
       = link_to comable.admin_root_path, class: 'navbar-brand' do
-        | Comable
+        = Comable.app_name
 
       button.navbar-toggle type="button" data-click="sidebar-toggled" onclick='$(".sidebar").toggleClass("sidebar-open");'
         span.icon-bar

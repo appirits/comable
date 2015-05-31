@@ -30,5 +30,17 @@ module Comable
     end
 
     alias_method :t, :translate
+
+    def app_name
+      'Comable'
+    end
+
+    def homepage
+      'https://github.com/appirits/comable#comable'
+    end
+
+    def license
+      'https://github.com/appirits/comable/blob/master/MIT-LICENSE'
+    end
   end
 end

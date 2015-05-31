@@ -3,7 +3,7 @@ html
   head
     meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"
     title
-      | Comable
+      = Comable.app_name
     = yield :head
     = stylesheet_link_tag 'comable/admin/application', media: 'all'
     = javascript_include_tag 'comable/admin/application'

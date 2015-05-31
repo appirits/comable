@@ -1,8 +1,8 @@
 footer
   ul.list-inline
     li
-      | Comable v#{Comable::VERSION::STRING}
+      | #{Comable.app_name} v#{Comable.version}
     li
-      = link_to 'GitHub', 'https://github.com/appirits/comable'
+      = link_to 'GitHub', Comable.homepage
     li
-      = link_to 'License', 'https://github.com/appirits/comable/blob/master/MIT-LICENSE'
+      = link_to 'License', Comable.license
