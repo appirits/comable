@@ -1,0 +1,23 @@
+ul.row
+  - @products.each do |product|
+    li.col-xs-6.col-sm-3
+      .thumbnail.text-center
+        = link_to comable.product_path(product) do
+          = image_tag product.image_url, width: '100%'
+        h5
+          = link_to product.name, comable.product_path(product)
+        - if product.caption.present?
+          p
+            = product.caption
+        strong
+          = number_to_currency product.price
+        p
+          = form_tag comable.add_cart_path do
+            - stock = product.stocks.first
+            - if stock.stocked?
+              .add_cart.form-inline.form-group
+                = hidden_field_tag :stock_id, stock.id
+                = submit_tag Comable.t('add_to_cart'), class: 'btn btn-default'
+            - else
+              .soldout
+                = submit_tag Comable.t('soldout'), class: 'btn btn-default', disabled: true

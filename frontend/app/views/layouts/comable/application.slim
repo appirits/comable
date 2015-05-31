@@ -32,7 +32,7 @@ html
     - else
       = render 'comable/shared/header'
 
-    main.container
+    main class="#{'container' if controller_name != 'home'}"
       - flash.each do |name, msg|
         = content_tag(:div, msg, id: "flash_#{name}")
 

@@ -14,18 +14,7 @@
         = listed_categories Comable::Category.roots
 
     .products.col-sm-10
-      - @products.each_slice(3) do |products|
-        ul.row
-          - products.each do |product|
-            li.product.col-sm-4
-              = link_to comable.product_path(product), class: 'thumbnail' do
-                = image_tag product.image_url, width: '100%'
-              .name
-                = link_to product.name, comable.product_path(product)
-              .caption
-                = product.caption
-              .price
-                = number_to_currency product.price
+      = render 'comable/shared/products'
 
       .text-center
         = paginate @products, theme: :comable_frontend

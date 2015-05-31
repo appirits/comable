@@ -31,6 +31,13 @@ en:
     new_address: 'New address'
     successful: 'Successful'
     failure: 'Failure'
+    products: 'Products'
+    pages: 'Pages'
+    home: 'Home'
+    support: 'Support'
+    sample_header: 'Sample text'
+    sample_subheader: 'This is sample text.'
+    sample_text: 'Please write your message here.'
 
     price: &price
       'Price'

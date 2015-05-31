@@ -1,0 +1,24 @@
+#comable-home
+  section.comable-home-top
+    = image_tag 'comable/frontend/home-top.jpg'
+
+  section#comable-product
+    .container
+      .products
+        = render 'comable/shared/products'
+
+  section.comable-home-one
+    h2
+      = Comable.t('sample_header')
+    h3
+      = Comable.t('sample_subheader')
+    p
+      = Comable.t('sample_text')
+
+  section.comable-home-two
+    h2
+      = Comable.t('sample_header')
+    h3
+      = Comable.t('sample_subheader')
+    p
+      = Comable.t('sample_text')
