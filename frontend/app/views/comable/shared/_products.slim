@@ -14,7 +14,7 @@ ul.row
         p
           = form_tag comable.add_cart_path do
             - stock = product.stocks.first
-            - if stock.stocked?
+            - if stock && stock.stocked?
               .add_cart.form-inline.form-group
                 = hidden_field_tag :stock_id, stock.id
                 = submit_tag Comable.t('add_to_cart'), class: 'btn btn-default'

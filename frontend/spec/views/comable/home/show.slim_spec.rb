@@ -1,5 +1,5 @@
 describe 'comable/home/show' do
-  let!(:product) { create(:product, :with_stock) }
+  let!(:product) { create(:product) }
 
   before { assign(:products, [product]) }
 
