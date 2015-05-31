@@ -46,6 +46,8 @@ module Comable
       event :resume do
         transition :canceled => :resumed
       end
+
+      before_transition to: :completed, do: -> (s) { s.complete! }
     end
 
     class << self
@@ -61,7 +63,11 @@ module Comable
     end
 
     def completed?
-      state?(:completed) || state?(:resumed)
+      completed_at?
+    end
+
+    def complete!
+      touch :completed_at
     end
 
     private
