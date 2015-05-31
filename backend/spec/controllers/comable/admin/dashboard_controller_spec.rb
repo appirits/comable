@@ -1,7 +1,4 @@
 describe Comable::Admin::DashboardController do
-
-  let(:comable) { controller.comable }
-
   describe 'GET show' do
     context 'when the user is not signed-in' do
       it 'should be not success' do
