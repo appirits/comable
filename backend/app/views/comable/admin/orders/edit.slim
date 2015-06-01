@@ -33,9 +33,9 @@
               = f.label :email
               = f.email_field :email
 
-        hr
-
         - if f.object.bill_address
+          hr
+
           fieldset
             .col-md-3
               legend
@@ -72,9 +72,9 @@
                   = ff.label :phone_number
                   = ff.text_field :phone_number, max_length: 18
 
-        hr
-
         - if f.object.ship_address
+          hr
+
           fieldset
             .col-md-3
               legend
@@ -110,3 +110,64 @@
                 .form-group
                   = ff.label :phone_number
                   = ff.text_field :phone_number, max_length: 18
+
+        - if f.object.order_items
+          coffee:
+            new DynamicOrder
+
+          hr
+
+          fieldset
+            .col-md-3
+              legend
+                = f.object.class.human_attribute_name(:order_items)
+              .help-block
+
+            .col-md-9
+              table.table
+                thead
+                  tr
+                    th colspan="2"
+                      = f.object.order_items.klass.human_attribute_name(:product)
+                    th
+                      = f.object.order_items.klass.human_attribute_name(:price)
+                    th
+                      = f.object.order_items.klass.human_attribute_name(:quantity)
+                    th
+                      = f.object.order_items.klass.human_attribute_name(:subtotal_price)
+                tbody
+                  = f.fields_for :order_items do |ff|
+                    tr.comable-order-items
+                      td width="180"
+                        = image_tag ff.object.image_url, width: '100%'
+                      td
+                        p
+                          = ff.text_field :name, placeholder: ff.object.class.human_attribute_name(:name), data: { name: 'name' }
+                        p.text-muted
+                          = ff.text_field :code, placeholder: ff.object.class.human_attribute_name(:code), data: { name: 'code' }
+                      td
+                        = ff.text_field :price, placeholder: ff.object.class.human_attribute_name(:price), data: { name: 'price' }
+                      td
+                        = ff.text_field :quantity, placeholder: ff.object.class.human_attribute_name(:quantity), data: { name: 'quantity' }
+                      td
+                        = ff.text_field :subtotal_price, disabled: true, data: { name: 'subtotal_price' }
+                  tr
+                    th.text-right colspan="4"
+                      = f.object.class.human_attribute_name(:item_total_price)
+                    td
+                      = f.text_field :item_total_price, disabled: true, data: { name: 'item_total_price' }
+                  tr
+                    th.text-right colspan="4"
+                      = f.object.class.human_attribute_name(:payment_fee)
+                    td
+                      = f.text_field :payment_fee, data: { name: 'payment_fee' }
+                  tr
+                    th.text-right colspan="4"
+                      = f.object.class.human_attribute_name(:shipment_fee)
+                    td
+                      = f.text_field :shipment_fee, data: { name: 'shipment_fee' }
+                  tr
+                    th.text-right colspan="4"
+                      = f.object.class.human_attribute_name(:total_price)
+                    td
+                      = f.text_field :total_price, disabled: true, data: { name: 'total_price' }
