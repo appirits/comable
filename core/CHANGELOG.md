@@ -1,3 +1,12 @@
+## Comable 0.4.2 (June 01, 2015) ##
+
+*   Commonize the app name and the homepage url.
+
+*   Implement comable_sample gem.
+
+*   Change the condition of `completed?` methods.
+
+
 ## Comable 0.4.1 (May 15, 2015) ##
 
 *   Remove database index name.
