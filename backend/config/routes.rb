@@ -1,4 +1,6 @@
 Comable::Core::Engine.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
+
   namespace :admin do
     root to: 'dashboard#show'
 
