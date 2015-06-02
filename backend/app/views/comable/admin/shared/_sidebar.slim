@@ -39,6 +39,10 @@
         = link_to comable.admin_users_path do
           i.fa.fa-user
           = Comable.t('admin.nav.user')
+      li class="#{'active' if controller_name == 'pages'}"
+        = link_to comable.admin_pages_path do
+          i.fa.fa-file-text-o
+          = Comable.t('admin.nav.page')
       li class="#{'active' if controller_name.in? %w( store shipment_methods payment_methods )}"
         = link_to '#' do
           i.fa.fa-cog
