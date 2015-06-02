@@ -6,13 +6,15 @@
 #= require morris
 #= require pace/pace
 #= require gritter
+#= require moment
+#= require moment/ja
+#= require bootstrap-datetimepicker
 #= require_tree .
 
 $( ->
   # ---
   # functions
   # ---
-
   initialize_beforeunload_event = ->
     $form = $('form[method!="get"]')
     $form.change(->
@@ -96,6 +98,9 @@ $( ->
   $(document).on('change', '.btn-file :file', ->
     $(this).closest('form').submit()
   )
+
+  # datetimepicker setting
+  $('.datetimepicker').datetimepicker(format: 'YYYY-MM-DD HH:mm')
 )
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
