@@ -1,0 +1,28 @@
+.slug {
+  -webkit-box-flex: 0;
+  display: flex;
+}
+
+.slug .url {
+  width: 60%;
+  overflow: scroll;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.slug .url span {
+  color: #666;
+  display: inline-block;
+  font-size: 13px;
+  padding: 6px 4px 0 4px;
+}
+
+.slug .slug-body {
+  width: 40%;
+}
+
+.slug .slug-body input{
+  border-radius: 0 4px 4px 0;
+}
