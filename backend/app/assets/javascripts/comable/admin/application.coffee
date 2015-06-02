@@ -7,6 +7,9 @@
 #= require morris
 #= require pace/pace
 #= require gritter
+#= require moment
+#= require moment/ja
+#= require bootstrap-datetimepicker
 #= require_tree .
 #= require_self
 #= require turbolinks
@@ -97,6 +100,9 @@ $(document).ready(->
   $(document).on('change', '.btn-file :file', ->
     $(this).closest('form').submit()
   )
+
+  # datetimepicker setting
+  $('.datetimepicker').datetimepicker(format: 'YYYY-MM-DD HH:mm')
 )
 
 initialize_beforeunload_event()

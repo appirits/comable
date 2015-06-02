@@ -18,6 +18,8 @@ require 'pace/rails'
 require 'gritter'
 require 'turbolinks'
 require 'jquery-turbolinks'
+require 'bootstrap3-datetimepicker-rails'
+require 'momentjs-rails'
 
 module Comable
   module Backend

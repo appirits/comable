@@ -36,4 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'gritter', '~> 1.1.0'
   s.add_dependency 'turbolinks', '~> 2.5.3'
   s.add_dependency 'jquery-turbolinks', '~> 2.1.0'
+
+  s.add_dependency 'momentjs-rails', '~> 2.10.2'
+  s.add_dependency 'bootstrap3-datetimepicker-rails', '~> 4.7.14'
 end
