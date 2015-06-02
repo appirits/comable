@@ -9,6 +9,7 @@
 #= require moment
 #= require moment/ja
 #= require bootstrap-datetimepicker
+#= require ckeditor/init
 #= require_tree .
 
 $( ->

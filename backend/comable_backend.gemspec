@@ -37,4 +37,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'momentjs-rails', '~> 2.10.2'
   s.add_dependency 'bootstrap3-datetimepicker-rails', '~> 4.7.14'
+
+  s.add_dependency 'ckeditor', '~> 4.1.2'
+  s.add_dependency 'mini_magick', '~> 4.2.7'
 end

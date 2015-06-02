@@ -18,6 +18,8 @@ require 'pace/rails'
 require 'gritter'
 require 'bootstrap3-datetimepicker-rails'
 require 'momentjs-rails'
+require 'ckeditor'
+require 'mini_magick'
 
 module Comable
   module Backend
