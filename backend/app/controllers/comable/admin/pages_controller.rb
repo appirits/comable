@@ -31,7 +31,7 @@ module Comable
       end
 
       def update
-        if @page.update(page_params)
+        if @page.update_attributes(page_params)
           redirect_to comable.admin_page_path(@page), notice: Comable.t('successful')
         else
           render :edit
