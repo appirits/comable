@@ -6,6 +6,7 @@
 #= require morris
 #= require pace/pace
 #= require gritter
+#= require turbolinks
 #= require_tree .
 
 $( ->

@@ -16,6 +16,7 @@ require 'raphael-rails'
 require 'morrisjs-rails'
 require 'pace/rails'
 require 'gritter'
+require 'turbolinks'
 
 module Comable
   module Backend
