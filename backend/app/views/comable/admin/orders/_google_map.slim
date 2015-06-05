@@ -1,6 +1,3 @@
-/ TODO: Refactoring
-= javascript_include_tag '//maps.google.com/maps/api/js?v=3&sensor=false'
-
 coffee:
   window.initialize_google_map = (element_id, address) ->
     google_map = new google.maps.Map(document.getElementById(element_id), { zoom: 15 })
