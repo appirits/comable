@@ -1,4 +1,4 @@
-class @Search
+class Search
   constructor: (@templates = {}) ->
 
   remove_fields: (button) ->
@@ -18,3 +18,18 @@ class @Search
     template = template.replace(/new_object_name\[/g, object_name + "[")
     template = template.replace(/new_object_name_/, sanitized_object_name + '_')
     $(button).before(template.replace(id_regexp, new_id))
+
+# ---
+# main
+# ---
+search = new Search()
+
+$(document).on('click', '.ransack.add_fields', ->
+  search.add_fields(this, $(this).data('fieldType'), $(this).data('content'))
+  false
+)
+
+$(document).on('click', '.ransack.remove_fields', ->
+  search.remove_fields(this)
+  false
+)
