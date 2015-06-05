@@ -6,6 +6,8 @@
 #= require raphael
 #= require morris
 #= require pace/pace
+#= require nprogress
+#= require nprogress-turbolinks
 #= require gritter
 #= require_tree .
 #= require_self
