@@ -18,9 +18,6 @@ html
     = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js', 'data-turbolinks-track' => true
 
-    / TODO: Refactoring
-    = javascript_include_tag '//maps.google.com/maps/api/js?v=3&sensor=false', 'data-turbolinks-track' => true
-
     = csrf_meta_tags
 
   body id="#{"comable-#{controller_name.singularize}"}"
