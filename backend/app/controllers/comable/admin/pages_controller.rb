@@ -18,6 +18,7 @@ module Comable
       end
 
       def edit
+        set_preview_session
       end
 
       def create
@@ -55,6 +56,11 @@ module Comable
           :slug,             # スラグ
           :published_at      # 公開日時
         )
+      end
+
+      def set_preview_session
+        session[Comable::Page::PREVIEW_SESSION_KEY] ||= {}
+        session[Comable::Page::PREVIEW_SESSION_KEY][@page.slug] = true
       end
     end
   end

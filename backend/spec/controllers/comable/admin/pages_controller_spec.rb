@@ -35,6 +35,12 @@ describe Comable::Admin::PagesController do
       get :edit, id: page.to_param
       expect(assigns(:page)).to eq(page)
     end
+
+    it 'create preview session' do
+      page = create(:page)
+      get :edit, id: page.to_param
+      expect(session[Comable::Page::PREVIEW_SESSION_KEY][page.slug]).to eq(true)
+    end
   end
 
   describe 'POST create' do
