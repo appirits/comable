@@ -102,3 +102,9 @@ if $('#comable-affix').length != 0
   $(window).on('resize', resize_comable_affix)
 
 $('[data-toggle="tooltip"]').tooltip()
+
+NProgress.configure(
+  showSpinner: false,
+  ease: 'ease',
+  speed: 500
+)
