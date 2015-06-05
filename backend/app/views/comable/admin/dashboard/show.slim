@@ -38,26 +38,6 @@
           #comable-morris.morris style="height: 300px;"
 
       javascript:
-        morris_data = #{raw @this_month_orders.to_morris};
-        morris_keys = #{raw Comable::Order.morris_keys};
-        morris_labels = ['#{Comable.t('admin.order_count')}', '#{Comable.t('admin.sales')}'];
-
-      coffee:
-        new Morris.Line({
-          # ID of the element in which to draw the chart.
-          element: 'comable-morris',
-          # Chart data records -- each entry in this array corresponds to a point on
-          # the chart.
-          data: morris_data,
-          # The name of the data record attribute that contains x-values.
-          xkey: 'date',
-          # A list of names of data record attributes that contain y-values.
-          ykeys: morris_keys,
-          # Labels for the ykeys -- will be displayed when you hover over the
-          # chart.
-          labels: morris_labels,
-          xLabelAngle: 45,
-          xLabels: ['day'],
-          lineColors: ['#00acac', '#348fe2'],
-          hideHover: 'auto'
-        })
+        comable_morris_data = #{raw @this_month_orders.to_morris};
+        comable_morris_keys = #{raw Comable::Order.morris_keys};
+        comable_morris_labels = ['#{Comable.t('admin.order_count')}', '#{Comable.t('admin.sales')}'];

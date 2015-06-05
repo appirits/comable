@@ -1,8 +1,3 @@
-/ TODO: Use downloaded files
-= javascript_include_tag 'http://rawgit.com/vakata/jstree/3.0.9/dist/jstree.min.js'
-= content_for :head do
-  = stylesheet_link_tag 'http://rawgit.com/vakata/jstree/3.0.9/dist/themes/default/style.min.css', media: 'all'
-
 / TODO: Move to a file.
 javascript:
   comable_jstree_json = #{raw @categories.to_jstree(state: { opened: true }, icon: 'fa fa-bars')};
@@ -11,52 +6,6 @@ javascript:
   comable_action_edit = '#{Comable.t('admin.actions.edit')}';
   comable_action_destroy = '#{Comable.t('admin.actions.destroy')}';
   comable_destroied_nodes = [];
-
-coffee:
-  jQuery(->
-    $comable_jstree = $('#comable-jstree')
-    $comable_jstree.jstree({
-      core: {
-        check_callback: true,
-        data: comable_jstree_json,
-        strings : { new_node: comable_new_node_label, icon: 'fa fa-bars' }
-      },
-      contextmenu: {
-        items: ($node) ->
-          _this = $comable_jstree.jstree(true)
-          {
-            create: {
-              label: comable_action_new,
-              action: -> create_new_node($node)
-            }
-            edit: {
-              label: comable_action_edit,
-              action: -> _this.edit($node)
-            }
-            destory: {
-              label: comable_action_destroy,
-              action: ->
-                comable_destroied_nodes.push { _destroy: $node.id }
-                _this.delete_node($node)
-            }
-          }
-      },
-      plugins: ['dnd', 'wholerow', 'contextmenu']
-    })
-
-    window.create_new_node = ($node = '#') ->
-      jstree = $comable_jstree.jstree(true)
-      new_node = jstree.create_node($node)
-      jstree.open_node($node) unless jstree.is_open($node)
-      jstree.rename_node(new_node, comable_new_node_label)
-      jstree.set_icon(new_node, 'fa fa-bars')
-
-    $('form').submit(->
-      json = $comable_jstree.jstree(true).get_json().concat(comable_destroied_nodes)
-      json_string = JSON.stringify(json)
-      $(this).find('#jstree_json').val(json_string)
-    )
-  )
 
 .comable-page
   .comable-main-fixed-top
@@ -81,7 +30,7 @@ coffee:
               = Comable.t('admin.you_can_right_click')
             li
               = Comable.t('admin.link_to_add_new_node')
-              = link_to Comable.t('admin.actions.new'), 'javascript:void(0)', {onclick: 'create_new_node()'}
+              = link_to Comable.t('admin.actions.new'), 'javascript:void(0)', onclick: 'add_comable_jstree_node()'
 
       .col-md-9
         #comable-jstree
