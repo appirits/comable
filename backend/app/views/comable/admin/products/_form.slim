@@ -1,3 +1,9 @@
+/ TODO: Use downloaded files
+= content_for :head do
+  = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all', 'data-turbolinks-track' => true
+  = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all', 'data-turbolinks-track' => true
+  = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js', 'data-turbolinks-track' => true
+
 = error_messages_for @product
 
 - url = comable.admin_products_path if @product.new_record?
@@ -30,25 +36,9 @@
         = f.label :price
         = f.text_field :price
 
-      = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all'
-      = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all'
-      = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js'
-
       / TODO: Refactoring
       javascript:
         comable_tagit_available_tags = #{raw Comable::Category.all.map(&:path).map { |path| path.map(&:name).join(' > ') }.sort.to_json};
-      coffee:
-        $(document).ready(->
-          $("#comable-tagit").tagit({
-            fieldName: 'product[category_path_names][]',
-            availableTags: comable_tagit_available_tags,
-            autocomplete: { delay: 0, minLength: 0 },
-            showAutocompleteOnFocus: true,
-            removeConfirmation: true,
-            # Only allow available tags
-            beforeTagAdded: (event, ui) -> (comable_tagit_available_tags.indexOf(ui.tagLabel) != -1)
-          })
-        )
 
       .form-group
         = f.label :categories
