@@ -1,8 +1,3 @@
-/ TODO: Use downloaded files
-= content_for :head do
-  = stylesheet_link_tag 'http://rawgit.com/vakata/jstree/3.0.9/dist/themes/default/style.min.css', media: 'all', 'data-turbolinks-track' => false
-  = javascript_include_tag 'http://rawgit.com/vakata/jstree/3.0.9/dist/jstree.min.js', 'data-turbolinks-track' => true
-
 / TODO: Move to a file.
 javascript:
   comable_jstree_json = #{raw @categories.to_jstree(state: { opened: true }, icon: 'fa fa-bars')};

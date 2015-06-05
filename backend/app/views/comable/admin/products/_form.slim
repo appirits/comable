@@ -1,9 +1,3 @@
-/ TODO: Use downloaded files
-= content_for :head do
-  = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all', 'data-turbolinks-track' => true
-  = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all', 'data-turbolinks-track' => true
-  = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js', 'data-turbolinks-track' => true
-
 = error_messages_for @product
 
 - url = comable.admin_products_path if @product.new_record?
