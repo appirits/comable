@@ -3,8 +3,13 @@ javascript:
   comable_google_map_address = "#{address.full_address}";
 
 coffee:
+  window.can_google_map = ->
+    return false unless comable_google_map_element_id?
+    return false unless comable_google_map_address?
+    return false unless $('#' + comable_google_map_element_id).length
+    true
+
   window.initialize_google_map_api = ->
-    return if google?
     script = document.createElement('script')
     script.type = 'text/javascript'
     script.src = '//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize_google_map'
@@ -12,6 +17,7 @@ coffee:
     document.body.appendChild(script)
 
   window.initialize_google_map = ->
+    return unless can_google_map()
     google_map = new google.maps.Map(document.getElementById(comable_google_map_element_id), { zoom: 15 })
     google_geo = new google.maps.Geocoder()
     google_geo.geocode({ address: comable_google_map_address }, (result, status) =>
@@ -22,7 +28,10 @@ coffee:
     )
 
   $(document).ready(->
-    initialize_google_map_api()
+    if google?
+      initialize_google_map()
+    else
+      initialize_google_map_api()
   )
 
 .comable-map
