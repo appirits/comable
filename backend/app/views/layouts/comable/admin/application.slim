@@ -5,8 +5,8 @@ html
     title
       = Comable.app_name
     = yield :head
-    = stylesheet_link_tag 'comable/admin/application', media: 'all'
-    = javascript_include_tag 'comable/admin/application'
+    = stylesheet_link_tag 'comable/admin/application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'comable/admin/application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
   body id="#{"comable-#{controller_name.singularize}"}"
