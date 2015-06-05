@@ -4,9 +4,9 @@ html
     meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"
     title
       = Comable.app_name
-    = yield :head
     = stylesheet_link_tag 'comable/admin/application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'comable/admin/application', 'data-turbolinks-track' => true
+    = yield :head
     = csrf_meta_tags
 
   body id="#{"comable-#{controller_name.singularize}"}"
