@@ -5,7 +5,6 @@
 #= require bootstrap-sprockets
 #= require raphael
 #= require morris
-#= require pace/pace
 #= require nprogress
 #= require nprogress-turbolinks
 #= require gritter
@@ -86,12 +85,6 @@ window.add_fields = (_this, association, content) ->
 # ---
 # main
 # ---
-
-# Show the bar after Turbolinks added the page into the dom
-# from: https://github.com/HubSpot/pace/issues/47
-$(document).on('page:change', ->
-  Pace.restart()
-)
 
 $(document).ready(->
   initialize_vertical_navigation()

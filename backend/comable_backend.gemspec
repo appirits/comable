@@ -32,7 +32,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-ui-rails', '~> 5.0.3'
   s.add_dependency 'raphael-rails', '~> 2.1.2'
   s.add_dependency 'morrisjs-rails', '~> 0.5.1'
-  s.add_dependency 'pace-rails', '~> 0.1.3'
   s.add_dependency 'nprogress-rails', '~> 0.1.6.7'
   s.add_dependency 'gritter', '~> 1.1.0'
   s.add_dependency 'turbolinks', '~> 2.5.3'
