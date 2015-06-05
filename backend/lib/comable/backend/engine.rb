@@ -18,6 +18,7 @@ require 'nprogress-rails'
 require 'gritter'
 require 'turbolinks'
 require 'jquery-turbolinks'
+require 'awesome_admin_layout'
 
 module Comable
   module Backend

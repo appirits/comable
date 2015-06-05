@@ -8,6 +8,7 @@
 #= require nprogress
 #= require nprogress-turbolinks
 #= require gritter
+#= require awesome_admin_layout
 #= require_tree .
 #= require_self
 #= require turbolinks

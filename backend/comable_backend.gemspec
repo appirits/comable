@@ -36,4 +36,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'gritter', '~> 1.1.0'
   s.add_dependency 'turbolinks', '~> 2.5.3'
   s.add_dependency 'jquery-turbolinks', '~> 2.1.0'
+  s.add_dependency 'awesome_admin_layout', '~> 0.1.0'
 end

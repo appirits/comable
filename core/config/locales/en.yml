@@ -166,6 +166,7 @@ en:
         tracker: 'Tracker'
         products:
           detail: 'Product details'
+          list: 'Product list'
         orders:
           detail: 'Order details'
           cart: 'Cart infomation'

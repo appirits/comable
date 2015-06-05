@@ -24,15 +24,12 @@ html
     = render 'comable/admin/shared/notifier'
 
     - if current_comable_user.signed_in?
-      = render 'comable/admin/shared/header'
+      == render_admin_layout do
+        #wrapper
+          main.container-fluid
+            = yield
 
-      #wrapper
-        = render 'comable/admin/shared/sidebar'
-
-        main.container-fluid
-          = yield
-
-        = render 'comable/admin/shared/footer'
+          = render 'comable/admin/shared/footer'
     - else
       main
         = yield
