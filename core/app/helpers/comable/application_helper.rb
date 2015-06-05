@@ -48,6 +48,22 @@ module Comable
       string.respond_to?(:html_safe) ? string.html_safe : string
     end
 
+    def current_meta_description
+      if current_resource.present? && current_resource_meta_method_respond_to?(:meta_description)
+        current_resource.meta_description
+      elsif current_store.meta_description.present?
+        current_store.meta_description
+      end
+    end
+
+    def current_meta_keywords
+      if current_resource.present? && current_resource_meta_method_respond_to?(:meta_keywords)
+        current_resource.meta_keywords
+      elsif current_store.meta_keywords.present?
+        current_store.meta_keywords
+      end
+    end
+
     private
 
     def after_sign_in_path_for(_resource)
@@ -68,6 +84,18 @@ module Comable
 
     def after_resetting_password_path_for(resource)
       signed_in_root_path(resource) || comable.root_path
+    end
+
+    def current_resource
+      instance_variable_get current_resource_name
+    end
+
+    def current_resource_name
+      "@#{controller.controller_name.singularize}"
+    end
+
+    def current_resource_meta_method_respond_to?(method)
+      current_resource.respond_to? method
     end
   end
 end

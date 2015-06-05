@@ -3,11 +3,12 @@ html
   head
     title = current_store.name
 
-    - if current_store.meta_keywords.present?
-      meta name="keywords" content="#{current_store.meta_keywords}"
+    - if current_meta_keywords.present?
+      meta name="keywords" content="#{current_meta_keywords}"
 
-    - if current_store.meta_description.present?
-      meta name="description" content="#{current_store.meta_description}"
+    - if current_meta_description.present?
+      meta name="description" content="#{current_meta_description}"
+
 
     = stylesheet_link_tag "comable/frontend/application", media: "all"
     = javascript_include_tag "comable/frontend/application"
