@@ -1,5 +1,7 @@
 can_comable_tagit = ->
-  comable_tagit_available_tags?
+  return false unless comable_tagit_available_tags?
+  return false unless $("#comable-tagit").length
+  true
 
 initializa_comable_tagit = ->
   return unless can_comable_tagit()

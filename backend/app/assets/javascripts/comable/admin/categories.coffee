@@ -1,6 +1,5 @@
 window.create_new_node = ($node = '#') ->
-  $comable_jstree = $('#comable-jstree')
-  jstree = $comable_jstree.jstree(true)
+  jstree = $('#comable-jstree').jstree(true)
   new_node = jstree.create_node($node)
   jstree.open_node($node) unless jstree.is_open($node)
   jstree.rename_node(new_node, comable_new_node_label)
@@ -13,6 +12,7 @@ can_comable_jstree = ->
   return false unless comable_action_edit?
   return false unless comable_action_destroy?
   return false unless comable_destroied_nodes?
+  return false unless $('#comable-jstree').length
   true
 
 initializa_comable_jstree = ->
