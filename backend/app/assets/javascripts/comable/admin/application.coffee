@@ -107,5 +107,6 @@ $('[data-toggle="tooltip"]').tooltip()
 NProgress.configure(
   showSpinner: false,
   ease: 'ease',
-  speed: 500
+  speed: 500,
+  parent: '#wrapper'
 )

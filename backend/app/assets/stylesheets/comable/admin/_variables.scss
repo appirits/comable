@@ -41,4 +41,7 @@ $navbar-default-toggle-hover-bg: $navbar-default-link-hover-bg;
 // $panel-default-border: $comable-sidebar-border;
 
 // ngprogress
-$nprogress-color: #f1f1f1;
+$nprogress-color: $comable-theme-bg;
+
+// awesome_admin_layout
+$awesome_admin_layout-navigation-item-active-bg: $comable-theme-bg;
