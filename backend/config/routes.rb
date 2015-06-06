@@ -46,5 +46,7 @@ Comable::Core::Engine.routes.draw do
     devise_for :user, path: :user, class_name: Comable::User.name, module: :devise, controllers: {
       sessions: 'comable/admin/user_sessions'
     }
+
+    get :profile, controller: :users
   end
 end

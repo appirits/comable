@@ -25,6 +25,7 @@ AwesomeAdminLayout.setup(only: Comable::Admin::ApplicationController) do |contro
     item Comable.t('admin.nav.user') do
       link comable.admin_users_path
       icon 'user'
+      active controller.controller_name == 'users' && controller.action_name != 'profile'
     end
 
     divider
@@ -86,7 +87,8 @@ AwesomeAdminLayout.setup(only: Comable::Admin::ApplicationController) do |contro
     brand current_comable_user.email
 
     item Comable.t('admin.edit_profile') do
-      link comable.edit_admin_user_path(current_comable_user)
+      link comable.admin_profile_path
+      active controller.controller_name == 'users' && controller.action_name == 'profile'
     end
 
     divider
