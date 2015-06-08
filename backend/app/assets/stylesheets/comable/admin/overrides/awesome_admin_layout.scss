@@ -7,3 +7,21 @@ $comable-sidebar-width: $awesome_admin_layout-navigation-width;
 .awesome_admin_layout-main {
   margin: 0;
 }
+
+.awesome_admin_layout-navigation-toggle {
+  position: absolute;
+  z-index: 300;
+  // = .comable-page-heading's `padding`
+  padding: 25px 30px;
+}
+
+@media screen and (max-width: $screen-sm-min) {
+  .comable-main-fixed-top {
+    padding-left: 0 !important;
+  }
+
+  .comable-page-heading {
+    // = .comable-page-heading's `padding` + toggle button size + margin
+    padding-left: 30px + 34px + 20px !important;
+  }
+}
