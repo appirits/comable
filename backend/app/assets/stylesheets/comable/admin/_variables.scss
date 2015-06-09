@@ -1,22 +1,10 @@
 $comable-theme-bg: #7761a7;
 
-// sidebar
-$comable-sidebar-width: 280px;
-$comable-sidebar-bg: #d9e0e7;
-$comable-sidebar-color: #444;
-$comable-sidebar-title-color: #666;
-$comable-sidebar-border: darken($comable-sidebar-bg, 10%);
-$comable-sidebar-link-color: $comable-sidebar-color;
-$comable-sidebar-link-hover-color: #000;
-$comable-sidebar-link-active-color: #fff;
-$comable-sidebar-link-hover-bg: darken($comable-sidebar-bg, 10%);
-$comable-sidebar-link-active-bg: $comable-theme-bg;
-$comable-sidebar-darken-bg: darken($comable-sidebar-bg, 15%);
-$comable-sidebar-darken-hover-bg: rgba(0, 0, 0, 0.2);
-$comable-sidebar-darken-active-bg: $comable-sidebar-darken-hover-bg;
-$comable-sidebar-darken-color: $comable-sidebar-color;
-$comable-sidebar-darken-hover-color: #fff;
-$comable-sidebar-darken-active-color: $comable-sidebar-darken-hover-color;
+// signin
+$comable-signin-bg: #d9e0e7;
+$comable-signin-color: #666;
+$comable-signin-body-bg: #373737;
+$comable-signin-body-color: #aaa;
 
 // orders
 $comable-map-height: 160px;
@@ -36,9 +24,6 @@ $navbar-default-brand-color: $navbar-default-link-hover-color;
 $navbar-default-brand-hover-color: $navbar-default-brand-color;
 $navbar-default-toggle-icon-bar-bg: $navbar-default-link-color;
 $navbar-default-toggle-hover-bg: $navbar-default-link-hover-bg;
-
-// $panel-default-heading-bg: $comable-sidebar-bg;
-// $panel-default-border: $comable-sidebar-border;
 
 // ngprogress
 $nprogress-color: $comable-theme-bg;

@@ -1,6 +1,6 @@
 #comable-user_session {
   margin: 0;
-  background-color: $comable-sidebar-bg;
+  background-color: $comable-signin-bg;
   font-size: 12px;
   font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
 
@@ -11,7 +11,7 @@
 }
 
 .comable-signin {
-  background-color: $navbar-default-bg;
+  background-color: $comable-signin-body-bg;
 
   & > .comable-signin-heading {
     position: absolute;
@@ -23,7 +23,7 @@
     margin-left: -225px;
 
     & > h1 {
-      color: $comable-sidebar-title-color;
+      color: $comable-signin-color;
       font-size: 28px;
       font-weight: 300;
       line-height: 110%;
@@ -40,7 +40,7 @@
 
   .comable-signin-body {
     padding: 30px 40px;
-    color: $navbar-default-color;
+    color: $comable-signin-body-color;
     width: 450px;
     margin: 0 auto;
 
