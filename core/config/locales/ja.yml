@@ -166,6 +166,7 @@ ja:
         tracker: トラッキング情報
         products:
           detail: 商品詳細
+          list: '商品一覧'
         orders:
           detail: 注文明細
           cart: カート情報

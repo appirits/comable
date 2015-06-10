@@ -27,6 +27,11 @@ module Comable
         end
       end
 
+      def profile
+        @user = current_comable_user
+        render :edit
+      end
+
       private
 
       def user_params
