@@ -153,6 +153,7 @@ ja:
       mote_infomation_for_syntax: '構文についての詳しい情報は次のページをご覧ください:'
       help_of_store_email: 'この項目は顧客に送信するメールの送信元として利用されます。未入力の場合はメールが送信されません。'
       files: 'ファイル一覧'
+      use_this_theme: 'このテーマを使う'
       nav:
         dashboard: ダッシュボード
         order: 注文管理

@@ -2,6 +2,10 @@
   .comable-main-fixed-top
     .comable-page-heading
       ul.pull-right.list-inline
+        - if current_store.theme != @theme
+          = link_to comable.use_admin_theme_path(@theme), class: 'btn btn-default', method: 'put'
+            i.fa.fa-paint-brush>
+            = Comable.t('admin.use_this_theme')
         li
           = link_to comable.admin_theme_path(@theme), class: 'btn btn-default'
             i.fa.fa-edit>

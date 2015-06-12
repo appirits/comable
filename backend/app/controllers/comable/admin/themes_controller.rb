@@ -65,6 +65,11 @@ module Comable
         render :show_file
       end
 
+      def use
+        current_store.update_attributes!(theme: @theme)
+        redirect_to :back, notice: Comable.t('successful')
+      end
+
       private
 
       def save_file

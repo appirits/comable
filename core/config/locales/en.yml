@@ -153,6 +153,7 @@ en:
       mote_infomation_for_syntax: 'For more information about the syntax please refer to the following page:'
       help_of_store_email: 'This field will be used as sender of mail that send to customers. The mail will not be sent when the field is empty.'
       files: 'Files'
+      use_this_theme: 'Use this theme'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'

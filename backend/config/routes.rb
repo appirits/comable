@@ -47,6 +47,7 @@ Comable::Core::Engine.routes.draw do
         get 'tree', action: :tree, as: :tree
         get 'file/*path', action: :show_file, constraints: { path: /.+/, format: false }, as: :file
         put 'file/*path', action: :update_file, constraints: { path: /.+/, format: false }
+        put :use
       end
     end
 
