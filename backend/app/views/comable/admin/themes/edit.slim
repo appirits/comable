@@ -1,0 +1,31 @@
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to comable.tree_admin_theme_path(@theme), class: 'btn btn-default'
+            i.fa.fa-files-o>
+            = Comable.t('admin.files')
+        li
+          = link_to_save
+
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.theme'), comable.admin_themes_path
+          li.active
+            = @theme.display_name
+
+  .comable-page-body
+    = render 'form'
+    hr
+    .panel.panel-danger
+      .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger"
+        strong
+          span.fa.fa-angle-down>
+          = Comable.t('admin.actions.destroy')
+      #comable-danger.collapse
+        .panel-body
+          p
+            = Comable.t('admin.confirmation_to_remove_product')
+          = link_to Comable.t('admin.actions.destroy'), comable.admin_theme_path(@theme), method: :delete, class: 'btn btn-danger'

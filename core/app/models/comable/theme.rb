@@ -13,5 +13,13 @@ module Comable
     def default_version
       '0.1.0'
     end
+
+    def to_param
+      name
+    end
+
+    def display_name
+      display.presence || name
+    end
   end
 end

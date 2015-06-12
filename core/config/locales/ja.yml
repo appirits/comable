@@ -152,6 +152,7 @@ ja:
       list_of_usable_variables: '利用可能な変数は次の通りです。'
       mote_infomation_for_syntax: '構文についての詳しい情報は次のページをご覧ください:'
       help_of_store_email: 'この項目は顧客に送信するメールの送信元として利用されます。未入力の場合はメールが送信されません。'
+      files: 'ファイル一覧'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -192,6 +193,7 @@ ja:
         destroy: 削除する
         save: 保存する
         cancel: キャンセル
+        property: 'プロパティ'
       categories:
         new_node: 新しいカテゴリ
 

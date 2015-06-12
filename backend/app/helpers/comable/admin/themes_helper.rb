@@ -9,7 +9,7 @@ module Comable
             content_tag(:dt, parent_key) + display_directory_tree(entry, File.join(parent.to_s, parent_key.to_s))
           else
             fullpath = File.join(parent, entry)
-            link = link_to(entry, comable.admin_theme_path(path: fullpath))
+            link = link_to(entry, comable.file_admin_theme_path(path: fullpath))
             content_tag(:dd, link)
           end
         end.join.html_safe

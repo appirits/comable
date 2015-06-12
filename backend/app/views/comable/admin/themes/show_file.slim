@@ -1,8 +1,12 @@
 .comable-page
   .comable-main-fixed-top
     .comable-page-heading
-      - if @code
-        ul.pull-right.list-inline
+      ul.pull-right.list-inline
+        li
+          = link_to comable.admin_theme_path(@theme), class: 'btn btn-default'
+            i.fa.fa-edit>
+            = Comable.t('admin.actions.property')
+        - if @code
           li
             = link_to_save
 
@@ -11,7 +15,7 @@
           li>
             = link_to Comable.t('admin.nav.theme'), comable.admin_themes_path
           li.active
-            = params[:id]
+            = @theme.display_name
 
   .comable-page-body
     .row

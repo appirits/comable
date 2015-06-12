@@ -41,7 +41,15 @@ Comable::Core::Engine.routes.draw do
     resources :shipment_methods
     resources :payment_methods
     resources :trackers
-    resources :themes
+
+    resources :themes do
+      member do
+        get 'tree', action: :tree, as: :tree
+        get 'file/*path', action: :show_file, constraints: { path: /.+/, format: false }, as: :file
+        put 'file/*path', action: :update_file, constraints: { path: /.+/, format: false }
+      end
+    end
+
     resource :store, controller: :store, only: [:show, :edit, :update]
 
     devise_for :user, path: :user, class_name: Comable::User.name, module: :devise, controllers: {

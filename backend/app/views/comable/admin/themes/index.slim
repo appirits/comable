@@ -1,0 +1,37 @@
+.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li
+        = link_to Comable.t('admin.actions.new'), comable.new_admin_theme_path, class: 'btn btn-default'
+
+    h1.page-header
+      = Comable.t('admin.nav.theme')
+      small<
+        | #{@themes.size} #{Comable.t('admin.results')}
+
+  .comable-page-body
+    - if @themes.empty?
+      = Comable.t('admin.not_found')
+    - else
+      table.table.table-striped
+        thead
+          th
+            = @themes.klass.human_attribute_name(:name)
+          th
+            = @themes.klass.human_attribute_name(:version)
+          th
+            = @themes.klass.human_attribute_name(:author)
+        tbody
+          - @themes.each do |theme|
+            tr
+              td
+                = link_to theme.display_name, comable.tree_admin_theme_path(theme)
+                - if current_store.theme != theme
+                  span.fa.fa-eye-slash.text-muted<
+              td
+                = theme.version
+              td
+                - if theme.homepage
+                  = link_to (theme.author.presence || theme.homepage), theme.homepage
+                - else
+                  = theme.author

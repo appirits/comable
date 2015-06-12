@@ -3,33 +3,83 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class ThemesController < Comable::Admin::ApplicationController
-      before_filter :load_directory_tree, only: :show
+      load_and_authorize_resource class: Comable::Theme.name, find_by: :name
+
+      before_filter :load_directory_tree, only: [:tree, :show_file]
 
       def index
       end
 
       def show
-        params[:id] ||= 'default'
-        @code = File.read(filepath) if filepath && File.exist?(filepath)
+        render :edit
+      end
+
+      def new
+        @theme.attributes = {
+          version: @theme.default_version,
+          author: current_comable_user.bill_full_name || current_comable_user.email
+        }
+      end
+
+      def create
+        if @theme.save
+          FileUtils.mkdir_p(theme_dir)
+          redirect_to comable.admin_theme_path(@theme), notice: Comable.t('successful')
+        else
+          flash.now[:alert] = Comable.t('failure')
+          render :new
+        end
+      end
+
+      def edit
       end
 
       def update
-        params[:id] ||= 'default'
+        if @theme.update_attributes(theme_params)
+          redirect_to comable.admin_theme_path(@theme), notice: Comable.t('successful')
+        else
+          flash.now[:alert] = Comable.t('failure')
+          render :edit
+        end
+      end
 
+      def destroy
+        @theme.destroy
+        FileUtils.rm_rf(theme_dir)
+        redirect_to comable.admin_themes_path, notice: Comable.t('successful')
+      end
+
+      def tree
+        render :show_file
+      end
+
+      def show_file
+        @code = File.read(filepath) if filepath && File.exist?(filepath)
+      end
+
+      def update_file
         File.write(filepath, params[:code])
-
-        redirect_to comable.admin_theme_path(id: params[:id], path: params[:path])
+        redirect_to comable.file_admin_theme_path(@theme, path: params[:path]), notice: Comable.t('successful')
+        # TODO: Add this code
+        # rescue => e
+        #   @code = params[:code]
+        #   flash.now[:alert] = e.message
+        #   render :show_file
       end
 
       private
 
+      def theme_dir
+        "themes/#{@theme.name}/comable"
+      end
+
       def filepath
         return unless params[:path]
-        File.join("themes/#{params[:id]}/comable", params[:path])
+        File.join(theme_dir, params[:path])
       end
 
       def load_directory_tree
-        @directory_tree = directory_tree("themes/#{params[:id]}/comable")
+        @directory_tree = directory_tree(theme_dir)
       end
 
       def directory_tree(path, parent = nil)
@@ -48,6 +98,16 @@ module Comable
         end
 
         tree
+      end
+
+      def theme_params
+        params.require(:theme).permit(
+          :name,
+          :version,
+          :display,
+          :homepage,
+          :author
+        )
       end
     end
   end

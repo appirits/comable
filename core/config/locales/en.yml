@@ -152,6 +152,7 @@ en:
       list_of_usable_variables: 'Available variables are as follows.'
       mote_infomation_for_syntax: 'For more information about the syntax please refer to the following page:'
       help_of_store_email: 'This field will be used as sender of mail that send to customers. The mail will not be sent when the field is empty.'
+      files: 'Files'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -192,6 +193,7 @@ en:
         destroy: 'Destroy'
         save: 'Save'
         cancel: 'Cancel'
+        property: 'property'
       categories:
         new_node: 'New category'
 
