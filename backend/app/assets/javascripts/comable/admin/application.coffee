@@ -17,19 +17,25 @@
 # functions
 # ---
 
+beforeunload_message = ->
+  # TODO: Install 'i18n-js' gem
+  'The changes not saved. Are you sure you want to move from this page?'
+
 add_beforeunload_event = ->
   $form = $('form[method!="get"]')
   $form.change(->
-    $(window).on('beforeunload', (event) ->
-      # TODO: Install 'i18n-js' gem
-      confirmation_message = 'The changes not saved. Are you sure you want to move from this page?'
-      (event || window.event).returnValue = confirmation_message # for Gecko and Trident
-      confirmation_message                                       # for Gecko and WebKit
+    $(window).bind('beforeunload', ->
+      beforeunload_message()
+    )
+    $(document).on('page:before-change', ->
+      confirm(beforeunload_message())
     )
   )
-  $form.submit(->
-    $(window).off('beforeunload')
-  )
+  remove_beforeunload_function = ->
+    $(window).unbind('beforeunload')
+    $(document).off('page:before-change')
+  $form.submit(remove_beforeunload_function)
+  $(document).on('page:change', remove_beforeunload_function)
 
 window.add_fields = (_this, association, content) ->
   new_id = new Date().getTime()
@@ -41,14 +47,15 @@ window.add_fields = (_this, association, content) ->
 # ---
 
 $(document).ready(->
-  $(document).on('change', '.btn-file :file', ->
+  add_beforeunload_event()
+
+  $('.btn-file :file').change(->
     $(this).closest('form').submit()
   )
+
+  $('[data-toggle="tooltip"]').tooltip()
 )
 
-add_beforeunload_event()
-
-$('[data-toggle="tooltip"]').tooltip()
 
 NProgress.configure(
   showSpinner: false,
