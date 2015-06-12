@@ -8,7 +8,6 @@
 #= require pace/pace
 #= require gritter
 #= require moment
-#= require moment/ja
 #= require bootstrap-datetimepicker
 #= require_tree .
 #= require_self
