@@ -5,7 +5,7 @@ module Comable
     class ThemesController < Comable::Admin::ApplicationController
       load_and_authorize_resource class: Comable::Theme.name, find_by: :name
 
-      before_filter :load_directory_tree, only: [:tree, :show_file]
+      before_filter :load_directory_tree, only: [:tree, :show_file, :update_file]
 
       def index
       end
@@ -73,6 +73,9 @@ module Comable
       private
 
       def save_file
+        # Validate the Liquid syntax
+        Liquid::Template.parse(params[:code])
+
         FileUtils.mkdir_p(File.dirname(filepath)) unless File.exist?(filepath)
         File.write(filepath, params[:code])
       end
