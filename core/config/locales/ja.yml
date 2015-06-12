@@ -164,6 +164,7 @@ ja:
         shipment_method: 発送管理
         payment_method: 決済管理
         tracker: トラッキング情報
+        theme: 'テーマ'
         products:
           detail: 商品詳細
           list: '商品一覧'

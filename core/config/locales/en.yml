@@ -164,6 +164,7 @@ en:
         shipment_method: 'Shipment methods'
         payment_method: 'Payment methods'
         tracker: 'Tracker'
+        theme: 'Theme'
         products:
           detail: 'Product details'
           list: 'Product list'

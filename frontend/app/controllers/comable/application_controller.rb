@@ -6,7 +6,7 @@ module Comable
     before_filter :set_view_path
 
     def set_view_path
-      prepend_view_path "themes/#{current_store.theme_name}"
+      prepend_view_path "themes/#{current_store.theme_name}" if current_store.theme_name
     end
   end
 end
