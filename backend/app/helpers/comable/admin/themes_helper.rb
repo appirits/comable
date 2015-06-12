@@ -1,6 +1,10 @@
 module Comable
   module Admin
     module ThemesHelper
+      def editable?
+        params[:path].present?
+      end
+
       def display_directory_tree(tree, dirpath = nil)
         content_tag(:dl, build_directory_tree(tree, dirpath))
       end

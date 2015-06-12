@@ -23,7 +23,6 @@ module Comable
 
       def create
         if @theme.save
-          FileUtils.mkdir_p(theme_dir)
           redirect_to comable.admin_theme_path(@theme), notice: Comable.t('successful')
         else
           flash.now[:alert] = Comable.t('failure')
@@ -58,19 +57,29 @@ module Comable
       end
 
       def update_file
-        File.write(filepath, params[:code])
+        save_file
         redirect_to comable.file_admin_theme_path(@theme, path: params[:path]), notice: Comable.t('successful')
-        # TODO: Add this code
-        # rescue => e
-        #   @code = params[:code]
-        #   flash.now[:alert] = e.message
-        #   render :show_file
+      rescue => e
+        @code = params[:code]
+        flash.now[:alert] = e.message
+        render :show_file
       end
 
       private
 
+      def save_file
+        FileUtils.mkdir_p(File.dirname(filepath)) unless File.exist?(filepath)
+        File.write(filepath, params[:code])
+      end
+
       def theme_dir
         "themes/#{@theme.name}/comable"
+      end
+
+      def frontend_views_dir
+        spec = Gem::Specification.find_by_name('comable_frontend')
+        return theme_dir unless spec
+        "#{spec.gem_dir}/app/views/comable"
       end
 
       def filepath
@@ -79,7 +88,7 @@ module Comable
       end
 
       def load_directory_tree
-        @directory_tree = directory_tree(theme_dir)
+        @directory_tree = directory_tree(frontend_views_dir)
       end
 
       def directory_tree(path, parent = nil)
@@ -89,7 +98,7 @@ module Comable
         Dir.foreach(path) do |entry|
           next if entry.in? %w( .. . )
           fullpath = File.join(path, entry)
-          children << (File.directory?(fullpath) ? directory_tree(fullpath, entry.to_sym) : entry)
+          children << (File.directory?(fullpath) ? directory_tree(fullpath, entry.to_sym) : entry.sub(/\..+$/, '.liquid'))
         end
 
         tree

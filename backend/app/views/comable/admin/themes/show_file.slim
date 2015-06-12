@@ -6,7 +6,7 @@
           = link_to comable.admin_theme_path(@theme), class: 'btn btn-default'
             i.fa.fa-edit>
             = Comable.t('admin.actions.property')
-        - if @code
+        - if editable?
           li
             = link_to_save
 
@@ -23,7 +23,7 @@
         = display_directory_tree @directory_tree
 
       .col-md-9
-        - if @code
+        - if editable?
           = render 'editor', code: @code, params: params
         - else
           .panel.panel-default
