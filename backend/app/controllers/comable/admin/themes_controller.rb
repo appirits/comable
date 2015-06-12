@@ -87,14 +87,9 @@ module Comable
         tree = { (parent || :root)  => children }
 
         Dir.foreach(path) do |entry|
-          next if entry.in? ['..', '.']
+          next if entry.in? %w( .. . )
           fullpath = File.join(path, entry)
-
-          if File.directory?(fullpath)
-            children << directory_tree(fullpath, entry.to_sym)
-          else
-            children << entry
-          end
+          children << (File.directory?(fullpath) ? directory_tree(fullpath, entry.to_sym) : entry)
         end
 
         tree
