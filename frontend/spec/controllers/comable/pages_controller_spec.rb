@@ -12,7 +12,7 @@ describe Comable::PagesController do
 
     describe "GET 'show(preview)'" do
       before do
-        allow(page).to receive(:opened?).and_return(false)
+        allow(page).to receive(:published?).and_return(false)
         session[Comable::Page::PREVIEW_SESSION_KEY] = {}
         session[Comable::Page::PREVIEW_SESSION_KEY][page.slug]
         get :show, slug: page.slug
