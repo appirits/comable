@@ -11,6 +11,7 @@ module Comable
       end
 
       def show
+        edit
         render :edit
       end
 
