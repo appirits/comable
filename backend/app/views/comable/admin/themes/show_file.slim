@@ -24,7 +24,8 @@
   .comable-page-body
     .row
       .col-md-3
-        = display_directory_tree @directory_tree
+        #comable-file-tree
+          = display_directory_tree @directory_tree
 
       .col-md-9
         - if editable?

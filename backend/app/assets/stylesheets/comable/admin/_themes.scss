@@ -3,3 +3,35 @@
   height: 600px;
   border-radius: 3px;
 }
+
+#comable-file-tree {
+  @include border-radius($input-border-radius);
+  @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+  padding: 5px 0;
+  border: 1px solid $input-border;
+  overflow: auto;
+
+  dl {
+    $indent: 1.5em;
+    margin-bottom: 0;
+
+    dl {
+      text-indent: $indent;
+      dl {
+        text-indent: $indent * 2;
+      }
+    }
+  }
+
+  dt, a {
+    display: block;
+    padding: 5px 10px;
+  }
+
+  a {
+    &:hover, &:active {
+      color: $dropdown-link-active-color;
+      background-color: $dropdown-link-active-bg;
+    }
+  }
+}
