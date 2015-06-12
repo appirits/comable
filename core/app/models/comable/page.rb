@@ -12,7 +12,7 @@ module Comable
     PREVIEW_SESSION_KEY = :preview_page
 
     def published?
-      published_at.blank? || published_at <= Time.now
+      published_at.present? && published_at <= Time.now
     end
   end
 end
