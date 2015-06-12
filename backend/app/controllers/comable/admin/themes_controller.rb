@@ -81,13 +81,13 @@ module Comable
       end
 
       def theme_dir
-        "themes/#{@theme.name}/comable"
+        File.join('themes', @theme.name)
       end
 
       def frontend_views_dir
         spec = Gem::Specification.find_by_name('comable_frontend')
         return theme_dir unless spec
-        "#{spec.gem_dir}/app/views/comable"
+        "#{spec.gem_dir}/app/views"
       end
 
       def filepath
