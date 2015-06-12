@@ -2,7 +2,7 @@ module Comable
   class PagesController < Comable::ApplicationController
     def show
       @page = Comable::Page.where(slug: params[:slug]).first
-      fail unless @page && (@page.opened? || preview?)
+      fail unless @page && (@page.published? || preview?)
     end
 
     private

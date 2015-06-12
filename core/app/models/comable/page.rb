@@ -11,7 +11,7 @@ module Comable
 
     PREVIEW_SESSION_KEY = :preview_page
 
-    def opened?
+    def published?
       published_at.blank? || published_at <= Time.now
     end
   end
