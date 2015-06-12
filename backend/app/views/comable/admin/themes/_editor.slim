@@ -1,26 +1,5 @@
-#comable-editor
+#comable-theme-editor
   = code
 
-css:
-  #comable-editor {
-    width: 100%;
-    height: 600px;
-    border-radius: 3px;
-  }
-
-coffee:
-  editor = ace.edit('comable-editor')
-  editor.setTheme('ace/theme/monokai')
-  editor.getSession().setMode('ace/mode/liquid')
-
-  $(->
-    $form = $('#comable-editor-form')
-    $form.submit(->
-      text = editor.getValue()
-      $(this).find('[name=code]').val(text)
-    )
-  )
-
-= form_tag comable.admin_theme_path(params[:id]), id: 'comable-editor-form', method: :put do
+= form_tag comable.file_admin_theme_path(@theme, path: params[:path]), id: 'comable-theme-editor-form', method: :put do
   = hidden_field_tag :code, nil
-  = hidden_field_tag :path, params[:path]
