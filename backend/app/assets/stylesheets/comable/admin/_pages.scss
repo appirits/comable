@@ -1,20 +1,21 @@
 .slug {
-  -webkit-box-flex: 0;
-  display: flex;
+
+  @include display-flex;
 }
 
 .slug .url {
   width: 60%;
-  overflow: scroll;
+  overflow: auto;
   border: 1px solid #ccc;
   background: #fafafa;
   border-right: 0;
   border-radius: 4px 0 0 4px;
+  white-space: nowrap;
 }
 
 .slug .url span {
   color: #666;
-  display: inline-block;
+  @include inline-block;
   font-size: 13px;
   padding: 6px 4px 0 4px;
 }
