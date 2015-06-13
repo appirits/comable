@@ -20,6 +20,14 @@ add_comable_theme_editor_form_event = ->
     $(this).find('[name=code]').val(text)
   )
 
+add_comable_file_tree_event = ->
+  $comable_file_tree = $('#comable-file-tree')
+  $comable_file_tree.find('a').click((event) ->
+    event.preventDefault()
+    path = $(this).attr('href')
+    Turbolinks.visit(path)
+  )
+
 resize_forms_height = ->
   header_height = parseInt($('.comable-page-body').css('padding-top'))
   footer_height = $('footer').outerHeight(true)
@@ -35,6 +43,7 @@ $(document).ready(->
     add_comable_theme_editor_form_event()
   if can_use_comable_file_tree()
     resize_forms_height()
+    add_comable_file_tree_event()
 )
 
 $(window).resize(->
