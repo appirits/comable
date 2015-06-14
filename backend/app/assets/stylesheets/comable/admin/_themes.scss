@@ -1,8 +1,18 @@
 #comable-theme-editor {
-  width: 100%;
-  height: 600px;
-  border-radius: 3px;
+  .comable-theme-editor-filename {
+    @include border-top-radius($input-border-radius);
+    padding: 5px 10px;
+    color: #8F908A;
+    background-color: #2F3129;
+  }
+
+  .comable-theme-editor-window {
+    @include border-bottom-radius($input-border-radius);
+    width: 100%;
+    height: 600px;
+  }
 }
+
 
 #comable-file-tree {
   @include border-radius($input-border-radius);

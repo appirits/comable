@@ -7,15 +7,19 @@ can_use_comable_file_tree = ->
   return false unless $('#comable-file-tree').length
   true
 
+comable_theme_editor_window = ->
+  editor_element = $('#comable-theme-editor').find('.comable-theme-editor-window').get(0)
+  ace.edit(editor_element)
+
 initializa_comable_theme_editor = ->
-  editor = ace.edit('comable-theme-editor')
+  editor = comable_theme_editor_window()
   editor.setTheme('ace/theme/monokai')
   editor.getSession().setMode('ace/mode/liquid')
 
 add_comable_theme_editor_form_event = ->
   $form = $('#comable-theme-editor-form')
   $form.submit(->
-    editor = ace.edit('comable-theme-editor')
+    editor = comable_theme_editor_window()
     text = editor.getValue()
     $(this).find('[name=code]').val(text)
   )
