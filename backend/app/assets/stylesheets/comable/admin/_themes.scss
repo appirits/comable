@@ -1,15 +1,24 @@
 #comable-theme-editor {
+  position: relative;
+
   .comable-theme-editor-filename {
     @include border-top-radius($input-border-radius);
-    padding: 5px 10px;
+    @include nowrap;
+    padding: 0 15px;
+    height: $comable-theme-editor-filename-height;
+    line-height: $comable-theme-editor-filename-height;
     color: #8F908A;
     background-color: #2F3129;
+    overflow: hidden;
   }
 
   .comable-theme-editor-window {
     @include border-bottom-radius($input-border-radius);
-    width: 100%;
-    height: 600px;
+    position: absolute;
+    top: $comable-theme-editor-filename-height;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 }
 
@@ -17,6 +26,7 @@
 #comable-file-tree {
   @include border-radius($input-border-radius);
   @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+  margin-bottom: 15px;
   padding: 5px 0;
   border: 1px solid $input-border;
   overflow: auto;
