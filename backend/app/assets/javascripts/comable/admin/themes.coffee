@@ -14,7 +14,13 @@ comable_theme_editor_window = ->
 initializa_comable_theme_editor = ->
   editor = comable_theme_editor_window()
   editor.setTheme('ace/theme/monokai')
-  editor.getSession().setMode('ace/mode/liquid')
+  editor.session.setMode('ace/mode/liquid')
+  $(window).bind('beforeunload', ->
+    window.beforeunload_message unless editor.session.getUndoManager().isClean()
+  )
+  $(document).on('page:before-change', ->
+    confirm(window.beforeunload_message) unless editor.session.getUndoManager().isClean()
+  )
 
 add_comable_theme_editor_form_event = ->
   $form = $('#comable-theme-editor-form')
@@ -29,7 +35,9 @@ add_comable_file_tree_event = ->
   $comable_file_tree.find('a').click((event) ->
     event.preventDefault()
     path = $(this).attr('href')
-    Turbolinks.visit(path)
+    page_before_change = jQuery.Event('page:before-change')
+    $(document).trigger(page_before_change)
+    Turbolinks.visit(path) unless page_before_change.isDefaultPrevented()
   )
 
 resize_forms_height = ->
