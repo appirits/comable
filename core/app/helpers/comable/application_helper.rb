@@ -93,17 +93,15 @@ module Comable
     def current_resource_name
       "@#{controller.controller_name.singularize}"
     end
-    
+
     def current_resource_meta_description?
-      current_resource.present?                       &&
-      current_resource.respond_to?(:meta_description) &&
-      current_resource.meta_description?
+      current_resource.present? && current_resource.respond_to?(:meta_description) &&
+        current_resource.meta_description?
     end
-    
+
     def current_resource_meta_keywords?
-      current_resource.present?                    &&
-      current_resource.respond_to?(:meta_keywords) &&
-      current_resource.meta_keywords?
+      current_resource.present? && current_resource.respond_to?(:meta_keywords) &&
+        current_resource.meta_keywords?
     end
   end
 end
