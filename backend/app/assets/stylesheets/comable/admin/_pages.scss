@@ -1,5 +1,4 @@
 .slug {
-
   @include display-flex;
 }
 
@@ -9,7 +8,8 @@
   border: 1px solid #ccc;
   background: #fafafa;
   border-right: 0;
-  border-radius: 4px 0 0 4px;
+  @include border-top-left-radius(4px);
+  @include border-bottom-left-radius(4px);
   white-space: nowrap;
 }
 
@@ -25,5 +25,6 @@
 }
 
 .slug .slug-body input{
-  border-radius: 0 4px 4px 0;
+  @include border-top-left-radius(0px);
+  @include border-bottom-left-radius(0px);
 }

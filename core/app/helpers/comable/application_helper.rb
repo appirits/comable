@@ -49,17 +49,17 @@ module Comable
     end
 
     def current_meta_description
-      if current_resource.present? && current_resource_meta_method_respond_to?(:meta_description)
+      if current_resource_meta_description?
         current_resource.meta_description
-      elsif current_store.meta_description.present?
+      else
         current_store.meta_description
       end
     end
 
     def current_meta_keywords
-      if current_resource.present? && current_resource_meta_method_respond_to?(:meta_keywords)
+      if current_resource_meta_keywords?
         current_resource.meta_keywords
-      elsif current_store.meta_keywords.present?
+      else
         current_store.meta_keywords
       end
     end
@@ -93,9 +93,17 @@ module Comable
     def current_resource_name
       "@#{controller.controller_name.singularize}"
     end
-
-    def current_resource_meta_method_respond_to?(method)
-      current_resource.respond_to? method
+    
+    def current_resource_meta_description?
+      current_resource.present?                       &&
+      current_resource.respond_to?(:meta_description) &&
+      current_resource.meta_description?
+    end
+    
+    def current_resource_meta_keywords?
+      current_resource.present?                    &&
+      current_resource.respond_to?(:meta_keywords) &&
+      current_resource.meta_keywords?
     end
   end
 end

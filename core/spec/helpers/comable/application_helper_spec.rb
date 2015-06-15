@@ -20,12 +20,11 @@ describe Comable::ApplicationHelper do
 
   context 'メタタグ' do
     let!(:page) { FactoryGirl.create(:page) }
-    describe 'インスタンス変数があってメタタグのメソッドがある場合' do
-      before do
-        allow(subject).to receive(:current_resource).and_return(page)
-        allow(subject).to receive(:current_resource_meta_method_respond_to?).and_return(true)
-      end
+    before do
+      allow(subject).to receive(:current_resource).and_return(page)
+    end
 
+    describe 'インスタンス変数があってメタタグのメソッドがある場合' do
       context 'インスタンス変数のメタタグを表示する' do
         it '#current_meta_description' do
           expect(subject.current_meta_description).to eq(page.meta_description)
@@ -41,8 +40,7 @@ describe Comable::ApplicationHelper do
       let!(:store) { FactoryGirl.create(:store, meta_description: 'store_meta_description', meta_keywords: 'store_keywords') }
       before do
         allow(subject).to receive(:current_store).and_return(store)
-        allow(subject).to receive(:current_resource).and_return(page)
-        allow(subject).to receive(:current_resource_meta_method_respond_to?).and_return(false)
+        allow(subject).to receive_message_chain(:current_resource, :respond_to?).and_return(false)
       end
 
       context 'ストアのメタタグを表示する' do
