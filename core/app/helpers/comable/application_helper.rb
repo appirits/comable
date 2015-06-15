@@ -49,19 +49,15 @@ module Comable
     end
 
     def current_meta_description
-      if current_resource_meta_description?
-        current_resource.meta_description
-      else
-        current_store.meta_description
-      end
+      @current_meta_description ||= current_resource?(:meta_description) || current_store.meta_description
     end
 
     def current_meta_keywords
-      if current_resource_meta_keywords?
-        current_resource.meta_keywords
-      else
-        current_store.meta_keywords
-      end
+      @current_meta_keywords ||= current_resource?(:meta_keywords) || current_store.meta_keywords
+    end
+
+    def current_page_title
+      @current_page_title ||= [current_resource?(:page_title), current_store.name].compact.join(' - ')
     end
 
     private
@@ -94,14 +90,10 @@ module Comable
       "@#{controller.controller_name.singularize}"
     end
 
-    def current_resource_meta_description?
-      current_resource.present? && current_resource.respond_to?(:meta_description) &&
-        current_resource.meta_description?
-    end
-
-    def current_resource_meta_keywords?
-      current_resource.present? && current_resource.respond_to?(:meta_keywords) &&
-        current_resource.meta_keywords?
+    def current_resource?(method)
+      return unless current_resource
+      return unless current_resource.respond_to?(method)
+      current_resource.send(method).presence
     end
   end
 end

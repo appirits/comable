@@ -20,6 +20,9 @@ describe Comable::ApplicationHelper do
 
   context 'メタタグ' do
     let!(:page) { FactoryGirl.create(:page) }
+    let!(:store) do
+      FactoryGirl.create(:store, name: 'store_name', meta_description: 'store_meta_description', meta_keywords: 'store_keywords')
+    end
     before do
       allow(subject).to receive(:current_resource).and_return(page)
     end
@@ -34,10 +37,15 @@ describe Comable::ApplicationHelper do
           expect(subject.current_meta_keywords).to eq(page.meta_keywords)
         end
       end
+
+      context '#current_page_title' do
+        it 'インスタンス変数のpage_titleとストアのnameを結合したものであること' do
+          expect(subject.current_page_title).to eq([page.page_title, store.name].compact.join(' - '))
+        end
+      end
     end
 
     describe 'インスタンス変数があってメタタグのメソッドがない場合' do
-      let!(:store) { FactoryGirl.create(:store, meta_description: 'store_meta_description', meta_keywords: 'store_keywords') }
       before do
         allow(subject).to receive(:current_store).and_return(store)
         allow(subject).to receive_message_chain(:current_resource, :respond_to?).and_return(false)
@@ -50,6 +58,10 @@ describe Comable::ApplicationHelper do
 
         it '#current_meta_keywords' do
           expect(subject.current_meta_keywords).to eq(store.meta_keywords)
+        end
+
+        it '#current_page_title' do
+          expect(subject.current_page_title).to eq(store.name)
         end
       end
     end
@@ -68,6 +80,10 @@ describe Comable::ApplicationHelper do
 
         it '#current_meta_keywords' do
           expect(subject.current_meta_keywords).to eq(store.meta_keywords)
+        end
+
+        it '#current_page_title' do
+          expect(subject.current_page_title).to eq(store.name)
         end
       end
     end

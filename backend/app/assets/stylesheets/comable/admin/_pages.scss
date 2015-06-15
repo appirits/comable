@@ -3,8 +3,7 @@
 }
 
 .slug .url {
-  width: 60%;
-  overflow: auto;
+  @include flex(0 0 auto);
   border: 1px solid #ccc;
   background: #fafafa;
   border-right: 0;
@@ -21,7 +20,7 @@
 }
 
 .slug .slug-body {
-  width: 40%;
+  @include flex(1 1 0%);
 }
 
 .slug .slug-body input{

@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title = current_store.name
+    - if current_page_title.present?
+      title = current_page_title
 
     - if current_meta_keywords.present?
       meta name="keywords" content="#{current_meta_keywords}"
