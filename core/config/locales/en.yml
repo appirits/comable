@@ -183,6 +183,8 @@ en:
           general: 'General'
           seo: 'SEO'
           visibility: 'publishing/closed'
+          published: 'Published'
+          unpublished: 'Unpublished'
         stores:
           edit: 'Editing store'
         shipment_methods:

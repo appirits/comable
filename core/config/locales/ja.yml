@@ -183,6 +183,8 @@ ja:
           general: 一般
           seo: SEO
           visibility: 公開/非公開
+          published: 公開
+          unpublished: 非公開
         stores:
           edit: 編集
         shipment_methods:

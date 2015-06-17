@@ -27,3 +27,8 @@
   @include border-top-left-radius(0px);
   @include border-bottom-left-radius(0px);
 }
+
+.form-group .radio-inline {
+  margin-top: 10px;
+  margin-right: 20px;
+}
