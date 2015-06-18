@@ -104,7 +104,7 @@ module Comable
         tree = { (parent || :root)  => children }
 
         Dir.foreach(path) do |entry|
-          next if entry.in? %w( .. . )
+          next if entry.start_with? '.'
           fullpath = File.join(path, entry)
           children << (File.directory?(fullpath) ? directory_tree(fullpath, entry.to_sym) : entry.sub(/\..+$/, '.liquid'))
         end
