@@ -48,16 +48,10 @@ module Comable
       string.respond_to?(:html_safe) ? string.html_safe : string
     end
 
-    def current_meta_description
-      @current_meta_description ||= current_resource?(:meta_description) || current_store.meta_description
-    end
-
-    def current_meta_keywords
-      @current_meta_keywords ||= current_resource?(:meta_keywords) || current_store.meta_keywords
-    end
-
-    def current_page_title
-      @current_page_title ||= [current_resource?(:page_title), current_store.name].compact.join(' - ')
+    def set_current_meta_tags
+      @current_meta_tags_params ||= current_meta_tags_params
+      return if @current_meta_tags_params.blank?
+      set_meta_tags @current_meta_tags_params
     end
 
     private
@@ -82,18 +76,18 @@ module Comable
       signed_in_root_path(resource) || comable.root_path
     end
 
+    def current_meta_tags_params
+      return unless current_resource
+      return unless current_resource.respond_to?(:meta_tags_params)
+      current_resource.meta_tags_params.presence
+    end
+
     def current_resource
       instance_variable_get current_resource_name
     end
 
     def current_resource_name
       "@#{controller.controller_name.singularize}"
-    end
-
-    def current_resource?(method)
-      return unless current_resource
-      return unless current_resource.respond_to?(method)
-      current_resource.send(method).presence
     end
   end
 end

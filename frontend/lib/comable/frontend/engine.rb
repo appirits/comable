@@ -9,6 +9,8 @@ require 'kaminari'
 require 'jquery-rails'
 require 'jquery-ui-rails'
 
+require 'meta-tags'
+
 module Comable
   module Frontend
     class Engine < ::Rails::Engine

@@ -18,5 +18,13 @@ module Comable
     def can_send_mail?
       email.present?
     end
+
+    def meta_tags_params
+      {
+        site:        name,
+        description: meta_description,
+        keywords:    meta_keywords
+      }
+    end
   end
 end

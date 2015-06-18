@@ -27,4 +27,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'jquery-rails', '~> 3.1.2', '< 4.1'
   s.add_dependency 'jquery-ui-rails', '~> 5.0.3'
+
+  s.add_dependency 'meta-tags', '~> 2.0.0'
 end
