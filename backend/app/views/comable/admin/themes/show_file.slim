@@ -7,6 +7,10 @@
             i.fa.fa-paint-brush>
             = Comable.t('admin.use_this_theme')
         li
+          = link_to 'javascript:void();', class: 'btn btn-default', data: { toggle: 'modal', target: '#comable-help-modal' }
+            i.fa.fa-question-circle>
+            = Comable.t('admin.help')
+        li
           = link_to comable.admin_theme_path(@theme), class: 'btn btn-default'
             i.fa.fa-edit>
             = Comable.t('admin.actions.property')
@@ -38,3 +42,24 @@
                   | 左のファイルリストから編集したいテンプレートを選択してください。
                 p
                   | ここにエディタが表示されてテンプレートの内容を編集できます。
+
+.modal.fade#comable-help-modal tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal"
+          span
+            | &times;
+        h4.modal-title
+          = Comable.t('admin.help')
+      .modal-body
+        h4
+          | 利用可能な変数一覧
+        - liquidable_models.each do |model|
+          dl
+            dt
+              = model.model_name.human
+            - model.available_liquid_methods.each do |method|
+              dd
+                code
+                  | #{model.name.demodulize.underscore}.#{method}

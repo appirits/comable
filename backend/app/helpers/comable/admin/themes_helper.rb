@@ -9,6 +9,13 @@ module Comable
         content_tag(:dl, build_directory_tree(tree, dirpath))
       end
 
+      def liquidable_models
+        Comable.constants.map do |constant|
+          klass = "Comable::#{constant}".constantize
+          klass.constants.include?(:LiquidDropClass) ? klass : nil
+        end.compact
+      end
+
       private
 
       def build_directory_tree(tree, dirpath)

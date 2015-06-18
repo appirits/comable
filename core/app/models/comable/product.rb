@@ -2,6 +2,7 @@ module Comable
   class Product < ActiveRecord::Base
     include Comable::SkuItem
     include Comable::Ransackable
+    include Comable::Liquidable
     include Comable::Product::Search
     include Comable::Product::Csvable
 

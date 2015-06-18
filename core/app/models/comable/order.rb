@@ -8,6 +8,7 @@ module Comable
   class Order < ActiveRecord::Base
     include Comable::Checkout
     include Comable::Ransackable
+    include Comable::Liquidable
     include Comable::Order::Associations
     include Comable::Order::Callbacks
     include Comable::Order::Scopes
