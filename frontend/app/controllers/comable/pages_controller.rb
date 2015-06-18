@@ -1,7 +1,7 @@
 module Comable
   class PagesController < Comable::ApplicationController
     def show
-      @page = Comable::Page.where(slug: params[:slug]).first
+      @page = Comable::Page.friendly.find(params[:id])
       fail ActiveRecord::RecordNotFound unless @page && (@page.published? || preview?)
     end
 

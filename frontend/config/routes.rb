@@ -21,7 +21,7 @@ Comable::Core::Engine.routes.draw do
     end
   end
 
-  get 'pages/:slug', controller: :pages, action: :show, as: :page
+  resources :pages, only: [:show]
 
   devise_for :user, path: :member, class_name: Comable::User.name, module: :devise
 

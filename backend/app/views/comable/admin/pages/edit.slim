@@ -7,7 +7,7 @@
             i.fa.fa-bars
           ul.dropdown-menu.dropdown-menu-right
             li
-              = link_to comable.page_path(slug: @page.slug) do
+              = link_to comable.page_path(@page) do
                 span.fa.fa-external-link>
                 = Comable.t('admin.preview')
 

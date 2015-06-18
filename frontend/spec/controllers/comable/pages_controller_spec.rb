@@ -4,7 +4,7 @@ describe Comable::PagesController do
   context '通常商品' do
     let!(:page) { create(:page) }
     describe "GET 'show'" do
-      before { get :show, slug: page.slug }
+      before { get :show, id: page.slug }
 
       it { expect(response).to be_success }
       it { expect(assigns(:page)).to eq page }
@@ -15,7 +15,7 @@ describe Comable::PagesController do
         allow(page).to receive(:published?).and_return(false)
         session[Comable::Page::PREVIEW_SESSION_KEY] = {}
         session[Comable::Page::PREVIEW_SESSION_KEY][page.slug]
-        get :show, slug: page.slug
+        get :show, id: page.slug
       end
 
       it { expect(response).to be_success }

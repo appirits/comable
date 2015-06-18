@@ -3,7 +3,7 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class PagesController < Comable::Admin::ApplicationController
-      load_and_authorize_resource class: Comable::Page.name, except: :index
+      load_and_authorize_resource class: Comable::Page.name, except: :index, find_by: :slug
 
       def index
         @q = Comable::Page.ransack(params[:q])

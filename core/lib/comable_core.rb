@@ -9,6 +9,7 @@ require 'comma'
 require 'axlsx_rails'
 require 'roo'
 require 'liquid'
+require 'friendly_id'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'
