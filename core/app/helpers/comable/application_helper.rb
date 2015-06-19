@@ -48,12 +48,6 @@ module Comable
       string.respond_to?(:html_safe) ? string.html_safe : string
     end
 
-    def set_current_meta_tags
-      @current_meta_tags_params ||= current_meta_tags_params
-      return if @current_meta_tags_params.blank?
-      set_meta_tags @current_meta_tags_params
-    end
-
     private
 
     def after_sign_in_path_for(_resource)
@@ -74,20 +68,6 @@ module Comable
 
     def after_resetting_password_path_for(resource)
       signed_in_root_path(resource) || comable.root_path
-    end
-
-    def current_meta_tags_params
-      return unless current_resource
-      return unless current_resource.respond_to?(:meta_tags_params)
-      current_resource.meta_tags_params.presence
-    end
-
-    def current_resource
-      instance_variable_get current_resource_name
-    end
-
-    def current_resource_name
-      "@#{controller.controller_name.singularize}"
     end
   end
 end

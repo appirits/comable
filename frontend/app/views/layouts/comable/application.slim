@@ -1,8 +1,7 @@
 doctype html
 html
   head
-    - set_current_meta_tags
-    = display_meta_tags current_store.meta_tags_params
+    = display_meta_tags site: current_store.name, description: current_store.meta_description, keywords: current_store.meta_keywords
 
     = stylesheet_link_tag "comable/frontend/application", media: "all"
     = javascript_include_tag "comable/frontend/application"

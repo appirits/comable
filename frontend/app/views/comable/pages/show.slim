@@ -1,4 +1,7 @@
+- set_meta_tags(title: @page.page_title, description: @page.meta_description, keywords: @page.meta_keywords)
+
 section
-  h1= @page.title
+  h1
+    = @page.title
 
 == @page.content

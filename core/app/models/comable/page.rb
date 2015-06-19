@@ -17,13 +17,5 @@ module Comable
     def published?
       published_at.present? && published_at <= Time.now
     end
-
-    def meta_tags_params
-      {
-        title:       page_title,
-        description: meta_description,
-        keywords:    meta_keywords
-      }
-    end
   end
 end
