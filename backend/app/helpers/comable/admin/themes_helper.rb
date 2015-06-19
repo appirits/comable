@@ -22,22 +22,22 @@ module Comable
         entries = tree.values.first
         entries.map do |entry|
           if entry.is_a? Hash
-            build_directory_tree_children(dirpath, entry)
+            build_directory_tree_children(entry, dirpath)
           else
-            build_directory_tree_child(dirpath, entry)
+            build_directory_tree_child(entry, dirpath)
           end
         end.join.html_safe
       end
 
-      def build_directory_tree_children(dirpath, entry)
+      def build_directory_tree_children(entry, dirpath)
         dirname = entry.keys.first.to_s
         path = dirpath ? File.join(dirpath, dirname) : dirname
         content_tag(:dt, dirname) + display_directory_tree(entry, path)
       end
 
-      def build_directory_tree_child(dirpath, filename)
+      def build_directory_tree_child(filename, dirpath)
         path = File.join(dirpath, filename)
-        link = link_to(filename, comable.file_admin_theme_path(path: path))
+        link = link_to(filename, comable.file_admin_theme_path(@theme, path: path))
         content_tag(:dd, link)
       end
     end
