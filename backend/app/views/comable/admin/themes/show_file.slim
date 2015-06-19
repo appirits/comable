@@ -53,6 +53,15 @@
         h4.modal-title
           = Comable.t('admin.help')
       .modal-body
+        h4
+          | 構文について
+        p
+          | 構文についての詳細は次のページを参照してください:
+          span<
+            = link_to 'https://github.com/Shopify/liquid/wiki/Liquid-for-Designers', target: '_blank' do
+              | Liquid for Designers
+              i.fa.fa-external-link<
+
         .row
           .col-sm-6
             h4
