@@ -65,4 +65,4 @@
           label
             = radio_button_tag :published, false, @page.published_at.blank?
             = Comable.t('admin.nav.pages.unpublished')
-        = f.text_field :published_at, value: @page.published_at.try(:strftime,'%Y-%m-%d %H:%m'), class: 'datetimepicker'
+        = f.text_field :published_at, value: @page.published_at.try(:strftime,'%Y-%m-%d %H:%M'), class: 'datetimepicker'
