@@ -1,6 +1,21 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Denial of Service",
+      "warning_code": 88,
+      "fingerprint": "6ad4464dbb2a999591c7be8346dc137c3372b280f4a8b0c024fef91dfebeeb83",
+      "message": "Rails  is vulnerable to denial of service via XML parsing (CVE-2015-3227). Upgrade to Rails version 4.2.2",
+      "file": "Gemfile",
+      "line": null,
+      "link": "http://brakemanscanner.org/docs/warning_types/repos/canvas-lms/config/application.rb",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
       "fingerprint": "693a76b8d3bf724f1b13daae87822ce6193fbdad639fcd0c69f1b18edea45fb1",
@@ -20,6 +35,6 @@
       "note": ""
     }
   ],
-  "updated": "2015-02-04 17:01:35 +0900",
-  "brakeman_version": "3.0.0"
+  "updated": "2015-06-19 18:47:07 +0900",
+  "brakeman_version": "3.0.4"
 }
