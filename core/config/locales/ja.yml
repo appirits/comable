@@ -154,6 +154,13 @@ ja:
       help_of_store_email: 'この項目は顧客に送信するメールの送信元として利用されます。未入力の場合はメールが送信されません。'
       files: 'ファイル一覧'
       use_this_theme: 'このテーマを使う'
+      available_assigns: '利用可能な変数'
+      available_assigns_in_all_pages: 'すべてのページで利用可能な変数'
+      available_filters: '利用可能なフィルター'
+      about_sintax: '構文について'
+      please_see_following_page_for_syntax: '構文については次のページを参照してください:'
+      please_select_file_form_directory_tree_to_edit: 'ディレクトリーツリーから編集したいファイルを選択してください。'
+      here_editor_will_be_displayed_and_you_can_edit_file: 'ここにエディタが表示されてファイルの内容を編集できます。'
       nav:
         dashboard: ダッシュボード
         order: 注文管理

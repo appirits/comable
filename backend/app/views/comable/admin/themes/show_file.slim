@@ -39,9 +39,9 @@
             .panel.panel-default
               .panel-body
                 p
-                  | 左のファイルリストから編集したいテンプレートを選択してください。
+                  = Comable.t('admin.please_select_file_form_directory_tree_to_edit')
                 p
-                  | ここにエディタが表示されてテンプレートの内容を編集できます。
+                  = Comable.t('admin.here_editor_will_be_displayed_and_you_can_edit_file')
 
 .modal.fade#comable-help-modal tabindex="-1"
   .modal-dialog
@@ -54,9 +54,9 @@
           = Comable.t('admin.help')
       .modal-body
         h4
-          | 構文について
+          = Comable.t('admin.about_sintax')
         p
-          | 構文についての詳細は次のページを参照してください:
+          = Comable.t('admin.please_see_following_page_for_syntax')
           span<
             = link_to 'https://github.com/Shopify/liquid/wiki/Liquid-for-Designers', target: '_blank' do
               | Liquid for Designers
@@ -65,10 +65,10 @@
         .row
           .col-sm-6
             h4
-              | 利用可能な変数一覧
+              = Comable.t('admin.available_assigns')
             dl
               dt
-                | すべてのページで利用可能な変数
+                = Comable.t('admin.available_assigns_in_all_pages')
               - %w( current_store current_comable_user current_order current_trackers form_authenticity_token ).each do |method|
                 dd
                   code
@@ -83,7 +83,7 @@
                       | #{model.name.demodulize.underscore}.#{method}
           .col-sm-6
             h4
-              | 利用可能なヘルパー一覧
+              = Comable.t('admin.available_filters')
             dl
               dt
                 - helpers = [ActionView::Helpers::AssetTagHelper, ActionView::Helpers::TranslationHelper, ActionView::Helpers::NumberHelper]

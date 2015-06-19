@@ -154,6 +154,13 @@ en:
       help_of_store_email: 'This field will be used as sender of mail that send to customers. The mail will not be sent when the field is empty.'
       files: 'Files'
       use_this_theme: 'Use this theme'
+      available_assigns: 'Available assigns'
+      available_assigns_in_all_pages: 'Available assigns in all pages'
+      available_filters: 'Available filters'
+      about_sintax: 'About sintax'
+      please_see_following_page_for_syntax: 'Please see the following page for the syntax:'
+      please_select_file_form_directory_tree_to_edit: 'Please select a file form the directory tree to edit.'
+      here_editor_will_be_displayed_and_you_can_edit_file: 'Here the editor will be displayed, you can edit file.'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
