@@ -24,6 +24,8 @@ module Comable
 
     ransack_options ransackable_attributes: { except: [:encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at, :bill_address_id, :ship_address_id] }
 
+    liquid_methods :email, :bill_full_name, :ship_full_name, :cart
+
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
 
