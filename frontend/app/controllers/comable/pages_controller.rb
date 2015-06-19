@@ -1,7 +1,11 @@
 module Comable
   class PagesController < Comable::ApplicationController
     def show
-      @page = Comable::Page.friendly.find(params[:id])
+      if Rails::VERSION::MAJOR == 3
+        @page = Comable::Page.find(params[:id])
+      else
+        @page = Comable::Page.friendly.find(params[:id])
+      end
       fail ActiveRecord::RecordNotFound unless @page && (@page.published? || preview?)
     end
 
