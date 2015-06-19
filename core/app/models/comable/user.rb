@@ -3,6 +3,7 @@ module Comable
     include Comable::CartOwner
     include Comable::RoleOwner
     include Comable::Ransackable
+    include Comable::Liquidable
 
     has_many :orders, class_name: Comable::Order.name
     has_many :addresses, class_name: Comable::Address.name, dependent: :destroy

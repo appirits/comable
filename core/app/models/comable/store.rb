@@ -1,5 +1,7 @@
 module Comable
   class Store < ActiveRecord::Base
+    include Comable::Liquidable
+
     belongs_to :theme, class_name: Comable::Theme.name
 
     validates :name, length: { maximum: 255 }

@@ -2,15 +2,15 @@
   .comable-main-fixed-top
     .comable-page-heading
       ul.pull-right.list-inline
-        - if current_store.theme != @theme
-          = link_to comable.use_admin_theme_path(@theme), class: 'btn btn-default', method: 'put'
-            i.fa.fa-paint-brush>
-            = Comable.t('admin.use_this_theme')
         li
           = link_to 'javascript:void();', class: 'btn btn-default', data: { toggle: 'modal', target: '#comable-help-modal' }
             i.fa.fa-question-circle>
             = Comable.t('admin.help')
-        li
+        li.btn-group
+          - if current_store.theme != @theme
+            = link_to comable.use_admin_theme_path(@theme), class: 'btn btn-default', method: 'put'
+              i.fa.fa-paint-brush>
+              = Comable.t('admin.use_this_theme')
           = link_to comable.admin_theme_path(@theme), class: 'btn btn-default'
             i.fa.fa-edit>
             = Comable.t('admin.actions.property')
@@ -53,13 +53,32 @@
         h4.modal-title
           = Comable.t('admin.help')
       .modal-body
-        h4
-          | 利用可能な変数一覧
-        - liquidable_models.each do |model|
-          dl
-            dt
-              = model.model_name.human
-            - model.available_liquid_methods.each do |method|
-              dd
-                code
-                  | #{model.name.demodulize.underscore}.#{method}
+        .row
+          .col-sm-6
+            h4
+              | 利用可能な変数一覧
+            dl
+              dt
+                | すべてのページで利用可能な変数
+              - %w( current_store current_comable_user current_order current_trackers form_authenticity_token ).each do |method|
+                dd
+                  code
+                    | #{method}
+            - liquidable_models.each do |model|
+              dl
+                dt
+                  = model.model_name.human
+                - model.available_liquid_methods.each do |method|
+                  dd
+                    code
+                      | #{model.name.demodulize.underscore}.#{method}
+          .col-sm-6
+            h4
+              | 利用可能なヘルパー一覧
+            dl
+              dt
+                - helpers = [ActionView::Helpers::AssetTagHelper, ActionView::Helpers::TranslationHelper, ActionView::Helpers::NumberHelper]
+                - helpers.map(&:public_instance_methods).flatten.sort.each do |method|
+                  dd
+                    code
+                      | #{method}
