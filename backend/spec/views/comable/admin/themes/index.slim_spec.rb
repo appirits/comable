@@ -3,7 +3,7 @@ describe 'comable/admin/themes/index' do
 
   let!(:themes) { create_list(:theme, 2) }
 
-  before { assign(:themes, Comable::Theme.all) }
+  before { assign(:themes, (Rails::VERSION::MAJOR == 3) ? Comable::Theme.scoped : Comable::Theme.all) }
 
   it 'renders a list of themes' do
     render
