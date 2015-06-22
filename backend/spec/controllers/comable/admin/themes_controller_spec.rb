@@ -129,7 +129,7 @@ describe Comable::Admin::ThemesController do
 
   describe 'GET show_file' do
     let!(:theme) { create(:theme) }
-    let(:path) { 'file/to/path' }
+    let(:path) { 'path/to/file' }
     let(:fullpath) { File.join('themes', theme.name, path) }
 
     before { allow(File).to receive(:exist?).with(fullpath).and_return(true) }
@@ -148,7 +148,7 @@ describe Comable::Admin::ThemesController do
 
   describe 'PUT update_file' do
     let!(:theme) { create(:theme) }
-    let(:path) { 'file/to/path' }
+    let(:path) { 'path/to/file' }
 
     context 'when success to save the file' do
       it 'calls #save_file method' do
@@ -215,7 +215,7 @@ describe Comable::Admin::ThemesController do
     it 'save the source code to the theme file' do
       theme =  create(:theme)
       code = 'sample code!'
-      path = 'file/to/path'
+      path = 'path/to/file'
       fullpath = File.join('themes', theme.name, path)
 
       subject.instance_variable_set(:@theme, theme)
