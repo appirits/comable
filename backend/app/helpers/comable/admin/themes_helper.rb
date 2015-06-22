@@ -5,8 +5,9 @@ module Comable
         params[:path].present?
       end
 
-      def display_directory_tree(tree, dirpath = nil)
-        content_tag(:dl, build_directory_tree(tree, dirpath))
+      def display_views_directory_tree
+        views_direcotry_tree = load_directory_tree(views_dir)
+        build_directory_tree(views_direcotry_tree)
       end
 
       def liquidable_models
@@ -18,7 +19,30 @@ module Comable
 
       private
 
-      def build_directory_tree(tree, dirpath)
+      def views_dir
+        spec = Gem::Specification.find_by_name('comable_frontend')
+        fail 'Please install "comable_frontend" gem!' unless spec
+        "#{spec.gem_dir}/app/views"
+      end
+
+      def load_directory_tree(path, parent = nil)
+        children = []
+        tree = { (parent || :root)  => children }
+
+        Dir.foreach(path) do |entry|
+          next if entry.start_with? '.'
+          fullpath = File.join(path, entry)
+          children << (File.directory?(fullpath) ? load_directory_tree(fullpath, entry.to_sym) : entry.sub(/\..+$/, '.liquid'))
+        end
+
+        tree
+      end
+
+      def build_directory_tree(tree, dirpath = nil)
+        content_tag(:dl, build_directory_tree_nodes(tree, dirpath))
+      end
+
+      def build_directory_tree_nodes(tree, dirpath)
         entries = tree.values.first
         entries.map do |entry|
           if entry.is_a? Hash
@@ -32,7 +56,7 @@ module Comable
       def build_directory_tree_children(entry, dirpath)
         dirname = entry.keys.first.to_s
         path = dirpath ? File.join(dirpath, dirname) : dirname
-        content_tag(:dt, dirname) + display_directory_tree(entry, path)
+        content_tag(:dt, dirname) + build_directory_tree(entry, path)
       end
 
       def build_directory_tree_child(filename, dirpath)

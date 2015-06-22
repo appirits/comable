@@ -13,11 +13,11 @@ describe Comable::Admin::ThemesHelper do
     end
   end
 
-  describe '#display_directory_tree' do
+  describe '#build_directory_tree' do
     it 'should returns valid html elements' do
       theme = create(:theme)
       assign(:theme, theme)
-      expect(subject.display_directory_tree(root: [foo: ['bar']])).to eq(<<-HTML.delete("\n").strip.gsub(/(:?>\s+<)/, '><'))
+      expect(subject.send(:build_directory_tree, root: [foo: ['bar']])).to eq(<<-HTML.delete("\n").strip.gsub(/(:?>\s+<)/, '><'))
         <dl>
           <dt>foo</dt>
           <dl>

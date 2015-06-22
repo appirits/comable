@@ -5,8 +5,6 @@ module Comable
     class ThemesController < Comable::Admin::ApplicationController
       load_and_authorize_resource class: Comable::Theme.name, find_by: :name
 
-      before_filter :load_directory_tree, only: [:tree, :show_file, :update_file]
-
       def index
       end
 
@@ -84,32 +82,9 @@ module Comable
         File.join('themes', @theme.name)
       end
 
-      def frontend_views_dir
-        spec = Gem::Specification.find_by_name('comable_frontend')
-        return theme_dir unless spec
-        "#{spec.gem_dir}/app/views"
-      end
-
       def filepath
         return unless params[:path]
         File.join(theme_dir, params[:path])
-      end
-
-      def load_directory_tree
-        @directory_tree = directory_tree(frontend_views_dir)
-      end
-
-      def directory_tree(path, parent = nil)
-        children = []
-        tree = { (parent || :root)  => children }
-
-        Dir.foreach(path) do |entry|
-          next if entry.start_with? '.'
-          fullpath = File.join(path, entry)
-          children << (File.directory?(fullpath) ? directory_tree(fullpath, entry.to_sym) : entry.sub(/\..+$/, '.liquid'))
-        end
-
-        tree
       end
 
       def theme_params
