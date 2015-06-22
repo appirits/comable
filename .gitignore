@@ -8,6 +8,9 @@ spec/dummy/log/*.log
 spec/dummy/tmp/
 spec/dummy/.sass-cache
 spec/dummy/public/comable
+spec/dummy/public/assets/
+spec/dummy/public/uploads/
+spec/dummy/themes/
 coverage/
 gemfiles/*.lock
 Gemfile.lock
@@ -16,5 +19,3 @@ doc/
 vendor/
 tags
 .ruby-version
-spec/dummy/public/assets/
-spec/dummy/public/uploads/

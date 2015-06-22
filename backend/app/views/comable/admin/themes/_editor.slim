@@ -1,0 +1,8 @@
+#comable-theme-editor
+  .comable-theme-editor-filename
+    = params[:path]
+  .comable-theme-editor-window
+    = code
+
+= form_tag comable.file_admin_theme_path(@theme, path: params[:path]), id: 'comable-theme-editor-form', method: :put do
+  = hidden_field_tag :code, nil

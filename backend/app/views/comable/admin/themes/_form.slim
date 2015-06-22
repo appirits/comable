@@ -1,0 +1,31 @@
+= error_messages_for @theme
+
+= form_for [comable, :admin, @theme] do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.general')
+
+    .col-md-9
+      .form-group
+          = f.label :name
+          = f.text_field :name, disabled: f.object.persisted?
+
+      .form-group
+          = f.label :display
+          = f.text_field :display
+
+      .form-group
+          = f.label :version
+          = f.text_field :version
+
+      .form-group
+        = f.label :homepage
+        = f.text_field :homepage
+
+      .form-group
+        = f.label :author
+        = f.text_field :author

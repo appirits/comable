@@ -48,6 +48,17 @@ module Comable
       string.respond_to?(:html_safe) ? string.html_safe : string
     end
 
+    # To use the functionality of liquid-rails
+    def liquid_assigns
+      view_context.assigns.merge(
+        current_store: current_store,
+        current_comable_user: current_comable_user,
+        current_order: current_order,
+        current_trackers: current_trackers,
+        form_authenticity_token: form_authenticity_token
+      ).stringify_keys
+    end
+
     private
 
     def after_sign_in_path_for(_resource)

@@ -9,26 +9,32 @@
 #= require nprogress-turbolinks
 #= require gritter
 #= require awesome_admin_layout
+#= require ace/ace
+#= require ace/worker-html
+#= require ace/mode-liquid
 #= require_tree .
 #= require_self
 #= require turbolinks
 
 # ---
-# functions
+# variables
 # ---
 
-beforeunload_message = ->
-  # TODO: Install 'i18n-js' gem
-  'The changes not saved. Are you sure you want to move from this page?'
+# TODO: Install 'i18n-js' gem
+window.beforeunload_message = 'The changes not saved. Are you sure you want to move from this page?'
+
+# ---
+# functions
+# ---
 
 add_beforeunload_event = ->
   $form = $('form[method!="get"]')
   $form.change(->
     $(window).bind('beforeunload', ->
-      beforeunload_message()
+      window.beforeunload_message
     )
     $(document).on('page:before-change', ->
-      confirm(beforeunload_message())
+      confirm(window.beforeunload_message)
     )
   )
   remove_beforeunload_function = ->

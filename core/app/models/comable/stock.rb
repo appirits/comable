@@ -7,6 +7,7 @@ module Comable
     include Comable::SkuItem
     include Comable::SkuChoice
     include Comable::Ransackable
+    include Comable::Liquidable
     include Comable::Stock::Csvable
 
     belongs_to :product, class_name: Comable::Product.name
