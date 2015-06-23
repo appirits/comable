@@ -12,6 +12,7 @@
 #= require ace/ace
 #= require ace/worker-html
 #= require ace/mode-liquid
+#= require comable/admin/dispatcher
 #= require_tree .
 #= require_self
 #= require turbolinks

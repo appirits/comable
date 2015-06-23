@@ -20,7 +20,7 @@ html
 
     = csrf_meta_tags
 
-  body id="#{"comable-#{controller_name.singularize}"}"
+  body id="#{"comable-#{controller_name.singularize}"}" data-page="#{page_name}"
     = render 'comable/admin/shared/notifier'
 
     - if current_comable_user.signed_in?
