@@ -1,0 +1,16 @@
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to_save
+
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.theme'), comable.admin_themes_path
+          li.active
+            = Comable.t('admin.actions.new')
+
+  .comable-page-body
+    = render 'form'

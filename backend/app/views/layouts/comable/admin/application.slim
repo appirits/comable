@@ -4,24 +4,32 @@ html
     meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"
     title
       = Comable.app_name
+    = stylesheet_link_tag 'comable/admin/application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'comable/admin/application', 'data-turbolinks-track' => true
+
     = yield :head
-    = stylesheet_link_tag 'comable/admin/application', media: 'all'
-    = javascript_include_tag 'comable/admin/application'
+
+    / TODO: Use downloaded files
+    = stylesheet_link_tag 'http://rawgit.com/vakata/jstree/3.0.9/dist/themes/default/style.min.css', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'http://rawgit.com/vakata/jstree/3.0.9/dist/jstree.min.js', 'data-turbolinks-track' => true
+
+    / TODO: Use downloaded files
+    = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/jquery.tagit.css', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'http://rawgithub.com/aehlke/tag-it/master/css/tagit.ui-zendesk.css', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'http://rawgithub.com/aehlke/tag-it/master/js/tag-it.min.js', 'data-turbolinks-track' => true
+
     = csrf_meta_tags
 
   body id="#{"comable-#{controller_name.singularize}"}"
     = render 'comable/admin/shared/notifier'
 
     - if current_comable_user.signed_in?
-      = render 'comable/admin/shared/header'
+      == render_admin_layout do
+        #wrapper
+          main.container-fluid
+            = yield
 
-      #wrapper
-        = render 'comable/admin/shared/sidebar'
-
-        main.container-fluid
-          = yield
-
-        = render 'comable/admin/shared/footer'
+          = render 'comable/admin/shared/footer'
     - else
       main
         = yield

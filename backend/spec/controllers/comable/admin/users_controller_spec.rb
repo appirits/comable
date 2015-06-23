@@ -65,4 +65,16 @@ describe Comable::Admin::UsersController do
       end
     end
   end
+
+  describe 'GET profile' do
+    it 'assigns the current user as @user' do
+      get :profile
+      expect(assigns(:user)).to eq(controller.current_comable_user)
+    end
+
+    it "renders the 'edit' template" do
+      get :profile
+      expect(response).to render_template(:edit)
+    end
+  end
 end

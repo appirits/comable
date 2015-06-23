@@ -1,7 +1,6 @@
 fieldset
   .collapse#comable-advanced-search class="#{'in' if enable_advanced_search? }"
     .well
-      = setup_search_form
       = f.grouping_fields do |g|
         = render 'comable/admin/shared/grouping_fields', f: g
       - unless enable_advanced_search?

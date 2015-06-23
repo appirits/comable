@@ -14,8 +14,12 @@ require 'jquery-rails'
 require 'jquery-ui-rails'
 require 'raphael-rails'
 require 'morrisjs-rails'
-require 'pace/rails'
+require 'nprogress-rails'
 require 'gritter'
+require 'turbolinks'
+require 'jquery-turbolinks'
+require 'awesome_admin_layout'
+require 'ace-rails-ap'
 
 module Comable
   module Backend

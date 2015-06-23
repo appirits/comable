@@ -7,8 +7,10 @@
 @import 'font-awesome';
 @import 'jquery-ui';
 @import 'morris';
-@import 'pace/white/pace-theme-minimal';
+@import 'nprogress';
+@import 'nprogress-bootstrap';
 @import 'gritter';
+@import 'awesome_admin_layout';
 
 @import 'comable/admin/mixins';
 @import 'comable/admin/overrides';
@@ -19,3 +21,4 @@
 @import 'comable/admin/orders';
 @import 'comable/admin/products';
 @import 'comable/admin/user_sessions';
+@import 'comable/admin/themes';

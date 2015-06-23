@@ -18,10 +18,6 @@ module Comable
         link_to(name, 'javascript:void(0)', options.merge(onclick: "add_fields(this, '#{association}', '#{escape_javascript(fields)}')"))
       end
 
-      def setup_search_form
-        render('comable/admin/shared/setup_search_form')
-      end
-
       def button_to_remove_fields(name, options = {})
         content_tag(:button, name, options.merge(class: "ransack remove_fields #{options[:class]}"))
       end

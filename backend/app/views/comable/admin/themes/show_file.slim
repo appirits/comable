@@ -1,0 +1,93 @@
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li
+          = link_to 'javascript:void();', class: 'btn btn-default', data: { toggle: 'modal', target: '#comable-help-modal' }
+            i.fa.fa-question-circle>
+            = Comable.t('admin.help')
+        li.btn-group
+          - if current_store.theme != @theme
+            = link_to comable.use_admin_theme_path(@theme), class: 'btn btn-default', method: 'put'
+              i.fa.fa-paint-brush>
+              = Comable.t('admin.use_this_theme')
+          = link_to comable.admin_theme_path(@theme), class: 'btn btn-default'
+            i.fa.fa-edit>
+            = Comable.t('admin.actions.property')
+        - if editable?
+          li
+            = link_to_save
+
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.theme'), comable.admin_themes_path
+          li.active
+            = @theme.display_name
+
+  .comable-page-body
+    .row
+      .col-md-3
+        #comable-file-tree
+          = display_views_directory_tree
+
+      .col-md-9
+        - if editable?
+          = render 'editor', code: @code, params: params
+        - else
+          #comable-theme-editor
+            .panel.panel-default
+              .panel-body
+                p
+                  = Comable.t('admin.please_select_file_form_directory_tree_to_edit')
+                p
+                  = Comable.t('admin.here_editor_will_be_displayed_and_you_can_edit_file')
+
+.modal.fade#comable-help-modal tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal"
+          span
+            | &times;
+        h4.modal-title
+          = Comable.t('admin.help')
+      .modal-body
+        h4
+          = Comable.t('admin.about_sintax')
+        p
+          = Comable.t('admin.please_see_following_page_for_syntax')
+          span<
+            = link_to 'https://github.com/Shopify/liquid/wiki/Liquid-for-Designers', target: '_blank' do
+              | Liquid for Designers
+              i.fa.fa-external-link<
+
+        .row
+          .col-sm-6
+            h4
+              = Comable.t('admin.available_assigns')
+            dl
+              dt
+                = Comable.t('admin.available_assigns_in_all_pages')
+              - %w( current_store current_comable_user current_order current_trackers form_authenticity_token ).each do |method|
+                dd
+                  code
+                    | #{method}
+            - liquidable_models.each do |model|
+              dl
+                dt
+                  = model.model_name.human
+                - model.available_liquid_methods.each do |method|
+                  dd
+                    code
+                      | #{model.name.demodulize.underscore}.#{method}
+          .col-sm-6
+            h4
+              = Comable.t('admin.available_filters')
+            dl
+              dt
+                - helpers = [ActionView::Helpers::AssetTagHelper, ActionView::Helpers::TranslationHelper, ActionView::Helpers::NumberHelper]
+                - helpers.map(&:public_instance_methods).flatten.sort.each do |method|
+                  dd
+                    code
+                      | #{method}
