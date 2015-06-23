@@ -1,17 +1,16 @@
 class @DynamicOrder
+  @refresh_trigger_attributes = ['price', 'quantity']
+
   constructor: (@options = {}) ->
     @options['order_item_selector'] = '.comable-order-items' unless @options['order_item_selector']
     @listen_events()
 
   listen_events: ->
     self = this
-    selector = @options['order_item_selector']
-    $(->
-      $(selector).find('input').on('change', ->
-        attribute_name = $(this).attr('data-name')
-        return if (attribute_name != 'price' && attribute_name != 'quantity')
-        self.refresh_order_item_prices_for(this)
-      )
+    $('input').on('change', ->
+      attribute_name = $(this).attr('data-name')
+      return unless jQuery.inArray(attribute_name, self.refresh_trigger_attributes)
+      self.refresh_order_item_prices_for(this)
     )
 
   refresh_order_item_prices_for: (element) ->
