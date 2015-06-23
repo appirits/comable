@@ -4,7 +4,10 @@ describe Comable::Page do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:content) }
-    it { is_expected.to validate_presence_of(:slug) }
+    it do
+      subject.title = nil
+      is_expected.to validate_presence_of(:slug)
+    end
 
     it { is_expected.to validate_length_of(:title).is_at_most(255) }
     it { is_expected.to validate_length_of(:page_title).is_at_most(255) }
