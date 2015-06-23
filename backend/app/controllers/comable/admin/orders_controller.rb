@@ -89,6 +89,8 @@ module Comable
       def order_params
         params.require(:order).permit(
           :email,
+          :payment_fee,
+          :shipment_fee,
           :total_price,
           bill_address_attributes: permitted_address_attributes,
           ship_address_attributes: permitted_address_attributes,
