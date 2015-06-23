@@ -1,5 +1,5 @@
 class @DynamicOrder
-  @refresh_trigger_attributes = ['price', 'quantity']
+  @refresh_trigger_attributes = ['price', 'quantity', 'payment_fee', 'shipment_fee']
 
   constructor: (@options = {}) ->
     @options['order_item_selector'] = '.comable-order-items' unless @options['order_item_selector']
