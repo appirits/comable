@@ -10,6 +10,7 @@ require 'axlsx_rails'
 require 'roo'
 require 'liquid'
 require 'liquid-rails'
+require 'friendly_id'
 
 require 'comable/core/configuration'
 require 'comable/core/engine'

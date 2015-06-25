@@ -1,0 +1,36 @@
+.comable-page
+  .comable-main-fixed-top
+    .comable-page-heading
+      ul.pull-right.list-inline
+        li.dropdown
+          = link_to '#', class: 'btn btn-default', 'data-toggle' => 'dropdown' do
+            i.fa.fa-bars
+          ul.dropdown-menu.dropdown-menu-right
+            li
+              = link_to comable.page_path(@page) do
+                span.fa.fa-external-link>
+                = Comable.t('admin.preview')
+
+        li
+          = link_to_save
+
+      h1.page-header
+        ol.breadcrumb
+          li>
+            = link_to Comable.t('admin.nav.page'), comable.admin_pages_path
+          li.active
+            = @page.title
+
+  .comable-page-body
+    = render 'form'
+    hr
+    .panel.panel-danger
+      .panel-heading type="button" data-toggle="collapse" data-target="#comable-danger"
+        strong
+          span.fa.fa-angle-down>
+          = Comable.t('admin.actions.destroy')
+      #comable-danger.collapse
+        .panel-body
+          p
+            = Comable.t('admin.confirmation_to_remove_page')
+          = link_to Comable.t('admin.actions.destroy'), comable.admin_page_path(@page), method: :delete, class: 'btn btn-danger'

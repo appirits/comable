@@ -1,0 +1,34 @@
+.slug {
+  @include display-flex;
+}
+
+.slug .url {
+  @include flex(0 0 auto);
+  border: 1px solid #ccc;
+  background: #fafafa;
+  border-right: 0;
+  @include border-top-left-radius(4px);
+  @include border-bottom-left-radius(4px);
+  white-space: nowrap;
+}
+
+.slug .url span {
+  color: #666;
+  @include inline-block;
+  font-size: 13px;
+  padding: 6px 4px 0 4px;
+}
+
+.slug .slug-body {
+  @include flex(1 1 0%);
+}
+
+.slug .slug-body input{
+  @include border-top-left-radius(0px);
+  @include border-bottom-left-radius(0px);
+}
+
+.form-group .radio-inline {
+  margin-top: 10px;
+  margin-right: 20px;
+}

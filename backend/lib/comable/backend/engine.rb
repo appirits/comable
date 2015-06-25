@@ -21,6 +21,9 @@ require 'jquery-turbolinks'
 require 'awesome_admin_layout'
 require 'ace-rails-ap'
 
+require 'bootstrap3-datetimepicker-rails'
+require 'momentjs-rails'
+
 module Comable
   module Backend
     class Engine < ::Rails::Engine

@@ -68,6 +68,10 @@ AwesomeAdminLayout.setup(only: Comable::Admin::ApplicationController) do |contro
       link comable.admin_themes_path
     end
 
+    item Comable.t('admin.nav.page') do
+      link comable.admin_pages_path
+    end
+
     divider
 
     item Comable.t('admin.nav.shipment_method') do

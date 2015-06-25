@@ -1,0 +1,68 @@
+= error_messages_for @page
+
+- url = @page.new_record? ? comable.admin_pages_path : comable.admin_page_path(@page)
+
+= form_for @page, url: url, html: { multipart: true } do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.pages.general')
+
+    .col-md-9
+      .form-group
+        = f.label :title
+        = f.text_field :title
+
+      .form-group
+        = f.label :content
+        = f.text_area :content
+
+  hr
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.pages.seo')
+
+    .col-md-9
+      .form-group
+        = f.label :page_title
+        = f.text_field :page_title
+
+      .form-group
+        = f.label :meta_description
+        = f.text_field :meta_description
+
+      .form-group
+        = f.label :meta_keywords
+        = f.text_field :meta_keywords
+
+      .form-group
+        = f.label :slug
+        .slug
+          .url
+            span= comable.admin_pages_url + '/'
+          .slug-body
+            = f.text_field :slug
+
+  hr
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.pages.visibility')
+
+    .col-md-9
+      .form-group
+        .radio-inline
+          label
+            = radio_button_tag :published, true, @page.published_at.present?
+            = Comable.t('admin.nav.pages.published')
+        .radio-inline
+          label
+            = radio_button_tag :published, false, @page.published_at.blank?
+            = Comable.t('admin.nav.pages.unpublished')
+        = f.text_field :published_at, value: @page.published_at.try(:strftime,'%Y-%m-%d %H:%M'), class: 'datetimepicker'

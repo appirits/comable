@@ -11,6 +11,7 @@
 @import 'nprogress-bootstrap';
 @import 'gritter';
 @import 'awesome_admin_layout';
+@import 'bootstrap-datetimepicker';
 
 @import 'comable/admin/mixins';
 @import 'comable/admin/overrides';
@@ -20,5 +21,6 @@
 @import 'comable/admin/dashboard';
 @import 'comable/admin/orders';
 @import 'comable/admin/products';
+@import 'comable/admin/pages';
 @import 'comable/admin/user_sessions';
 @import 'comable/admin/themes';

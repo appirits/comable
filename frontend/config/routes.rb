@@ -21,6 +21,8 @@ Comable::Core::Engine.routes.draw do
     end
   end
 
+  resources :pages, only: [:show]
+
   devise_for :user, path: :member, class_name: Comable::User.name, module: :devise
 
   resource :user, path: :member do

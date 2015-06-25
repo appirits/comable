@@ -12,6 +12,8 @@
 #= require ace/ace
 #= require ace/worker-html
 #= require ace/mode-liquid
+#= require moment
+#= require bootstrap-datetimepicker
 #= require_tree .
 #= require_self
 #= require turbolinks
@@ -59,9 +61,11 @@ $(document).ready(->
     $(this).closest('form').submit()
   )
 
+  # datetimepicker setting
+  $('.datetimepicker').datetimepicker(format: 'YYYY-MM-DD HH:mm')
+
   $('[data-toggle="tooltip"]').tooltip()
 )
-
 
 NProgress.configure(
   showSpinner: false,

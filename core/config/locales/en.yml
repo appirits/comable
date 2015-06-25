@@ -109,11 +109,13 @@ en:
       back_to_store: 'Back to Store'
       confirmation_to_remove_product: 'This operation cannot be undone. Would you like to proceed?'
       confirmation_to_remove_stock: 'This operation cannot be undone. Would you like to proceed?'
+      confirmation_to_remove_page: 'This operation cannot be undone. Would you like to proceed?'
       you_can_drag_and_drop: 'Edit the category tree by drag-and-drop.'
       you_can_right_click: 'Open the context menu by right click.'
       link_to_add_new_node: 'Add a new category from the following link: '
       link_to_add_new_stock: 'Add a new stock from the following link: '
       check_this_product_in_frontend: 'Check this product in Store'
+      preview: 'preview'
       note: 'NOTE:'
       results: 'results'
       times: 'times'
@@ -167,6 +169,7 @@ en:
         product: 'Products'
         stock: 'Stocks'
         category: 'Categories'
+        page: 'Pages'
         user: 'Users'
         general_settings: 'General settings'
         store: 'Store'
@@ -187,6 +190,12 @@ en:
           detail: 'User details'
           edit: 'Editing user'
           new_orders: 'Recently orders (%{count})'
+        pages:
+          general: 'General'
+          seo: 'SEO'
+          visibility: 'publishing/closed'
+          published: 'Published'
+          unpublished: 'Unpublished'
         stores:
           edit: 'Editing store'
         shipment_methods:
@@ -376,7 +385,18 @@ en:
         state: 'Status'
         tracking_number: 'Tracking number'
         completed_at: 'Completed at'
-
+      comable/page:
+        id: 'ID'
+        title: 'Title'
+        content: 'Content'
+        seo: 'SEO'
+        page_title: 'PageTitle'
+        meta_description: 'Meta Description'
+        meta_keywords: 'Meta Keywords'
+        slug: 'Slug'
+        published_at: 'Published at'
+        created_at: 'Created at'
+        updated_at: 'Updated at'
   enumerize:
     comable/user:
       role:
