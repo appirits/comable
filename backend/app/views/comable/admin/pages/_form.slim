@@ -44,7 +44,8 @@
         = f.label :slug
         .slug
           .url
-            span= comable.admin_pages_url + '/'
+            span
+              = comable.page_url(id: '')
           .slug-body
             = f.text_field :slug
 
