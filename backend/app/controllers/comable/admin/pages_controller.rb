@@ -24,7 +24,7 @@ module Comable
 
       def create
         @page = Comable::Page.new(page_params)
-        @page.slug = @page.normalize_friendly_id(page_params[:slug])
+        @page.slug = @page.normalize_slug(page_params[:slug])
 
         if @page.save
           redirect_to comable.admin_page_path(@page), notice: Comable.t('successful')
@@ -35,7 +35,7 @@ module Comable
 
       def update
         @page.attributes = page_params
-        @page.slug = @page.normalize_friendly_id(page_params[:slug])
+        @page.slug = @page.normalize_slug(page_params[:slug])
 
         if @page.save
           redirect_to comable.admin_page_path(@page), notice: Comable.t('successful')
