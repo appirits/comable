@@ -1,7 +1,6 @@
 describe 'comable/admin/pages/index' do
   before do
-    create(:page, slug: 'test1')
-    create(:page, slug: 'test2')
+    create_list(:page, 2)
   end
   let!(:pages) { Comable::Page.all }
   let(:q) { Comable::Page.ransack }

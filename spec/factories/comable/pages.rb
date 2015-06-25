@@ -5,7 +5,7 @@ FactoryGirl.define do
     page_title 'page'
     meta_description 'meta_description'
     meta_keywords 'keyword1,keyword2'
-    slug 'page'
+    sequence(:slug) { |n| "slug#{n}" }
     published_at Time.now
   end
 end
