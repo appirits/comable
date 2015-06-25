@@ -2,7 +2,7 @@
 
 - url = @page.new_record? ? comable.admin_pages_path : comable.admin_page_path(@page)
 
-= form_for @page, url: url, html: { multipart: true } do |f|
+= form_for @page, url: url do |f|
   .hidden
     = f.submit
 
