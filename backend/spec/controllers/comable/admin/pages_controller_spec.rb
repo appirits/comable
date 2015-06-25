@@ -93,7 +93,7 @@ describe Comable::Admin::PagesController do
 
       it 'redirects to the page' do
         put :update, id: page.to_param, page: valid_attributes
-        expect(response).to redirect_to([comable, :admin, page])
+        expect(response).to redirect_to([comable, :admin, page.reload])
       end
     end
 
