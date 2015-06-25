@@ -18,7 +18,7 @@
 
       .form-group
         = f.label :content
-        = f.text_area :content
+        = f.text_area :content, rows: (f.object.content ? f.object.content.lines.count : nil)
 
   hr
 
