@@ -46,7 +46,7 @@ module Comable
 
       def destroy
         @page.destroy
-        redirect_to admin_pages_url, notice: Comable.t('successful')
+        redirect_to comable.admin_pages_path, notice: Comable.t('successful')
       end
 
       private
