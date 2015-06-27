@@ -14,6 +14,7 @@
 #= require ace/mode-liquid
 #= require moment
 #= require bootstrap-datetimepicker
+#= require comable/admin/dispatcher
 #= require_tree .
 #= require_self
 #= require turbolinks
