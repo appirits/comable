@@ -1,34 +1,30 @@
 .slug {
   @include display-flex;
-}
 
-.slug .url {
-  @include flex(0 0 auto);
-  border: 1px solid #ccc;
-  background: #fafafa;
-  border-right: 0;
-  @include border-top-left-radius(4px);
-  @include border-bottom-left-radius(4px);
-  white-space: nowrap;
-}
+  .slug-url {
+    @include flex(0 0 auto);
+    @include nowrap;
+    @include border-top-left-radius($input-border-radius);
+    @include border-bottom-left-radius($input-border-radius);
+    border: 1px solid $input-border;
+    border-right: 0;
+    background: $input-bg-disabled;
 
-.slug .url span {
-  color: #666;
-  @include inline-block;
-  font-size: 13px;
-  padding: 6px 4px 0 4px;
-}
+    span {
+      @include inline-block;
+      color: lighten($input-color, 15%);
+      padding: 6px 12px;
+      padding-right: 6px;
+    }
+  }
 
-.slug .slug-body {
-  @include flex(1 1 0%);
-}
+  .slug-body {
+    @include flex(1 1 0%);
 
-.slug .slug-body input{
-  @include border-top-left-radius(0px);
-  @include border-bottom-left-radius(0px);
-}
-
-.form-group .radio-inline {
-  margin-top: 10px;
-  margin-right: 20px;
+    input{
+      @include border-top-left-radius(0px);
+      @include border-bottom-left-radius(0px);
+      padding-left: 6px;
+    }
+  }
 }

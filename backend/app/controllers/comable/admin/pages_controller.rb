@@ -7,7 +7,7 @@ module Comable
 
       def index
         @q = Comable::Page.ransack(params[:q])
-        @pages = @q.result(distinct: true).page(params[:page]).accessible_by(current_ability)
+        @pages = @q.result.accessible_by(current_ability)
       end
 
       def show
@@ -24,6 +24,7 @@ module Comable
 
       def create
         @page = Comable::Page.new(page_params)
+        @page.slug = @page.normalize_slug(page_params[:slug])
 
         if @page.save
           redirect_to comable.admin_page_path(@page), notice: Comable.t('successful')
@@ -33,7 +34,10 @@ module Comable
       end
 
       def update
-        if @page.update_attributes(page_params)
+        @page.attributes = page_params
+        @page.slug = @page.normalize_slug(page_params[:slug])
+
+        if @page.save
           redirect_to comable.admin_page_path(@page), notice: Comable.t('successful')
         else
           render :edit
@@ -42,7 +46,7 @@ module Comable
 
       def destroy
         @page.destroy
-        redirect_to admin_pages_url, notice: Comable.t('successful')
+        redirect_to comable.admin_pages_path, notice: Comable.t('successful')
       end
 
       private

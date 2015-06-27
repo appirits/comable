@@ -17,5 +17,14 @@ module Comable
     def published?
       published_at.present? && published_at <= Time.now
     end
+
+    def default_slug
+      id ||= self.class.maximum(:id).next
+      "pages_#{id}"
+    end
+
+    def normalize_slug(string)
+      normalize_friendly_id(string).presence || default_slug
+    end
   end
 end

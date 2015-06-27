@@ -2,12 +2,11 @@
   .comable-page-heading
     ul.pull-right.list-inline
       li
-        = link_to comable.root_path do
-          = link_to Comable.t('admin.actions.new'), comable.new_admin_page_path, class: 'btn btn-default'
+        = link_to Comable.t('admin.actions.new'), comable.new_admin_page_path, class: 'btn btn-default'
     h1.page-header
       = Comable.t('admin.nav.page')
       small<
-        | #{@pages.total_count} #{Comable.t('admin.results')}
+        | #{@pages.size} #{Comable.t('admin.results')}
 
   .comable-page-body
     .comable-search
@@ -35,13 +34,22 @@
         table.table.table-striped
           thead
             th
-              = sort_link [:comable, @q], :id
-            th
               = sort_link [:comable, @q], :title
+            th
+              = sort_link [:comable, @q], :content
+            th
+              = sort_link [:comable, @q], :published_at
           tbody
             - @pages.each do |page|
               tr
                 td
-                  =  page.id
-                td
                   = link_to page.title, comable.admin_page_path(page)
+                  small.text-muted<
+                    | #{comable.page_path(page)}
+                td
+                  = page.content.truncate(50)
+                td
+                  - if page.published_at
+                    = l page.published_at
+                  - else
+                    = Comable.t('admin.nav.pages.unpublished')
