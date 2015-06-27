@@ -1,12 +1,12 @@
 $(->
-  new Dispatcher()
+  new Dispatcher
 )
 
 class Dispatcher
   constructor: ->
-    @init_page_scripts()
+    @initialize_page_scripts()
 
-  init_page_scripts: ->
+  initialize_page_scripts: ->
     page = $('body').attr('data-page')
     return false unless page
 
@@ -16,4 +16,4 @@ class Dispatcher
 
     switch page
       when 'orders:edit'
-        new DynamicOrder()
+        new DynamicOrder

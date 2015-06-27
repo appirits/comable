@@ -46,7 +46,7 @@ module Comable
       end
 
       def page_name
-        [controller.controller_name, controller.action_name].join(':')
+        [controller_name, action_name].join(':')
       end
     end
   end
