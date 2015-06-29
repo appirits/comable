@@ -1,3 +1,12 @@
+## Comable 0.5.0 (June 29, 2015) ##
+
+*   Implement Themes.
+
+*   Implement Pages.
+
+*   Implement functionaly to edit order items.
+
+
 ## Comable 0.4.2 (June 01, 2015) ##
 
 *   Commonize the app name and the homepage url.
