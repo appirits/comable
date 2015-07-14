@@ -1,3 +1,12 @@
+require 'ffaker'
+
+require 'comable/core'
+
+require 'comable/sample/engine'
+require 'comable/sample/address'
+require 'comable/sample/name'
+require 'comable/sample/phone_number'
+
 module Comable
   module Sample
     class << self
