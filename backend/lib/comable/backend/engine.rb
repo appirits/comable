@@ -1,4 +1,4 @@
-require 'comable_core'
+require 'comable/core'
 
 require 'slim'
 require 'sass-rails'
@@ -27,7 +27,7 @@ require 'momentjs-rails'
 module Comable
   module Backend
     class Engine < ::Rails::Engine
-      # XXX: a code below to delegate comable:install:migrations to comable_core
+      # XXX: a code below to delegate comable:install:migrations to comable-core
       config.paths['db/migrate'] = []
 
       config.generators do |g|

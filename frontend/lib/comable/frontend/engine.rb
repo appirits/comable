@@ -1,4 +1,4 @@
-require 'comable_core'
+require 'comable/core'
 
 require 'slim'
 require 'bootstrap-sass'
@@ -20,7 +20,7 @@ module Comable
         g.fixture_replacement :factory_girl, dir: 'spec/factories'
       end
 
-      # XXX: a code below to delegate comable:install:migrations to comable_core
+      # XXX: a code below to delegate comable:install:migrations to comable-core
       config.paths['db/migrate'] = []
 
       config.autoload_paths << "#{config.root}/app/controllers/concerns" if Rails::VERSION::MAJOR == 3

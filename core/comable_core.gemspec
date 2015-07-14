@@ -2,7 +2,7 @@ version = File.read(File.expand_path('../../COMABLE_VERSION', __FILE__)).strip
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = 'comable_core'
+  s.name        = 'comable-core'
   s.version     = version
   s.authors     = ['YOSHIDA Hiroki']
   s.email       = ['hyoshida@appirits.com']
