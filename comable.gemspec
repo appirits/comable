@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.1.5'
 
-  s.add_dependency 'comable_core', version
-  s.add_dependency 'comable_frontend', version
-  s.add_dependency 'comable_backend', version
-  s.add_dependency 'comable_sample', version
+  s.add_dependency 'comable-core', version
+  s.add_dependency 'comable-frontend', version
+  s.add_dependency 'comable-backend', version
+  s.add_dependency 'comable-sample', version
 end

@@ -20,8 +20,8 @@ module Comable
       private
 
       def views_dir
-        spec = Gem::Specification.find_by_name('comable_frontend')
-        fail 'Please install "comable_frontend" gem!' unless spec
+        spec = Gem::Specification.find_by_name('comable-frontend')
+        fail 'Please install "comable-frontend" gem!' unless spec
         "#{spec.gem_dir}/app/views"
       end
 
