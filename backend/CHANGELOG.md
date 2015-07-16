@@ -1,3 +1,8 @@
+## Comable 0.6.0 (July 16, 2015) ##
+
+*   Rename this gem: comable_backend => comable-backend
+
+
 ## Comable 0.5.0 (June 29, 2015) ##
 
 *   Implement Themes.
