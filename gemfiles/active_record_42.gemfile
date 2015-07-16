@@ -3,7 +3,4 @@ eval File.read(File.expand_path('../../Gemfile.common', __FILE__))
 gem 'railties', '~> 4.2.0'
 gem 'activerecord', '~> 4.2.0', require: 'active_record'
 
-# TODO: Please remove this line after the new version is released.
-gem 'devise', github: 'plataformatec/devise'
-
 gemspec path: '../'
