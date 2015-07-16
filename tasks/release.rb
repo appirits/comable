@@ -10,7 +10,7 @@ directory 'pkg'
 
 (FRAMEWORKS + ['comable']).each do |framework|
   namespace framework do
-    gemname = (framework == 'comable') ? framework : "comable_#{framework}"
+    gemname = (framework == 'comable') ? framework : "comable-#{framework}"
     gem     = "pkg/#{gemname}-#{version}.gem"
     gemspec = "#{gemname}.gemspec"
 
