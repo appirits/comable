@@ -1,0 +1,28 @@
+= error_messages_for @navigation
+
+- url = @navigation.new_record? ? comable.admin_navigations_path : comable.admin_navigation_path(@navigation)
+
+= form_for @navigation, url: url do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-sm-12
+      .form-group
+        = f.label :name
+        = f.text_field :name
+  hr
+
+  #navigation-items= f.fields_for :navigation_items do |navigation_items_form|
+    = render 'navigation_item_fields', f: navigation_items_form
+
+  hr
+
+  .row
+    = add_fields_button_tag 'Add Link', f, :navigation_items
+
+.hidden
+  = form_tag({ action: :search_linkable_ids }, remote: true) do
+    = text_field_tag :linkable_type
+    = text_field_tag :position
+    = submit_tag

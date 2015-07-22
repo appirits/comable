@@ -17,5 +17,7 @@ class Dispatcher
     switch page
       when 'orders:edit'
         new DynamicOrder
-      when 'pages:new', 'pages:show', 'pages:edit'
+      when 'pages:new', 'pages:show', 'pages:edit', 'pages:update', 'pages:create'
         new Page
+      when 'navigations:new', 'navigations:show', 'navigations:edit', 'navigations:update', 'navigations:create'
+        new Navigation
