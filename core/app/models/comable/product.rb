@@ -5,6 +5,7 @@ module Comable
     include Comable::Liquidable
     include Comable::Product::Search
     include Comable::Product::Csvable
+    include Comable::Linkable
 
     has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
@@ -21,6 +22,8 @@ module Comable
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
     ransack_options attribute_select: { associations: :stocks }
+
+    linkable_columns_keys use_index: true
 
     # Add conditions for the images association.
     # Override method of the images association to support Rails 3.x.
