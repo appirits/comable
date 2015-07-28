@@ -38,6 +38,11 @@ Comable::Core::Engine.routes.draw do
 
     resources :categories
     resources :pages
+
+    resources :navigations do
+      post :search_linkable_ids, on: :collection
+    end
+
     resources :users
     resources :shipment_methods
     resources :payment_methods
