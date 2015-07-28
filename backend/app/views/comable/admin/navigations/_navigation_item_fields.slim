@@ -1,0 +1,23 @@
+fieldset.navigation-item class="#{'hidden' if f.object._destroy }"
+  .col-sm-12
+    .form-group
+      .row
+        .col-sm-3
+          = f.label :name
+          = f.text_field :name
+
+        .col-sm-3
+          = f.label :linkable_type
+          = f.select :linkable_type, linkable_type_options, {}, class: :linkable_type
+
+        .col-sm-3.url style="#{ 'display: none;' if f.object.linkable_type? }"
+          = f.label :url
+          = f.text_field :url
+
+        .col-sm-3.linkable_id style="#{ 'display: none;' unless f.object.linkable_type?}"
+          = f.select :linkable_id, f.object.linkable_type? ? f.object.linkable_type.constantize.linkable_id_options : [[]]
+
+        = f.hidden_field :_destroy, class: :destroy
+
+        .col-sm-3
+          button.btn.btn-default.pull-right.remove_fields type="button" Delete
