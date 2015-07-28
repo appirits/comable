@@ -1,8 +1,10 @@
 module Comable
   class Page < ActiveRecord::Base
     include Comable::Ransackable
-
+    include Comable::Linkable
     extend FriendlyId
+
+    linkable_columns_keys name: :title, use_index: true
     friendly_id :title, use: :slugged
 
     validates :title, length: { maximum: 255 }, presence: true
