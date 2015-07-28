@@ -54,8 +54,12 @@ module Comable
 
       private
 
+      def linkable_type
+        params[:linkable_type] if Comable.const_defined?(params[:linkable_type].demodulize)
+      end
+
       def linkable_id_options
-        params[:linkable_type].present? ? params[:linkable_type].constantize.linkable_id_options : [[]]
+        linkable_type ? linkable_type.constantize.linkable_id_options : [[]]
       end
 
       def navigation_params
