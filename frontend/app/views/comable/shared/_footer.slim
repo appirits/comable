@@ -35,5 +35,8 @@ footer
             = link_to Comable.t('change_email_or_password'), comable.edit_user_path
           li
             = link_to Comable.t('edit_your_address_book'), comable.addresses_user_path
+
+      = render 'comable/shared/navigation'
+
   .credit
     | Powered by #{link_to Comable.app_name, Comable.homepage}
