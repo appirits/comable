@@ -200,7 +200,8 @@ en:
           published: 'Published'
           unpublished: 'Unpublished'
         navigation_items:
-          web_address: Web Address
+          web_address: 'Web Address'
+          add_link: 'Add Link'
         stores:
           edit: 'Editing store'
         shipment_methods:

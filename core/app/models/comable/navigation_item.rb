@@ -18,7 +18,7 @@ module Comable
           web_address_linkable_params, # Web Address
           product_linkable_params,     # Product
           page_linkable_params         # Page
-        ]
+        ].compact
       end
 
       def web_address_linkable_params
@@ -29,6 +29,7 @@ module Comable
       end
 
       def product_linkable_params
+        return unless Comable::Product.linkable_exists?
         {
           type: Comable::Product.to_s,
           name: Comable.t('products')
@@ -36,6 +37,7 @@ module Comable
       end
 
       def page_linkable_params
+        return unless Comable::Page.linkable_exists?
         {
           type: Comable::Page.to_s,
           name: Comable.t('pages')

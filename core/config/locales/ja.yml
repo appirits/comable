@@ -201,6 +201,7 @@ ja:
           unpublished: 非公開
         navigation_items:
           web_address: アドレス入力
+          add_link: リンク追加
         stores:
           edit: 編集
         shipment_methods:

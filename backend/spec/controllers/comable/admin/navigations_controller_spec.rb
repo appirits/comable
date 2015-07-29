@@ -120,4 +120,34 @@ describe Comable::Admin::NavigationsController do
       expect(response).to redirect_to([comable, :admin, :navigations])
     end
   end
+
+  describe 'POST search_linkable_ids' do
+    context 'with valid params' do
+      before do
+        post :search_linkable_ids, linkable_type: Comable::Product.to_s, position: 0
+      end
+
+      it 'assigns the linkable_id_options' do
+        expect(assigns(:linkable_id_options)).to eq Comable::Product.linkable_id_options
+      end
+
+      it 'layout false' do
+        expect(response).to render_template(layout: false)
+      end
+    end
+
+    context 'with invalid params' do
+      before do
+        post :search_linkable_ids, position: 0
+      end
+
+      it 'assigns the linkable_id_options' do
+        expect(assigns(:linkable_id_options).all?(&:blank?)).to eq true
+      end
+
+      it 'layout false' do
+        expect(response).to render_template(layout: false)
+      end
+    end
+  end
 end

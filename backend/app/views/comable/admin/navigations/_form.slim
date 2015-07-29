@@ -19,7 +19,7 @@
   hr
 
   .row
-    = add_fields_button_tag 'Add Link', f, :navigation_items
+    = add_fields_button_tag Comable.t('admin.nav.navigation_items.add_link'), f, :navigation_items
 
 .hidden
   = form_tag(comable.search_linkable_ids_admin_navigations_path, remote: true) do

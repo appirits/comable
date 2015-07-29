@@ -4,7 +4,7 @@ module Comable
     include Comable::Linkable
     extend FriendlyId
 
-    linkable_columns_keys name: :title, use_index: true
+    linkable_columns_keys name: :title
     friendly_id :title, use: :slugged
 
     validates :title, length: { maximum: 255 }, presence: true

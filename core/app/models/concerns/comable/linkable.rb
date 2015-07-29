@@ -19,8 +19,16 @@ module Comable
       end
 
       def linkable_id_options
-        options = pluck(*linkable_columns(:name, :id))
+        # HACK: Rails3系のpluckでは複数フィールドを指定できないためselectとmapでカラムを取得する
+        # options = pluck(*linkable_columns(:name, :id))
+        columns = linkable_columns(:name, :id)
+        records = select(columns)
+        options = records.map(&columns.first).zip(records.map(&columns.last))
         @use_index ? options.unshift([Comable.t('admin.actions.index'), nil]) : options
+      end
+
+      def linkable_exists?
+        @use_index || exists?
       end
 
       private

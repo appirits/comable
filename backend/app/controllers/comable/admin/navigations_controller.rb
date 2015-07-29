@@ -46,8 +46,6 @@ module Comable
       end
 
       def search_linkable_ids
-        fail unless request.xhr?
-        fail unless request.post?
         @linkable_id_options = linkable_id_options
         render layout: false
       end
@@ -55,6 +53,7 @@ module Comable
       private
 
       def linkable_type
+        return if params[:linkable_type].blank?
         params[:linkable_type] if Comable.const_defined?(params[:linkable_type].demodulize)
       end
 
