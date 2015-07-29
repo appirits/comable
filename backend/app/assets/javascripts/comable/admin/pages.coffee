@@ -1,6 +1,9 @@
 class @Page
   constructor: ->
     $(document).ready(@ready)
+    @add_event_to_set_visibility()
+    @add_event_to_set_page_title()
+    @add_event_to_set_meta_description()
 
   ready: =>
     @radio_published = $('#page_published_at_published')
@@ -8,9 +11,6 @@ class @Page
     @published_at = $('#page_published_at')
 
     @initialize_visibility()
-    @add_event_to_set_visibility()
-    @add_event_to_set_page_title()
-    @add_event_to_set_meta_description()
 
   # 公開/非公開の制御
   initialize_visibility: ->
