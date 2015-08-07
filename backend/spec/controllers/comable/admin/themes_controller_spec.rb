@@ -213,7 +213,7 @@ describe Comable::Admin::ThemesController do
     end
 
     it 'save the source code to the theme file' do
-      theme =  create(:theme)
+      theme = create(:theme)
       code = 'sample code!'
       path = 'path/to/file'
       fullpath = File.join('themes', theme.name, path)

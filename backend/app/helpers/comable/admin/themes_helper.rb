@@ -27,7 +27,7 @@ module Comable
 
       def load_directory_tree(path, parent = nil)
         children = []
-        tree = { (parent || :root)  => children }
+        tree = { (parent || :root) => children }
 
         Dir.foreach(path) do |entry|
           next if entry.start_with? '.'
