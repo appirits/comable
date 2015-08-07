@@ -11,6 +11,7 @@ module Comable
           code
           price
           caption
+          published_at
           sku_h_item_name
           sku_v_item_name
         end

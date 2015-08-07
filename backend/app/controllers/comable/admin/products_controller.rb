@@ -71,6 +71,7 @@ module Comable
           :code,
           :caption,
           :price,
+          :published_at,
           :sku_h_item_name,
           :sku_v_item_name,
           category_path_names: [],

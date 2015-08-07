@@ -180,6 +180,9 @@ ja:
         products:
           detail: 商品詳細
           list: '商品一覧'
+          visibility: 公開/非公開
+          published: 公開
+          unpublished: 非公開
         orders:
           detail: 注文明細
           cart: カート情報

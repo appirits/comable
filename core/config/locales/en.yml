@@ -180,6 +180,9 @@ en:
         products:
           detail: 'Product details'
           list: 'Product list'
+          visibility: 'publishing/closed'
+          published: 'Published'
+          unpublished: 'Unpublished'
         orders:
           detail: 'Order details'
           cart: 'Cart infomation'
