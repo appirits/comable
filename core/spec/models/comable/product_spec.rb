@@ -28,19 +28,19 @@ describe Comable::Product do
     subject { build(:product) }
     it 'should be false when published_at is nil' do
       subject.published_at = nil
-      expect(subject.published?).to be false 
+      expect(subject.published?).to be false
     end
     it 'should be false when published_at greater than now' do
-      subject.published_at = Time.now + 1 
+      subject.published_at = Time.now + 1
       expect(subject.published?).to be false
     end
     it 'should be true when published_at equal now' do
-      subject.published_at = Time.now 
-      expect(subject.published?).to be true 
+      subject.published_at = Time.now
+      expect(subject.published?).to be true
     end
     it 'should be true when published_at less than now' do
       subject.published_at = Time.now - 1
-      expect(subject.published?).to be true 
+      expect(subject.published?).to be true
     end
- end
+  end
 end
