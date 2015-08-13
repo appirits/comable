@@ -2,7 +2,7 @@ AwesomeAdminLayout.define(only: Comable::Admin::ApplicationController) do |contr
   comable = controller.comable
   current_comable_user = controller.current_comable_user
 
-  navigation do
+  navigation :admin do
     brand Comable.app_name do
       external_link comable.root_path
     end
