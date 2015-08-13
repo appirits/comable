@@ -1,4 +1,4 @@
-AwesomeAdminLayout.setup(only: Comable::Admin::ApplicationController) do |controller|
+AwesomeAdminLayout.define(only: Comable::Admin::ApplicationController) do |controller|
   comable = controller.comable
   current_comable_user = controller.current_comable_user
 
@@ -104,7 +104,7 @@ AwesomeAdminLayout.setup(only: Comable::Admin::ApplicationController) do |contro
     divider
 
     item Comable.t('admin.sign_out') do
-      link comable.destroy_user_session_path, method: :delete
+      link comable.destroy_admin_user_session_path, method: :delete
     end
   end
 end
