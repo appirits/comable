@@ -24,7 +24,7 @@ html
     = render 'comable/admin/shared/notifier'
 
     - if current_comable_user.signed_in?
-      == render_admin_layout do
+      = render_admin_layout :admin do
         #wrapper
           main.container-fluid
             = yield
