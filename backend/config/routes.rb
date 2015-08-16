@@ -54,7 +54,7 @@ Comable::Core::Engine.routes.draw do
 
     resource :store, controller: :store, only: [:show, :edit, :update]
 
-    devise_for :user, path: :user, class_name: Comable::User.name, module: :devise, controllers: {
+    devise_for :users, path: :user, class_name: Comable::User.name, module: :devise, router_name: :comable, controllers: {
       sessions: 'comable/admin/user_sessions'
     }
 
