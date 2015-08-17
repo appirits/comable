@@ -1,5 +1,5 @@
-- linkable_type = f.object.linkable_type.constantize if f.object.linkable_type?
-- link_selectable = linkable_type.try(:linkable_exists?)
+- linkable_class = f.object.linkable_class
+- link_selectable = linkable_class.try(:linkable_exists?)
 
 fieldset.navigation-item class="#{'hidden' if f.object._destroy}"
   .row
@@ -16,7 +16,7 @@ fieldset.navigation-item class="#{'hidden' if f.object._destroy}"
       = f.text_field :url
 
     .col-sm-3.linkable_id class="#{'hidden' unless link_selectable}"
-      = f.select :linkable_id, linkable_type.try(:linkable_id_options) || [[]]
+      = f.select :linkable_id, linkable_id_options(f.object)
 
     .col-sm-3
       = f.hidden_field :_destroy, class: :destroy

@@ -44,5 +44,9 @@ module Comable
         }
       end
     end
+
+    def linkable_class
+      linkable_type.constantize if linkable_type.present?
+    end
   end
 end
