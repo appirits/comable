@@ -45,6 +45,10 @@ module Comable
       !stocked?
     end
 
+    def published?
+      published_at.present? && published_at <= Time.now
+    end
+
     def category_path_names=(category_path_names, delimiter: Comable::Category::DEFAULT_PATH_NAME_DELIMITER)
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)
     end

@@ -19,5 +19,7 @@ class Dispatcher
         new DynamicOrder
       when 'pages:new', 'pages:show', 'pages:edit', 'pages:update', 'pages:create'
         new Page
+      when 'products:new', 'products:show', 'products:edit', 'products:update', 'products:create'
+        new Product
       when 'navigations:new', 'navigations:show', 'navigations:edit', 'navigations:update', 'navigations:create'
         new Navigation
