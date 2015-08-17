@@ -46,4 +46,20 @@ describe Comable::ApplicationHelper do
       expect(subject.liquid_assigns.keys).to include(*%w( current_store current_comable_user current_order current_trackers form_authenticity_token ))
     end
   end
+
+  describe '#comable_root_path' do
+    subject { helper.clone }
+
+    before { def subject.resource_name; end }
+
+    it 'returns the root path for the customer in frontend' do
+      allow(subject).to receive(:resource_name).and_return(:user)
+      expect(subject.send(:comable_root_path)).to eq(comable.root_path)
+    end
+
+    it 'returns the root path for the admin user in backend' do
+      allow(subject).to receive(:resource_name).and_return(:admin_user)
+      expect(subject.send(:comable_root_path)).to eq(comable.admin_root_path)
+    end
+  end
 end
