@@ -12,7 +12,7 @@ module Comable
         fields = f.fields_for(association, new_object, child_index: index) do |builder|
           render(association.to_s.singularize + '_fields', f: builder)
         end
-        button_tag(name, type: :button, class: 'add_fields btn btn-default pull-right', data: { index: index, fields: fields.gsub("\n", '') })
+        button_tag(name, type: :button, class: 'add_fields btn btn-default pull-right', data: { index: index, fields: fields.delete("\n") })
       end
     end
   end
