@@ -199,6 +199,9 @@ en:
           visibility: 'publishing/closed'
           published: 'Published'
           unpublished: 'Unpublished'
+        navigations:
+          general: 'General'
+          navigation_items: 'Navigation items'
         navigation_items:
           web_address: 'Web Address'
           add_link: 'Add Link'

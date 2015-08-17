@@ -199,6 +199,9 @@ ja:
           visibility: 公開/非公開
           published: 公開
           unpublished: 非公開
+        navigations:
+          general: 一般
+          navigation_items: ナビゲーション項目
         navigation_items:
           web_address: アドレス入力
           add_link: リンク追加
