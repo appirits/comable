@@ -3,9 +3,8 @@ module Comable
     belongs_to :navigation
     belongs_to :linkable, polymorphic: true
 
-    acts_as_list scope: :navigation_id
+    acts_as_list scope: :navigation
 
-    validates :navigation, presence: true, if: :navigation_id?
     validates :linkable, presence: true, if: :linkable_id?
     validates :url, presence: true, unless: :linkable_type?
     validates :url, length: { maximum: 255 }
