@@ -33,6 +33,7 @@ ja:
     failure: 失敗しました
     products: '商品'
     pages: 'ページ'
+    navigations: 'ナビゲーション'
     home: 'ホーム'
     support: 'サポート'
     sample_header: 'サンプルテキスト'
@@ -110,6 +111,7 @@ ja:
       confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
       confirmation_to_remove_stock: この操作は元に戻せません。在庫を削除してもよろしいですか？
       confirmation_to_remove_page: この操作は元に戻せません。ページを削除してもよろしいですか？
+      confirmation_to_remove_page: この操作は元に戻せません。ナビゲーションを削除してもよろしいですか？
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
       you_can_right_click: 右クリックでメニューを表示できます。
       link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
@@ -170,6 +172,7 @@ ja:
         stock: 在庫管理
         category: カテゴリ
         page: ページ
+        navigation: ナビゲーション
         user: ユーザー
         general_settings: 一般設定
         store: ストア設定
@@ -196,6 +199,9 @@ ja:
           visibility: 公開/非公開
           published: 公開
           unpublished: 非公開
+        navigation_items:
+          web_address: アドレス入力
+          add_link: リンク追加
         stores:
           edit: 編集
         shipment_methods:
@@ -395,6 +401,19 @@ ja:
         meta_keywords: メタキーワード
         slug: スラッグ
         published_at: 公開日
+        created_at: 作成日
+        updated_at: 更新日
+      comable/navigation:
+        id: ID
+        name: 名前
+        created_at: 作成日
+        updated_at: 更新日
+      comable/navigation_item:
+        id: ID
+        name: 名前
+        linkable_type: リンク先
+        linkable_id: ''
+        url: URL
         created_at: 作成日
         updated_at: 更新日
 

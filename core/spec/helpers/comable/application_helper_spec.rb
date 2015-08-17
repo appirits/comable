@@ -46,4 +46,12 @@ describe Comable::ApplicationHelper do
       expect(subject.liquid_assigns.keys).to include(*%w( current_store current_comable_user current_order current_trackers form_authenticity_token ))
     end
   end
+
+  describe '#current_navigations' do
+    before { create(:navigation, navigation_items: [create(:navigation_item)]) }
+
+    it 'returns all Navigations' do
+      expect(subject.current_navigations).to eq(Comable::Navigation.all)
+    end
+  end
 end
