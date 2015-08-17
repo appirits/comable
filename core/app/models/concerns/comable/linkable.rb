@@ -3,13 +3,10 @@ module Comable
     extend ActiveSupport::Concern
 
     module ClassMethods
-      attr_reader :_linkable_columns, :use_index, :index_only
-
       def linkable_columns_keys(options = {})
         if options.present?
           @_linkable_columns = default_columns_key.merge(options.slice(:name, :id))
           @use_index = options[:use_index]
-          @index_only = options[:index_only]
         else
           @_linkable_columns
         end
@@ -20,8 +17,6 @@ module Comable
       end
 
       def linkable_id_options
-        return [index_option] if @index_only
-
         # HACK: Rails3系のpluckでは複数フィールドを指定できないためselectとmapでカラムを取得する
         # options = pluck(*linkable_columns(:name, :id))
         columns = linkable_columns(:name, :id)

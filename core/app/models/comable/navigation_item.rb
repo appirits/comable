@@ -12,6 +12,7 @@ module Comable
     validates :position, uniqueness: { scope: :navigation_id }
 
     class << self
+      # TODO: Refactor methods and modules for linkable
       def linkable_params_lists
         [
           web_address_linkable_params, # Web Address
