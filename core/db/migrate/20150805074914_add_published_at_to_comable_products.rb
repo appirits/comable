@@ -4,8 +4,6 @@ class AddPublishedAtToComableProducts < ActiveRecord::Migration
       t.datetime :published_at
     end
 
-    reversible do |dir|
-      dir.up { Comable::Product.update_all(published_at: Date.today.in_time_zone) }
-    end
+    Comable::Product.update_all(published_at: Date.today.in_time_zone) unless reverting?
   end
 end
