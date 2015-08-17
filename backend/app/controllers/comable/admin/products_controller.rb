@@ -65,6 +65,7 @@ module Comable
 
       private
 
+      # rubocop:disable Metrics/MethodLength
       def product_params
         params.require(:product).permit(
           :name,
@@ -78,6 +79,7 @@ module Comable
           images_attributes: [:id, :file, :_destroy]
         )
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end
