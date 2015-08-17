@@ -8,6 +8,7 @@ module Comable
 
     def show
       @product = Comable::Product.find(params[:id])
+      fail ActiveRecord::RecordNotFound unless @product.published?
     end
 
     private

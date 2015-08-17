@@ -15,6 +15,7 @@ module Comable
       end
 
       def new
+        @product.published_at = Date.today
       end
 
       def create
