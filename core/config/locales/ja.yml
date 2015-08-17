@@ -111,7 +111,7 @@ ja:
       confirmation_to_remove_product: この操作は元に戻せません。商品を削除してもよろしいですか？
       confirmation_to_remove_stock: この操作は元に戻せません。在庫を削除してもよろしいですか？
       confirmation_to_remove_page: この操作は元に戻せません。ページを削除してもよろしいですか？
-      confirmation_to_remove_page: この操作は元に戻せません。ナビゲーションを削除してもよろしいですか？
+      confirmation_to_remove_navigation: この操作は元に戻せません。ナビゲーションを削除してもよろしいですか？
       you_can_drag_and_drop: ドラッグ＆ドロップの操作でツリーを編集できます。
       you_can_right_click: 右クリックでメニューを表示できます。
       link_to_add_new_node: '次のリンクから新しいカテゴリを追加できます: '
@@ -270,6 +270,8 @@ ja:
     models:
       comable/order: ご注文
       comable/order_items: ご注文明細
+      comable/navigation: 'ナビゲーション'
+      comable/navigation_item: 'ナビゲーション項目'
 
     attributes:
       comable/user:
@@ -408,7 +410,7 @@ ja:
         name: 名前
         created_at: 作成日
         updated_at: 更新日
-      comable/navigation_item:
+      comable/navigation_item: &comable_navigation_item
         id: ID
         name: 名前
         linkable_type: リンク先
@@ -416,6 +418,8 @@ ja:
         url: URL
         created_at: 作成日
         updated_at: 更新日
+      comable/navigation/navigation_items:
+        <<: *comable_navigation_item
 
   enumerize:
     comable/user:

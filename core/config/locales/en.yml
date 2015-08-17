@@ -270,6 +270,8 @@ en:
     models:
       comable/order: 'Orders'
       comable/order_items: 'Order items'
+      comable/navigation: 'Navigation'
+      comable/navigation_item: 'Navigation item'
 
     attributes:
       comable/user:
@@ -403,7 +405,7 @@ en:
         published_at: 'Published at'
         created_at: 'Created at'
         updated_at: 'Updated at'
-      comable/navigation:
+      comable/navigation: &comable_navigation_item
         id: 'ID'
         name: 'Name'
         created_at: 'Created at'
@@ -416,6 +418,9 @@ en:
         url:  'Name'
         created_at: 'Created at'
         updated_at: 'Updated at'
+      comable/navigation/navigation_items:
+        <<: *comable_navigation_item
+
   enumerize:
     comable/user:
       role:
