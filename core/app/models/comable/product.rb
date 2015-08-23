@@ -7,17 +7,15 @@ module Comable
     include Comable::Product::Csvable
     include Comable::Linkable
 
-    has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
+    has_many :variants, class_name: Comable::Variant.name, dependent: :destroy
+    has_many :stocks, class_name: Comable::Stock.name, through: :variants
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
+    has_many :option_types, class_name: Comable::OptionType.name, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
     accepts_nested_attributes_for :images, allow_destroy: true
 
     validates :name, presence: true, length: { maximum: 255 }
-    validates :code, presence: true, length: { maximum: 255 }
-    validates :price, presence: true, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
-    validates :sku_h_item_name, length: { maximum: 255 }
-    validates :sku_v_item_name, length: { maximum: 255 }
 
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
@@ -53,10 +51,35 @@ module Comable
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)
     end
 
-    private
-
-    def create_stock
-      stocks.create(code: code) unless stocks.exists?
+    def sku_h_item_name
+      option_types.first.try(:name)
     end
+
+    def sku_v_item_name
+      option_types.second.try(:name)
+    end
+
+    def code
+    end
+
+    def code=(_code)
+    end
+
+    def price
+      variants.first.try(:price)
+    end
+
+    def price=(price)
+      variants.each { |v| v.price = price }
+    end
+
+    #
+    # Deprecated methods
+    #
+    deprecate :stocks, deprecator: Comable::Deprecator.instance
+    deprecate :sku_h_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :code, deprecator: Comable::Deprecator.instance
+    deprecate :code=, deprecator: Comable::Deprecator.instance
   end
 end

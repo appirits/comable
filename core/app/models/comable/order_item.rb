@@ -5,6 +5,7 @@ module Comable
     include Comable::Liquidable
     include Comable::OrderItem::Csvable
 
+    belongs_to :variant, class_name: Comable::Variant.name, autosave: true
     belongs_to :stock, class_name: Comable::Stock.name, autosave: true
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :order_items
 
@@ -13,6 +14,7 @@ module Comable
 
     liquid_methods :name, :name_with_sku, :code, :quantity, :price, :subtotal_price
 
+    delegate :stock, to: :variant
     delegate :product, to: :stock
     delegate :image_url, to: :product
     delegate :guest_token, to: :order
@@ -58,6 +60,31 @@ module Comable
       end
     end
 
+    def sku_h_item_name
+      product.option_types.first.try(:name)
+    end
+
+    def sku_v_item_name
+      product.option_types.second.try(:name)
+    end
+
+    def sku_h_choice_name
+      variant.option_values.first.try(:name)
+    end
+
+    def sku_v_choice_name
+      variant.option_values.second.try(:name)
+    end
+
+    #
+    # Deprecated methods
+    #
+    deprecate :stock, deprecator: Comable::Deprecator.instance
+    deprecate :sku_h_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_h_choice_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_v_choice_name, deprecator: Comable::Deprecator.instance
+
     private
 
     def valid_stock_quantity
@@ -85,13 +112,8 @@ module Comable
 
     def current_attributes
       {
-        name: product.name,
-        code: stock.code,
-        price: stock.price,
-        sku_h_item_name: product.sku_h_item_name,
-        sku_v_item_name: product.sku_v_item_name,
-        sku_h_choice_name: stock.sku_h_choice_name,
-        sku_v_choice_name: stock.sku_v_choice_name
+        name: stock.name_with_sku,
+        price: stock.price
       }
     end
   end

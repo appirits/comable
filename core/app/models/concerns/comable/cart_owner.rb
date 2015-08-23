@@ -70,7 +70,7 @@ module Comable
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_items.build(stock_id: stock.id, quantity: quantity).save
+        cart_items.build(variant: stock.variant, quantity: quantity).save
       end
     end
 

@@ -10,7 +10,7 @@ module Comable
     include Comable::Liquidable
     include Comable::Stock::Csvable
 
-    belongs_to :product, class_name: Comable::Product.name
+    belongs_to :variant, class_name: Comable::Variant.name
 
     #
     # @!group Scope
@@ -28,19 +28,18 @@ module Comable
     # @!endgroup
     #
 
-    validates :product, presence: { message: Comable.t('admin.is_not_exists') }
-    validates :code, presence: true, length: { maximum: 255 }
-    validates :sku_h_choice_name, length: { maximum: 255 }
-    validates :sku_v_choice_name, length: { maximum: 255 }
     # TODO: add conditions (by limitless flag, backoder flag and etc..)
     validates :quantity, numericality: { greater_than_or_equal_to: 0 }
 
+    # TODO: Remove the columns for compatible
+    delegate :product, to: :variant
     delegate :name, to: :product
-    delegate :price, to: :product
+    delegate :price, to: :variant
+    delegate :code, to: :variant
     delegate :sku_h_item_name, to: :product
     delegate :sku_v_item_name, to: :product
 
-    ransack_options attribute_select: { associations: :product }, ransackable_attributes: { except: :product_id }
+    ransack_options attribute_select: { associations: :variant }, ransackable_attributes: { except: :variant_id }
 
     # 在庫の有無を取得する
     #
@@ -67,5 +66,25 @@ module Comable
     def unstocked?(quantity: 1)
       !stocked?(quantity: quantity)
     end
+
+    def sku_h_choice_name
+      variant.option_values.first.try(:name)
+    end
+
+    def sku_v_choice_name
+      variant.option_values.second.try(:name)
+    end
+
+    #
+    # Deprecated methods
+    #
+    deprecate :product, deprecator: Comable::Deprecator.instance
+    deprecate :name, deprecator: Comable::Deprecator.instance
+    deprecate :code, deprecator: Comable::Deprecator.instance
+    deprecate :price, deprecator: Comable::Deprecator.instance
+    deprecate :sku_h_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_h_choice_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_v_choice_name, deprecator: Comable::Deprecator.instance
   end
 end
