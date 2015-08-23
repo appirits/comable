@@ -5,7 +5,9 @@ module Comable
     end
 
     def current_comable_user
-      resource = current_admin_user || current_user || Comable::User.new
+      resource = current_admin_user if defined? Comable::Backend
+      resource ||= current_user if defined? Comable::Frontend
+      resource ||= Comable::User.new
       resource.with_cookies(cookies)
     end
 
@@ -66,7 +68,7 @@ module Comable
       when :admin_user
         comable.admin_root_path
       else
-        comable.root_path
+        defined?(Comable::Frontend) ? comable.root_path : '/'
       end
     end
 
