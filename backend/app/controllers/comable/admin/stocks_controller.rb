@@ -10,7 +10,7 @@ module Comable
 
       def index
         @q = @stocks.ransack(params[:q])
-        @stocks = @q.result.includes(:product).page(params[:page]).accessible_by(current_ability)
+        @stocks = @q.result.includes(variant: :product).page(params[:page]).accessible_by(current_ability)
       end
 
       def show
@@ -21,6 +21,9 @@ module Comable
       end
 
       def create
+        # TODO: Remove
+        @stock.build_variant(product: @product) unless @stock.variant
+
         if @stock.save
           redirect_to comable.admin_stock_path(@stock), notice: Comable.t('successful')
         else
@@ -52,7 +55,7 @@ module Comable
 
       def export
         q = @stocks.ransack(params[:q])
-        stocks = q.result.includes(:product).accessible_by(current_ability)
+        stocks = q.result.includes(variant: :product).accessible_by(current_ability)
 
         respond_to_export_with stocks
       end
