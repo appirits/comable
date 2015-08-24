@@ -13,8 +13,11 @@ class ChangeComableOrderItems < ActiveRecord::Migration
         dir.up   { t.remove :stock_id }
         dir.down { t.references :stock, null: false }
 
-        dir.up   { t.rename :code, :sku; t.change :sku, :string, null: true }
-        dir.down { t.rename :sku, :code; t.change :code, :string, null: false }
+        dir.up   { t.rename :code, :sku }
+        dir.down { t.rename :sku, :code }
+
+        dir.up   { t.change :sku, :string, null: true }
+        dir.down { t.change :code, :string, null: false }
 
         dir.up   { t.remove :sku_h_item_name }
         dir.down { t.string :sku_h_item_name }

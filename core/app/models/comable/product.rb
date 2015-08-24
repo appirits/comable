@@ -78,10 +78,6 @@ module Comable
 
     has_many :stocks, class_name: Comable::Stock.name, through: :variants
 
-    #def stocks
-    #  variants.map(&:stock)
-    #end
-
     def stocks=(stocks)
       stocks.map { |stock| variants.build(stock: stock) }
     end

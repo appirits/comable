@@ -7,7 +7,7 @@ module Comable
     accepts_nested_attributes_for :option_values, allow_destroy: true
     accepts_nested_attributes_for :stock
 
-    #validates :product, presence: { message: Comable.t('admin.is_not_exists') }
+    validates :product, presence: { message: Comable.t('admin.is_not_exists') }
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
