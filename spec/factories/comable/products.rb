@@ -22,9 +22,9 @@ FactoryGirl.define do
         size_m = size.option_values.build(name: 'M')
         size_l = size.option_values.build(name: 'L')
         product.variants = [
-          build(:variant, option_values: [color_red, size_s], stock: build(:stock)),
-          build(:variant, option_values: [color_red, size_m], stock: build(:stock)),
-          build(:variant, option_values: [color_red, size_l], stock: build(:stock))
+          build(:variant, option_values: [color_red, size_s], stock: build(:stock, :stocked)),
+          build(:variant, option_values: [color_red, size_m], stock: build(:stock, :stocked)),
+          build(:variant, option_values: [color_red, size_l], stock: build(:stock, :stocked))
         ]
       end
     end
