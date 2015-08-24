@@ -8,11 +8,17 @@ FactoryGirl.define do
     order { build_stubbed(:order) }
 
     trait :sku do
-      sku_h_item_name 'カラー'
-      sku_v_item_name 'サイズ'
-      sku_h_choice_name 'レッド'
-      sku_v_choice_name 'S'
-      stock { create(:stock, :sku, :with_product, quantity: quantity) }
+      after(:build) do |order_item|
+        product = order_item.variant.try(:product) || build(:product)
+        product.option_types_attributes = [name: 'Color'] + [name: 'Size']
+
+        variant = order_item.variant || build(:variant)
+        variant.product = product
+        variant.stock = build(:stock, quantity: order_item.quantity) if variant.stock
+        variant.option_values_attributes = [option_type: product.option_types.first, name: 'Red'] + [option_type: product.option_types.first, name: 'S']
+
+        order_item.variant = variant
+      end
     end
   end
 end
