@@ -12,7 +12,9 @@ module Comable
     has_many :option_types, class_name: Comable::OptionType.name, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
+    accepts_nested_attributes_for :variants, allow_destroy: true
     accepts_nested_attributes_for :images, allow_destroy: true
+    accepts_nested_attributes_for :option_types, allow_destroy: true
 
     validates :name, presence: true, length: { maximum: 255 }
 
