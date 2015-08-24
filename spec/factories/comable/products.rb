@@ -31,6 +31,8 @@ FactoryGirl.define do
 
     trait :sku_h do
       after(:build) do |product|
+        product.save!
+
         color = build(:option_type, name: 'Color')
         product.option_types = [color]
 
