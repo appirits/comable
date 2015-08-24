@@ -60,9 +60,11 @@ module Comable
     end
 
     def code
+      variants.first.try(:sku)
     end
 
-    def code=(_code)
+    def code=(code)
+      variants.each { |v| v.sku = code }
     end
 
     def price

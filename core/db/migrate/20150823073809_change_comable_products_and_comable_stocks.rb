@@ -59,11 +59,11 @@ class ChangeComableProductsAndComableStocks < ActiveRecord::Migration
           option_values = []
           option_values << option_type_h.option_values.where(name: stock.sku_h_choice_name).first_or_initialize if option_type_h
           option_values << option_type_v.option_values.where(name: stock.sku_v_choice_name).first_or_initialize if option_type_v
-          product.variants.create!(stock: stock, price: product.price, option_values: option_values)
+          product.variants.create!(stock: stock, price: product.price, sku: stock.code, option_values: option_values)
         end
       else
         stock = Comable::Stock.find_by(product_id: product.id)
-        product.variants.create!(stock: stock, price: product.price)
+        product.variants.create!(stock: stock, price: product.price, sku: product.code)
       end
     end
   end

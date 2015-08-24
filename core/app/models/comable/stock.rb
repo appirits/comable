@@ -35,7 +35,6 @@ module Comable
     delegate :product, to: :variant
     delegate :name, to: :product
     delegate :price, to: :variant
-    delegate :code, to: :variant
     delegate :sku_h_item_name, to: :product
     delegate :sku_v_item_name, to: :product
 
@@ -73,6 +72,14 @@ module Comable
 
     def sku_v_choice_name
       variant.option_values.second.try(:name)
+    end
+
+    def code
+      variant.sku
+    end
+
+    def code=(code)
+      variant.sku = code
     end
 
     #
