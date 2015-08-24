@@ -9,6 +9,7 @@ module Comable
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :order_items
 
     validates :quantity, numericality: { greater_than: 0 }
+    validates :sku, length: { maximum: 255 }
     validate :valid_stock_quantity
 
     liquid_methods :name, :name_with_sku, :code, :quantity, :price, :subtotal_price
@@ -75,6 +76,14 @@ module Comable
       variant.option_values.second.try(:name)
     end
 
+    def stock=(stock)
+      if variant
+        variant.stock = stock
+      else
+        build_variant(stock: stock)
+      end
+    end
+
     #
     # Deprecated methods
     #
@@ -112,7 +121,8 @@ module Comable
     def current_attributes
       {
         name: stock.name_with_sku,
-        price: stock.price
+        price: stock.price,
+        sku: variant.sku
       }
     end
   end

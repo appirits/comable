@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :order_item, class: Comable::OrderItem do
     sequence(:name) { |n| "test_product#{n.next}" }
-    sequence(:code) { |n| format('%07d', n.next) }
+    sequence(:sku) { |n| format('%07d', n.next) }
     quantity 10
     price 100
-    stock { create(:stock, :with_product, quantity: quantity) }
+    variant { create(:variant, stock: build(:stock, quantity: quantity), product: build(:product)) }
     order { build_stubbed(:order) }
 
     trait :sku do
