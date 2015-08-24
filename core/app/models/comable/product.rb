@@ -7,8 +7,7 @@ module Comable
     include Comable::Product::Csvable
     include Comable::Linkable
 
-    has_many :variants, class_name: Comable::Variant.name, dependent: :destroy
-    has_many :stocks, class_name: Comable::Stock.name, through: :variants
+    has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
     has_many :option_types, class_name: Comable::OptionType.name, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
@@ -19,7 +18,7 @@ module Comable
 
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
-    ransack_options attribute_select: { associations: :stocks }
+    ransack_options attribute_select: { associations: :variants }
 
     linkable_columns_keys use_index: true
 
@@ -73,6 +72,16 @@ module Comable
 
     def price=(price)
       variants.each { |v| v.price = price }
+    end
+
+    has_many :stocks, class_name: Comable::Stock.name, through: :variants
+
+    #def stocks
+    #  variants.map(&:stock)
+    #end
+
+    def stocks=(stocks)
+      stocks.map { |stock| variants.build(stock: stock) }
     end
 
     #

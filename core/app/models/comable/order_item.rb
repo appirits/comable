@@ -6,7 +6,6 @@ module Comable
     include Comable::OrderItem::Csvable
 
     belongs_to :variant, class_name: Comable::Variant.name, autosave: true
-    belongs_to :stock, class_name: Comable::Stock.name, autosave: true
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :order_items
 
     validates :quantity, numericality: { greater_than: 0 }
