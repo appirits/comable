@@ -1,5 +1,5 @@
 Comable::Sample.import('products')
-Comable::Sample.import('stocks')
+Comable::Sample.import('variants')
 Comable::Sample.import('addresses')
 
 bill_address = Comable::Address.first
@@ -17,7 +17,7 @@ orders_attributes = [
     total_price: 500 + suede_dress.price,
     order_items_attributes: [
       {
-        stock: suede_dress.stocks.first,
+        variant: suede_dress.variants.first,
         quantity: 1
       }
     ]
@@ -31,11 +31,11 @@ orders_attributes = [
     total_price: 500 + (suede_dress.price * 2) + (girly_coat.price * 3),
     order_items_attributes: [
       {
-        stock: suede_dress.stocks.first,
+        variant: suede_dress.variants.first,
         quantity: 2
       },
       {
-        stock: girly_coat.stocks.first,
+        variant: girly_coat.variants.first,
         quantity: 3
       }
     ]
