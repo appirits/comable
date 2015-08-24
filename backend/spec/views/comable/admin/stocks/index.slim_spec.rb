@@ -1,6 +1,7 @@
 describe 'comable/admin/stocks/index' do
   let!(:product) { create(:product) }
-  let!(:stocks) { create_list(:stock, 2, product: product) }
+  let!(:variant) { build(:variant, product: product) }
+  let!(:stocks) { create_list(:stock, 2, variant: variant) }
 
   let(:q) { product.stocks.ransack }
 

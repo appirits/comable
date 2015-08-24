@@ -47,7 +47,7 @@
                 = link_to Comable.t('admin.advanced_search'), 'javascript:void(0)', 'data-toggle' => 'collapse', 'data-target' => '#comable-advanced-search'
               li
                 = link_to Comable.t('admin.clear_search_conditions'), comable.admin_products_path
-          = f.text_field :code_or_name_cont_any_splitted, class: 'form-control'
+          = f.text_field :name_or_variants_sku_cont_any_splitted, class: 'form-control'
           span.input-group-btn
             = f.submit Comable.t('admin.search'), class: 'btn btn-default'
 
