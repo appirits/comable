@@ -48,10 +48,10 @@ Go to your browser and open `http://localhost:3000/admin`.
 
 ## Requirements
 
-* Ruby on Rails 3.2, 4.1, 4.2
+* Ruby on Rails 4.0, 4.1, 4.2
 * Ruby 2.1, 2.2
 
-And `strong_parameters`, `everywhere` gems are required only for Rails 3.
+Rails 3 is not supported.
 
 ## Development
 
