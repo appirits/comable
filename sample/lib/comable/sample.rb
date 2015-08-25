@@ -33,7 +33,7 @@ module Comable
       def definitions
         Dir["#{default_dir}/*.rb"].map do |filepath|
           File.basename(filepath, '.rb')
-        end
+        end.sort
       end
 
       def default_dir
