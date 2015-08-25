@@ -11,6 +11,14 @@ module Comable
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
+    def name
+      option_values.map { |option_value| option_value.name }.join(' x ')
+    end
+
+    def quantity
+      stock.quantity
+    end
+
     # refs http://stackoverflow.com/questions/8776724/how-do-i-create-a-new-object-referencing-an-existing-nested-attribute/21215218#21215218
     def option_values_attributes=(attributes)
       if attributes.is_a? Array

@@ -4,5 +4,7 @@ module Comable
     belongs_to :product, class_name: Comable::Product.name
 
     validates :name, presence: true, length: { maximum: 255 }
+
+    default_scope { order(:id) }
   end
 end

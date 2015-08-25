@@ -5,6 +5,8 @@ Comable::Core::Engine.routes.draw do
     resource :dashboard, only: :show
 
     resources :products do
+      resources :variants
+
       resources :stocks
 
       collection do

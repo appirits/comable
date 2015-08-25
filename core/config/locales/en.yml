@@ -165,6 +165,8 @@ en:
       please_see_following_page_for_syntax: 'Please see the following page for the syntax:'
       please_select_file_form_directory_tree_to_edit: 'Please select a file form the directory tree to edit.'
       here_editor_will_be_displayed_and_you_can_edit_file: 'Here the editor will be displayed, you can edit file.'
+      variants: 'Variants'
+      pricing: 'Pricing'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -419,6 +421,12 @@ en:
         url:  'Name'
         created_at: 'Created at'
         updated_at: 'Updated at'
+      comable/variant:
+        id: 'ID'
+        sku: 'SKU'
+        price: 'Price'
+        product: 'Product'
+
   enumerize:
     comable/user:
       role:

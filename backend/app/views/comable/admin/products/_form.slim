@@ -41,9 +41,9 @@
             li
               = category.path.map(&:name).join(' > ')
 
-  hr
+  / hr
 
-  fieldset
+  / fieldset
     .col-md-3
       legend
         = Comable.t('admin.stocks')
@@ -141,6 +141,53 @@
   fieldset
     .col-md-3
       legend
+        = Comable.t('admin.variants')
+
+    .col-md-9
+      - if @product.variants.any?
+        table.table.table-striped
+          thead
+            th
+              = @product.variants.human_attribute_name(:sku)
+            th
+              = @product.variants.human_attribute_name(:quantity)
+            - @product.option_types.each do |option_type|
+              th
+                = option_type.name
+            th
+              = Comable.t('admin.operation')
+          tbody
+            - @product.variants.each do |variant|
+              tr
+                td
+                  = variant.sku
+                td
+                  - quantity = variant.quantity
+                  strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
+                    = number_with_delimiter quantity
+                - variant.option_values.each do |option_value|
+                  th
+                    = option_value.name
+                td
+                  = link_to comable.admin_stock_path(variant.stock), class: 'btn btn-default'
+                    i.fa.fa-edit>
+                    = Comable.t('admin.actions.edit')
+
+      .form-group
+        = f.label :sku_h_item_name
+        = f.text_field :sku_h_item_name
+        .help-block
+          = Comable.t('admin.please_fill_when_using_sku')
+
+      .form-group
+        = f.label :sku_v_item_name
+        = f.text_field :sku_v_item_name
+
+  hr
+
+  fieldset
+    .col-md-3
+      legend
         = Comable.t('admin.nav.products.visibility')
 
     .col-md-9
@@ -154,4 +201,3 @@
             = f.radio_button :published_at, :unpublished, checked: @product.published_at.blank?
             = Comable.t('admin.nav.products.unpublished')
         = f.text_field :published_at, value: @product.published_at.try(:strftime, '%Y-%m-%d %H:%M'), class: 'datetimepicker'
-
