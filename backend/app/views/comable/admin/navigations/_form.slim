@@ -7,14 +7,26 @@
     = f.submit
 
   fieldset
-    .col-sm-12
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.navigations.general')
+
+    .col-md-9
       .form-group
         = f.label :name
         = f.text_field :name
+
   hr
 
-  #navigation-items= f.fields_for :navigation_items do |navigation_items_form|
-    = render 'navigation_item_fields', f: navigation_items_form
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.navigations.navigation_items')
+
+    .col-md-9
+      #navigation-items
+        = f.fields_for :navigation_items do |navigation_items_form|
+          = render 'navigation_item_fields', f: navigation_items_form
 
   hr
 

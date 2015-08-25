@@ -6,15 +6,10 @@ describe Comable::NavigationItem do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_uniqueness_of(:position).scoped_to(:navigation_id) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_length_of(:name).is_at_most(255) }
     it { is_expected.to validate_length_of(:url).is_at_most(255) }
-
-    context 'if navigation_id?' do
-      before { allow(subject).to receive(:navigation_id?).and_return(true) }
-      it { is_expected.to validate_presence_of(:navigation) }
-    end
+    it { is_expected.to validate_uniqueness_of(:position).scoped_to(:navigation_id) }
 
     context 'if linkable_id?' do
       before { allow(subject).to receive(:linkable_id?).and_return(true) }
