@@ -2,20 +2,10 @@
   .comable-main-fixed-top
     .comable-page-heading
       ul.pull-right.list-inline
-        li.dropdown
-          = link_to '#', class: 'btn btn-default', 'data-toggle' => 'dropdown' do
-            i.fa.fa-bars
-          ul.dropdown-menu.dropdown-menu-right
-            li
-              = link_to comable.product_path(@product) do
-                span.fa.fa-external-link>
-                = Comable.t('admin.check_this_product_in_frontend')
-            - if @product.sku? || @product.stocks.empty?
-              li.divider
-              li.dropdown-header
-                = Comable.t('admin.nav.stock')
-              li
-                = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
+        li
+          = link_to comable.product_path(@product), class: 'btn btn-default' do
+            span.fa.fa-external-link>
+            = Comable.t('admin.view')
         li
           = link_to_save
 

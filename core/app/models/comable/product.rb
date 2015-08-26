@@ -52,6 +52,10 @@ module Comable
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)
     end
 
+    def is_master?
+      option_types.empty?
+    end
+
     def sku_h_item_name
       option_types.first.try(:name)
     end

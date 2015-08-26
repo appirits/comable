@@ -1,11 +1,8 @@
 class @Navigation
   constructor: ->
-    $(document).ready(@ready)
-    @add_event()
-
-  ready: =>
     @navigation_items = $('#navigation-items')
     @add_fields = $('.add_fields')
+    @add_event()
 
   # linkable_idの検索
   search_linkable_ids: ->

@@ -1,0 +1,11 @@
+.comable-option
+  .form-group
+    .row
+      .col-xs-4
+        = f.text_field :name, placeholder: Comable.t('admin.size'), class: 'comable-option-name'
+
+      .col-xs-8
+        ul.js-tagit-option-values.comable-option-values data-index="#{f.index}"
+          - f.object.values.each do |value|
+            li
+              = value

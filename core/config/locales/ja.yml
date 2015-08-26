@@ -167,6 +167,9 @@ ja:
       here_editor_will_be_displayed_and_you_can_edit_file: 'ここにエディタが表示されてファイルの内容を編集できます。'
       variants: 'バリエーション'
       pricing: '価格'
+      view: '確認する'
+      add_variants: 'バリエーションを追加する'
+      size: 'サイズ'
       nav:
         dashboard: ダッシュボード
         order: 注文管理

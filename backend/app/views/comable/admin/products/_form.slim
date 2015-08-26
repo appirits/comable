@@ -15,20 +15,12 @@
 
     .col-md-9
       .form-group
-        = f.label :code
-        = f.text_field :code
-
-      .form-group
         = f.label :name
         = f.text_field :name
 
       .form-group
         = f.label :caption
-        = f.text_field :caption
-
-      .form-group
-        = f.label :price
-        = f.text_field :price
+        = f.text_area :caption
 
       / TODO: Refactoring
       javascript:
@@ -40,64 +32,6 @@
           - @product.categories.each do |category|
             li
               = category.path.map(&:name).join(' > ')
-
-  / hr
-
-  / fieldset
-    .col-md-3
-      legend
-        = Comable.t('admin.stocks')
-      .help-block
-        - if @product.sku? || (@product.persisted? && @product.stocks.empty?)
-          = Comable.t('admin.link_to_add_new_stock')
-          = link_to Comable.t('admin.actions.new'), comable.new_admin_product_stock_path(@product)
-
-    .col-md-9
-      - if @product.stocks.any?
-        table.table.table-striped
-          thead
-            th
-              = @product.stocks.human_attribute_name(:code)
-            th
-              = @product.stocks.human_attribute_name(:quantity)
-            - if @product.sku?
-              - if @product.sku_h?
-                th
-                  = @product.sku_h_item_name
-              - if @product.sku_v?
-                th
-                  = @product.sku_v_item_name
-            th
-              = Comable.t('admin.operation')
-          tbody
-            - @product.stocks.each do |stock|
-              tr
-                td
-                  = stock.code
-                td
-                  strong class="#{(stock.quantity <= 0) ? 'text-danger' : (stock.quantity <= 10) ? 'text-warning' : 'text-success'}"
-                    = number_with_delimiter stock.quantity
-                - if @product.sku?
-                  - if @product.sku_h?
-                    td
-                      = stock.sku_h_choice_name
-                  - if @product.sku_v?
-                    td
-                      = stock.sku_v_choice_name
-                td
-                  = link_to comable.admin_stock_path(stock), class: 'btn btn-default'
-                    i.fa.fa-edit>
-                    = Comable.t('admin.actions.edit')
-
-      .form-group
-        = f.label :sku_h_item_name
-        = f.text_field :sku_h_item_name
-        .help-block
-          = Comable.t('admin.please_fill_when_using_sku')
-
-      .form-group
-        = f.label :sku_v_item_name
-        = f.text_field :sku_v_item_name
 
   hr
 
@@ -138,22 +72,30 @@
 
   hr
 
+  - if @product.is_master?
+    = f.fields_for :variants do |ff|
+      = render 'comable/admin/shared/variant_form', f: ff
+    hr
+
   fieldset
     .col-md-3
       legend
         = Comable.t('admin.variants')
 
     .col-md-9
-      - if @product.variants.any?
+      = f.fields_for :option_types do |ff|
+        = render 'comable/admin/shared/option_types_fields', f: ff
+      = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
+
+      - if @product.persisted? && @product.is_master?
         table.table.table-striped
           thead
             th
               = @product.variants.human_attribute_name(:sku)
             th
               = @product.variants.human_attribute_name(:quantity)
-            - @product.option_types.each do |option_type|
-              th
-                = option_type.name
+            th
+              = @product.variants.human_attribute_name(:variants)
             th
               = Comable.t('admin.operation')
           tbody
@@ -165,23 +107,29 @@
                   - quantity = variant.quantity
                   strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
                     = number_with_delimiter quantity
-                - variant.option_values.each do |option_value|
-                  th
-                    = option_value.name
                 td
-                  = link_to comable.admin_stock_path(variant.stock), class: 'btn btn-default'
+                  - variant.names.each do |name|
+                    span.comable-variant-name>
+                      = name
+                td
+                  = link_to comable.admin_product_variant_path(@product, variant), class: 'btn btn-default'
                     i.fa.fa-edit>
                     = Comable.t('admin.actions.edit')
 
-      .form-group
-        = f.label :sku_h_item_name
-        = f.text_field :sku_h_item_name
-        .help-block
-          = Comable.t('admin.please_fill_when_using_sku')
-
-      .form-group
-        = f.label :sku_v_item_name
-        = f.text_field :sku_v_item_name
+      - if @product.new_record?
+        table.table.table-striped
+          thead
+            th
+            th
+              = @product.variants.human_attribute_name(:variants)
+            th
+              = @product.variants.human_attribute_name(:sku)
+            th
+              = @product.variants.human_attribute_name(:quantity)
+          tbody
+            = f.fields_for :variants do |ff|
+              = render 'comable/admin/shared/variants_fields', f: ff
+        = button_to_add_fields Comable.t('admin.add_variants'), f, :variants, class: 'hidden js-add-variant2'
 
   hr
 

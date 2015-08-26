@@ -11,12 +11,33 @@ module Comable
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
+    def names=(names)
+      attributes = []
+      names.split(',').each.with_index do |name, index|
+        option_type = product.option_types[index] if product && option_types.size > index
+        attributes << { option_type: option_type, name: name }
+      end
+      self.option_values_attributes = attributes
+    end
+
     def name
-      option_values.map { |option_value| option_value.name }.join(' x ')
+      names.join(' x ')
+    end
+
+    def names
+      option_values.map(&:name)
     end
 
     def quantity
-      stock.quantity
+      stock.try(:quantity)
+    end
+
+    def quantity=(quantity)
+      if stock
+        stock.quantity = quantity
+      else
+        build_stock(quantity: quantity)
+      end
     end
 
     # refs http://stackoverflow.com/questions/8776724/how-do-i-create-a-new-object-referencing-an-existing-nested-attribute/21215218#21215218

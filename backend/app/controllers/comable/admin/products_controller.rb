@@ -15,6 +15,8 @@ module Comable
       end
 
       def new
+        @product.variants.build
+        # @product.option_types.build(name: Comable.t('admin.size'))
         @product.published_at = Date.today
       end
 
@@ -66,21 +68,17 @@ module Comable
 
       private
 
-      # rubocop:disable Metrics/MethodLength
       def product_params
         params.require(:product).permit(
           :name,
-          :code,
           :caption,
-          :price,
           :published_at,
-          :sku_h_item_name,
-          :sku_v_item_name,
           category_path_names: [],
-          images_attributes: [:id, :file, :_destroy]
+          images_attributes: [:id, :file, :_destroy],
+          variants_attributes: [:id, :price, :sku, :names, :quantity],
+          option_types_attributes: [:id, :name, { values: [] }]
         )
       end
-      # rubocop:enable Metrics/MethodLength
     end
   end
 end
