@@ -78,63 +78,63 @@
       = ff.hidden_field :_destroy, value: !f.object.is_master?
     hr
 
-  fieldset
-    .col-md-3
-      legend
-        = Comable.t('admin.variants')
+  - if @product.new_record? || @product.persisted? && !@product.is_master?
+    fieldset
+      .col-md-3
+        legend
+          = Comable.t('admin.variants')
 
-    .col-md-9
-      = f.fields_for :option_types do |ff|
-        = render 'comable/admin/shared/option_types_fields', f: ff, readonly: @product.persisted?
+      .col-md-9
+        = f.fields_for :option_types do |ff|
+          = render 'comable/admin/shared/option_types_fields', f: ff, readonly: @product.persisted?
 
-      - if @product.new_record?
-        = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
+        - if @product.new_record?
+          = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
 
-      - if @product.persisted? && !@product.is_master?
-        table.table.table-striped
-          thead
-            th
-              = @product.variants.human_attribute_name(:sku)
-            th
-              = @product.variants.human_attribute_name(:quantity)
-            th
-              = @product.variants.human_attribute_name(:variants)
-            th
-              = Comable.t('admin.operation')
-          tbody
-            - @product.variants.each do |variant|
-              tr
-                td
-                  = variant.sku
-                td
-                  - quantity = variant.quantity
-                  strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
-                    = number_with_delimiter quantity
-                td
-                  - variant.names.each do |name|
-                    span.comable-variant-name
-                      = name
-                td
-                  = link_to comable.admin_product_variant_path(@product, variant), class: 'btn btn-default'
-                    i.fa.fa-edit>
-                    = Comable.t('admin.actions.edit')
+          table.table.table-striped.hidden.js-variants-table
+            thead
+              th
+              th
+                = @product.variants.human_attribute_name(:variants)
+              th
+                = @product.variants.human_attribute_name(:sku)
+              th
+                = @product.variants.human_attribute_name(:quantity)
+            tbody
+              = f.fields_for :variants do |ff|
+                = render 'comable/admin/shared/variants_fields', f: ff
+          = button_to_add_fields Comable.t('admin.add_variants'), f, :variants, class: 'hidden js-add-variant2'
 
-      - if @product.new_record?
-        table.table.table-striped.hidden.js-variants-table
-          thead
-            th
-            th
-              = @product.variants.human_attribute_name(:variants)
-            th
-              = @product.variants.human_attribute_name(:sku)
-            th
-              = @product.variants.human_attribute_name(:quantity)
-          tbody
-            = f.fields_for :variants do |ff|
-              = render 'comable/admin/shared/variants_fields', f: ff
-        = button_to_add_fields Comable.t('admin.add_variants'), f, :variants, class: 'hidden js-add-variant2'
+        - if @product.persisted?
+          table.table.table-striped
+            thead
+              th
+                = @product.variants.human_attribute_name(:sku)
+              th
+                = @product.variants.human_attribute_name(:quantity)
+              th
+                = @product.variants.human_attribute_name(:variants)
+              th
+                = Comable.t('admin.operation')
+            tbody
+              - @product.variants.each do |variant|
+                tr
+                  td
+                    = variant.sku
+                  td
+                    - quantity = variant.quantity
+                    strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
+                      = number_with_delimiter quantity
+                  td
+                    - variant.names.each do |name|
+                      span.comable-variant-name
+                        = name
+                  td
+                    = link_to comable.admin_product_variant_path(@product, variant), class: 'btn btn-default'
+                      i.fa.fa-edit>
+                      = Comable.t('admin.actions.edit')
 
-  hr
+    hr
 
   fieldset
     .col-md-3
