@@ -26,6 +26,7 @@ class @Variant
 
   register_click_event_to_add_variant_button: ->
     $('.js-add-variats').click( =>
+      $('#product_variants_attributes_0__destroy').val(1)
       setTimeout( =>
         @initialize_tagits()
       , 1)
@@ -34,6 +35,7 @@ class @Variant
   register_click_event_to_remove_variant_button: ->
     $(document).on('click', '.js-remove-variant', ->
       $(this).closest('.js-new-variants').remove()
+      $('#product_variants_attributes_0__destroy').val(0) if $('.js-new-variants').length == 0
     )
 
   rebuild_variants: (event, ui) =>

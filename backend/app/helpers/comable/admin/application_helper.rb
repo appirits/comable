@@ -34,7 +34,7 @@ module Comable
           new_object = f.object.send("build_#{type}")
           f.send("#{type}_fields", new_object, child_index: "new_#{type}", &render_block)
         else
-          new_object = f.object.send(type).klass.new
+          new_object = f.object.send(type).build
           f.send('fields_for', type, new_object, child_index: "new_#{type}", &render_block)
         end
       end

@@ -75,7 +75,7 @@ module Comable
           :published_at,
           category_path_names: [],
           images_attributes: [:id, :file, :_destroy],
-          variants_attributes: [:id, :price, :sku, :names, :quantity],
+          variants_attributes: [:id, :price, :sku, :names, :quantity, :_destroy],
           option_types_attributes: [:id, :name, { values: [] }]
         )
       end

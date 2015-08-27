@@ -9,7 +9,7 @@ module Comable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
-    has_many :option_types, class_name: Comable::OptionType.name, dependent: :destroy
+    has_many :option_types, class_name: Comable::OptionType.name, inverse_of: :product, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
     accepts_nested_attributes_for :variants, allow_destroy: true

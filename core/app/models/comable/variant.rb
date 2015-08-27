@@ -11,21 +11,16 @@ module Comable
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
-    def names=(names)
-      attributes = []
-      names.split(',').each.with_index do |name, index|
-        option_type = product.option_types[index] if product && option_types.size > index
-        attributes << { option_type: option_type, name: name }
-      end
-      self.option_values_attributes = attributes
-    end
+    before_validation :set_option_values_from_names, if: :product
+
+    attr_writer :names
 
     def name
       names.join(' x ')
     end
 
     def names
-      option_values.map(&:name)
+      @names ? @names : option_values.map(&:name)
     end
 
     def quantity
@@ -52,6 +47,19 @@ module Comable
         self.attributes = { option_values: existed_option_values }
       end
       super
+    end
+
+    private
+
+    def set_option_values_from_names
+      return unless @names
+      attributes = []
+      @names.split(',').each.with_index do |name, index|
+        option_type = product.option_types[index]
+        attributes << { option_type: option_type, name: name }
+      end
+      self.names = nil
+      self.option_values_attributes = attributes
     end
   end
 end

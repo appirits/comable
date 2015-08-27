@@ -72,9 +72,10 @@
 
   hr
 
-  - if @product.is_master?
-    = f.fields_for :variants do |ff|
+  - if @product.new_record? || @product.is_master?
+    = f.fields_for :variants, f.object.variants.first do |ff|
       = render 'comable/admin/shared/variant_form', f: ff
+      = ff.hidden_field :_destroy, value: !f.object.is_master?
     hr
 
   fieldset
@@ -85,9 +86,11 @@
     .col-md-9
       = f.fields_for :option_types do |ff|
         = render 'comable/admin/shared/option_types_fields', f: ff
-      = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
 
-      - if @product.persisted? && @product.is_master?
+      - if @product.new_record?
+        = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
+
+      - if @product.persisted? && !@product.is_master?
         table.table.table-striped
           thead
             th
