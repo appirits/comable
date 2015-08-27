@@ -366,6 +366,8 @@ ja:
         sku_v_choice_name: SKU縦軸選択肢名
         product: 商品
         product_code: 商品コード
+        name: '商品名'
+        sku: 'SKUコード'
         <<: *timestamps
       comable/store:
         name: ストア名

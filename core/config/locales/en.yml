@@ -366,6 +366,8 @@ en:
         sku_v_choice_name: 'SKU Vertical choice name'
         product: 'Product'
         product_code: 'Product code'
+        name: 'Product name'
+        sku: 'SKU'
         <<: *timestamps
       comable/store:
         name: 'Name'
