@@ -89,7 +89,7 @@
           = render 'comable/admin/shared/option_types_fields', f: ff, readonly: @product.persisted?
 
         - if @product.new_record?
-          = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
+          = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-option'
 
           table.table.table-striped.hidden.js-variants-table
             thead
@@ -105,7 +105,7 @@
             tbody
               = f.fields_for :variants do |ff|
                 = render 'comable/admin/shared/variants_fields', f: ff
-          = button_to_add_fields Comable.t('admin.add_variants'), f, :variants, class: 'hidden js-add-variant2'
+          = button_to_add_fields Comable.t('admin.add_variants'), f, :variants, class: 'hidden js-add-variant'
 
         - if @product.persisted?
           table.table.table-striped

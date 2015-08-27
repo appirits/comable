@@ -3,8 +3,8 @@ class @Variant
 
   constructor: ->
     @initialize_tagits()
-    @register_click_event_to_add_variant_button()
-    @register_click_event_to_remove_variant_button()
+    @register_click_event_to_add_option_button()
+    @register_click_event_to_remove_option_button()
     @initialized = true
 
   initialize_tagits: ->
@@ -25,16 +25,16 @@ class @Variant
       afterTagRemoved: @rebuild_variants
     })
 
-  register_click_event_to_add_variant_button: ->
-    $('.js-add-variats').click( =>
+  register_click_event_to_add_option_button: ->
+    $('.js-add-option').click( =>
       @change_from_master()
       setTimeout( =>
         @initialize_tagits()
       , 1)
     )
 
-  register_click_event_to_remove_variant_button: ->
-    $(document).on('click', '.js-remove-variant', ->
+  register_click_event_to_remove_option_button: ->
+    $(document).on('click', '.js-remove-option', ->
       $(this).closest('.js-new-variants').remove()
       @change_to_master()
     )
@@ -72,7 +72,7 @@ class @Variant
 
   new_variant: ->
     new_id = new Date().getTime()
-    $('.js-add-variant2').click()
+    $('.js-add-variant').click()
     $variant = $('.js-new-variants').last()
     $variant.removeClass('hidden')
     $variant.html($variant.html().replace(/new_variant/g, new_id))
