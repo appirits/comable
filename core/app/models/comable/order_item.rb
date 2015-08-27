@@ -120,7 +120,7 @@ module Comable
 
     def current_attributes
       {
-        name: stock.name_with_sku,
+        name: stock.name,
         price: stock.price,
         sku: variant.sku
       }

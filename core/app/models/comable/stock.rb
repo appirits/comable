@@ -33,7 +33,6 @@ module Comable
 
     # TODO: Remove the columns for compatible
     delegate :product, to: :variant
-    delegate :name, to: :product
     delegate :price, to: :variant
     delegate :sku_h_item_name, to: :product
     delegate :sku_v_item_name, to: :product
@@ -64,6 +63,14 @@ module Comable
     # @see #stocked?
     def unstocked?(quantity: 1)
       !stocked?(quantity: quantity)
+    end
+
+    def name
+      if variant.names.any?
+        "#{variant.product.name} (#{variant.names.join('/')}"
+      else
+        variant.product.name
+      end
     end
 
     def sku_h_choice_name
