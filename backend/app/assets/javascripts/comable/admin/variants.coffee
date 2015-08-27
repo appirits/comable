@@ -20,13 +20,14 @@ class @Variant
       fieldName: 'product[option_types_attributes][' + index + '][values][]',
       caseSensitive: false,
       removeConfirmation: true,
+      readOnly: $element.hasClass('tagit-readonly'),
       afterTagAdded: @rebuild_variants,
       afterTagRemoved: @rebuild_variants
     })
 
   register_click_event_to_add_variant_button: ->
     $('.js-add-variats').click( =>
-      $('#product_variants_attributes_0__destroy').val(1)
+      @change_from_master()
       setTimeout( =>
         @initialize_tagits()
       , 1)
@@ -35,7 +36,7 @@ class @Variant
   register_click_event_to_remove_variant_button: ->
     $(document).on('click', '.js-remove-variant', ->
       $(this).closest('.js-new-variants').remove()
-      $('#product_variants_attributes_0__destroy').val(0) if $('.js-new-variants').length == 0
+      @change_to_master()
     )
 
   rebuild_variants: (event, ui) =>
@@ -51,8 +52,7 @@ class @Variant
       option_values = $(this).tagit('assignedTags')
       option_types.push(option_values)
     )
-    option_values_for_variants = _product(option_types)
-    console.log(option_values_for_variants)
+    option_values_for_variants = _product(_compact(option_types))
     option_values_for_variants.forEach((option_values_for_variant) ->
       _this.build_variant(option_values_for_variant)
     )
@@ -65,8 +65,7 @@ class @Variant
       $variant.find('[data-name="names"]').append('<span class="comable-variant-name">' + option_value + '</span> ')
     )
 
-    $table = $variant.siblings('table')
-    $table.find('tbody').append($variant)
+    $('.js-variants-table').find('tbody').append($variant)
 
   remove_variants: ->
     $('.js-new-variants:not(.hidden)').remove()
@@ -78,6 +77,19 @@ class @Variant
     $variant.removeClass('hidden')
     $variant.html($variant.html().replace(/new_variant/g, new_id))
     $variant
+
+  change_from_master: ->
+    $('.js-variants-table').removeClass('hidden')
+    $('#product_variants_attributes_0__destroy').val(1)
+
+  change_to_master: ->
+    $('.js-variants-table').removeClass('hidden')
+    $('.js-variants-table').addClass('hidden')
+    $('#product_variants_attributes_0__destroy').val(0) if $('.js-new-variants').length == 0
+
+  # refs http://stackoverflow.com/questions/281264/remove-empty-elements-from-an-array-in-javascript/2843625#2843625
+  _compact = (arrays) ->
+    $.grep(arrays, (n) -> n if n && n.length != 0)
 
   # refs http://cwestblog.com/2011/05/02/cartesian-product-of-multiple-arrays/
   _product = (arrays) ->

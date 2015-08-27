@@ -85,7 +85,7 @@
 
     .col-md-9
       = f.fields_for :option_types do |ff|
-        = render 'comable/admin/shared/option_types_fields', f: ff
+        = render 'comable/admin/shared/option_types_fields', f: ff, readonly: @product.persisted?
 
       - if @product.new_record?
         = button_to_add_fields Comable.t('admin.add_variants'), f, :option_types, class: 'btn btn-link js-add-variats'
@@ -120,7 +120,7 @@
                     = Comable.t('admin.actions.edit')
 
       - if @product.new_record?
-        table.table.table-striped
+        table.table.table-striped.hidden.js-variants-table
           thead
             th
             th
