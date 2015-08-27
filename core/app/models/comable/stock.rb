@@ -38,7 +38,7 @@ module Comable
     delegate :sku_h_item_name, to: :product
     delegate :sku_v_item_name, to: :product
 
-    ransack_options attribute_select: { associations: :variant }, ransackable_attributes: { except: :variant_id }
+    ransack_options attribute_select: { associations: :variant }, ransackable_attributes: { only: :quantity }
 
     # 在庫の有無を取得する
     #

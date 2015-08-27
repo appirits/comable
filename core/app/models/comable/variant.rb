@@ -1,5 +1,7 @@
 module Comable
   class Variant < ActiveRecord::Base
+    include Comable::Ransackable
+
     belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants
     has_one :stock, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy, autosave: true
     has_and_belongs_to_many :option_values, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values
@@ -12,6 +14,8 @@ module Comable
     validates :sku, length: { maximum: 255 }
 
     before_validation :set_option_values_from_names, if: :product
+
+    ransack_options attribute_select: { associations: [:product, :stock, :option_values] }, ransackable_attributes: { except: :product_id }
 
     attr_writer :names
 

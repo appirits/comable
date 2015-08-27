@@ -20,7 +20,7 @@ module Comable
 
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
-    ransack_options attribute_select: { associations: :variants }
+    ransack_options attribute_select: { associations: [:variants, :stocks, :option_types] }
 
     linkable_columns_keys use_index: true
 

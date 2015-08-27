@@ -61,8 +61,6 @@
           thead
             th
             th
-              = sort_link [:comable, @q], :code
-            th
               = sort_link [:comable, @q], :name
             th
               = sort_link [:comable, @q], :price
@@ -70,28 +68,30 @@
               = Comable.t('admin.stocks')
           tbody
             - @products.each do |product|
-              - quantity = product.stocks.to_a.sum(&:quantity)
               tr
                 td.comable-image
                   = link_to comable.admin_product_path(product), class: 'thumbnail' do
                     = image_tag product.image_url, width: '100%'
                 td
-                  = link_to product.code, comable.admin_product_path(product)
+                  = link_to product.name, comable.admin_product_path(product)
                   - unless product.published?
                     span.fa.fa-eye-slash.text-muted<
-                td
-                  = product.name
                 td
                   = number_to_currency product.price
                 td
                   ul.list-unstyled
-                    - product.stocks.each do |stock|
+                    - product.variants.each do |variant|
                       li
+                        - quantity = variant.quantity
                         strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
-                          = number_with_delimiter stock.quantity
-                        - if stock.sku?
+                          = number_with_delimiter quantity
+                        - if !product.is_master?
                           span<
-                            | (#{stock.sku_name})
+                            | (
+                            - variant.names.each do |name|
+                              span.comable-variant-name
+                                = name
+                            | )
 
         .text-center
           = paginate @products, theme: :comable_backend

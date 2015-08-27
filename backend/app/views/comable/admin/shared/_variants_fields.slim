@@ -4,7 +4,7 @@ tr.js-new-variants
   td data-name="names"
     = f.hidden_field :names, value: f.object.names.join(',')
     - f.object.names.each do |name|
-      span.comable-variant-name>
+      span.comable-variant-name
         = name
   td data-name="sku"
     = f.text_field :sku

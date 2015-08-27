@@ -7,7 +7,7 @@ module Comable
 
       def index
         @q = Comable::Product.ransack(params[:q])
-        @products = @q.result(distinct: true).includes(:stocks, :images).page(params[:page]).accessible_by(current_ability)
+        @products = @q.result(distinct: true).includes(:images, variants: [:option_values, :stock]).page(params[:page]).accessible_by(current_ability)
       end
 
       def show
@@ -16,7 +16,6 @@ module Comable
 
       def new
         @product.variants.build
-        # @product.option_types.build(name: Comable.t('admin.size'))
         @product.published_at = Date.today
       end
 

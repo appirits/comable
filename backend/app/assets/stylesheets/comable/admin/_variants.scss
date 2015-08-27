@@ -5,6 +5,17 @@ $comable-colors: #ffa000 #5dd39e #d81159 #06aed5 #8f2d56;
 
   .comable-variant-name:nth-of-type(#{$i}) {
     color: darken($color, 5%);
+
+    &:after {
+      display: inline;
+      margin: 0 5px;
+      color: #444;
+      content: '·';
+    }
+
+    &:last-child:after {
+      display: none;
+    }
   }
 
   .comable-option:nth-of-type(#{$i}) {
