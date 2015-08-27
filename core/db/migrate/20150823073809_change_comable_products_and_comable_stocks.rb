@@ -42,6 +42,9 @@ class ChangeComableProductsAndComableStocks < ActiveRecord::Migration
         dir.up   { t.remove :sku_v_choice_name }
         dir.down { t.string :sku_v_choice_name }
 
+        dir.up   { t.change :quantity, :integer, default: 0 }
+        dir.down { t.change :quantity, :integer, default: nil }
+
         dir.up   { t.change :variant_id, :integer, null: false }
       end
     end

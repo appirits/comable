@@ -444,6 +444,7 @@ ja:
         sku: 'SKUコード'
         price: '価格'
         product: '商品'
+        quantity: '個数'
         <<: *timestamps
       comable/option_type:
         id: 'ID'

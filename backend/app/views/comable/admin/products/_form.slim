@@ -95,9 +95,11 @@
             thead
               th
               th
-                = @product.variants.human_attribute_name(:variants)
+                = Comable.t('admin.variants')
               th
                 = @product.variants.human_attribute_name(:sku)
+              th
+                = @product.variants.human_attribute_name(:price)
               th
                 = @product.variants.human_attribute_name(:quantity)
             tbody
@@ -111,9 +113,11 @@
               th
                 = @product.variants.human_attribute_name(:sku)
               th
+                = @product.variants.human_attribute_name(:price)
+              th
                 = @product.variants.human_attribute_name(:quantity)
               th
-                = @product.variants.human_attribute_name(:variants)
+                = Comable.t('admin.variants')
               th
                 = Comable.t('admin.operation')
             tbody
@@ -121,6 +125,8 @@
                 tr
                   td
                     = variant.sku
+                  td
+                    = number_to_currency variant.price
                   td
                     - quantity = variant.quantity
                     strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"

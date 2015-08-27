@@ -444,6 +444,7 @@ en:
         sku: 'SKU'
         price: 'Price'
         product: 'Product'
+        quantity: 'Quantity'
         <<: *timestamps
       comable/option_type:
         id: 'ID'
