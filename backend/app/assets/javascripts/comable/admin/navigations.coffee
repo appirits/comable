@@ -16,12 +16,18 @@ class @Navigation
   adding_navigation_item_field: ->
     regexp = new RegExp($(this).data('index'), 'g')
     field_tags = $(this).data('fields').replace(regexp,  $('.navigation-item').length) # 置換予定文字を添字に置換する
-    $('#navigation-items').append(field_tags) # タグを追加
+    $field = $(field_tags)
+    $field.addClass('js-new-record')
+    $('#navigation-items').append($field) # タグを追加
 
   # アイテムの削除
   remove_navigation_item_field: ->
-    $(this).parent().prev('.destroy').val(true)
-    $(this).closest('fieldset').hide()
+    $navigation_item = $(this).closest('.navigation-item')
+    if $navigation_item.hasClass('js-new-record')
+      $navigation_item.remove()
+    else
+      $navigation_item.find('.destroy').val(true)
+      $navigation_item.addClass('hidden')
 
   # イベント設定
   add_event: ->

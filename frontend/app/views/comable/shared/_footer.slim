@@ -11,32 +11,34 @@ footer
           li
             i.glyphicon.glyphicon-envelope>
             | comable@example.com
-      .col-md-4
-        h3
-          = Comable.t('pages')
-        ul.list-unstyled
-          li
-            = link_to Comable.t('home'), comable.root_path
-          li
-            = link_to Comable.t('products'), comable.products_path
-          li
-            = link_to Comable.t('cart'), comable.cart_path
-          li
-            = link_to Comable.t('my_account'), comable.user_path
-      .col-md-4
-        h3
-          = Comable.t('my_account')
-        ul.list-unstyled
-          li
-            = link_to Comable.t('sign_in'), comable.new_user_session_path
-          li
-            = link_to Comable.t('my_account'), comable.user_path
-          li
-            = link_to Comable.t('change_email_or_password'), comable.edit_user_path
-          li
-            = link_to Comable.t('edit_your_address_book'), comable.addresses_user_path
+      - if current_navigations.any?
+        = render 'comable/shared/navigation'
+      - else
+        .col-md-4
+          h3
+            = Comable.t('pages')
+          ul.list-unstyled
+            li
+              = link_to Comable.t('home'), comable.root_path
+            li
+              = link_to Comable.t('products'), comable.products_path
+            li
+              = link_to Comable.t('cart'), comable.cart_path
+            li
+              = link_to Comable.t('my_account'), comable.user_path
+        .col-md-4
+          h3
+            = Comable.t('my_account')
+          ul.list-unstyled
+            li
+              = link_to Comable.t('sign_in'), comable.new_user_session_path
+            li
+              = link_to Comable.t('my_account'), comable.user_path
+            li
+              = link_to Comable.t('change_email_or_password'), comable.edit_user_path
+            li
+              = link_to Comable.t('edit_your_address_book'), comable.addresses_user_path
 
-      = render 'comable/shared/navigation'
 
   .credit
     | Powered by #{link_to Comable.app_name, Comable.homepage}

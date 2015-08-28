@@ -207,6 +207,9 @@ en:
           visibility: 'publishing/closed'
           published: 'Published'
           unpublished: 'Unpublished'
+        navigations:
+          general: 'General'
+          navigation_items: 'Navigation items'
         navigation_items:
           web_address: 'Web Address'
           add_link: 'Add Link'
@@ -278,6 +281,8 @@ en:
     models:
       comable/order: 'Orders'
       comable/order_items: 'Order items'
+      comable/navigation: 'Navigation'
+      comable/navigation_item: 'Navigation item'
 
     attributes:
       timestamps: &timestamps
@@ -428,7 +433,7 @@ en:
         slug: 'Slug'
         published_at: 'Published at'
         <<: *timestamps
-      comable/navigation:
+      comable/navigation: &comable_navigation_item
         id: 'ID'
         name: 'Name'
         <<: *timestamps
@@ -439,6 +444,8 @@ en:
         linkable_id: ''
         url:  'Name'
         <<: *timestamps
+      comable/navigation/navigation_items:
+        <<: *comable_navigation_item
       comable/variant:
         id: 'ID'
         sku: 'SKU'

@@ -3,9 +3,8 @@ module Comable
     belongs_to :navigation
     belongs_to :linkable, polymorphic: true
 
-    acts_as_list scope: :navigation_id
+    acts_as_list scope: :navigation
 
-    validates :navigation, presence: true, if: :navigation_id?
     validates :linkable, presence: true, if: :linkable_id?
     validates :url, presence: true, unless: :linkable_type?
     validates :url, length: { maximum: 255 }
@@ -13,6 +12,7 @@ module Comable
     validates :position, uniqueness: { scope: :navigation_id }
 
     class << self
+      # TODO: Refactor methods and modules for linkable
       def linkable_params_lists
         [
           web_address_linkable_params, # Web Address
@@ -43,6 +43,10 @@ module Comable
           name: Comable.t('pages')
         }
       end
+    end
+
+    def linkable_class
+      linkable_type.constantize if linkable_type.present?
     end
   end
 end

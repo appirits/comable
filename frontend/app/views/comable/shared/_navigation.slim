@@ -1,16 +1,15 @@
-- if current_navigations
-  - current_navigations.each do |navigation|
-    .col-md-4
-      h3
-        = navigation.name
-      ul.list-unstyled
-        - navigation.navigation_items.each do |navigation_item|
-          li
-            - if navigation_item.url?
-              = link_to navigation_item.name, navigation_item.url
+- current_navigations.each do |navigation|
+  .col-md-4
+    h3
+      = navigation.name
+    ul.list-unstyled
+      - navigation.navigation_items.each do |navigation_item|
+        li
+          - if navigation_item.url?
+            = link_to navigation_item.name, navigation_item.url
 
-            - elsif navigation_item.linkable.present?
-              = link_to navigation_item.name, polymorphic_url(navigation_item.linkable)
+          - elsif navigation_item.linkable.present?
+            = link_to navigation_item.name, polymorphic_url(navigation_item.linkable)
 
-            - else
-              = link_to navigation_item.name, polymorphic_url(navigation_item.linkable_type.constantize)
+          - else
+            = link_to navigation_item.name, polymorphic_url(navigation_item.linkable_type.constantize)
