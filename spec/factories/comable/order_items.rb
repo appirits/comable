@@ -10,7 +10,8 @@ FactoryGirl.define do
     trait :sku do
       after(:build) do |order_item|
         product = order_item.variant.try(:product) || build(:product)
-        product.option_types_attributes = [name: 'Color'] + [name: 'Size']
+        create(:option_type, product: product, name: 'Color')
+        create(:option_type, product: product, name: 'Size')
 
         variant = order_item.variant || build(:variant)
         variant.product = product

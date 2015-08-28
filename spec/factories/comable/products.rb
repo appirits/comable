@@ -13,9 +13,8 @@ FactoryGirl.define do
       after(:build) do |product|
         product.save!
 
-        color = build(:option_type, name: 'Color')
-        size = build(:option_type, name: 'Size')
-        product.option_types = [color, size]
+        color = create(:option_type, product: product, name: 'Color')
+        size = create(:option_type, product: product, name: 'Size')
 
         color_red = color.option_values.build(name: 'Red')
         size_s = size.option_values.build(name: 'S')
@@ -33,8 +32,7 @@ FactoryGirl.define do
       after(:build) do |product|
         product.save!
 
-        color = build(:option_type, name: 'Color')
-        product.option_types = [color]
+        color = create(:option_type, product: product, name: 'Color')
 
         color_red = color.option_values.build(name: 'Red')
         product.variants = [build(:variant, option_values: [color_red])]

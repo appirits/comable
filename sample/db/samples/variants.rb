@@ -5,13 +5,13 @@ girly_coat = Comable::Product.where(name: Comable::Sample.t(:girly_coat)).first!
 fur_gloves = Comable::Product.where(name: Comable::Sample.t(:fur_gloves)).first!
 leather_boots = Comable::Product.where(name: Comable::Sample.t(:leather_boots)).first!
 
-suede_dress_size = suede_dress.option_types.create!(name: Comable::Sample.t(:size))
-suede_dress_color = suede_dress.option_types.create!(name: Comable::Sample.t(:color))
+suede_dress_size = Comable::OptionType.create!(product: suede_dress, name: Comable::Sample.t(:size))
+suede_dress_color = Comable::OptionType.create!(product: suede_dress, name: Comable::Sample.t(:color))
 
-girly_coat_size = girly_coat.option_types.create!(name: Comable::Sample.t(:size))
-girly_coat_color = girly_coat.option_types.create!(name: Comable::Sample.t(:color))
+girly_coat_size = Comable::OptionType.create(product: girly_coat, name: Comable::Sample.t(:size))
+girly_coat_color = Comable::OptionType.create(product: girly_coat, name: Comable::Sample.t(:color))
 
-leather_boots_size = leather_boots.option_types.create!(name: Comable::Sample.t(:size))
+leather_boots_size = Comable::OptionType.create(product: leather_boots, name: Comable::Sample.t(:size))
 
 default_stock_attributes = {
   quantity: 10
