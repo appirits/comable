@@ -43,10 +43,10 @@ module Comable
     def option_values_attributes=(attributes)
       if attributes.is_a? Array
         existed_option_values = attributes.map do |attr|
-          variant = Comable::OptionValue.find_by(option_type: attr[:option_type], name: attr[:name]) unless attr[:id]
-          next unless variant
-          attr[:id] = variant.id
-          variant
+          option_value = Comable::OptionValue.find_by(option_type: attr[:option_type], name: attr[:name]) unless attr[:id]
+          next unless option_value
+          attr[:id] = option_value.id
+          option_value
         end.compact
         self.attributes = { option_values: existed_option_values }
       end
