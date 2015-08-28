@@ -28,7 +28,7 @@ module Comable
     end
 
     def quantity
-      stock.try(:quantity)
+      stock.try(:quantity) || build_stock.quantity
     end
 
     def quantity=(quantity)
