@@ -52,7 +52,7 @@ module Comable
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)
     end
 
-    def is_master?
+    def master?
       option_types.empty?
     end
 

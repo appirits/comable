@@ -85,7 +85,7 @@
                         - quantity = variant.quantity
                         strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
                           = number_with_delimiter quantity
-                        - if !product.is_master?
+                        - if !product.master?
                           span<
                             | (
                             - variant.names.each do |name|

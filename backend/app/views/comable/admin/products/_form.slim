@@ -72,13 +72,13 @@
 
   hr
 
-  - if @product.new_record? || @product.is_master?
+  - if @product.new_record? || @product.master?
     = f.fields_for :variants, f.object.variants.first do |ff|
       = render 'comable/admin/shared/variant_form', f: ff
-      = ff.hidden_field :_destroy, value: !f.object.is_master?
+      = ff.hidden_field :_destroy, value: !f.object.master?
     hr
 
-  - if @product.new_record? || @product.persisted? && !@product.is_master?
+  - if @product.new_record? || @product.persisted? && !@product.master?
     fieldset
       .col-md-3
         legend
