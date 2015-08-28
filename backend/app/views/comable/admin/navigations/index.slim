@@ -1,0 +1,25 @@
+.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li
+        = link_to Comable.t('admin.actions.new'), comable.new_admin_navigation_path, class: 'btn btn-default'
+    h1.page-header
+      = Comable.t('admin.nav.navigation')
+      small<
+        | #{@navigations.size} #{Comable.t('admin.results')}
+
+  .comable-page-body
+    section
+      - if @navigations.empty?
+        = Comable.t('admin.not_found')
+      - else
+        table.table.table-striped
+          thead
+            th
+              = sort_link [:comable, @q], :name
+
+          tbody
+            - @navigations.each do |navigation|
+              tr
+                td
+                  = link_to navigation.name, comable.admin_navigation_path(navigation)

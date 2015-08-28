@@ -15,6 +15,7 @@ module Comable
       end
 
       def new
+        @product.published_at = Date.today
       end
 
       def create
@@ -65,18 +66,21 @@ module Comable
 
       private
 
+      # rubocop:disable Metrics/MethodLength
       def product_params
         params.require(:product).permit(
           :name,
           :code,
           :caption,
           :price,
+          :published_at,
           :sku_h_item_name,
           :sku_v_item_name,
           category_path_names: [],
           images_attributes: [:id, :file, :_destroy]
         )
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end

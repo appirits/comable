@@ -1,0 +1,40 @@
+= error_messages_for @navigation
+
+- url = @navigation.new_record? ? comable.admin_navigations_path : comable.admin_navigation_path(@navigation)
+
+= form_for @navigation, url: url do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.navigations.general')
+
+    .col-md-9
+      .form-group
+        = f.label :name
+        = f.text_field :name
+
+  hr
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.navigations.navigation_items')
+
+    .col-md-9
+      #navigation-items
+        = f.fields_for :navigation_items do |navigation_items_form|
+          = render 'navigation_item_fields', f: navigation_items_form
+
+  hr
+
+  .row
+    = add_fields_button_tag Comable.t('admin.nav.navigation_items.add_link'), f, :navigation_items
+
+.hidden
+  = form_tag(comable.search_linkable_ids_admin_navigations_path, remote: true) do
+    = text_field_tag :linkable_type
+    = text_field_tag :position
+    = submit_tag

@@ -3,6 +3,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "test_product#{n.next}" }
     sequence(:code) { |n| format('%07d', n.next) }
     price 100
+    published_at Date.today
 
     trait :with_stock do
       stocks { [create(:stock, :stocked)] }

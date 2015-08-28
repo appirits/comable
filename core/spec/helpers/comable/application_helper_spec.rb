@@ -47,6 +47,14 @@ describe Comable::ApplicationHelper do
     end
   end
 
+  describe '#current_navigations' do
+    before { create(:navigation, navigation_items: [create(:navigation_item)]) }
+
+    it 'returns all Navigations' do
+      expect(subject.current_navigations).to eq(Comable::Navigation.all)
+    end
+  end
+
   describe '#comable_root_path' do
     subject { helper.clone }
 

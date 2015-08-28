@@ -135,3 +135,23 @@
 
             .col-md-6
               = link_to_add_fields Comable.t('admin.add_sub_image'), f, :images
+
+  hr
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.nav.products.visibility')
+
+    .col-md-9
+      .form-group
+        .radio-inline
+          label
+            = f.radio_button :published_at, :published, checked: @product.published_at.present?
+            = Comable.t('admin.nav.products.published')
+        .radio-inline
+          label
+            = f.radio_button :published_at, :unpublished, checked: @product.published_at.blank?
+            = Comable.t('admin.nav.products.unpublished')
+        = f.text_field :published_at, value: @product.published_at.try(:strftime, '%Y-%m-%d %H:%M'), class: 'datetimepicker'
+
