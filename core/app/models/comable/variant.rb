@@ -13,7 +13,7 @@ module Comable
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
-    before_validation :set_option_values_from_names, if: :product
+    before_save :set_option_values_from_names, if: :product
 
     ransack_options attribute_select: { associations: [:product, :stock, :option_values] }, ransackable_attributes: { except: :product_id }
 
