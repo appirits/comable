@@ -12,6 +12,15 @@ require 'rspec/example_steps'
 require 'shoulda/matchers'
 require 'generator_spec'
 
+# for Feature test
+require 'capybara'
+require 'phantomjs'
+require 'phantomjs/poltergeist'
+require 'database_cleaner'
+
+# Change Capybara javascript driver to Poltergeist (PhantomJS)
+Capybara.javascript_driver = :poltergeist
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
@@ -32,7 +41,8 @@ RSpec.configure do |config|
   config.include Comable::EngineControllerTestMonkeyPatch, type: :controller
   config.include Devise::TestHelpers, type: :view
   config.include Devise::TestHelpers, type: :controller
-  config.extend Comable::AuthHelpers, type: :controller
+  config.extend Comable::AuthorizationHelpers::Controller, type: :controller
+  config.extend Comable::AuthorizationHelpers::Feature, type: :feature
   config.extend Comable::RequestHelpers, type: :request
 
   # for Rspec 3
@@ -41,4 +51,27 @@ RSpec.configure do |config|
 
   # Omit the prefix FactoryGirl
   config.include FactoryGirl::Syntax::Methods
+
+  # Support Capybara DSL for the feature test
+  config.include Capybara::DSL, type: :feature
+
+  #
+  # DatabaeeCleaner for the asynchronous test (with :js option).
+  #
+
+  # # Clean up database before test
+  # config.before(:suite) do
+  #   DatabaseCleaner.clean_with(:truncation)
+  # end
+
+  # Start the transaction
+  config.before(:example) do |example|
+    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
+    DatabaseCleaner.start
+  end
+
+  # Clean up database by the strategy
+  config.after(:example) do
+    DatabaseCleaner.clean
+  end
 end
