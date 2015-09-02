@@ -11,6 +11,7 @@ module Comable
       end
 
       def show
+        edit
         render :edit
       end
 
@@ -28,6 +29,7 @@ module Comable
       end
 
       def edit
+        set_preview_session
       end
 
       def update
@@ -81,6 +83,11 @@ module Comable
         )
       end
       # rubocop:enable Metrics/MethodLength
+
+      def set_preview_session
+        session[Comable::Product::PREVIEW_SESSION_KEY] ||= {}
+        session[Comable::Product::PREVIEW_SESSION_KEY][@product.code] = true
+      end
     end
   end
 end

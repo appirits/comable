@@ -8,7 +8,7 @@ module Comable
 
     def show
       @product = Comable::Product.find(params[:id])
-      fail ActiveRecord::RecordNotFound unless @product.published?
+      fail ActiveRecord::RecordNotFound unless (@product.published? || preview?)
     end
 
     private
@@ -21,6 +21,11 @@ module Comable
       else
         @products = Comable::Product.search(params[:q])
       end
+    end
+
+    def preview?
+      session[Comable::Product::PREVIEW_SESSION_KEY] ||= {}
+      session[Comable::Product::PREVIEW_SESSION_KEY][@product.code]
     end
   end
 end
