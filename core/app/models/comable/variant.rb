@@ -39,6 +39,14 @@ module Comable
       end
     end
 
+    def options=(options)
+      options = JSON.parse(options) if options.is_a? String
+      self.option_values_attributes = options.map do |option|
+        hash = option.symbolize_keys
+        { name: hash[:value], option_type_attributes: { name: hash[:name] } }
+      end
+    end
+
     # refs http://stackoverflow.com/questions/8776724/how-do-i-create-a-new-object-referencing-an-existing-nested-attribute/21215218#21215218
     def option_values_attributes=(attributes)
       if attributes.is_a? Array

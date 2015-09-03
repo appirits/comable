@@ -7,4 +7,30 @@ describe Comable::Variant do
   it { is_expected.to validate_presence_of(:price) }
   it { is_expected.to validate_numericality_of(:price).is_greater_than_or_equal_to(0) }
   it { is_expected.to validate_length_of(:sku).is_at_most(255) }
+
+  describe '#options=' do
+    it 'should sets OptionValue' do
+      option_value_name = 'Red'
+      subject.options = [value: option_value_name]
+      expect(subject.option_values.first.name).to eq(option_value_name)
+    end
+
+    it 'should sets OptionValue by JSON' do
+      option_value_name = 'Red'
+      subject.options = [value: option_value_name].to_json
+      expect(subject.option_values.first.name).to eq(option_value_name)
+    end
+
+    it 'should sets OptionType' do
+      option_type_name = 'Color'
+      subject.options = [name: option_type_name, value: 'Red']
+      expect(subject.option_values.first.option_type.name).to eq(option_type_name)
+    end
+
+    it 'should sets OptionType by JSON' do
+      option_type_name = 'Color'
+      subject.options = [name: option_type_name, value: 'Red'].to_json
+      expect(subject.option_values.first.option_type.name).to eq(option_type_name)
+    end
+  end
 end
