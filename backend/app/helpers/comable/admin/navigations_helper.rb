@@ -5,10 +5,6 @@ module Comable
         Comable::NavigationItem.linkable_params_lists.map { |attr| attr.slice(:name, :type).values }
       end
 
-      def linkable_id_options(navigation_item)
-        navigation_item.linkable_class.try(:linkable_id_options) || [[]]
-      end
-
       # アイテム追加ボタン設置
       def add_fields_button_tag(name, f, association)
         new_object = f.object.send(association).klass.new
