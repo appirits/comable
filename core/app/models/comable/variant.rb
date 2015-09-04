@@ -4,7 +4,8 @@ module Comable
 
     belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants
     has_one :stock, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy, autosave: true
-    has_and_belongs_to_many :option_values, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values, primary_key: :name
+
+    has_and_belongs_to_many :option_values, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values, association_foreign_key: :option_value_name
 
     accepts_nested_attributes_for :option_values, allow_destroy: true
     accepts_nested_attributes_for :stock
@@ -47,19 +48,11 @@ module Comable
 
     def options=(options)
       options = JSON.parse(options) if options.is_a? String
-      self.option_values_attributes = options.map do |option|
+      self.option_values = options.map do |option|
         hash = option.symbolize_keys
         option_type = Comable::OptionType.where(name: hash[:name]).first_or_initialize(&:save!)
-        { name: hash[:value], option_type: option_type }
+        Comable::OptionValue.where(name: hash[:value], option_type: option_type).first_or_initialize(&:save!)
       end
-    end
-
-    # refs http://stackoverflow.com/questions/8776724/how-do-i-create-a-new-object-referencing-an-existing-nested-attribute/21215218#21215218
-    def option_values_attributes=(attributes)
-      attributes.each do |attr|
-        option_values.where(option_type: attr[:option_type], name: attr[:name]).first_or_initialize(&:save!)
-      end
-      super
     end
 
     private

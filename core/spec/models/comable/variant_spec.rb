@@ -26,13 +26,13 @@ describe Comable::Variant do
   describe '#options=' do
     it 'should sets OptionValue' do
       option_value_name = 'Red'
-      subject.options = [value: option_value_name]
+      subject.options = [name: 'Color', value: option_value_name]
       expect(subject.option_values.first.name).to eq(option_value_name)
     end
 
     it 'should sets OptionValue by JSON' do
       option_value_name = 'Red'
-      subject.options = [value: option_value_name].to_json
+      subject.options = [name: 'Color', value: option_value_name].to_json
       expect(subject.option_values.first.name).to eq(option_value_name)
     end
 
