@@ -11,31 +11,17 @@ FactoryGirl.define do
 
     trait :sku do
       after(:build) do |product|
-        product.save!
-
-        color = create(:option_type, product: product, name: 'Color')
-        size = create(:option_type, product: product, name: 'Size')
-
-        color_red = color.option_values.build(name: 'Red')
-        size_s = size.option_values.build(name: 'S')
-        size_m = size.option_values.build(name: 'M')
-        size_l = size.option_values.build(name: 'L')
         product.variants = [
-          build(:variant, option_values: [color_red, size_s], stock: build(:stock, :stocked)),
-          build(:variant, option_values: [color_red, size_m], stock: build(:stock, :stocked)),
-          build(:variant, option_values: [color_red, size_l], stock: build(:stock, :stocked))
+          build(:variant, stock: build(:stock, :stocked), options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'S']),
+          build(:variant, stock: build(:stock, :stocked), options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'M']),
+          build(:variant, stock: build(:stock, :stocked), options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'L'])
         ]
       end
     end
 
     trait :sku_h do
       after(:build) do |product|
-        product.save!
-
-        color = create(:option_type, product: product, name: 'Color')
-
-        color_red = color.option_values.build(name: 'Red')
-        product.variants = [build(:variant, option_values: [color_red])]
+        product.variants = [build(:variant, options: [name: 'Color', value: 'Red'])]
       end
     end
   end
