@@ -9,12 +9,10 @@ module Comable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
-    has_many :option_types, class_name: Comable::OptionType.name, inverse_of: :product, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
     accepts_nested_attributes_for :variants, allow_destroy: true
     accepts_nested_attributes_for :images, allow_destroy: true
-    accepts_nested_attributes_for :option_types, allow_destroy: true
 
     validates :name, presence: true, length: { maximum: 255 }
 
@@ -86,6 +84,25 @@ module Comable
       stocks.map { |stock| variants.build(stock: stock) }
     end
 
+    def build_option_type
+      Comable::OptionType.new
+    end
+
+    def option_types
+      option_types = variants.map {|variant| variant.option_values.map(&:option_type) }.flatten.uniq
+      if option_types.any?
+        option_types.singleton_class.send(:define_method, :build, -> { Comable::OptionType.new })
+        option_types
+      else
+        option_values = Comable::OptionValue.joins(:variants).merge(variants)
+        Comable::OptionType.joins(:option_values).merge(option_values).uniq
+      end
+    end
+
+    def option_types_attributes=(option_types_attributes)
+      @option_types_attributes = option_types_attributes
+    end
+
     #
     # Deprecated methods
     #
@@ -94,5 +111,6 @@ module Comable
     deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
     deprecate :code, deprecator: Comable::Deprecator.instance
     deprecate :code=, deprecator: Comable::Deprecator.instance
+    deprecate :option_types, deprecator: Comable::Deprecator.instance
   end
 end

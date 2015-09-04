@@ -8,6 +8,21 @@ describe Comable::Variant do
   it { is_expected.to validate_numericality_of(:price).is_greater_than_or_equal_to(0) }
   it { is_expected.to validate_length_of(:sku).is_at_most(255) }
 
+  describe '#options' do
+    it 'should returns name of OptionValue' do
+      option_value = build(:option_value)
+      subject.option_values = [option_value]
+      expect(subject.options.first[:value]).to eq(option_value.name)
+    end
+
+    it 'should returns name of OptionType' do
+      option_type = build(:option_type)
+      option_value = build(:option_value, option_type: option_type)
+      subject.option_values = [option_value]
+      expect(subject.options.first[:name]).to eq(option_type.name)
+    end
+  end
+
   describe '#options=' do
     it 'should sets OptionValue' do
       option_value_name = 'Red'

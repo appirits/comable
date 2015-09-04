@@ -19,6 +19,7 @@ feature 'Variants', js: true do
     click_on Comable.t('admin.actions.save')
 
     expect(page).to have_content Comable.t('successful')
+
     expect(find_option_type(:first)).to eq(option_type_color.name)
     expect(find_option_values(:first)).to include(option_value_red.name)
   end
@@ -59,8 +60,8 @@ feature 'Variants', js: true do
     page.execute_script script
   end
 
-  def find_option_type(offset, max = 2)
-    index = max.times.to_a.send(offset)
+  def find_option_type(offset)
+    index = all('.comable-option-values').send(offset)['data-index']
     find("input#product_option_types_attributes_#{index}_name").value
   end
 

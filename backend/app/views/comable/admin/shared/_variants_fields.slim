@@ -1,11 +1,11 @@
 tr.js-new-variants
   td
     = f.check_box :_destroy, { checked: true }, *({ checked_value: 0, unchecked_value: 1 }.values)
-  td data-name="names"
-    = f.hidden_field :names, value: f.object.names.join(',')
-    - f.object.names.each do |name|
+  td data-name="options"
+    = f.hidden_field :options, value: f.object.options.to_json
+    - f.object.options.each do |option|
       span.comable-variant-name
-        = name
+        = option[:value]
   td data-name="sku"
     = f.text_field :sku
   td data-name="price"

@@ -46,23 +46,25 @@ class @Variant
 
   build_variants: ->
     _this = @
-    option_types = []
+    options = []
     $('.js-tagit-option-values').each( ->
       return unless $(this).hasClass('tagit')
-      option_values = $(this).tagit('assignedTags')
-      option_types.push(option_values)
+      name = $(this).closest('.comable-option').find('input:first-child').val()
+      values = $(this).tagit('assignedTags')
+      option = jQuery.map(values, (value) -> { name: name, value: value })
+      options.push(option)
     )
-    option_values_for_variants = _product(_compact(option_types))
-    option_values_for_variants.forEach((option_values_for_variant) ->
-      _this.build_variant(option_values_for_variant)
+    options_for_variants = _product(_compact(options))
+    options_for_variants.forEach((options_for_variant) ->
+      _this.build_variant(options_for_variant)
     )
 
-  build_variant: (option_values) ->
+  build_variant: (options) ->
     $variant = @new_variant()
 
-    $variant.find('[data-name="names"] > input').val(option_values)
-    option_values.forEach((option_value) ->
-      $variant.find('[data-name="names"]').append('<span class="comable-variant-name">' + option_value + '</span> ')
+    $variant.find('[data-name="options"] > input').val(JSON.stringify(options))
+    options.forEach((option) ->
+      $variant.find('[data-name="options"]').append('<span class="comable-variant-name">' + option.value + '</span> ')
     )
 
     $('.js-variants-table').find('tbody').append($variant)
