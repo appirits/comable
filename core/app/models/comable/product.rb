@@ -89,18 +89,12 @@ module Comable
     end
 
     def option_types
-      option_types = variants.map {|variant| variant.option_values.map(&:option_type) }.flatten.uniq
-      if option_types.any?
-        option_types.singleton_class.send(:define_method, :build, -> { Comable::OptionType.new })
-        option_types
-      else
-        option_values = Comable::OptionValue.joins(:variants).merge(variants)
-        Comable::OptionType.joins(:option_values).merge(option_values).uniq
-      end
+      option_types = variants.map { |variant| variant.option_values.map(&:option_type) }.flatten.uniq
+      option_types.singleton_class.send(:define_method, :build, -> { Comable::OptionType.new })
+      option_types
     end
 
-    def option_types_attributes=(option_types_attributes)
-      @option_types_attributes = option_types_attributes
+    def option_types_attributes=(_option_types_attributes)
     end
 
     #
@@ -112,5 +106,6 @@ module Comable
     deprecate :code, deprecator: Comable::Deprecator.instance
     deprecate :code=, deprecator: Comable::Deprecator.instance
     deprecate :option_types, deprecator: Comable::Deprecator.instance
+    deprecate :option_types_attributes=, deprecator: Comable::Deprecator.instance
   end
 end
