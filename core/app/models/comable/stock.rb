@@ -85,14 +85,6 @@ module Comable
       variant.sku
     end
 
-    def code=(code)
-      if variant
-        variant.sku = code
-      else
-        build_variant(sku: code)
-      end
-    end
-
     def product=(product)
       if variant
         variant.product = product
