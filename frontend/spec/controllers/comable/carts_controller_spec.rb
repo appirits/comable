@@ -149,6 +149,37 @@ describe Comable::CartsController do
     end
   end
 
+  describe 'PUT update' do
+    let(:product) { create(:product, :with_stock) }
+
+    describe 'with valid params' do
+      it 'updates the requested cart item' do
+        current_comable_user.add_cart_item(product)
+        cart_item = current_comable_user.cart.first
+        expect { put :update, product_id: product.to_param, quantity: cart_item.quantity + 1 }.to change { cart_item.reload.quantity }.by(1)
+      end
+
+      it 'redirects to the cart' do
+        current_comable_user.add_cart_item(product)
+        cart_item = current_comable_user.cart.first
+        put :update, product_id: product.to_param, quantity: cart_item.quantity + 1
+        expect(response).to redirect_to([controller.comable, :cart])
+      end
+    end
+
+    describe 'with invalid params' do
+      it "re-renders the 'show' template" do
+        put :update, product_id: product.to_param
+        expect(response).to render_template(:show)
+      end
+
+      it 'assigns the message as flash.now[:alert]' do
+        put :update, product_id: product.to_param
+        expect(flash.now[:alert]).to eq(Comable.t('carts.invalid'))
+      end
+    end
+  end
+
   describe 'DELETE destroy' do
     let(:product) { create(:product, :with_stock) }
 
