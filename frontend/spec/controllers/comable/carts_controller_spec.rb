@@ -149,6 +149,35 @@ describe Comable::CartsController do
     end
   end
 
+  describe 'DELETE destroy' do
+    let(:product) { create(:product, :with_stock) }
+
+    describe 'with valid params' do
+      it 'destroys the requested cart_item' do
+        current_comable_user.add_cart_item(product)
+        expect { delete :destroy, product_id: product.to_param }.to change(Comable::OrderItem, :count).by(-1)
+      end
+
+      it 'redirects to the cart' do
+        current_comable_user.add_cart_item(product)
+        delete :destroy, product_id: product.to_param
+        expect(response).to redirect_to([controller.comable, :cart])
+      end
+    end
+
+    describe 'with invalid params' do
+      it "re-renders the 'show' template" do
+        delete :destroy, product_id: product.to_param
+        expect(response).to render_template(:show)
+      end
+
+      it 'assigns the message as flash.now[:alert]' do
+        delete :destroy, product_id: product.to_param
+        expect(flash.now[:alert]).to eq(Comable.t('carts.invalid'))
+      end
+    end
+  end
+
   private
 
   # TODO: Move to the support directory.

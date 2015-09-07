@@ -92,7 +92,7 @@ module Comable
     def find_cart_item_by(stock)
       # TODO: Refactoring
       fail unless stock.is_a?(Comable::Stock)
-      cart_items.find { |cart_item| cart_item.stock.id == stock.id }
+      cart_items.find { |cart_item| cart_item.stock == stock }
     end
   end
 end
