@@ -51,6 +51,7 @@ module Comable
 
     private
 
+    # rubocop:disable Metrics/MethodLength
     def process_cart_item(obj)
       case obj
       when Comable::Product
@@ -65,6 +66,7 @@ module Comable
         fail
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def add_stock_to_cart(stock, quantity)
       cart_item = find_cart_item_by(stock)
