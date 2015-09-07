@@ -20,10 +20,6 @@ module Comable
 
     attr_writer :names
 
-    def name
-      names.join(' x ')
-    end
-
     def names
       @names ? @names : option_values.map(&:name)
     end

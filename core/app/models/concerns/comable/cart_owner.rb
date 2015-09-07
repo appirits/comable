@@ -57,6 +57,8 @@ module Comable
         yield obj.stocks.first
       when Comable::Stock
         yield obj
+      when Comable::Variant
+        yield obj.stock
       when Array
         obj.map { |item| yield item }
       else

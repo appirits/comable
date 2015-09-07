@@ -20,8 +20,7 @@ feature 'カート処理' do
 
       When '商品をカートに投入して' do
         visit comable.product_path(subject)
-        choose subject.stocks.first.code if subject.sku?
-        click_button Comable.t('add_to_cart')
+        add_to_cart subject
         expect(page).to have_content Comable.t('carts.added')
       end
 
@@ -101,9 +100,7 @@ feature 'カート処理' do
 
       When '商品をカートに投入して' do
         visit comable.product_path(subject)
-        choose subject.stocks.first.code if subject.sku?
-        select quantity, from: 'quantity'
-        click_button Comable.t('add_to_cart')
+        add_to_cart subject, quantity: quantity
         expect(page).to have_content Comable.t('carts.added')
       end
 
@@ -126,8 +123,7 @@ feature 'カート処理' do
 
       When '商品をカートに投入して' do
         visit comable.product_path(subject)
-        choose subject.stocks.first.code if subject.sku?
-        click_button Comable.t('add_to_cart')
+        add_to_cart subject
         expect(page).to have_content Comable.t('carts.added')
       end
 
@@ -157,5 +153,18 @@ feature 'カート処理' do
     it_behaves_like '商品が購入できること'
     it_behaves_like '商品を数量指定でカート投入できること'
     it_behaves_like '商品の数量変更ができること'
+  end
+
+  private
+
+  def add_to_cart(product, quantity: nil)
+    if product.sku?
+      variant = product.variants.first
+      variant.option_values.each do |option_value|
+        select option_value.name
+      end
+    end
+    select quantity, from: 'quantity' if quantity
+    click_button Comable.t('add_to_cart')
   end
 end

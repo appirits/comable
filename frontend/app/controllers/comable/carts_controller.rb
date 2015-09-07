@@ -51,10 +51,15 @@ module Comable
 
     def find_cart_item
       cart_item = Comable::Stock.where(id: params[:stock_id]).first
+      cart_item ||= Comable::Variant.joins(:option_values).where(where_option_value).first
       cart_item ||= Comable::Product.where(id: params[:product_id]).first
       return unless cart_item
       return if cart_item.is_a?(Comable::Product) && cart_item.sku?
       cart_item
+    end
+
+    def where_option_value
+      { Comable::OptionValue.table_name => { name: params[:option_value_names] } }
     end
 
     def cart_item_options

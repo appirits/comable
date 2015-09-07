@@ -105,7 +105,6 @@ module Comable
     deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
     deprecate :code, deprecator: Comable::Deprecator.instance
     deprecate :code=, deprecator: Comable::Deprecator.instance
-    deprecate :option_types, deprecator: Comable::Deprecator.instance
     deprecate :option_types_attributes=, deprecator: Comable::Deprecator.instance
   end
 end

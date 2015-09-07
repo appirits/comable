@@ -67,7 +67,7 @@ module Comable
 
     def name
       if variant.names.any?
-        "#{variant.product.name} (#{variant.names.join('/')}"
+        "#{variant.product.name} (#{variant.names.join('/')})"
       else
         variant.product.name
       end
