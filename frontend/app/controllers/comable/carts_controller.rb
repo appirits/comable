@@ -1,7 +1,7 @@
 module Comable
   class CartsController < Comable::ApplicationController
-    before_filter :set_cart_item, only: [:add, :update]
-    before_filter :ensure_found_cart_item, only: [:add, :update]
+    before_filter :set_cart_item, only: [:add, :update, :destroy]
+    before_filter :ensure_found_cart_item, only: [:add, :update, :destroy]
 
     def add
       if current_comable_user.add_cart_item(@cart_item, cart_item_options)
@@ -22,10 +22,7 @@ module Comable
     end
 
     def destroy
-      cart_item = find_cart_item
-      return redirect_by_product_not_found unless cart_item
-
-      if current_comable_user.reset_cart_item(cart_item)
+      if current_comable_user.reset_cart_item(@cart_item)
         redirect_to comable.cart_path, notice: Comable.t('carts.updated')
       else
         flash.now[:alert] = Comable.t('carts.invalid')
@@ -51,10 +48,17 @@ module Comable
 
     def find_cart_item
       cart_item = Comable::Stock.where(id: params[:stock_id]).first
+      cart_item ||= find_variant
       cart_item ||= Comable::Product.where(id: params[:product_id]).first
       return unless cart_item
       return if cart_item.is_a?(Comable::Product) && cart_item.sku?
       cart_item
+    end
+
+    def find_variant
+      Comable::Variant.joins(:option_values).where(
+        Comable::OptionValue.table_name => { id: params[:option_values] }
+      ).first
     end
 
     def cart_item_options

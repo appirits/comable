@@ -76,7 +76,7 @@ describe Comable::Admin::OrdersController do
       expect(response.body).to include(order.code)
       expect(response.body).to include(order.bill_address.first_name)
       expect(response.body).to include(order.bill_address.family_name)
-      expect(response.body).to include(order_item.code)
+      expect(response.body).to include(order_item.sku)
     end
 
     it 'exports the xlsx file' do

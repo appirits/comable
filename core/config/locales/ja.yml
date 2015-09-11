@@ -165,6 +165,11 @@ ja:
       please_see_following_page_for_syntax: '構文については次のページを参照してください:'
       please_select_file_form_directory_tree_to_edit: 'ディレクトリーツリーから編集したいファイルを選択してください。'
       here_editor_will_be_displayed_and_you_can_edit_file: 'ここにエディタが表示されてファイルの内容を編集できます。'
+      variants: 'バリエーション'
+      pricing: '価格'
+      view: '確認する'
+      add_variants: 'バリエーションを追加する'
+      size: 'サイズ'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -280,6 +285,9 @@ ja:
       comable/navigation_item: 'ナビゲーション項目'
 
     attributes:
+      timestamps: &timestamps
+        created_at: '作成日'
+        updated_at: '更新日'
       comable/user:
         id: ID
         email: メールアドレス
@@ -296,6 +304,7 @@ ja:
         last_sign_in_at: 最終ログイン日時
         current_sign_in_ip: ログインIP
         last_sign_in_ip: 最終ログインIP
+        <<: *timestamps
       comable/order:
         id: ID
         code: 注文番号
@@ -319,6 +328,7 @@ ja:
         guest_token: ゲストトークン
         payment_state: '決済ステータス'
         shipment_state: '配送ステータス'
+        <<: *timestamps
       comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
@@ -331,6 +341,7 @@ ja:
         sku_h_choice_name: SKU横軸選択肢名
         sku_v_choice_name: SKU縦軸選択肢名
         order: 注文
+        <<: *timestamps
       comable/address: &comable_address
         full_name: お名前
         family_name: 姓
@@ -340,6 +351,7 @@ ja:
         city: 市町村
         detail: その他
         phone_number: 電話番号
+        <<: *timestamps
       comable/product:
         id: ID
         code: 商品コード
@@ -349,6 +361,8 @@ ja:
         categories: カテゴリ
         sku_h_item_name: SKU横軸項目名
         sku_v_item_name: SKU縦軸項目名
+        published_at: '公開日'
+        <<: *timestamps
       comable/stock:
         id: ID
         code: SKU商品コード
@@ -357,27 +371,34 @@ ja:
         sku_v_choice_name: SKU縦軸選択肢名
         product: 商品
         product_code: 商品コード
+        name: '商品名'
+        sku: 'SKUコード'
+        <<: *timestamps
       comable/store:
         name: ストア名
         meta_keywords: メタキーワード
         meta_description: メタディスクリプション
         email: メールアドレス
+        <<: *timestamps
       comable/shipment_method:
         name: 発送方法名
         fee: 手数料
         activated_flag: この発送方法を有効にする
         traking_url: トラッキングURL
+        <<: *timestamps
       comable/payment_method:
         name: 決済方法名
         payment_provider: 決済プロバイダ
         fee: '手数料'
         enable_price: 利用可能な価格範囲
+        <<: *timestamps
       comable/tracker:
         activated_flag: 'このトラッキング情報を有効にする'
         name: 'トラッキング名'
         tracker_id: 'トラッキングID'
         code: 'トラッキングコード'
         place: '設置場所'
+        <<: *timestamps
       comable/order/order_items:
         <<: *comable_order_item
       comable/order/bill_address:
@@ -391,6 +412,7 @@ ja:
         fee: '手数料'
         state: 'ステータス'
         completed_at: '決済日時'
+        <<: *timestamps
       comable/shipment:
         id: 'ID'
         order_id: '注文ID'
@@ -399,6 +421,7 @@ ja:
         state: 'ステータス'
         tracking_number: 'トラッキング番号'
         completed_at: '発送日時'
+        <<: *timestamps
       comable/page:
         id: ID
         title: タイトル
@@ -409,23 +432,35 @@ ja:
         meta_keywords: メタキーワード
         slug: スラッグ
         published_at: 公開日
-        created_at: 作成日
-        updated_at: 更新日
+        <<: *timestamps
       comable/navigation:
         id: ID
         name: 名前
-        created_at: 作成日
-        updated_at: 更新日
+        <<: *timestamps
       comable/navigation_item: &comable_navigation_item
         id: ID
         name: 名前
         linkable_type: リンク先
         linkable_id: ''
         url: URL
-        created_at: 作成日
-        updated_at: 更新日
+        <<: *timestamps
       comable/navigation/navigation_items:
         <<: *comable_navigation_item
+      comable/variant:
+        id: 'ID'
+        sku: 'SKUコード'
+        price: '価格'
+        product: '商品'
+        quantity: '個数'
+        <<: *timestamps
+      comable/option_type:
+        id: 'ID'
+        name: '名称'
+        <<: *timestamps
+      comable/option_value:
+        id: 'ID'
+        name: '名称'
+        <<: *timestamps
 
   enumerize:
     comable/user:

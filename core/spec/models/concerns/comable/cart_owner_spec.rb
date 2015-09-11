@@ -16,7 +16,7 @@ describe Comable::CartOwner do
   end
 
   context 'with errors' do
-    let(:stock) { build(:stock, :unstocked) }
+    let(:stock) { create(:stock, :unstocked, :with_product) }
     let(:cart_item) { subject.cart_items.first }
 
     before { allow(cart_item).to receive(:stock).and_return(stock) }

@@ -21,4 +21,18 @@ describe Comable::OrderItem do
       end
     end
   end
+
+  describe '#stock=' do
+    it 'should sets product with vatiant' do
+      subject.variant = build(:variant)
+      subject.stock = build(:stock)
+      expect(subject.stock).to eq(subject.variant.stock)
+    end
+
+    it 'should sets product without vatiant' do
+      subject.variant = nil
+      subject.stock = build(:stock)
+      expect(subject.variant).to be_new_record
+    end
+  end
 end

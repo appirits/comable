@@ -1,4 +1,4 @@
-class Search
+class DynamicField
   constructor: (@templates = {}) ->
 
   remove_fields: (button) ->
@@ -22,14 +22,14 @@ class Search
 # ---
 # main
 # ---
-search = new Search()
+dynamic_field = new DynamicField
 
-$(document).on('click', '.ransack.add_fields', ->
-  search.add_fields(this, $(this).data('fieldType'), $(this).data('content'))
+$(document).on('click', '.add_fields', ->
+  dynamic_field.add_fields(this, $(this).data('fieldType'), $(this).data('content'))
   false
 )
 
-$(document).on('click', '.ransack.remove_fields', ->
-  search.remove_fields(this)
+$(document).on('click', '.remove_fields', ->
+  dynamic_field.remove_fields(this)
   false
 )

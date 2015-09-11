@@ -1,0 +1,40 @@
+$comable-colors: #ffa000 #5dd39e #d81159 #06aed5 #8f2d56;
+
+@for $i from 1 through length($comable-colors) {
+  $color: nth($comable-colors, $i);
+
+  .comable-variant-name:nth-of-type(#{$i}) {
+    color: darken($color, 5%);
+
+    &:after {
+      display: inline;
+      margin: 0 5px;
+      color: #444;
+      content: '·';
+    }
+
+    &:last-child:after {
+      display: none;
+    }
+  }
+
+  .comable-option:nth-of-type(#{$i}) {
+    .comable-option-name {
+      color: darken($color, 5%);
+    }
+
+    ul.comable-option-values li:not(.tagit-new) {
+      background-color: $color;
+      border-color: $color;
+
+      & > span, & > a, & > a > span {
+        color: #fff;
+      }
+
+      &.remove {
+        background-color: darken($color, 10%);
+        border-color: darken($color, 10%);
+      }
+    }
+  }
+}

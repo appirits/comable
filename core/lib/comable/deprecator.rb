@@ -1,7 +1,7 @@
 if Rails::VERSION::MAJOR > 3
   module Comable
     class Deprecator < ActiveSupport::Deprecation
-      def initialize(deprecation_horizon = '0.4.0', gem_name = 'Comable')
+      def initialize(deprecation_horizon = '0.8.0', gem_name = 'Comable')
         super
       end
     end

@@ -1,0 +1,34 @@
+= error_messages_for @variant
+
+= form_for [comable, :admin, @product, @variant] do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-md-3
+      .media
+        = link_to comable.admin_product_path(@product), class: 'media-left' do
+          = image_tag @product.image_url, width: 100, class: 'media-object'
+        .media-body
+          h4.media-heading
+            = @product.name
+          p
+            | #{@product.variants.size} #{Comable.t('admin.variants').downcase}
+          p
+            = link_to 'Back to product', comable.admin_product_path(@product)
+
+      .media
+        ul.list-group
+          - @product.variants.each do |variant|
+            li.list-group-item class="#{'disabled' if variant == @variant}"
+              = link_to variant.name, comable.admin_product_variant_path(@product, variant)
+
+    .col-md-9
+      = f.fields_for :option_values do |ff|
+        .form-group
+          = ff.label :name, ff.object.option_type.name
+          = ff.text_field :name
+
+  hr
+
+  = render 'comable/admin/shared/variant_form', f: f

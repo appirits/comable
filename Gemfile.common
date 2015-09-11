@@ -7,8 +7,13 @@ gem 'rspec-its', require: false
 gem 'rspec-example_steps', require: false
 gem 'shoulda-matchers', require: false
 gem 'factory_girl_rails', require: false
-gem 'capybara', require: false
 gem 'generator_spec', require: false
+
+# for feature test with capybara
+gem 'capybara', require: false
+gem 'phantomjs', require: false
+gem 'poltergeist', require: false
+gem 'database_cleaner', require: false
 
 gem 'coveralls', require: false
 gem 'rubocop', require: false

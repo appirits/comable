@@ -1,0 +1,26 @@
+fieldset
+  .col-md-3
+    legend
+      = Comable.t('admin.pricing')
+
+  .col-md-9
+    .form-group
+      = f.label :price
+      = f.text_field :price
+
+hr
+
+fieldset
+  .col-md-3
+    legend
+      = Comable.t('admin.stocks')
+
+  .col-md-9
+    .form-group
+      = f.label :sku
+      = f.text_field :sku
+
+    = f.fields_for :stock, f.object.stock || f.object.build_stock do |ff|
+      .form-group
+        = ff.label :quantity
+        = ff.text_field :quantity

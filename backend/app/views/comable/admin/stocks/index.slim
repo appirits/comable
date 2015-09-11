@@ -44,7 +44,7 @@
                 = link_to Comable.t('admin.advanced_search'), 'javascript:void(0)', 'data-toggle' => 'collapse', 'data-target' => '#comable-advanced-search'
               li
                 = link_to Comable.t('admin.clear_search_conditions'), comable.admin_stocks_path
-          = f.text_field :code_cont, class: 'form-control'
+          = f.text_field :variant_sku_cont, class: 'form-control'
           span.input-group-btn
             = f.submit Comable.t('admin.search'), class: 'btn btn-default'
 
@@ -57,25 +57,30 @@
         table.table.table-striped
           thead
             th
-              = sort_link [:comable, @q], :code
+              = sort_link [:comable, @q], :name
+            th
+              = sort_link [:comable, @q], :sku
             th
               = sort_link [:comable, @q], :quantity
-            th
-              = sort_link [:comable, @q], :sku_h_choice_name
-            th
-              = sort_link [:comable, @q], :sku_v_choice_name
           tbody
             - @stocks.each do |stock|
               tr
                 td
-                  = link_to stock.code, comable.admin_stock_path(stock)
+                  - if stock.variant.options.any?
+                    p
+                      = link_to stock.variant.product.name, comable.admin_product_variant_path(stock.variant.product, stock.variant)
+                    p
+                      - stock.variant.options.each do |option|
+                        span.comable-variant-name
+                          = option.value
+                  - else
+                    p
+                      = link_to stock.variant.product.name, comable.admin_product_path(stock.variant.product)
+                td
+                  = stock.variant.sku
                 td
                   strong class="#{(stock.quantity <= 0) ? 'text-danger' : (stock.quantity <= 10) ? 'text-warning' : 'text-success'}"
                     = number_with_delimiter stock.quantity
-                td
-                  = stock.sku_h_choice_name
-                td
-                  = stock.sku_v_choice_name
 
         .text-center
           = paginate @stocks, theme: :comable_backend

@@ -7,21 +7,18 @@ module Comable
     include Comable::Product::Csvable
     include Comable::Linkable
 
-    has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
+    has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
+    accepts_nested_attributes_for :variants, allow_destroy: true
     accepts_nested_attributes_for :images, allow_destroy: true
 
     validates :name, presence: true, length: { maximum: 255 }
-    validates :code, presence: true, length: { maximum: 255 }
-    validates :price, presence: true, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
-    validates :sku_h_item_name, length: { maximum: 255 }
-    validates :sku_v_item_name, length: { maximum: 255 }
 
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
-    ransack_options attribute_select: { associations: :stocks }
+    ransack_options attribute_select: { associations: [:variants, :stocks, :option_types] }
 
     linkable_columns_keys use_index: true
 
@@ -53,10 +50,61 @@ module Comable
       self.categories = Comable::Category.find_by_path_names(category_path_names, delimiter: delimiter)
     end
 
-    private
-
-    def create_stock
-      stocks.create(code: code) unless stocks.exists?
+    def master?
+      option_types.empty?
     end
+
+    def sku_h_item_name
+      option_types.first.try(:name)
+    end
+
+    def sku_v_item_name
+      option_types.second.try(:name)
+    end
+
+    def code
+      variants.first.try(:sku)
+    end
+
+    def code=(code)
+      variants.each { |v| v.sku = code }
+    end
+
+    def price
+      variants.first.try(:price)
+    end
+
+    def price=(price)
+      variants.each { |v| v.price = price }
+    end
+
+    has_many :stocks, class_name: Comable::Stock.name, through: :variants
+
+    def stocks=(stocks)
+      stocks.map { |stock| variants.build(stock: stock) }
+    end
+
+    def build_option_type
+      Comable::OptionType.new
+    end
+
+    def option_types
+      option_types = variants.map { |variant| variant.option_values.map(&:option_type) }.flatten.uniq
+      option_types.singleton_class.send(:define_method, :build, -> { Comable::OptionType.new })
+      option_types
+    end
+
+    def option_types_attributes=(_option_types_attributes)
+    end
+
+    #
+    # Deprecated methods
+    #
+    deprecate :stocks, deprecator: Comable::Deprecator.instance
+    deprecate :sku_h_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
+    deprecate :code, deprecator: Comable::Deprecator.instance
+    deprecate :code=, deprecator: Comable::Deprecator.instance
+    deprecate :option_types_attributes=, deprecator: Comable::Deprecator.instance
   end
 end
