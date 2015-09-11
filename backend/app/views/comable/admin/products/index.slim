@@ -88,9 +88,9 @@
                         - if !product.master?
                           span<
                             | (
-                            - variant.names.each do |name|
+                            - variant.options.each do |option|
                               span.comable-variant-name
-                                = name
+                                = option.value
                             | )
 
         .text-center

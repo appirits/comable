@@ -66,13 +66,13 @@
             - @stocks.each do |stock|
               tr
                 td
-                  - if stock.variant.names.any?
+                  - if stock.variant.options.any?
                     p
                       = link_to stock.variant.product.name, comable.admin_product_variant_path(stock.variant.product, stock.variant)
                     p
-                      - stock.variant.names.each do |name|
+                      - stock.variant.options.each do |option|
                         span.comable-variant-name
-                          = name
+                          = option.value
                   - else
                     p
                       = link_to stock.variant.product.name, comable.admin_product_path(stock.variant.product)

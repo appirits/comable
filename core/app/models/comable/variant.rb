@@ -38,7 +38,7 @@ module Comable
 
     def options
       option_values.map do |option_value|
-        { name: option_value.option_type.try(:name), value: option_value.name }
+        OpenStruct.new(type: option_value.option_type.try(:name), value: option_value.name)
       end
     end
 

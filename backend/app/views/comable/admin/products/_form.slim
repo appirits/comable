@@ -132,9 +132,9 @@
                     strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
                       = number_with_delimiter quantity
                   td
-                    - variant.names.each do |name|
+                    - variant.options.each do |option|
                       span.comable-variant-name
-                        = name
+                        = option.value
                   td
                     = link_to comable.admin_product_variant_path(@product, variant), class: 'btn btn-default'
                       i.fa.fa-edit>

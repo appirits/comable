@@ -19,7 +19,7 @@ describe Comable::Variant do
       option_type = build(:option_type)
       option_value = build(:option_value, option_type: option_type)
       subject.option_values = [option_value]
-      expect(subject.options.first[:name]).to eq(option_type.name)
+      expect(subject.options.first[:type]).to eq(option_type.name)
     end
   end
 
