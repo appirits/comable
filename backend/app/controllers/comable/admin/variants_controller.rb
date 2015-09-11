@@ -40,12 +40,8 @@ module Comable
       end
 
       def destroy
-        if @variant.destroy
-          redirect_to comable.admin_product_variants_path(@product), notice: Comable.t('successful')
-        else
-          flash.now[:alert] = Comable.t('failure')
-          render :edit
-        end
+        @variant.destroy
+        redirect_to comable.admin_product_variants_path(@product), notice: Comable.t('successful')
       end
 
       private
