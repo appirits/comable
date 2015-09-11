@@ -10,28 +10,29 @@ module Comable
         image_tag "//www.gravatar.com/avatar/#{hash}?default=mm", options
       end
 
-      def link_to_add_fields(name, f, association, options = {})
-        new_object = f.object.class.reflect_on_association(association).klass.new
-        fields = f.fields_for(association, new_object, child_index: "new_#{association}") do |builder|
-          render("comable/admin/shared/#{association.to_s.singularize}_fields", ff: builder)
-        end
-        link_to(name, 'javascript:void(0)', options.merge(onclick: "add_fields(this, '#{association}', '#{escape_javascript(fields)}')"))
+      def link_to_add_fields(name, f, type, options = {})
+        new_fields = build_fields(f, type)
+        link_to(name, 'javascript:void(0)', options.merge(class: "add_fields #{options[:class]}", 'data-field-type' => type, 'data-content' => "#{new_fields}"))
       end
 
       def button_to_remove_fields(name, options = {})
-        content_tag(:button, name, options.merge(class: "ransack remove_fields #{options[:class]}"))
+        content_tag(:button, name, options.merge(class: "remove_fields #{options[:class]}"))
       end
 
       def button_to_add_fields(name, f, type, options = {})
         new_fields = build_fields(f, type)
-        content_tag(:button, name, options.merge(class: "ransack add_fields #{options[:class]}", 'data-field-type' => type, 'data-content' => "#{new_fields}"))
+        content_tag(:button, name, options.merge(class: "add_fields #{options[:class]}", 'data-field-type' => type, 'data-content' => "#{new_fields}"))
       end
 
       def build_fields(f, type)
-        new_object = f.object.send("build_#{type}")
+        render_block = -> (builder) { render("comable/admin/shared/#{type}_fields", f: builder) }
 
-        f.send("#{type}_fields", new_object, child_index: "new_#{type}") do |builder|
-          render("comable/admin/shared/#{type}_fields", f: builder)
+        if singular? type
+          new_object = f.object.send("build_#{type}")
+          f.send("#{type}_fields", new_object, child_index: "new_#{type}", &render_block)
+        else
+          new_object = f.object.send(type).build
+          f.send('fields_for', type, new_object, child_index: "new_#{type}", &render_block)
         end
       end
 
@@ -47,6 +48,12 @@ module Comable
 
       def page_name
         [controller_name, action_name].join(':')
+      end
+
+      private
+
+      def singular?(string)
+        string.to_s.try(:singularize) == string.to_s
       end
     end
   end

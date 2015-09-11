@@ -51,18 +51,22 @@ module Comable
 
     private
 
+    # rubocop:disable Metrics/MethodLength
     def process_cart_item(obj)
       case obj
       when Comable::Product
         yield obj.stocks.first
       when Comable::Stock
         yield obj
+      when Comable::Variant
+        yield obj.stock
       when Array
         obj.map { |item| yield item }
       else
         fail
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def add_stock_to_cart(stock, quantity)
       cart_item = find_cart_item_by(stock)
@@ -70,7 +74,7 @@ module Comable
         cart_item.quantity += quantity
         (cart_item.quantity > 0) ? cart_item.save : cart_item.destroy
       else
-        cart_items.build(stock_id: stock.id, quantity: quantity).save
+        cart_items.build(variant: stock.variant, quantity: quantity).save
       end
     end
 
@@ -88,7 +92,7 @@ module Comable
     def find_cart_item_by(stock)
       # TODO: Refactoring
       fail unless stock.is_a?(Comable::Stock)
-      cart_items.find { |cart_item| cart_item.stock.id == stock.id }
+      cart_items.find { |cart_item| cart_item.stock == stock }
     end
   end
 end

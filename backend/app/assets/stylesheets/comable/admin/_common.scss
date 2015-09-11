@@ -151,3 +151,12 @@ footer {
   cursor: inherit;
   display: block;
 }
+
+// for Tag-it
+ul.tagit {
+  @include border-radius($input-border-radius);
+
+  &.tagit-readonly {
+    background-color: #eee;
+  }
+}

@@ -5,11 +5,11 @@
       span<
         | ##{index}
   p
-    = ff.file_field :file
-  - if ff.object.url
+    = f.file_field :file
+  - if f.object.url
     .thumbnail
-      = image_tag ff.object.url
-      - if ff.object.persisted?
+      = image_tag f.object.url
+      - if f.object.persisted?
         label.remove
-          span> = ff.check_box :_destroy
+          span> = f.check_box :_destroy
           span> = Comable.t('admin.actions.destroy')

@@ -1,24 +1,31 @@
 describe Comable::Stock do
-  it { expect { described_class.new }.to_not raise_error }
+  it { is_expected.to validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
 
-  context 'belongs_to' do
-    let(:stock) { create(:stock, :with_product) }
+  describe '#product=' do
+    it 'should sets product with vatiant' do
+      subject.variant = build(:variant)
+      subject.product = build(:product)
+      expect(subject.product).to eq(subject.variant.product)
+    end
 
-    describe 'product' do
-      subject { stock.product }
-      it { should be }
-      its(:name) { should be }
+    it 'should sets product without vatiant' do
+      subject.variant = nil
+      subject.product = build(:product)
+      expect(subject.variant).to be_new_record
     end
   end
 
-  describe 'validations' do
-    it { is_expected.to validate_presence_of(:product).with_message(Comable.t('admin.is_not_exists')) }
-    it { is_expected.to validate_presence_of(:code) }
+  describe '#sku_v?' do
+    it 'should returns false when it has only option of variant' do
+      subject.variant = build(:variant, options: [name: 'Size', value: 'M'])
+      subject.product = build(:product)
+      expect(subject.sku_v?).to be false
+    end
 
-    it { is_expected.to validate_length_of(:code).is_at_most(255) }
-    it { is_expected.to validate_length_of(:sku_h_choice_name).is_at_most(255) }
-    it { is_expected.to validate_length_of(:sku_v_choice_name).is_at_most(255) }
-
-    it { is_expected.to validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
+    it 'should returns true when it has two options of variant' do
+      subject.variant = build(:variant, options: [name: 'Size', value: 'M'] + [name: 'Color', value: 'Red'])
+      subject.product = build(:product)
+      expect(subject.sku_v?).to be false
+    end
   end
 end

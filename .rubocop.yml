@@ -54,4 +54,5 @@ AllCops:
     - vendor/**/*
     - spec/dummy/db/schema.rb
     - spec/dummy/tmp/**/*
+    - spec/support/share_db_connection.rb
     - gemfiles/**/*

@@ -23,7 +23,7 @@ Comable::Core::Engine.routes.draw do
 
   resources :pages, only: [:show]
 
-  devise_for :user, path: :member, class_name: Comable::User.name, module: :devise
+  devise_for :users, path: :member, class_name: Comable::User.name, module: :devise, router_name: :comable
 
   resource :user, path: :member do
     member do

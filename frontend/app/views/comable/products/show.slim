@@ -33,8 +33,11 @@
 
       = form_tag comable.add_cart_path do
         - if @product.sku?
-          .sku
-            = sku_table @product
+          - @product.variants.map(&:option_values).flatten.uniq.group_by(&:option_type).each_pair.with_index do |(option_type, option_values), index|
+            .sku
+              label for="option_values_#{index}"
+                = option_type.name
+              = select_tag "option_values[]", options_for_select(option_values.map { |o| [o.name, o.id] }), id: "option_values_#{index}"
 
         - if @product.stocked?
           .add_cart.form-inline.form-group

@@ -22,9 +22,6 @@ $(document).ready(->
 
 class @Product
   constructor: ->
-    $(document).ready(@ready)
-
-  ready: =>
     @radio_published = $('#product_published_at_published')
     @radio_unpublished = $('#product_published_at_unpublished')
     @published_at = $('#product_published_at')
@@ -57,4 +54,3 @@ class @Product
     @published_at.blur( =>
       @radio_unpublished.click() unless @published_at.val()
     )
-

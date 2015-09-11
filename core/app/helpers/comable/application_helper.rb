@@ -5,7 +5,9 @@ module Comable
     end
 
     def current_comable_user
-      resource = current_admin_user || current_user || Comable::User.new
+      resource = current_admin_user if defined? Comable::Backend
+      resource ||= current_user if defined? Comable::Frontend
+      resource ||= Comable::User.new
       resource.with_cookies(cookies)
     end
 
@@ -65,24 +67,33 @@ module Comable
 
     private
 
-    def after_sign_in_path_for(_resource)
-      session.delete(:user_return_to) || comable.root_path
+    def comable_root_path
+      case resource_name
+      when :admin_user
+        comable.admin_root_path
+      else
+        defined?(Comable::Frontend) ? comable.root_path : '/'
+      end
     end
 
-    def after_sign_out_path_for(_resource)
-      session.delete(:user_return_to) || comable.root_path
+    def after_sign_in_path_for(_resource_or_scope)
+      session.delete(:user_return_to) || comable_root_path
+    end
+
+    def after_sign_out_path_for(_scope)
+      session.delete(:user_return_to) || comable_root_path
     end
 
     def after_sign_up_path_for(resource)
-      signed_in_root_path(resource) || comable.root_path
+      signed_in_root_path(resource) || comable_root_path
     end
 
     def after_update_path_for(resource)
-      signed_in_root_path(resource) || comable.root_path
+      signed_in_root_path(resource) || comable_root_path
     end
 
     def after_resetting_password_path_for(resource)
-      signed_in_root_path(resource) || comable.root_path
+      signed_in_root_path(resource) || comable_root_path
     end
   end
 end

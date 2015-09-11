@@ -5,15 +5,7 @@ module Comable
   #
   module SkuChoice
     def name_with_sku
-      return name unless sku?
-      name + "(#{sku_name})"
-    end
-
-    def sku_name
-      return unless sku?
-      sku_name = sku_h_choice_name
-      sku_name += '/' + sku_v_choice_name if sku_v_choice_name.present?
-      sku_name
+      name
     end
   end
 end

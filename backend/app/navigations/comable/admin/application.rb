@@ -47,7 +47,7 @@ AwesomeAdminLayout.define(only: Comable::Admin::ApplicationController) do |contr
     brand Comable.t('admin.nav.product')
 
     item Comable.t('admin.nav.products.list') do
-      link comable.admin_products_path(hoge: 112)
+      link comable.admin_products_path
     end
 
     item Comable.t('admin.nav.stock') do

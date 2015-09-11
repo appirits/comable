@@ -4,7 +4,7 @@ describe Comable::Admin::StocksController do
   let(:comable) { controller.comable }
 
   let(:valid_attributes) { attributes_for(:stock) }
-  let(:invalid_attributes) { valid_attributes.merge(code: 'x' * 1024) }
+  let(:invalid_attributes) { valid_attributes.merge(quantity: -100) }
 
   let(:product) { create(:product) }
 
@@ -75,7 +75,7 @@ describe Comable::Admin::StocksController do
     let!(:stock) { create(:stock, product: product) }
 
     describe 'with valid params' do
-      let(:new_attributes) { { code: "new_#{stock.code}" } }
+      let(:new_attributes) { { quantity: stock.quantity + 100 } }
 
       it 'updates the requested stock' do
         put :update, id: stock.to_param, stock: new_attributes
@@ -124,8 +124,8 @@ describe Comable::Admin::StocksController do
     it 'exports the csv file' do
       stock = create(:stock, product: product)
       get :export, format: :csv
-      expect(response.body).to include(product.code)
-      expect(response.body).to include(stock.code)
+      expect(response.body).to include(product.id.to_s)
+      expect(response.body).to include(stock.id.to_s)
       expect(response.body).to include(stock.quantity.to_s)
     end
 
