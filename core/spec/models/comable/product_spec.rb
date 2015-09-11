@@ -24,6 +24,18 @@ describe Comable::Product do
     expect { described_class.where(id: [1, 2]) }.not_to raise_error
   end
 
+  describe '.published' do
+    it 'includes published products' do
+      product = create(:product, published_at: Time.now)
+      expect(described_class.published).to include(product)
+    end
+
+    it 'excludes unpublished products' do
+      product = create(:product, published_at: nil)
+      expect(described_class.published).not_to include(product)
+    end
+  end
+
   describe 'published?' do
     subject { build(:product) }
     it 'should be false when published_at is nil' do
