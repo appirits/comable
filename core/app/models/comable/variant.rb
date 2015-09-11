@@ -14,15 +14,7 @@ module Comable
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
-    before_save :set_option_values_from_names, if: :product
-
     ransack_options attribute_select: { associations: [:product, :stock, :option_values] }, ransackable_attributes: { except: :product_id }
-
-    attr_writer :names
-
-    def names
-      @names ? @names : option_values.map(&:name)
-    end
 
     def quantity
       stock.try(:quantity) || build_stock.quantity
@@ -49,19 +41,6 @@ module Comable
         option_type = Comable::OptionType.where(name: hash[:name]).first_or_initialize(&:save!)
         Comable::OptionValue.where(name: hash[:value], option_type: option_type).first_or_initialize(&:save!)
       end
-    end
-
-    private
-
-    def set_option_values_from_names
-      return unless @names
-      attributes = []
-      @names.split(',').each.with_index do |name, index|
-        option_type = product.option_types[index]
-        attributes << { option_type: option_type, name: name }
-      end
-      self.names = nil
-      self.option_values_attributes = attributes
     end
   end
 end
