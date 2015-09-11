@@ -1,6 +1,6 @@
 class CreateComableOptionTypes < ActiveRecord::Migration
   def change
-    create_table :comable_option_types, id: false do |t|
+    create_table :comable_option_types do |t|
       t.string :name, null: false
       t.timestamps null: false
     end
