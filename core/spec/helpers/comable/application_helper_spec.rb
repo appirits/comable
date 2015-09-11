@@ -54,4 +54,31 @@ describe Comable::ApplicationHelper do
       expect(subject.current_navigations).to eq(Comable::Navigation.all)
     end
   end
+
+  describe '#comable_root_path' do
+    subject { helper.clone }
+
+    before { def subject.resource_name; end }
+
+    it 'returns the root path for the customer in main_app' do
+      frontend = Comable::Frontend
+      begin
+        Comable.send(:remove_const, :Frontend)
+        allow(subject).to receive(:resource_name).and_return(:user)
+        expect(subject.send(:comable_root_path)).to eq('/')
+      ensure
+        Comable.const_set(:Frontend, frontend)
+      end
+    end
+
+    it 'returns the root path for the customer in frontend' do
+      allow(subject).to receive(:resource_name).and_return(:user)
+      expect(subject.send(:comable_root_path)).to eq(comable.root_path)
+    end
+
+    it 'returns the root path for the admin user in backend' do
+      allow(subject).to receive(:resource_name).and_return(:admin_user)
+      expect(subject.send(:comable_root_path)).to eq(comable.admin_root_path)
+    end
+  end
 end
