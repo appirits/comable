@@ -6,6 +6,18 @@ describe Comable::Product do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_length_of(:name).is_at_most(255) }
 
+  describe '.published' do
+    it 'includes published products' do
+      product = create(:product, published_at: Time.now)
+      expect(described_class.published).to include(product)
+    end
+
+    it 'excludes unpublished products' do
+      product = create(:product, published_at: nil)
+      expect(described_class.published).not_to include(product)
+    end
+  end
+
   describe '#published?' do
     subject { build(:product) }
 
@@ -15,7 +27,7 @@ describe Comable::Product do
     end
 
     it 'should be false when published_at greater than now' do
-      subject.published_at = Time.now + 1
+      subject.published_at = 1.minute.since
       expect(subject.published?).to be false
     end
 
@@ -25,7 +37,7 @@ describe Comable::Product do
     end
 
     it 'should be true when published_at less than now' do
-      subject.published_at = Time.now - 1
+      subject.published_at = 1.minute.ago
       expect(subject.published?).to be true
     end
   end

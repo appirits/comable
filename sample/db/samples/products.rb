@@ -29,5 +29,5 @@ next_id = (Comable::Product.maximum(:id) || 0).next
 
 products_attributes.each.with_index(next_id) do |attributes, index|
   code = format('%05d', index)
-  Comable::Product.create!(attributes.merge(code: code))
+  Comable::Product.create!(attributes.merge(code: code, published_at: Date.today))
 end

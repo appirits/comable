@@ -14,6 +14,8 @@ module Comable
     accepts_nested_attributes_for :variants, allow_destroy: true
     accepts_nested_attributes_for :images, allow_destroy: true
 
+    scope :published, -> (published_at = nil) { where('published_at <= ?', published_at || Time.now) }
+
     validates :name, presence: true, length: { maximum: 255 }
 
     liquid_methods :id, :code, :name, :price, :images, :image_url
