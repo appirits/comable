@@ -57,7 +57,7 @@ module Comable
 
     def find_variant
       Comable::Variant.joins(:option_values).where(
-        Comable::OptionValue.table_name => { name: params[:option_value_names] }
+        Comable::OptionValue.table_name => { id: params[:option_values] }
       ).first
     end
 
