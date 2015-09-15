@@ -130,7 +130,7 @@ describe Comable::Admin::ThemesController do
   describe 'GET show_file' do
     let!(:theme) { create(:theme) }
     let(:path) { 'path/to/file' }
-    let(:fullpath) { File.join('themes', theme.name, path) }
+    let(:fullpath) { theme.dir + path }
 
     before { allow(File).to receive(:exist?).with(fullpath).and_return(true) }
     before { allow(File).to receive(:read).with(fullpath).and_return('sample code!') }
@@ -216,7 +216,7 @@ describe Comable::Admin::ThemesController do
       theme = create(:theme)
       code = 'sample code!'
       path = 'path/to/file'
-      fullpath = File.join('themes', theme.name, path)
+      fullpath = theme.dir + path
 
       subject.instance_variable_set(:@theme, theme)
       allow(subject).to receive(:params).and_return(path: path, code: code)

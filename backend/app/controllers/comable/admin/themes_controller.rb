@@ -42,7 +42,7 @@ module Comable
 
       def destroy
         @theme.destroy
-        FileUtils.rm_rf(theme_dir)
+        FileUtils.rm_rf(@theme.dir)
         redirect_to comable.admin_themes_path, notice: Comable.t('successful')
       end
 
@@ -78,13 +78,9 @@ module Comable
         File.write(filepath, params[:code])
       end
 
-      def theme_dir
-        File.join('themes', @theme.name)
-      end
-
       def filepath
         return unless params[:path]
-        File.join(theme_dir, params[:path])
+        @theme.dir + params[:path]
       end
 
       def theme_params
