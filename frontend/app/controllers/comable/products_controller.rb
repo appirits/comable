@@ -7,7 +7,7 @@ module Comable
     end
 
     def show
-      @product = Comable::Product.published.find(params[:id])
+      @product = preview? ? Comable::Product.find(params[:id]) : Comable::Product.published.find(params[:id])
     end
 
     private
@@ -20,6 +20,11 @@ module Comable
       else
         @products = Comable::Product.published.search(params[:q])
       end
+    end
+
+    def preview?
+      session[Comable::Product::PREVIEW_SESSION_KEY] ||= {}
+      session[Comable::Product::PREVIEW_SESSION_KEY][params[:id]]
     end
   end
 end

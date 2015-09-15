@@ -24,6 +24,8 @@ module Comable
 
     linkable_columns_keys use_index: true
 
+    PREVIEW_SESSION_KEY = :preview_product
+
     # Add conditions for the images association.
     # Override method of the images association to support Rails 3.x.
     def images
