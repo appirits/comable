@@ -11,6 +11,7 @@ module Comable
       end
 
       def show
+        edit
         render :edit
       end
 
@@ -29,6 +30,7 @@ module Comable
       end
 
       def edit
+        set_preview_session
       end
 
       def update
@@ -77,6 +79,11 @@ module Comable
           variants_attributes: [:id, :price, :sku, :options, :quantity, :_destroy],
           option_types_attributes: [:id, :name, { values: [] }]
         )
+      end
+
+      def set_preview_session
+        session[Comable::Product::PREVIEW_SESSION_KEY] ||= {}
+        session[Comable::Product::PREVIEW_SESSION_KEY][@product.to_param] = true
       end
     end
   end

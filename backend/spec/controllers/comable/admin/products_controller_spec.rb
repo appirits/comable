@@ -35,6 +35,12 @@ describe Comable::Admin::ProductsController do
       get :edit, id: product.to_param
       expect(assigns(:product)).to eq(product)
     end
+
+    it 'create preview session' do
+      product = create(:product)
+      get :edit, id: product.to_param
+      expect(session[Comable::Product::PREVIEW_SESSION_KEY][product.to_param]).to eq(true)
+    end
   end
 
   describe 'POST create' do
