@@ -203,6 +203,19 @@ describe Comable::Admin::ThemesController do
     end
   end
 
+  describe '#filepath' do
+    it 'returns Pathname when params[:path] is exists' do
+      subject.instance_variable_set(:@theme, build(:theme))
+      allow(subject).to receive(:params).and_return(path: 'path/to/file')
+      expect(subject.send(:filepath)).to be_a(Pathname)
+    end
+
+    it 'returns nil when params[:path] is not exists' do
+      allow(subject).to receive(:params).and_return(path: nil)
+      expect(subject.send(:filepath)).to eq(nil)
+    end
+  end
+
   describe '#save_file' do
     it 'validates syntax of the liquid code' do
       allow(subject).to receive(:params).and_return(code: <<-CODE)
