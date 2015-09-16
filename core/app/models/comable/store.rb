@@ -11,8 +11,6 @@ module Comable
 
     liquid_methods :name, :meta_keywords, :meta_description, :email
 
-    delegate :name, to: :theme, prefix: true, allow_nil: true
-
     class << self
       def instance
         first || new(name: default_name)

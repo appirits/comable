@@ -42,7 +42,7 @@ module Comable
 
       def destroy
         @theme.destroy
-        FileUtils.rm_rf(theme_dir)
+        @theme.dir.rmtree if @theme.dir.exist?
         redirect_to comable.admin_themes_path, notice: Comable.t('successful')
       end
 
@@ -51,7 +51,7 @@ module Comable
       end
 
       def show_file
-        @code = File.read(filepath) if filepath && File.exist?(filepath)
+        @code = filepath.read if filepath.try(:file?)
       end
 
       def update_file
@@ -74,17 +74,13 @@ module Comable
         # Validate the Liquid syntax
         Liquid::Template.parse(params[:code])
 
-        FileUtils.mkdir_p(File.dirname(filepath)) unless File.exist?(filepath)
-        File.write(filepath, params[:code])
-      end
-
-      def theme_dir
-        File.join('themes', @theme.name)
+        filepath.dirname.mkpath unless filepath.dirname.exist?
+        filepath.write(params[:code])
       end
 
       def filepath
         return unless params[:path]
-        File.join(theme_dir, params[:path])
+        @theme.dir + params[:path]
       end
 
       def theme_params

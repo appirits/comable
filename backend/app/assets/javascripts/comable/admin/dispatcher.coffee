@@ -24,3 +24,8 @@ class Dispatcher
         new Variant
       when 'navigations:new', 'navigations:show', 'navigations:edit', 'navigations:update', 'navigations:create'
         new Navigation
+      when 'themes:tree'
+        new ThemeTree
+      when 'themes:show_file'
+        new ThemeTree
+        new ThemeEditor

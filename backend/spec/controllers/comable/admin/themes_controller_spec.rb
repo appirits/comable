@@ -130,10 +130,11 @@ describe Comable::Admin::ThemesController do
   describe 'GET show_file' do
     let!(:theme) { create(:theme) }
     let(:path) { 'path/to/file' }
-    let(:fullpath) { File.join('themes', theme.name, path) }
+    let(:filepath) { theme.dir + path }
 
-    before { allow(File).to receive(:exist?).with(fullpath).and_return(true) }
-    before { allow(File).to receive(:read).with(fullpath).and_return('sample code!') }
+    before { allow(subject).to receive(:filepath).and_return(filepath) }
+    before { allow(filepath).to receive(:file?).and_return(true) }
+    before { allow(filepath).to receive(:read).and_return('sample code!') }
 
     it 'assigns the source code as @code' do
       get :show_file, id: theme.to_param, path: path
@@ -202,6 +203,19 @@ describe Comable::Admin::ThemesController do
     end
   end
 
+  describe '#filepath' do
+    it 'returns Pathname when params[:path] is exists' do
+      subject.instance_variable_set(:@theme, build(:theme))
+      allow(subject).to receive(:params).and_return(path: 'path/to/file')
+      expect(subject.send(:filepath)).to be_a(Pathname)
+    end
+
+    it 'returns nil when params[:path] is not exists' do
+      allow(subject).to receive(:params).and_return(path: nil)
+      expect(subject.send(:filepath)).to eq(nil)
+    end
+  end
+
   describe '#save_file' do
     it 'validates syntax of the liquid code' do
       allow(subject).to receive(:params).and_return(code: <<-CODE)
@@ -216,14 +230,17 @@ describe Comable::Admin::ThemesController do
       theme = create(:theme)
       code = 'sample code!'
       path = 'path/to/file'
-      fullpath = File.join('themes', theme.name, path)
+      filepath = theme.dir + path
+      dirname = filepath.dirname
 
       subject.instance_variable_set(:@theme, theme)
-      allow(subject).to receive(:params).and_return(path: path, code: code)
+      allow(subject).to receive(:params).and_return(code: code)
+      allow(subject).to receive(:filepath).and_return(filepath)
+      allow(filepath).to receive(:dirname).and_return(dirname)
 
-      expect(FileUtils).to receive(:mkdir_p).with(File.dirname(fullpath)).and_return(true)
-      expect(File).to receive(:exist?).with(fullpath).and_return(false)
-      expect(File).to receive(:write).with(fullpath, code).and_return(true)
+      expect(filepath.dirname).to receive(:exist?).and_return(false)
+      expect(filepath.dirname).to receive(:mkpath).and_return(true)
+      expect(filepath).to receive(:write).with(code).and_return(true)
 
       subject.send(:save_file)
     end
