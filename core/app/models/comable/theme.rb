@@ -10,6 +10,16 @@ module Comable
     validates :homepage, length: { maximum: 255 }
     validates :author, length: { maximum: 255 }
 
+    class << self
+      def dir
+        Rails.root.join('themes')
+      end
+    end
+
+    def dir
+      self.class.dir + name
+    end
+
     def default_version
       '0.1.0'
     end

@@ -13,6 +13,20 @@ describe Comable::Theme, type: :model do
   it { is_expected.to validate_length_of(:homepage).is_at_most(255) }
   it { is_expected.to validate_length_of(:author).is_at_most(255) }
 
+  describe '.dir' do
+    it 'returns the dirctory path for themes' do
+      expect(described_class.dir).to eq(Rails.root.join('themes'))
+    end
+  end
+
+  describe '#dir' do
+    it 'returns the dirctory path of the theme' do
+      name = 'example'
+      subject.name = name
+      expect(subject.dir).to eq(Rails.root.join('themes', name))
+    end
+  end
+
   describe '#default_version' do
     it 'returns the string' do
       expect(subject.default_version).to be_a(String)
