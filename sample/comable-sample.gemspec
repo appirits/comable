@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'comable-core', version
 
-  s.add_dependency 'ffaker', '~> 2.0.0'
+  s.add_dependency 'ffaker', '~> 2.0'
 end
