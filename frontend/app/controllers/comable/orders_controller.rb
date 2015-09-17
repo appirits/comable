@@ -32,7 +32,7 @@ module Comable
 
       flash.now[:notice] = Comable.t('orders.success')
       send_order_complete_mail
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid, StateMachine::InvalidTransition
       flash[:alert] = @order.errors.full_messages.join
       redirect_to next_order_path
     end

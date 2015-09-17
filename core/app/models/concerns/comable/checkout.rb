@@ -37,8 +37,8 @@ module Comable
         end
 
         before_transition to: :completed, do: :complete!
-        after_transition to: :canceled, do: :restock!
-        after_transition to: :resumed, do: :unstock!
+        after_transition to: :canceled, do: [:restock!, :payment_cancel!]
+        after_transition to: :resumed, do: [:unstock!, :payment_resume!]
       end
     end
 

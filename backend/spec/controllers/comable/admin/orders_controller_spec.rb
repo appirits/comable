@@ -108,6 +108,24 @@ describe Comable::Admin::OrdersController do
       post :cancel, id: order.to_param
       expect(response).to redirect_to(:back)
     end
+
+    context 'with payment error' do
+      before do
+        order.payment = build(:payment)
+        allow(order.payment).to receive(:provider_cancel!).and_raise(StandardError)
+      end
+
+      it 'keep the state of requested order' do
+        post :cancel, id: order.to_param
+        order.reload
+        expect(order).not_to be_canceled
+      end
+
+      it 'redirects back' do
+        post :cancel, id: order.to_param
+        expect(response).to redirect_to(:back)
+      end
+    end
   end
 
   describe 'POST resume' do
@@ -142,7 +160,7 @@ describe Comable::Admin::OrdersController do
         stock.update_attributes(quantity: 0)
       end
 
-      it 'keep the requested order cancel' do
+      it 'keep the state of requested order' do
         post :resume, id: order.to_param
         order.reload
         expect(order).to be_canceled
