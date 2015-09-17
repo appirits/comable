@@ -88,7 +88,13 @@ module Comable
       end
 
       def redirect_to_back_with_alert(exception)
-        redirect_to :back, alert: exception.message
+        case exception
+        when StateMachine::InvalidTransition
+          flash[:alert] = [exception.object.model_name.human, exception.machine.errors_for(exception.object)].join(' ')
+        else
+          flash[:alert] = exception.message
+        end
+        redirect_to :back
       end
     end
   end

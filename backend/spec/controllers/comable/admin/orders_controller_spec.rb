@@ -125,6 +125,12 @@ describe Comable::Admin::OrdersController do
         post :cancel, id: order.to_param
         expect(response).to redirect_to(:back)
       end
+
+      it 'assigns the message as flash[:alert]' do
+        post :cancel, id: order.to_param
+        order.reload
+        expect(flash[:alert]).to include(Comable::Payment.model_name.human)
+      end
     end
   end
 
