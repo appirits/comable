@@ -188,8 +188,6 @@ describe Comable::Admin::OrdersController do
   describe 'POST cancel_shipment' do
     let(:order) { create(:order, :completed) }
 
-    before { order.payment.next_state! }
-
     it 'cancel the shipment of the requested order' do
       post :cancel_payment, id: order.to_param
       order.reload
@@ -205,7 +203,6 @@ describe Comable::Admin::OrdersController do
   describe 'POST resume_shipment' do
     let(:order) { create(:order, :completed) }
 
-    before { order.payment.next_state! }
     before { order.payment.cancel! }
 
     it 'resume the payment of the requested order' do
