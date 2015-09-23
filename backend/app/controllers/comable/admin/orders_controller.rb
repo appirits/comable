@@ -88,8 +88,7 @@ module Comable
       end
 
       def redirect_to_back_with_alert(exception)
-        flash[:alert] = exception.message
-        redirect_to :back
+        redirect_to :back, alert: exception.message
       end
     end
   end

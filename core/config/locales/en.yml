@@ -269,9 +269,6 @@ en:
             completed: 'Completed'
             canceled: 'Canceled'
             resumed: 'Resumed'
-          events:
-            cancel: 'Cancel'
-            resume: 'Resume'
       comable/shipment:
         state:
           states:
@@ -280,9 +277,6 @@ en:
             completed: 'Completed'
             canceled: 'Canceled'
             resumed: 'Resumed'
-          events:
-            cancel: 'Cancel'
-            resume: 'Resume'
 
     models:
       comable/order: 'Orders'
@@ -467,25 +461,6 @@ en:
         id: 'ID'
         name: 'Name'
         <<: *timestamps
-
-    errors:
-      state: &errors_state
-        invalid: 'is unknown'
-        invalid_event: 'cannot run the transition when %{state}'
-        invalid_transition: 'cannot run the transition via %{event}'
-      models:
-        comable/order:
-          attributes:
-            state:
-              <<: *errors_state
-        comable/shipment:
-          attributes:
-            state:
-              <<: *errors_state
-        comable/payment:
-          attributes:
-            state:
-              <<: *errors_state
 
   enumerize:
     comable/user:

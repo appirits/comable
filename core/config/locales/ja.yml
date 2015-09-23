@@ -269,9 +269,6 @@ ja:
             completed: '決済完了'
             canceled: 'キャンセル'
             resumed: '再開'
-          events:
-            cancel: 'キャンセル'
-            resume: '再開'
       comable/shipment:
         state:
           states:
@@ -280,9 +277,6 @@ ja:
             completed: '発送完了'
             canceled: 'キャンセル'
             resumed: '再開'
-          events:
-            cancel: 'キャンセル'
-            resume: '再開'
 
     models:
       comable/order: ご注文
@@ -467,25 +461,6 @@ ja:
         id: 'ID'
         name: '名称'
         <<: *timestamps
-
-    errors:
-      state: &errors_state
-        invalid: 'エラー'
-        invalid_event: ' "%{state}" への状態遷移に失敗しました'
-        invalid_transition: 'の "%{event}" に失敗しました'
-      models:
-        comable/order:
-          attributes:
-            state:
-              <<: *errors_state
-        comable/shipment:
-          attributes:
-            state:
-              <<: *errors_state
-        comable/payment:
-          attributes:
-            state:
-              <<: *errors_state
 
   enumerize:
     comable/user:
