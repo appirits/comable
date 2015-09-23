@@ -111,8 +111,8 @@ describe Comable::Admin::OrdersController do
 
     context 'with payment error' do
       before do
-        order.payment = build(:payment)
-        allow(order.payment).to receive(:provider_cancel!).and_raise(StandardError)
+        allow(Comable::Order).to receive(:find).and_return(order)
+        allow(order).to receive(:payment_cancel!).and_raise(StandardError)
       end
 
       it 'keep the state of requested order' do
@@ -181,6 +181,29 @@ describe Comable::Admin::OrdersController do
         post :resume, id: order.to_param
         order.reload
         expect(flash[:alert]).to include(Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku))
+      end
+    end
+
+    context 'with payment error' do
+      before do
+        allow(order.payment).to receive(:resume!).and_raise(StandardError)
+      end
+
+      it 'keep the state of requested order' do
+        post :resume, id: order.to_param
+        order.reload
+        expect(order).not_to be_resumed
+      end
+
+      it 'redirects back' do
+        post :resume, id: order.to_param
+        expect(response).to redirect_to(:back)
+      end
+
+      it 'assigns the message as flash[:alert]' do
+        post :resume, id: order.to_param
+        order.reload
+        expect(flash[:alert]).to include(Comable::Payment.model_name.human)
       end
     end
   end
