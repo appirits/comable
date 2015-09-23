@@ -112,7 +112,7 @@ describe Comable::Admin::OrdersController do
     context 'with payment error' do
       before do
         allow(Comable::Order).to receive(:find).and_return(order)
-        allow(order).to receive(:payment_cancel!).and_raise(Comable::PaymentProvider::Error)
+        allow(order).to receive(:payment_cancel!).and_raise(Comable::PaymentError)
       end
 
       it 'keep the state of requested order' do

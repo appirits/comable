@@ -8,7 +8,7 @@ module Comable
       load_and_authorize_resource class: Comable::Order.name, except: :index
 
       rescue_from ActiveRecord::RecordInvalid, with: :redirect_to_back_with_alert
-      rescue_from Comable::PaymentProvider::Error, with: :redirect_to_back_with_alert
+      rescue_from Comable::PaymentError, with: :redirect_to_back_with_alert
 
       def index
         @q = Comable::Order.complete.ransack(params[:q])
