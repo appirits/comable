@@ -8,7 +8,7 @@ module Comable
       load_and_authorize_resource class: Comable::Order.name, except: :index
 
       rescue_from ActiveRecord::RecordInvalid, with: :redirect_to_back_with_alert
-      rescue_from StateMachine::InvalidTransition, with: :redirect_to_back_with_alert
+      rescue_from Comable::PaymentProvider::Error, with: :redirect_to_back_with_alert
 
       def index
         @q = Comable::Order.complete.ransack(params[:q])
@@ -88,12 +88,7 @@ module Comable
       end
 
       def redirect_to_back_with_alert(exception)
-        case exception
-        when StateMachine::InvalidTransition
-          flash[:alert] = [exception.object.model_name.human, exception.machine.errors_for(exception.object)].join(' ')
-        else
-          flash[:alert] = exception.message
-        end
+        flash[:alert] = exception.message
         redirect_to :back
       end
     end
