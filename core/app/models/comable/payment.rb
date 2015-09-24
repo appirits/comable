@@ -48,7 +48,7 @@ module Comable
       before_transition to: :ready, do: -> (s) { s.provider_authorize! }
       before_transition to: :completed, do: -> (s) { s.complete! }
       before_transition to: :canceled, do: -> (s) { s.provider_cancel! }
-      before_transition to: :canceled, do: -> (s) { s.provider_resume! }
+      before_transition to: :resumed, do: -> (s) { s.provider_resume! }
     end
 
     class << self

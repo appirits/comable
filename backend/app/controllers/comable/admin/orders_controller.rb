@@ -7,6 +7,9 @@ module Comable
 
       load_and_authorize_resource class: Comable::Order.name, except: :index
 
+      rescue_from ActiveRecord::RecordInvalid, with: :redirect_to_back_with_alert
+      rescue_from Comable::PaymentError, with: :redirect_to_back_with_alert
+
       def index
         @q = Comable::Order.complete.ransack(params[:q])
         @orders = @q.result.page(params[:page]).per(15).recent.accessible_by(current_ability)
@@ -38,50 +41,36 @@ module Comable
       def cancel
         @order.cancel!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       def resume
         @order.resume!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       def cancel_payment
         @order.payment.cancel!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       def resume_payment
         @order.payment.resume!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       def ship
         @order.shipment.ship!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       def cancel_shipment
         @order.shipment.cancel!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       def resume_shipment
         @order.shipment.resume!
         redirect_to :back, notice: Comable.t('successful')
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to :back, alert: e.message
       end
 
       private
@@ -96,6 +85,10 @@ module Comable
           ship_address_attributes: permitted_address_attributes,
           order_items_attributes: [:id, :name, :code, :price, :quantity]
         )
+      end
+
+      def redirect_to_back_with_alert(exception)
+        redirect_to :back, alert: exception.message
       end
     end
   end
