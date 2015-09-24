@@ -7,5 +7,9 @@ module Comable
     accepts_nested_attributes_for :address
 
     validates :name, presence: true, length: { maximum: 255 }
+
+    def as_json(options = {})
+      { id: id, text: name }
+    end
   end
 end

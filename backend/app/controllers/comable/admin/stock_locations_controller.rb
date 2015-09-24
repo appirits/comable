@@ -5,11 +5,18 @@ module Comable
     class StockLocationsController < Comable::Admin::ApplicationController
       include Comable::PermittedAttributes
 
-      load_and_authorize_resource class: Comable::StockLocation.name
+      load_and_authorize_resource class: Comable::StockLocation.name, except: :index
 
       before_filter :build_address, only: [:show, :new, :edit]
 
       def index
+        @q = Comable::StockLocation.ransack(params[:q])
+        @stock_locations = @q.result.page(params[:page]).accessible_by(current_ability)
+
+        respond_to do |format|
+          format.html
+          format.json { render json: @stock_locations }
+        end
       end
 
       def show

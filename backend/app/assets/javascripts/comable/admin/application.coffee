@@ -14,6 +14,7 @@
 #= require ace/mode-liquid
 #= require moment
 #= require bootstrap-datetimepicker
+#= require select2
 #= require comable/admin/dispatcher
 #= require_tree .
 #= require_self
@@ -46,6 +47,22 @@ add_beforeunload_event = ->
   $form.submit(remove_beforeunload_function)
   $(document).on('page:change', remove_beforeunload_function)
 
+# Based on http://gistflow.com/posts/428-autocomplete-with-rails-and-select2
+initialize_select2 = ->
+  $('.select2').each( ->
+    $select = $(this)
+    options = { theme: 'bootstrap' }
+    if $select.hasClass('ajax')
+      options.ajax = {
+        url: $select.data('source')
+        dataType: 'json'
+        cache: true
+        data: (params) -> { q: { name_cont: params.term }, page: params.page }
+        processResults: (data, page) -> { results: data }
+      }
+    $select.select2(options)
+  )
+
 window.add_fields = (_this, association, content) ->
   new_id = new Date().getTime()
   regexp = new RegExp('new_' + association, 'g')
@@ -57,6 +74,7 @@ window.add_fields = (_this, association, content) ->
 
 $(document).ready(->
   add_beforeunload_event()
+  initialize_select2()
 
   $('.btn-file :file').change(->
     $(this).closest('form').submit()

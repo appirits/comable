@@ -21,8 +21,9 @@ require 'jquery-turbolinks'
 require 'awesome_admin_layout'
 require 'ace-rails-ap'
 
-require 'bootstrap3-datetimepicker-rails'
 require 'momentjs-rails'
+require 'bootstrap3-datetimepicker-rails'
+require 'select2-rails'
 
 module Comable
   module Backend
