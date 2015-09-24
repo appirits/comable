@@ -8,11 +8,11 @@ class SetDefaultStockLocation < ActiveRecord::Migration
   private
 
   def set_default_stock_location
-    set_default_stock_location_on(Comable::Shipment)
-    set_default_stock_location_on(Comable::Stock)
+    default_stock_location_on(Comable::Shipment)
+    default_stock_location_on(Comable::Stock)
   end
 
-  def set_default_stock_location_on(model)
+  def default_stock_location_on(model)
     records = model.where(stock_location_id: nil)
     return unless records.exists?
     stock_location = find_or_create_default_stock_location
