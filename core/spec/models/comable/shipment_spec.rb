@@ -6,6 +6,7 @@ RSpec.describe Comable::Shipment do
 
   it { is_expected.to belong_to(:order).class_name(Comable::Order.name).inverse_of(:shipment) }
   it { is_expected.to belong_to(:shipment_method).class_name(Comable::ShipmentMethod.name) }
+  it { is_expected.to belong_to(:stock_location).class_name(Comable::StockLocation.name) }
 
   it { is_expected.to validate_presence_of(:order) }
   it { is_expected.to validate_presence_of(:shipment_method) }

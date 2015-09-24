@@ -11,6 +11,7 @@ module Comable
     include Comable::Stock::Csvable
 
     belongs_to :variant, class_name: Comable::Variant.name, inverse_of: :stock
+    belongs_to :stock_location, class_name: Comable::StockLocation.name
 
     #
     # @!group Scope
