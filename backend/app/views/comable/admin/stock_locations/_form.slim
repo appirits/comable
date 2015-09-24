@@ -1,0 +1,37 @@
+= error_messages_for @stock_location
+
+= form_for [comable, :admin, @stock_location] do |f|
+  .hidden
+    = f.submit
+
+  fieldset
+    .col-md-3
+      legend
+        = Comable.t('admin.general')
+
+    .col-md-9
+      .form-group
+        = f.label :name
+        = f.text_field :name
+
+      .form-group
+        .checkbox
+          = f.label :active do
+            = f.check_box :active
+            = f.object.class.human_attribute_name(:active)
+
+      .form-group
+        .checkbox
+          = f.label :default do
+            = f.check_box :default
+            = f.object.class.human_attribute_name(:default)
+
+  fieldset
+    .col-md-3
+      legend
+        = f.object.class.human_attribute_name(:address)
+      .help-block
+
+    .col-md-9
+      = f.fields_for :address do |ff|
+        = render 'comable/admin/shared/address_form', f: ff

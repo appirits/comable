@@ -1,0 +1,28 @@
+.comable-page
+  .comable-page-heading
+    ul.pull-right.list-inline
+      li
+        = link_to Comable.t('admin.actions.new'), comable.new_admin_stock_location_path, class: 'btn btn-default'
+
+    h1.page-header
+      = Comable.t('admin.nav.stock_location')
+      small<
+        | #{@stock_locations.size} #{Comable.t('admin.results')}
+
+  .comable-page-body
+    - if @stock_locations.empty?
+      = Comable.t('admin.not_found')
+    - else
+      table.table.table-striped
+        thead
+          th
+            = @stock_locations.klass.human_attribute_name(:name)
+        tbody
+          - @stock_locations.each do |stock_location|
+            tr
+              td
+                = link_to stock_location.name, comable.admin_stock_location_path(stock_location)
+                - unless stock_location.active
+                  span.fa.fa-eye-slash.text-muted<
+                - if stock_location.default
+                  span.fa.fa-check.text-primary<

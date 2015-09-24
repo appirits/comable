@@ -50,30 +50,4 @@
 
             .col-md-9
               = f.fields_for :bill_address do |ff|
-                .form-group
-                  = ff.label :full_name
-                  .row
-                    .col-sm-6
-                      = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
-                    .col-sm-6
-                      = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
-
-                .form-group
-                  = ff.label :zip_code
-                  = ff.text_field :zip_code, max_length: 8
-
-                .form-group
-                  = ff.label :state_name
-                  = ff.text_field :state_name
-
-                .form-group
-                  = ff.label :city
-                  = ff.text_field :city
-
-                .form-group
-                  = ff.label :detail
-                  = ff.text_field :detail
-
-                .form-group
-                  = ff.label :phone_number
-                  = ff.text_field :phone_number, max_length: 18
+                = render 'comable/admin/shared/address_form', f: ff

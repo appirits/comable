@@ -4,6 +4,8 @@ module Comable
     has_many :stocks, class_name: Comable::Stock.name, dependent: :destroy
     belongs_to :address, class_name: Comable::Address.name
 
+    accepts_nested_attributes_for :address
+
     validates :name, presence: true, length: { maximum: 255 }
   end
 end

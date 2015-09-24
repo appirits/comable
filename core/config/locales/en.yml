@@ -186,6 +186,7 @@ en:
         payment_method: 'Payment methods'
         tracker: 'Tracker'
         theme: 'Theme'
+        stock_location: 'Stock locations'
         products:
           detail: 'Product details'
           list: 'Product list'
@@ -461,6 +462,13 @@ en:
       comable/option_value:
         id: 'ID'
         name: 'Name'
+        <<: *timestamps
+      comable/stock_location:
+        id: 'ID'
+        name: 'Name'
+        address: 'Address'
+        active: 'Active'
+        default: 'Default'
         <<: *timestamps
 
   enumerize:
