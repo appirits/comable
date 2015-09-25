@@ -171,6 +171,7 @@ en:
       view: 'View'
       add_variants: 'Add variants'
       size: 'Size'
+      add_stocks: 'Add stocks'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'

@@ -14,8 +14,7 @@ module Comable
 
     liquid_methods :name, :name_with_sku, :code, :quantity, :price, :subtotal_price
 
-    delegate :stock, to: :variant
-    delegate :product, to: :stock
+    delegate :product, to: :variant
     delegate :image_url, to: :product
     delegate :guest_token, to: :order
     delegate :completed?, to: :order, allow_nil: true
@@ -41,7 +40,7 @@ module Comable
 
     # 時価を取得
     def current_price
-      stock.price
+      variant.price
     end
 
     # 時価小計を取得
@@ -76,12 +75,8 @@ module Comable
       variant.option_values.second.try(:name)
     end
 
-    def stock=(stock)
-      if variant
-        variant.stock = stock
-      else
-        build_variant(stock: stock)
-      end
+    def stock
+      variant.stocks.first
     end
 
     #
@@ -120,8 +115,8 @@ module Comable
 
     def current_attributes
       {
-        name: stock.name,
-        price: stock.price,
+        name: variant.name,
+        price: variant.price,
         sku: variant.sku
       }
     end

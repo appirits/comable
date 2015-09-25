@@ -1,20 +1,23 @@
 module Comable
   class Variant < ActiveRecord::Base
     include Comable::Ransackable
+    include Comable::Variant::Quantifier
 
     belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants
-    has_one :stock, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy, autosave: true
+    has_many :stocks, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy
 
     has_and_belongs_to_many :option_values, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values
 
+    accepts_nested_attributes_for :stocks, allow_destroy: true
     accepts_nested_attributes_for :option_values, allow_destroy: true
-    accepts_nested_attributes_for :stock
 
     validates :product, presence: { message: Comable.t('admin.is_not_exists') }
     validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :sku, length: { maximum: 255 }
 
-    ransack_options attribute_select: { associations: [:product, :stock, :option_values] }, ransackable_attributes: { except: :product_id }
+    ransack_options attribute_select: { associations: [:product, :stocks, :option_values] }, ransackable_attributes: { except: :product_id }
+
+    alias_method :quantity, :total_quantity
 
     def name
       if options.any?
@@ -24,16 +27,9 @@ module Comable
       end
     end
 
-    def quantity
-      stock.try(:quantity) || build_stock.quantity
-    end
-
     def quantity=(quantity)
-      if stock
-        stock.quantity = quantity
-      else
-        build_stock(quantity: quantity)
-      end
+      fail 'Stocks are already exists!' if stocks.any?
+      stocks.build(quantity: quantity)
     end
 
     def options

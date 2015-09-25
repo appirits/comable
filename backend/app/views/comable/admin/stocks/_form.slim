@@ -20,4 +20,7 @@
 
       .form-group
         = f.label :stock_location_id
-        = f.collection_select :stock_location_id, [@stock.stock_location], :id, :name, {}, class: 'select2 ajax', data: { source: comable.admin_stock_locations_path }
+        = f.collection_select :stock_location_id, [@stock.stock_location].compact, :id, :name, {}, class: 'select2 ajax', data: { source: comable.admin_stock_locations_path }
+
+      .help-block.text-right
+        = link_to Comable.t('admin.remove'), 'javascript: void(0)', class: 'remove-fields'

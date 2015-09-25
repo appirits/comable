@@ -8,6 +8,12 @@ module Comable
 
     validates :name, presence: true, length: { maximum: 255 }
 
+    class << self
+      def default
+        where(default: true).first
+      end
+    end
+
     def as_json(options = {})
       { id: id, text: name }
     end

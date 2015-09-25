@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence(:sku) { |n| format('%07d', n.next) }
     quantity 10
     price 100
-    variant { create(:variant, stock: build(:stock, quantity: quantity), product: build(:product)) }
+    variant { create(:variant, stocks: [build(:stock, quantity: quantity)], product: build(:product)) }
     order { build_stubbed(:order) }
 
     trait :sku do
@@ -12,7 +12,7 @@ FactoryGirl.define do
         product = order_item.variant.try(:product) || build(:product)
         variant = order_item.variant || build(:variant)
         variant.product = product
-        variant.stock = build(:stock, quantity: order_item.quantity) if variant.stock
+        variant.stocks = [build(:stock, quantity: order_item.quantity)] if variant.stocks
         variant.options = [name: 'Color', value: 'Red'] + [name: 'Size', value: 'S']
 
         order_item.variant = variant

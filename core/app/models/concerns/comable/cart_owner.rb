@@ -51,22 +51,19 @@ module Comable
 
     private
 
-    # rubocop:disable Metrics/MethodLength
     def process_cart_item(obj)
       case obj
-      when Comable::Product
+      when Comable::Product, Comable::Variant
+        # TODO: Codinate
         yield obj.stocks.first
       when Comable::Stock
         yield obj
-      when Comable::Variant
-        yield obj.stock
       when Array
         obj.map { |item| yield item }
       else
         fail
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def add_stock_to_cart(stock, quantity)
       cart_item = find_cart_item_by(stock)

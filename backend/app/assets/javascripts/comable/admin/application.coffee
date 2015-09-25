@@ -76,6 +76,10 @@ $(document).ready(->
   add_beforeunload_event()
   initialize_select2()
 
+  $(document).on('click', '.add_fields', ->
+    initialize_select2()
+  )
+
   $('.btn-file :file').change(->
     $(this).closest('form').submit()
   )
