@@ -45,6 +45,20 @@ feature 'Variants', js: true do
     expect(find_option_values(:last)).to include(option_value_m.name)
   end
 
+  pending 'Create a new product without options' do
+    visit comable.new_admin_product_path
+
+    fill_in :product_name, with: build(:product).name
+
+    click_on Comable.t('admin.actions.save')
+
+    expect(page).to have_content Comable.t('successful')
+
+    id = current_url.split('/').last
+    product = Comable::Product.find(id)
+    expect(product.variants.count).to eq(1)
+  end
+
   private
 
   def fill_in_option(offset, name:, values:)
