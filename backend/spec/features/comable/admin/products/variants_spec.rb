@@ -45,7 +45,7 @@ feature 'Variants', js: true do
     expect(find_option_values(:last)).to include(option_value_m.name)
   end
 
-  pending 'Create a new product without options' do
+  scenario 'Create a new product without options' do
     visit comable.new_admin_product_path
 
     fill_in :product_name, with: build(:product).name
