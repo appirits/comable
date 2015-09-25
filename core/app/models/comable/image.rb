@@ -2,7 +2,7 @@ module Comable
   class Image < ActiveRecord::Base
     include Comable::Liquidable
 
-    mount_uploader :file, ImageUploader
+    mount_uploader :file, Comable::ImageUploader
 
     belongs_to :product, class_name: Comable::Product.name
 
