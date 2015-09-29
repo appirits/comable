@@ -66,6 +66,18 @@ describe Comable::Admin::OrdersController do
         expect(response).to render_template(:edit)
       end
     end
+
+    describe 'with valid params for address' do
+      let(:bill_address_attributes) { { family_name: "NEW: #{order.bill_address.family_name}" } }
+      let(:new_attributes) { { bill_address_attributes: bill_address_attributes.merge(id: order.bill_address.to_param) } }
+
+      pending 'updates the address of requested order' do
+        bill_address = order.bill_address
+        put :update, id: order.to_param, order: new_attributes
+        bill_address.reload
+        expect(bill_address).to have_attributes(bill_address_attributes)
+      end
+    end
   end
 
   describe 'GET export' do
