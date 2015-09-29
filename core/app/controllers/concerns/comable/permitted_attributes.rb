@@ -2,6 +2,7 @@ module Comable
   module PermittedAttributes
     def permitted_address_attributes
       [
+        :id,
         :family_name,
         :first_name,
         :zip_code,
