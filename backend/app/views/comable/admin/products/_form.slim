@@ -145,6 +145,22 @@
   fieldset
     .col-md-3
       legend
+        = Comable.t('admin.nav.products.property')
+      .help-block
+
+      .form-group
+        table.table#properties
+          - @product.properties.each do |property|
+            - next if property['property_key'].blank? && property['property_value'].blank?
+            = render 'comable/admin/products/property_fields', key: property['property_key'], value: property['property_value']
+        = f.hidden_field :property
+        = add_property_button_tag Comable.t('admin.nav.products.add_property')
+
+  hr
+
+  fieldset
+    .col-md-3
+      legend
         = Comable.t('admin.nav.products.visibility')
 
     .col-md-9
