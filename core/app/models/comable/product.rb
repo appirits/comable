@@ -101,6 +101,15 @@ module Comable
     def option_types_attributes=(_option_types_attributes)
     end
 
+    def properties
+      parse_property = JSON.parse(property)
+      return [] unless parse_property.is_a? Array
+      return [] unless parse_property.all? { |prop| prop.is_a? Hash }
+      parse_property
+    rescue
+      []
+    end
+
     #
     # Deprecated methods
     #
