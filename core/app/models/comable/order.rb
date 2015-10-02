@@ -23,6 +23,7 @@ module Comable
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
     delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
+    delegate :cancel!, :resume!, to: :payment, allow_nil: true, prefix: true
 
     def complete!
       ActiveRecord::Base.transaction do

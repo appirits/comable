@@ -66,6 +66,18 @@ describe Comable::Admin::OrdersController do
         expect(response).to render_template(:edit)
       end
     end
+
+    describe 'with valid params for address' do
+      let(:bill_address_attributes) { { family_name: "NEW: #{order.bill_address.family_name}" } }
+      let(:new_attributes) { { bill_address_attributes: bill_address_attributes.merge(id: order.bill_address.to_param) } }
+
+      it 'updates the address of requested order' do
+        bill_address = order.bill_address
+        put :update, id: order.to_param, order: new_attributes
+        bill_address.reload
+        expect(bill_address).to have_attributes(bill_address_attributes)
+      end
+    end
   end
 
   describe 'GET export' do
@@ -108,6 +120,24 @@ describe Comable::Admin::OrdersController do
       post :cancel, id: order.to_param
       expect(response).to redirect_to(:back)
     end
+
+    context 'with payment error' do
+      before do
+        allow(Comable::Order).to receive(:find).and_return(order)
+        allow(order).to receive(:payment_cancel!).and_raise(Comable::PaymentError)
+      end
+
+      it 'keep the state of requested order' do
+        post :cancel, id: order.to_param
+        order.reload
+        expect(order).not_to be_canceled
+      end
+
+      it 'redirects back' do
+        post :cancel, id: order.to_param
+        expect(response).to redirect_to(:back)
+      end
+    end
   end
 
   describe 'POST resume' do
@@ -142,7 +172,7 @@ describe Comable::Admin::OrdersController do
         stock.update_attributes(quantity: 0)
       end
 
-      it 'keep the requested order cancel' do
+      it 'keep the state of requested order' do
         post :resume, id: order.to_param
         order.reload
         expect(order).to be_canceled
@@ -164,8 +194,6 @@ describe Comable::Admin::OrdersController do
   describe 'POST cancel_shipment' do
     let(:order) { create(:order, :completed) }
 
-    before { order.payment.next_state! }
-
     it 'cancel the shipment of the requested order' do
       post :cancel_payment, id: order.to_param
       order.reload
@@ -181,7 +209,6 @@ describe Comable::Admin::OrdersController do
   describe 'POST resume_shipment' do
     let(:order) { create(:order, :completed) }
 
-    before { order.payment.next_state! }
     before { order.payment.cancel! }
 
     it 'resume the payment of the requested order' do

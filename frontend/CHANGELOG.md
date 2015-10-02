@@ -1,3 +1,15 @@
+## Comable 0.7.0.beta1 (September 25, 2015) ##
+
+*   Implement Navigations.
+
+*   Implement the visibility of Products.
+
+*   Change the architecture of stocks.
+    Implement Variant, OptionType and OptionValue.
+
+*   Fix the problem that cannot rescue exceptions for Payment.
+
+
 ## Comable 0.6.0 (July 16, 2015) ##
 
 *   Rename this gem: comable_frontend => comable-frontend

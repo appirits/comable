@@ -103,8 +103,9 @@
               th
                 = @product.variants.human_attribute_name(:quantity)
             tbody
-              = f.fields_for :variants do |ff|
-                = render 'comable/admin/shared/variants_fields', f: ff
+              - if @product.persisted?
+                = f.fields_for :variants do |ff|
+                  = render 'comable/admin/shared/variants_fields', f: ff
           = link_to_add_fields nil, f, :variants, class: 'hidden js-add-variant'
 
         - if @product.persisted?

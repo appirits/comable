@@ -88,14 +88,8 @@ module Comable
       stocks.map { |stock| variants.build(stock: stock) }
     end
 
-    def build_option_type
-      Comable::OptionType.new
-    end
-
     def option_types
-      option_types = variants.map { |variant| variant.option_values.map(&:option_type) }.flatten.uniq
-      option_types.singleton_class.send(:define_method, :build, -> { Comable::OptionType.new })
-      option_types
+      variants.map { |variant| variant.option_values.map(&:option_type) }.flatten.uniq
     end
 
     def option_types_attributes=(_option_types_attributes)

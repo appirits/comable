@@ -18,6 +18,7 @@ require 'comable/core/engine'
 require 'comable/payment_provider'
 require 'comable/state_machine_patch'
 require 'comable/deprecator'
+require 'comable/errors'
 
 require 'comma_extractor_extentions'
 
