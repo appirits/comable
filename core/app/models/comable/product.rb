@@ -102,9 +102,8 @@ module Comable
     end
 
     def properties
-      parse_property = JSON.parse(property)
-      return [] unless parse_property.is_a? Array
-      return [] unless parse_property.all? { |prop| prop.is_a? Hash }
+      parse_property = JSON.parse(property) # propertyに不正な値が入っていた場合に例外発生する
+      return [] unless parse_property.is_a?(Array) && parse_property.all? { |prop| prop.is_a?(Hash) }
       parse_property
     rescue
       []

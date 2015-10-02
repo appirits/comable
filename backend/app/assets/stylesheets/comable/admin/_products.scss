@@ -16,7 +16,10 @@
     }
   }
 
-  td.property_key {
+  tr.property td:first-child {
     border-right: 1px solid #ddd;
+  }
+  tr.property:last-child {
+    border-bottom: 1px solid #ddd;
   }
 }
