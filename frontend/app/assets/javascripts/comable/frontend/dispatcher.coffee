@@ -13,3 +13,7 @@ class Dispatcher
     path = page.split(':')
     contoller_name = path[0]
     action_name = path[1]
+
+    switch page
+      when 'products:show'
+        new VariantSelector

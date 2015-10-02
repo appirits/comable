@@ -5,7 +5,7 @@ module Comable
     belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants
     has_one :stock, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy, autosave: true
 
-    has_and_belongs_to_many :option_values, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values
+    has_and_belongs_to_many :option_values, -> { order(:option_type_id, :created_at, :id) }, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values
 
     accepts_nested_attributes_for :option_values, allow_destroy: true
     accepts_nested_attributes_for :stock
@@ -49,6 +49,13 @@ module Comable
       else
         product.name
       end
+    end
+
+    def as_json(options = nil)
+      super.merge(
+        'quantity' => quantity,
+        'options' => option_values.map(&:name)
+      )
     end
   end
 end
