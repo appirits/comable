@@ -1,29 +1,39 @@
 source 'https://rubygems.org'
 
-gem 'pg', require: false
+platforms :ruby do
+  gem 'pg', require: false
+end
 
-gem 'rspec-rails'
-gem 'rspec-its', require: false
-gem 'rspec-example_steps', require: false
-gem 'shoulda-matchers', require: false
-gem 'factory_girl_rails', require: false
-gem 'generator_spec', require: false
+group :test do
+  gem 'rspec-rails'
+  gem 'rspec-its', require: false
+  gem 'rspec-example_steps', require: false
+  gem 'shoulda-matchers', require: false
+  gem 'factory_girl_rails', require: false
+  gem 'generator_spec', require: false
 
-# for feature test with capybara
-gem 'capybara', require: false
-gem 'phantomjs', require: false
-gem 'poltergeist', require: false
-gem 'database_cleaner', require: false
+  gem 'bullet', require: false
 
-gem 'coveralls', require: false
-gem 'rubocop', require: false
+  gem 'brakeman', require: false
 
-gem 'bullet', require: false
+  # for feature test with capybara
+  gem 'capybara', require: false
+  gem 'phantomjs', require: false
+  gem 'poltergeist', require: false
+  gem 'database_cleaner', require: false
 
-gem 'pry-rails', require: false
-gem 'byebug'
+  # for Coveralls.io
+  gem 'coveralls', require: false
+end
 
-gem 'yard', require: false
-gem 'inch', require: false
+group :test, :development do
+  gem 'rubocop', require: false
+  gem 'pry-rails', require: false
+  gem 'byebug'
+end
 
-gem 'brakeman', require: false
+group :development do
+  # Documentation tools
+  gem 'yard', require: false
+  gem 'inch', require: false
+end
