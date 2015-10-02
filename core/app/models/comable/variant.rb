@@ -42,5 +42,13 @@ module Comable
         Comable::OptionValue.where(name: hash[:value], option_type: option_type).first_or_initialize(&:save!)
       end
     end
+
+    def name
+      if options.any?
+        "#{product.name} (#{options.map(&:value).join('/')})"
+      else
+        product.name
+      end
+    end
   end
 end
