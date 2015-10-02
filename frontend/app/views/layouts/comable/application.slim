@@ -18,7 +18,7 @@ html
       });
 
   - mini_header_flag = controller_name == 'orders' || devise_controller?
-  body class="#{'comable-checkout-layout' if mini_header_flag}"
+  body class="#{'comable-checkout-layout' if mini_header_flag}" data-page="#{page_name}"
     = render 'comable/shared/tracker'
 
     - if mini_header_flag

@@ -2,4 +2,6 @@
 #= require jquery_ujs
 #= require jquery-ui
 #= require bootstrap-sprockets
-#= require_tree
+#= require comable/frontend/dispatcher
+#= require_tree .
+#= require_self
