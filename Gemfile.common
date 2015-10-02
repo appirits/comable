@@ -8,7 +8,8 @@ group :test do
   gem 'rspec-rails'
   gem 'rspec-its', require: false
   gem 'rspec-example_steps', require: false
-  gem 'shoulda-matchers', require: false
+  # TODO: Update shoulda-matchers to 3.0.x
+  gem 'shoulda-matchers', '~> 2.8', require: false
   gem 'factory_girl_rails', require: false
   gem 'generator_spec', require: false
 
