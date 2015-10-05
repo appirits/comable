@@ -1,4 +1,5 @@
 #= require jquery
+#= require comable/frontend/module
 #= require comable/frontend/products
 
 describe 'VariantSelector', ->
@@ -37,12 +38,6 @@ describe 'ProductPage', ->
     described_class = ProductPage
     spyOn(described_class, 'constructor')
     subject = new described_class
-
-  describe '#numberWithDelimiter', ->
-    it 'returns the number with default delimiter', ->
-      expect(subject.numberWithDelimiter(100)).toBe('100')
-      expect(subject.numberWithDelimiter(100000)).toBe('100,000')
-      expect(subject.numberWithDelimiter(100000.000001)).toBe('100,000.000001')
 
   describe '#numberToCurrency', ->
     it 'returns the currency', ->
