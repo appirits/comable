@@ -83,11 +83,11 @@ class @ProductPage
     @$cartFormSubmit.val(@translations.sold_out)
 
   numberToCurrency: (number) ->
-    numberLabel = _numberWithDelimiter(number)
+    numberLabel = @numberWithDelimiter(number)
     @translations.currency_format.replace(/%{number}/, numberLabel)
 
   # based on http://www.mredkj.com/javascript/numberFormat.html#addcommas
-  _numberWithDelimiter = (number, delimiter = ',') ->
+  numberWithDelimiter: (number, delimiter = ',') ->
     numbers = number.toString().split('.')
     integers = numbers[0]
     decimals = if numbers.length > 1 then '.' + numbers[1] else ''
