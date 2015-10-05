@@ -11,6 +11,7 @@ require 'rspec/its'
 require 'rspec/example_steps'
 require 'shoulda/matchers'
 require 'generator_spec'
+require 'jasmine-rails'
 
 # for Feature test
 require 'capybara'

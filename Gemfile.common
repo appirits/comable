@@ -12,6 +12,7 @@ group :test do
   gem 'shoulda-matchers', '~> 2.8', require: false
   gem 'factory_girl_rails', require: false
   gem 'generator_spec', require: false
+  gem 'jasmine-rails', require: false
 
   gem 'bullet', require: false
 
