@@ -6,7 +6,10 @@ end
 
 require 'rails'
 require 'rspec-rails'
+
+# for JavaScript test
 require 'jasmine-rails'
+require 'jasmine-jquery-rails'
 
 require 'rdoc/task'
 

@@ -71,10 +71,9 @@ class @ProductPage extends Comable.Module
     @$productPrice.text(currency)
 
   changeCartForm: ->
-    if @variant
-      @enableCartFormSubmit()
-    else
-      @disableCartFormSubmit()
+    return @disableCartFormSubmit() unless @variant
+    return @disableCartFormSubmit() if @variant.quantity <= 0
+    @enableCartFormSubmit()
 
   enableCartFormSubmit: ->
     @$cartFormSubmit.prop('disabled', false)
