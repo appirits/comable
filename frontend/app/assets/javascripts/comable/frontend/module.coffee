@@ -13,10 +13,10 @@ class Comable.Module
 
   @include: (obj) ->
     for key, value of obj when key not in moduleKeywords
-      console.log(key)
       # Assign properties to the prototype
       @::[key] = value
     obj.included?.apply(@)
+    this
 
 Comable.helpers =
   numberWithDelimiter: (number, delimiter = ',') ->
