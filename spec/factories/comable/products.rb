@@ -6,7 +6,8 @@ FactoryGirl.define do
     variants { [build(:variant)] }
 
     trait :with_stock do
-      stocks { [create(:stock, :stocked, variant: variants.first)] }
+      variants { [] }
+      stocks { [build(:stock, :stocked, variant: variants.first)] }
     end
 
     trait :sku do

@@ -59,7 +59,7 @@ feature 'Variants', js: true do
     expect(product.variants.count).to eq(1)
   end
 
-  pending 'Update the quantity of the product without options' do
+  scenario 'Update the quantity of the product without options' do
     product = create(:product, :with_stock)
     stock = product.stocks.first
     new_quantity = stock.quantity + 100
