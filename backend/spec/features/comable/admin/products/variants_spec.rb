@@ -59,6 +59,21 @@ feature 'Variants', js: true do
     expect(product.variants.count).to eq(1)
   end
 
+  pending 'Update the quantity of the product without options' do
+    product = create(:product, :with_stock)
+    stock = product.stocks.first
+    new_quantity = stock.quantity + 100
+
+    visit comable.admin_product_path(product)
+
+    fill_in :product_variants_attributes_0_quantity, with: new_quantity
+
+    click_on Comable.t('admin.actions.save')
+
+    expect(page).to have_content Comable.t('successful')
+    expect(stock.reload.quantity).to eq(new_quantity)
+  end
+
   private
 
   def fill_in_option(offset, name:, values:)

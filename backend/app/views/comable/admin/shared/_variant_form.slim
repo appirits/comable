@@ -20,7 +20,6 @@ fieldset
       = f.label :sku
       = f.text_field :sku
 
-    = f.fields_for :stock, f.object.stock || f.object.build_stock do |ff|
-      .form-group
-        = ff.label :quantity
-        = ff.text_field :quantity
+    .form-group
+      = f.label :quantity
+      = f.text_field :quantity
