@@ -11,7 +11,7 @@ describe 'VariantSelector', ->
 
   beforeEach ->
     described_class = VariantSelector
-    subject = new described_class
+    subject = described_class.prototype
 
   describe '#getVariant', ->
     it 'returns a variant when options are matched', ->
@@ -34,20 +34,30 @@ describe 'VariantSelector', ->
       expect(described_class.variants[0]).toBe(variant)
 
   describe '#constructor', ->
-    it 'calls #setSelectors', ->
+    beforeEach ->
       spyOn(subject, 'setSelectors')
+      spyOn(subject, 'selectVariant')
+      subject.$optionSelector = $('<select />')
+
+    it 'calls #setSelectors', ->
       subject.constructor()
       expect(subject.setSelectors).toHaveBeenCalled()
+      expect(subject.setSelectors.calls.count()).toEqual(1)
+
+    it 'calls #selectVariant', ->
+      subject.constructor()
+      expect(subject.selectVariant).toHaveBeenCalled()
       expect(subject.setSelectors.calls.count()).toEqual(1)
 
     it 'handles "change" of @$optionSelector with #selectVariant', ->
       # Set @$optionSelector
       setFixtures(optionsHtml)
+      subject.setSelectors.and.callThrough()
       subject.setSelectors()
 
       # Trigger "change" of @$optionSelector after spy on #selectVariant
-      spyOn(subject, 'selectVariant')
       subject.constructor()
+      subject.selectVariant.calls.reset()
       subject.$optionSelector.trigger('change')
       expect(subject.selectVariant).toHaveBeenCalled()
       expect(subject.selectVariant.calls.count()).toEqual(1)
@@ -149,8 +159,7 @@ describe 'ProductPage', ->
 
   beforeEach ->
     described_class = ProductPage
-    spyOn(described_class, 'constructor')
-    subject = new described_class
+    subject = described_class.prototype
 
   describe '#numberToCurrency', ->
     it 'returns the currency', ->

@@ -6,6 +6,7 @@ class @VariantSelector
 
   constructor: ->
     @setSelectors()
+    @selectVariant()
     @$optionSelector.on('change', => @selectVariant())
 
   setSelectors: ->
