@@ -32,17 +32,17 @@
         = number_to_currency @product.price
 
       = form_tag comable.add_cart_path do
-        #variant-selector
-          = select_tag 'variant_id', options_for_select(@product.variants.map { |v| [v.name, v.id] }), class: 'hidden', include_blank: true
-          javascript:
-            VariantSelector.setProduct(#{@product.to_json.html_safe});
-
         - if @product.sku?
           - @product.variants.map(&:option_values).flatten.uniq.group_by(&:option_type).each_pair.with_index do |(option_type, option_values), index|
             .sku
               label for="option_values_#{index}"
                 = option_type.name
               = select_tag "option_values[]", options_for_select(option_values.map { |o| [o.name, o.id] }), id: "option_values_#{index}"
+
+          #variant-selector.hidden
+            = select_tag 'variant_id', options_for_select(@product.variants.map { |v| [v.name, v.id] }), include_blank: true
+            javascript:
+              VariantSelector.setProduct(#{@product.to_json.html_safe});
 
         - if @product.stocked?
           .add_cart.form-inline.form-group

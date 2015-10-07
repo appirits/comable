@@ -14,6 +14,7 @@ class @VariantSelector
     @$variantSelector = $('[name="variant_id"]')
 
   selectVariant: ->
+    return unless @class.variants
     options = @getSelectedOptions()
     variant = @getVariant(options)
     @resetVariantSelector(variant && variant.id)

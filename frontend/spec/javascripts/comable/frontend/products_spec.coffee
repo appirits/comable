@@ -13,6 +13,10 @@ describe 'VariantSelector', ->
     described_class = VariantSelector
     subject = described_class.prototype
 
+  afterEach ->
+    # Reset @variants
+    described_class.variants = undefined
+
   describe '#getVariant', ->
     it 'returns a variant when options are matched', ->
       variantRed = { options: ['M', 'Red'] }
@@ -80,6 +84,10 @@ describe 'VariantSelector', ->
       spyOn(subject, 'resetVariantSelector')
       spyOn(window, 'ProductPage')
 
+      # Set @variants
+      variant = {}
+      described_class.variants = [variant]
+
     it 'calls #getSelectedOptions', ->
       subject.selectVariant()
       expect(subject.getSelectedOptions).toHaveBeenCalled()
@@ -112,6 +120,14 @@ describe 'VariantSelector', ->
       subject.selectVariant()
       expect(ProductPage).toHaveBeenCalledWith(variant)
       expect(ProductPage.calls.count()).toEqual(1)
+
+    it 'does not call any methods when variants is undefined', ->
+      described_class.variants = undefined
+      subject.selectVariant()
+      expect(subject.getSelectedOptions).not.toHaveBeenCalled()
+      expect(subject.getVariant).not.toHaveBeenCalled()
+      expect(subject.resetVariantSelector).not.toHaveBeenCalled()
+      expect(ProductPage).not.toHaveBeenCalled()
 
   describe '#getSelectedOptions', ->
     it 'gets selected options', ->
