@@ -7,8 +7,8 @@ module Comable
     end
 
     def show
-      @product = Comable::Product.find(params[:id])
-      fail ActiveRecord::RecordNotFound unless @product.published?
+      products = Comable::Product.includes(:variants)
+      @product = preview? ? products.find(params[:id]) : products.published.find(params[:id])
     end
 
     private
@@ -17,10 +17,15 @@ module Comable
       @category = Comable::Category.where(id: params[:category_id]).first
       if @category
         subtree_of_category = Comable::Category.subtree_of(@category)
-        @products = Comable::Product.eager_load(:categories).merge(subtree_of_category)
+        @products = Comable::Product.published.eager_load(:categories).merge(subtree_of_category)
       else
-        @products = Comable::Product.search(params[:q])
+        @products = Comable::Product.published.search(params[:q])
       end
+    end
+
+    def preview?
+      session[Comable::Product::PREVIEW_SESSION_KEY] ||= {}
+      session[Comable::Product::PREVIEW_SESSION_KEY][params[:id]]
     end
   end
 end

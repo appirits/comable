@@ -2,6 +2,10 @@
   .comable-main-fixed-top
     .comable-page-heading
       ul.pull-right.list-inline
+        li
+          = link_to comable.product_path(@product), class: 'btn btn-default', target: '_blank' do
+            i.fa.fa-external-link>
+            = Comable.t('admin.preview')
         li.dropdown
           = link_to '#', class: 'btn btn-default', 'data-toggle' => 'dropdown' do
             i.fa.fa-bars

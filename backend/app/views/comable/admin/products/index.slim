@@ -47,7 +47,7 @@
                 = link_to Comable.t('admin.advanced_search'), 'javascript:void(0)', 'data-toggle' => 'collapse', 'data-target' => '#comable-advanced-search'
               li
                 = link_to Comable.t('admin.clear_search_conditions'), comable.admin_products_path
-          = f.text_field :code_or_name_cont_any_splitted, class: 'form-control'
+          = f.text_field :name_or_variants_sku_cont_any_splitted, class: 'form-control'
           span.input-group-btn
             = f.submit Comable.t('admin.search'), class: 'btn btn-default'
 
@@ -61,8 +61,6 @@
           thead
             th
             th
-              = sort_link [:comable, @q], :code
-            th
               = sort_link [:comable, @q], :name
             th
               = sort_link [:comable, @q], :price
@@ -70,28 +68,30 @@
               = Comable.t('admin.stocks')
           tbody
             - @products.each do |product|
-              - quantity = product.stocks.to_a.sum(&:quantity)
               tr
                 td.comable-image
                   = link_to comable.admin_product_path(product), class: 'thumbnail' do
                     = image_tag product.image_url, width: '100%'
                 td
-                  = link_to product.code, comable.admin_product_path(product)
+                  = link_to product.name, comable.admin_product_path(product)
                   - unless product.published?
                     span.fa.fa-eye-slash.text-muted<
-                td
-                  = product.name
                 td
                   = number_to_currency product.price
                 td
                   ul.list-unstyled
-                    - product.stocks.each do |stock|
+                    - product.variants.each do |variant|
                       li
+                        - quantity = variant.quantity
                         strong class="#{(quantity <= 0) ? 'text-danger' : (quantity <= 10) ? 'text-warning' : 'text-success'}"
-                          = number_with_delimiter stock.quantity
-                        - if stock.sku?
+                          = number_with_delimiter quantity
+                        - if !product.master?
                           span<
-                            | (#{stock.sku_name})
+                            | (
+                            - variant.options.each do |option|
+                              span.comable-variant-name
+                                = option.value
+                            | )
 
         .text-center
           = paginate @products, theme: :comable_backend

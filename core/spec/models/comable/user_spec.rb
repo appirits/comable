@@ -29,7 +29,7 @@ describe Comable::User do
         order = subject.incomplete_order
         expect(order.order_items.size).to eq(0)
 
-        order.order_items.create(stock: stock, quantity: 1)
+        order.order_items.create(variant: stock.variant, quantity: 1)
         expect(order.order_items.size).to eq(1)
         expect(order.reload.order_items.size).to eq(1)
       end

@@ -1,3 +1,9 @@
+## Comable 0.7.0.beta1 (September 25, 2015) ##
+
+*   Change the architecture of stocks.
+    Implement Variant, OptionType and OptionValue.
+
+
 ## Comable 0.6.0 (July 16, 2015) ##
 
 *   Rename this gem: comable_sample => comable-sample

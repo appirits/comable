@@ -2,10 +2,9 @@ language:
   - ruby
 rvm:
   - 2.1.5
-  - 2.2.0
+  - 2.2.3
   - ruby-head
 gemfile:
-  - gemfiles/active_record_32.gemfile
   - gemfiles/active_record_40.gemfile
   - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_42.gemfile
@@ -16,10 +15,8 @@ before_script:
   - bundle exec rake db:migrate RAILS_ENV=test
 matrix:
   exclude:
-    - rvm: 2.2.0
-      gemfile: gemfiles/active_record_32.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/active_record_32.gemfile
+    - rvm: 2.1.5
+      gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/active_record_edge.gemfile

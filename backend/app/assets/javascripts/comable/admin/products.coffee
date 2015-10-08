@@ -22,15 +22,16 @@ $(document).ready(->
 
 class @Product
   constructor: ->
-    $(document).ready(@ready)
-
-  ready: =>
     @radio_published = $('#product_published_at_published')
     @radio_unpublished = $('#product_published_at_unpublished')
     @published_at = $('#product_published_at')
+    @property = $('#product_property')
+    @properties = $('#properties')
+    @add_property = $('.add_property')
 
     @initialize_visibility()
     @add_event_to_set_visibility()
+    @add_event_to_property()
 
   # 公開/非公開の制御
   initialize_visibility: ->
@@ -58,3 +59,28 @@ class @Product
       @radio_unpublished.click() unless @published_at.val()
     )
 
+  add_event_to_property: ->
+    @properties.on('change', 'input', @reset_property)
+    @properties.on('click', '.remove_property', @remove_property)
+    @properties.on('click', '.remove_property', @reset_property)
+    @add_property.click(@adding_property_field)
+
+  reset_property: =>
+    property_attrbutes = $('.property').map( (_index, property) ->
+      property_key = $(property).find('.property_key').val()
+      property_value = $(property).find('.property_value').val()
+      return unless property_key && property_value
+      {
+        'property_key': property_key,
+        'property_value': property_value
+      }
+    )
+    @property.val(JSON.stringify(property_attrbutes.get()))
+
+  remove_property: ->
+    $(this).closest('tr').remove()
+
+  adding_property_field: ->
+    field_tags = $(this).data('fields')
+    $field = $(field_tags)
+    $('#properties').append($field) # タグを追加

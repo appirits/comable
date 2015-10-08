@@ -18,7 +18,7 @@ module Comable
           __association__ order: { bill_address: :detail }
           __association__ order: { bill_address: :phone_number }
           name
-          code
+          sku
           price
           sku_h_item_name
           sku_v_item_name

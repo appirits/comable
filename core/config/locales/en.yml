@@ -165,6 +165,11 @@ en:
       please_see_following_page_for_syntax: 'Please see the following page for the syntax:'
       please_select_file_form_directory_tree_to_edit: 'Please select a file form the directory tree to edit.'
       here_editor_will_be_displayed_and_you_can_edit_file: 'Here the editor will be displayed, you can edit file.'
+      variants: 'Variants'
+      pricing: 'Pricing'
+      view: 'View'
+      add_variants: 'Add variants'
+      size: 'Size'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -186,6 +191,8 @@ en:
           visibility: 'publishing/closed'
           published: 'Published'
           unpublished: 'Unpublished'
+          property: 'Property'
+          add_property: 'Add Property'
         orders:
           detail: 'Order details'
           cart: 'Cart infomation'
@@ -280,6 +287,9 @@ en:
       comable/navigation_item: 'Navigation item'
 
     attributes:
+      timestamps: &timestamps
+        created_at: 'Created at'
+        updated_at: 'Updated at'
       comable/user:
         id: 'ID'
         email: 'Email address'
@@ -296,6 +306,7 @@ en:
         last_sign_in_at: 'Last sign in at'
         current_sign_in_ip: 'Current sign in ip'
         last_sign_in_ip: 'Last sign in ip'
+        <<: *timestamps
       comable/order:
         id: 'ID'
         code: 'Order number'
@@ -319,6 +330,7 @@ en:
         guest_token: 'Guest token'
         payment_state: 'Payment state'
         shipment_state: 'Shipment state'
+        <<: *timestamps
       comable/order_item: &comable_order_item
         quantity: *quantity
         price: *price
@@ -331,6 +343,7 @@ en:
         sku_h_choice_name: 'SKU Horizontal choice name'
         sku_v_choice_name: 'SKU Vertical choice name'
         order: 'Order'
+        <<: *timestamps
       comable/address: &comable_address
         full_name: 'Full name'
         family_name: 'Last name'
@@ -340,15 +353,19 @@ en:
         city: 'City'
         detail: 'Detail'
         phone_number: 'Phone number'
+        <<: *timestamps
       comable/product:
         id: 'ID'
         code: 'Code'
         name: 'Name'
         price: 'Price'
         caption: 'Caption'
+        property: 'Property'
         categories: 'Categories'
         sku_h_item_name: 'SKU Horizontal item name'
         sku_v_item_name: 'SKU Vertical item name'
+        published_at: 'Published at'
+        <<: *timestamps
       comable/stock:
         id: 'ID'
         code: 'SKU Code'
@@ -357,27 +374,34 @@ en:
         sku_v_choice_name: 'SKU Vertical choice name'
         product: 'Product'
         product_code: 'Product code'
+        name: 'Product name'
+        sku: 'SKU'
+        <<: *timestamps
       comable/store:
         name: 'Name'
         meta_keywords: 'Meta keywords'
         meta_description: 'Meta description'
         email: 'Email'
+        <<: *timestamps
       comable/shipment_method:
         name: 'Name'
         fee: 'Fee'
         activated_flag: 'Activated'
         traking_url: 'Tracking URL'
+        <<: *timestamps
       comable/payment_method:
         name: 'Name'
         payment_provider: 'Oayment provider'
         fee: 'Fee'
         enable_price: 'Enable price range'
+        <<: *timestamps
       comable/tracker:
         activated_flag: 'Activated'
         name: 'Name'
         tracker_id: 'Tracker ID'
         code: 'Code'
         place: 'Place'
+        <<: *timestamps
       comable/order/order_items:
         <<: *comable_order_item
       comable/order/bill_address:
@@ -391,6 +415,7 @@ en:
         fee: 'Fee'
         state: 'Status'
         completed_at: 'Completed at'
+        <<: *timestamps
       comable/shipment:
         id: 'ID'
         order_id: 'Order ID'
@@ -399,6 +424,7 @@ en:
         state: 'Status'
         tracking_number: 'Tracking number'
         completed_at: 'Completed at'
+        <<: *timestamps
       comable/page:
         id: 'ID'
         title: 'Title'
@@ -409,23 +435,35 @@ en:
         meta_keywords: 'Meta Keywords'
         slug: 'Slug'
         published_at: 'Published at'
-        created_at: 'Created at'
-        updated_at: 'Updated at'
+        <<: *timestamps
       comable/navigation: &comable_navigation_item
         id: 'ID'
         name: 'Name'
-        created_at: 'Created at'
-        updated_at: 'Updated at'
+        <<: *timestamps
       comable/navigation_item:
         id: 'ID'
         name:  'Name'
         linkable_type: 'Link to'
         linkable_id: ''
         url:  'Name'
-        created_at: 'Created at'
-        updated_at: 'Updated at'
+        <<: *timestamps
       comable/navigation/navigation_items:
         <<: *comable_navigation_item
+      comable/variant:
+        id: 'ID'
+        sku: 'SKU'
+        price: 'Price'
+        product: 'Product'
+        quantity: 'Quantity'
+        <<: *timestamps
+      comable/option_type:
+        id: 'ID'
+        name: 'Name'
+        <<: *timestamps
+      comable/option_value:
+        id: 'ID'
+        name: 'Name'
+        <<: *timestamps
 
   enumerize:
     comable/user:

@@ -46,7 +46,7 @@ FactoryGirl.define do
       bill_address { build(:address) }
       ship_address { build(:address) }
       shipment { build(:shipment, state: :ready) }
-      payment { build(:payment) }
+      payment { build(:payment, state: :completed) }
 
       sequence(:code) { |n| format('%011d', n.next) }
       completed_at Time.now
