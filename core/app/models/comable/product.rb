@@ -5,7 +5,6 @@ module Comable
     include Comable::Liquidable
     include Comable::Product::Search
     include Comable::Product::Csvable
-    include Comable::Linkable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
@@ -21,8 +20,6 @@ module Comable
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
     ransack_options attribute_select: { associations: [:variants, :stocks, :option_types] }
-
-    linkable_columns_keys use_index: true
 
     PREVIEW_SESSION_KEY = :preview_product
 

@@ -128,7 +128,7 @@ describe Comable::Admin::NavigationsController do
       end
 
       it 'assigns the linkable_id_options' do
-        expect(assigns(:linkable_id_options)).to eq Comable::Product.linkable_id_options
+        expect(assigns(:linkable_id_options)).to eq Comable::NavigationItem.linkable_id_options(Comable::Product)
       end
 
       it 'layout false' do
