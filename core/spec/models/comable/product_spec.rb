@@ -41,4 +41,31 @@ describe Comable::Product do
       expect(subject.published?).to be true
     end
   end
+
+  describe '#properties' do
+    subject { build(:product) }
+    let(:property_attribute) do
+      [
+        { 'property_key' => 'height', 'property_value' => '10cm' },
+        { 'property_key' => 'weight', 'property_value' => '100g' }
+      ]
+    end
+
+    context '正しいJSON形式でpropertyに値が入っている場合' do
+      it '配列の中身が全てHash形式の場合' do
+        subject.property = property_attribute.to_json
+        expect(subject.properties).to eq property_attribute
+      end
+
+      it '配列の中身が全てHash形式のではない場合' do
+        subject.property = property_attribute.push('property').to_json
+        expect(subject.properties).to eq []
+      end
+    end
+
+    it '不正なJSON形式でpropertyに値が入っている場合' do
+      subject.property = property_attribute.to_json.delete('}')
+      expect(subject.properties).to eq []
+    end
+  end
 end

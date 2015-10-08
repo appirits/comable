@@ -73,6 +73,7 @@ module Comable
         params.require(:product).permit(
           :name,
           :caption,
+          :property,
           :published_at,
           category_path_names: [],
           images_attributes: [:id, :file, :_destroy],

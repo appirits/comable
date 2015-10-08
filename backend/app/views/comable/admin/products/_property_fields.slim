@@ -1,0 +1,8 @@
+tr.property
+  td
+    = text_field_tag nil, property_key, id: nil, class: :property_key
+  td
+    = text_field_tag nil, property_value, id: nil, class: :property_value
+  td
+    button.btn.btn-default.pull-right.remove_property type="button"
+      = Comable.t('actions.destroy')

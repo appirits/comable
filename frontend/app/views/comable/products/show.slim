@@ -30,6 +30,13 @@
         = @product.caption
       .price
         = number_to_currency @product.price
+      - if @product.properties.any?(&:present?)
+        .property
+          table.table.table-bordered
+            - @product.properties.each do |property|
+              tr
+                td= property['property_key']
+                td= property['property_value']
 
       = form_tag comable.add_cart_path do
         - if @product.sku?
