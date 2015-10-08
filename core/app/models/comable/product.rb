@@ -58,6 +58,10 @@ module Comable
       option_types.empty?
     end
 
+    def as_json(options = nil)
+      super (options || {}).merge(methods: [:variants])
+    end
+
     def sku_h_item_name
       option_types.first.try(:name)
     end

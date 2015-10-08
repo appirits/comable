@@ -1,6 +1,6 @@
 require 'rspec/example_steps'
 
-feature 'カート処理' do
+feature 'カート処理', js: true do
   given!(:payment_method) { create(:payment_method) }
   given!(:shipment_method) { create(:shipment_method) }
   given(:order) { build(:order) }

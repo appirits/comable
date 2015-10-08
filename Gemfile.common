@@ -23,6 +23,10 @@ group :test do
   gem 'poltergeist', require: false
   gem 'database_cleaner', require: false
 
+  # for JavaScript test
+  gem 'jasmine-rails', require: false
+  gem 'jasmine-jquery-rails', require: false
+
   # for Coveralls.io
   gem 'coveralls', require: false
 end

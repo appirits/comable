@@ -4,6 +4,13 @@ rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
+require 'rails'
+require 'rspec-rails'
+
+# for JavaScript test
+require 'jasmine-rails'
+require 'jasmine-jquery-rails'
+
 require 'rdoc/task'
 
 RDoc::Task.new(:rdoc) do |rdoc|
@@ -69,15 +76,19 @@ if File.exist?('comable.gemspec')
     end
   end
 
-  task default: ['app:spec:all', 'rubocop', 'brakeman:all']
+  task default: ['app:spec:all', 'jasmine', 'rubocop', 'brakeman:all']
 else
-  task default: ['app:spec', 'rubocop', 'brakeman']
+  task default: ['app:spec', 'jasmine', 'rubocop', 'brakeman']
 end
 
 Bundler::GemHelper.install_tasks
 
 # from https://github.com/rspec/rspec-rails/issues/936
 task 'test:prepare'
+
+task :jasmine do
+  sh 'bundle exec rake app:spec:javascript RAILS_ENV=test'
+end
 
 task :rubocop do
   sh 'rubocop'

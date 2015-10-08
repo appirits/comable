@@ -7,7 +7,8 @@ module Comable
     end
 
     def show
-      @product = preview? ? Comable::Product.find(params[:id]) : Comable::Product.published.find(params[:id])
+      products = Comable::Product.includes(:variants)
+      @product = preview? ? products.find(params[:id]) : products.published.find(params[:id])
     end
 
     private
