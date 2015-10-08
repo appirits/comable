@@ -15,7 +15,7 @@ module Comable
     include Comable::Order::Validations
     include Comable::Order::Morrisable
 
-    ransack_options attribute_select: { associations: [:payment, :shipment] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
+    ransack_options attribute_select: { associations: [:payment, :shipments] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
 
     liquid_methods :code, :payment_fee, :shipment_fee, :item_total_price, :total_price, :order_items
 
@@ -34,7 +34,7 @@ module Comable
           save!
 
           payment.next_state! if payment
-          shipment.next_state! if shipment
+          shipments.each(&:next_state!)
 
           touch(:completed_at)
         end
@@ -70,7 +70,7 @@ module Comable
 
     # 時価送料を取得
     def current_shipment_fee
-      shipment.try(:fee) || 0
+      shipments.to_a.sum(&:fee)
     end
 
     # Get the current payment fee
@@ -88,7 +88,7 @@ module Comable
       self.bill_address ||= order.bill_address
       self.ship_address ||= order.ship_address
       self.payment ||= order.payment
-      self.shipment ||= order.shipment
+      self.shipments = order.shipments if shipments.empty?
 
       stated?(order.state) ? save! : next_state!
     end
@@ -102,11 +102,20 @@ module Comable
     end
 
     def shipped?
-      shipment ? shipment.completed? : true
+      return true if shipments.empty?
+      shipments.all? :completed?
     end
 
     def can_ship?
-      shipment && shipment.ready? && paid? && completed?
+      shipments.all?(:ready?) && paid? && completed?
+    end
+
+    def shipment
+      shipments.first
+    end
+
+    def shipment=(shipment)
+      shipments << shipment unless shipments.include? shipment
     end
 
     private
@@ -118,5 +127,11 @@ module Comable
         total_price: current_total_price
       }
     end
+
+    #
+    # Deprecated methods
+    #
+    deprecate :shipment, deprecator: Comable::Deprecator.instance
+    deprecate :shipment=, deprecator: Comable::Deprecator.instance
   end
 end

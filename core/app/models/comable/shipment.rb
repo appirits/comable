@@ -2,7 +2,7 @@ module Comable
   class Shipment < ActiveRecord::Base
     include Comable::Ransackable
 
-    belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipment
+    belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipments
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name
 
     before_validation :copy_attributes_from_shipment_method, unless: :order_completed?

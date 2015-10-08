@@ -5,7 +5,7 @@ describe Comable::Order do
 
   it { is_expected.to belong_to(:bill_address).class_name(Comable::Address.name).dependent(:destroy) }
   it { is_expected.to belong_to(:ship_address).class_name(Comable::Address.name).dependent(:destroy) }
-  it { is_expected.to have_one(:shipment).class_name(Comable::Shipment.name).dependent(:destroy).inverse_of(:order) }
+  it { is_expected.to have_many(:shipments).class_name(Comable::Shipment.name).dependent(:destroy).inverse_of(:order) }
 
   describe 'validations' do
     context "when state is 'orderer'" do
@@ -31,7 +31,7 @@ describe Comable::Order do
       before { order.state = 'payment' }
       before { allow(order).to receive(:shipment_required?).and_return(true) }
 
-      it { is_expected.to validate_presence_of(:shipment) }
+      it { is_expected.to validate_presence_of(:shipments) }
     end
 
     context "when state is 'confirm'" do
