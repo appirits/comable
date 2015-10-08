@@ -41,7 +41,7 @@ module Comable
 
       def destroy
         @variant.destroy
-        redirect_to comable.admin_product_variants_path(@product), notice: Comable.t('successful')
+        redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
       end
 
       private

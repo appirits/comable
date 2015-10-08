@@ -115,7 +115,7 @@ describe Comable::Admin::VariantsController do
     it 'redirects to the variants list' do
       variant = create(:variant, product: product)
       delete :destroy, product_id: product.to_param, id: variant.to_param
-      expect(response).to redirect_to([comable, :admin, product, :variants])
+      expect(response).to redirect_to([comable, :admin, product])
     end
   end
 end
