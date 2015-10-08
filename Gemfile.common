@@ -24,8 +24,8 @@ group :test do
   gem 'database_cleaner', require: false
 
   # for JavaScript test
-  gem 'jasmine-rails', require: false
-  gem 'jasmine-jquery-rails', require: false
+  gem 'jasmine-rails'
+  gem 'jasmine-jquery-rails'
 
   # for Coveralls.io
   gem 'coveralls', require: false

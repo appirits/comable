@@ -4,13 +4,7 @@ rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
-require 'rails'
-require 'rspec-rails'
-
-# for JavaScript test
-require 'jasmine-rails'
-require 'jasmine-jquery-rails'
-
+require 'rspec/core/rake_task'
 require 'rdoc/task'
 
 RDoc::Task.new(:rdoc) do |rdoc|
