@@ -28,4 +28,4 @@
         .panel-body
           p
             = Comable.t('admin.confirmation_to_remove_product')
-          = link_to Comable.t('admin.actions.destroy'), comable.admin_product_path(@product), method: :delete, class: 'btn btn-danger'
+          = link_to Comable.t('admin.actions.destroy'), comable.admin_product_variant_path(@product, @variant), method: :delete, class: 'btn btn-danger'
