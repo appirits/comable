@@ -71,15 +71,11 @@ module Comable
     end
 
     def allow_cancel?
-      # TODO: Implement shipments
-      # !shipments.exists?
-      true
+      !shipments.with_state(:completed).exists?
     end
 
     def allow_return?
-      # TODO: Implement shipments
-      # shipments.exists?
-      false
+      !allow_cancel?
     end
   end
 end

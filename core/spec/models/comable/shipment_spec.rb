@@ -4,7 +4,7 @@ RSpec.describe Comable::Shipment do
   # Disable the automatic change of attributes.
   before { allow(subject).to receive(:order_completed?).and_return(true) }
 
-  it { is_expected.to belong_to(:order).class_name(Comable::Order.name).inverse_of(:shipment) }
+  it { is_expected.to belong_to(:order).class_name(Comable::Order.name).inverse_of(:shipments) }
   it { is_expected.to belong_to(:shipment_method).class_name(Comable::ShipmentMethod.name) }
 
   it { is_expected.to validate_presence_of(:order) }

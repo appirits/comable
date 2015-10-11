@@ -103,11 +103,11 @@ module Comable
 
     def shipped?
       return true if shipments.empty?
-      shipments.all? :completed?
+      shipments.all?(&:completed?)
     end
 
     def can_ship?
-      shipments.all?(:ready?) && paid? && completed?
+      shipments.all?(&:ready?) && paid? && completed?
     end
 
     def shipment

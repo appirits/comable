@@ -39,7 +39,7 @@
   .comable-page-body
     - if @order.payment
       = render 'payment_state', payment: @order.payment
-    - if @order.shipment
+    - @order.shipments.each do |shipment|
       = render 'shipment_state', shipment: @order.shipment
 
     section.row
