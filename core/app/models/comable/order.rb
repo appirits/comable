@@ -54,6 +54,18 @@ module Comable
       save!
     end
 
+    def assign_stock_items_to_shipments
+      reset_shipments
+      shipment = shipments.create
+      order_items.each do |order_item|
+        order_item.quantity.times do
+          shipment.shipment_items.create(
+            stock: order_item.stock
+          )
+        end
+      end
+    end
+
     def stocked_items
       order_items.to_a.select(&:unstocked?)
     end
@@ -126,6 +138,10 @@ module Comable
         shipment_fee: current_shipment_fee,
         total_price: current_total_price
       }
+    end
+
+    def reset_shipments
+      shipments.destroy_all
     end
 
     #

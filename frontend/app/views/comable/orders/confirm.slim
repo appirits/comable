@@ -22,12 +22,14 @@
             = @order.class.human_attribute_name(:payment_method)
           = @order.payment.name
 
-    - if @order.shipment
+    - if @order.shipments.any?
       .row
         .col-sm-12.comable-shipment
           h2
             = @order.class.human_attribute_name(:shipment_method)
-          = @order.shipment.name
+          - @order.shipments.each.with_index(1) do |shipment, index|
+            p
+              | ##{index} #{shipment.name}
 
     .row
       .col-sm-12.comable-order_items
