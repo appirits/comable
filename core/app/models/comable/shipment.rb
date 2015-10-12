@@ -4,6 +4,7 @@ module Comable
 
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipments
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name
+    has_many :shipment_items, class_name: Comable::ShipmentItem.name
 
     before_validation :copy_attributes_from_shipment_method, unless: :order_completed?
 
