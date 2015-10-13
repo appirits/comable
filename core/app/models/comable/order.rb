@@ -3,6 +3,7 @@ require_dependency 'comable/order/callbacks'
 require_dependency 'comable/order/scopes'
 require_dependency 'comable/order/validations'
 require_dependency 'comable/order/morrisable'
+require_dependency 'comable/order/deprecated_methods'
 
 module Comable
   class Order < ActiveRecord::Base
@@ -14,6 +15,7 @@ module Comable
     include Comable::Order::Scopes
     include Comable::Order::Validations
     include Comable::Order::Morrisable
+    include Comable::Order::DeprecatedMethods
 
     ransack_options attribute_select: { associations: [:payment, :shipments] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
 
@@ -22,7 +24,6 @@ module Comable
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
-    delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
     delegate :cancel!, :resume!, to: :payment, allow_nil: true, prefix: true
 
     def complete!
@@ -130,14 +131,6 @@ module Comable
       shipments.with_state(:ready).each(&:ship!)
     end
 
-    def shipment
-      shipments.first
-    end
-
-    def shipment=(shipment)
-      shipments << shipment unless shipments.include? shipment
-    end
-
     private
 
     def current_attributes
@@ -147,11 +140,5 @@ module Comable
         total_price: current_total_price
       }
     end
-
-    #
-    # Deprecated methods
-    #
-    deprecate :shipment, deprecator: Comable::Deprecator.instance
-    deprecate :shipment=, deprecator: Comable::Deprecator.instance
   end
 end
