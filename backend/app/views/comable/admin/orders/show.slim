@@ -40,7 +40,7 @@
     - if @order.payment
       = render 'payment_state', payment: @order.payment
     - @order.shipments.each do |shipment|
-      = render 'shipment_state', shipment: @order.shipment
+      = render 'shipment_state', shipment: shipment
 
     section.row
       .col-lg-8

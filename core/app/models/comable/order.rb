@@ -123,7 +123,11 @@ module Comable
     end
 
     def can_ship?
-      shipments.all?(&:ready?) && paid? && completed?
+      shipments.any?(&:ready?) && paid? && completed?
+    end
+
+    def ship!
+      shipments.with_state(:ready).each(&:ship!)
     end
 
     def shipment

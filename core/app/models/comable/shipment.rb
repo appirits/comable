@@ -71,6 +71,10 @@ module Comable
       touch :completed_at
     end
 
+    def can_ship?
+      ready? && order.paid? && order.completed?
+    end
+
     private
 
     def order_completed?
