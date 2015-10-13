@@ -209,6 +209,26 @@ describe Comable::CartsController do
     end
   end
 
+  describe '#resets_shipments' do
+    let(:product) { create(:product, :with_stock) }
+    let(:order) { create(:order, :completed) }
+    let(:shipments) { create_list(:shipment, 2) }
+
+    before do
+      order.shipments = shipments
+      allow(controller).to receive(:current_order).and_return(order)
+    end
+
+    it 'destroys all shipments' do
+      expect { post :add, product_id: product.id }.to change(order.shipments.reload, :count).to(0)
+    end
+
+    it 'changes the order state to "cart"' do
+      post :add, product_id: product.id
+      expect(order).to be_cart
+    end
+  end
+
   private
 
   # TODO: Move to the support directory.

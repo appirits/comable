@@ -2,13 +2,14 @@ module Comable
   class Shipment < ActiveRecord::Base
     include Comable::Ransackable
 
-    belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipment
+    belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipments
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name
+    has_many :shipment_items, class_name: Comable::ShipmentItem.name
 
     before_validation :copy_attributes_from_shipment_method, unless: :order_completed?
 
     validates :order, presence: true
-    validates :shipment_method, presence: true
+    validates :shipment_method, presence: true, if: -> { stated?(:pending) }
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :tracking_number, length: { maximum: 255 }
 
@@ -70,6 +71,10 @@ module Comable
       touch :completed_at
     end
 
+    def can_ship?
+      ready? && order.paid? && order.completed?
+    end
+
     private
 
     def order_completed?
@@ -78,7 +83,7 @@ module Comable
 
     def copy_attributes_from_shipment_method
       self.attributes = {
-        fee: shipment_method.fee
+        fee: shipment_method.try(:fee) || 0
       }
     end
   end

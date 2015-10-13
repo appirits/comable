@@ -4,12 +4,35 @@
       = @order.class.human_state_name(:shipment)
 
     = form_for @order, as: :order, url: update_order_path, method: :put do |f|
-      - shipment = @order.shipment || @order.build_shipment
-      = f.fields_for :shipment, shipment do |ff|
-        ul
-          - Comable::ShipmentMethod.activated.each.with_index do |shipment_method, index|
-            li
-              - checked_flag = shipment.shipment_method ? (shipment.shipment_method == shipment_method) : index.zero?
-              = ff.radio_button :shipment_method_id, shipment_method.id, checked: checked_flag
-              = ff.label :shipment_method_id, shipment_method.name, value: shipment_method.id
+      - @order.shipments.build if @order.shipments.empty?
+      = f.fields_for :shipments, @order.shipments do |ff|
+        .panel.panel-default
+          .panel-heading
+            | 発送 ##{ff.index.next}
+          ul.list-group
+            - Comable::ShipmentMethod.activated.each.with_index do |shipment_method, index|
+              li.list-group-item
+                - checked_flag = ff.object.shipment_method ? (ff.object.shipment_method == shipment_method) : index.zero?
+                = ff.radio_button :shipment_method_id, shipment_method.id, checked: checked_flag
+                | &nbsp;
+                = ff.label :shipment_method_id, shipment_method.name, value: shipment_method.id
+          table
+            thead
+              tr
+                th
+                  = Comable.t('products')
+                th
+                  = Comable.t('price')
+                th
+                  = Comable.t('quantity')
+            tbody
+              - ff.object.shipment_items.group_by(&:stock).each_pair do |stock, shipment_items|
+                tr
+                  td
+                    = stock.name
+                  td
+                    = number_to_currency stock.price
+                  td
+                    = number_with_delimiter shipment_items.size
+
       = f.submit Comable.t('next_step')

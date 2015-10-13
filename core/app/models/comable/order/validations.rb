@@ -20,7 +20,7 @@ module Comable
         end
 
         with_options if: -> { stated?(:shipment) && shipment_required? } do |context|
-          context.validates :shipment, presence: true
+          context.validates :shipments, presence: true
         end
 
         with_options if: -> { stated?(:payment) && payment_required? } do |context|

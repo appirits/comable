@@ -3,6 +3,7 @@ require_dependency 'comable/order/callbacks'
 require_dependency 'comable/order/scopes'
 require_dependency 'comable/order/validations'
 require_dependency 'comable/order/morrisable'
+require_dependency 'comable/order/deprecated_methods'
 
 module Comable
   class Order < ActiveRecord::Base
@@ -14,15 +15,15 @@ module Comable
     include Comable::Order::Scopes
     include Comable::Order::Validations
     include Comable::Order::Morrisable
+    include Comable::Order::DeprecatedMethods
 
-    ransack_options attribute_select: { associations: [:payment, :shipment] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
+    ransack_options attribute_select: { associations: [:payment, :shipments] }, ransackable_attributes: { except: [:bill_address_id, :ship_address_id] }
 
     liquid_methods :code, :payment_fee, :shipment_fee, :item_total_price, :total_price, :order_items
 
     delegate :full_name, to: :bill_address, allow_nil: true, prefix: :bill
     delegate :full_name, to: :ship_address, allow_nil: true, prefix: :ship
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
-    delegate :state, :human_state_name, to: :shipment, allow_nil: true, prefix: true
     delegate :cancel!, :resume!, to: :payment, allow_nil: true, prefix: true
 
     def complete!
@@ -34,7 +35,7 @@ module Comable
           save!
 
           payment.next_state! if payment
-          shipment.next_state! if shipment
+          shipments.each(&:next_state!)
 
           touch(:completed_at)
         end
@@ -54,6 +55,22 @@ module Comable
       save!
     end
 
+    def assign_stock_items_to_shipments
+      reset_shipments
+      shipment = shipments.create
+      order_items.each do |order_item|
+        order_item.quantity.times do
+          shipment.shipment_items.create(
+            stock: order_item.stock
+          )
+        end
+      end
+    end
+
+    def reset_shipments
+      shipments.destroy_all
+    end
+
     def stocked_items
       order_items.to_a.select(&:unstocked?)
     end
@@ -70,7 +87,7 @@ module Comable
 
     # 時価送料を取得
     def current_shipment_fee
-      shipment.try(:fee) || 0
+      shipments.to_a.sum(&:fee)
     end
 
     # Get the current payment fee
@@ -88,7 +105,7 @@ module Comable
       self.bill_address ||= order.bill_address
       self.ship_address ||= order.ship_address
       self.payment ||= order.payment
-      self.shipment ||= order.shipment
+      self.shipments = order.shipments if shipments.empty?
 
       stated?(order.state) ? save! : next_state!
     end
@@ -102,11 +119,16 @@ module Comable
     end
 
     def shipped?
-      shipment ? shipment.completed? : true
+      return true if shipments.empty?
+      shipments.all?(&:completed?)
     end
 
     def can_ship?
-      shipment && shipment.ready? && paid? && completed?
+      shipments.any?(&:ready?) && paid? && completed?
+    end
+
+    def ship!
+      shipments.with_state(:ready).each(&:ship!)
     end
 
     private

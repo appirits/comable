@@ -2,6 +2,7 @@ module Comable
   class CartsController < Comable::ApplicationController
     before_filter :set_cart_item, only: [:add, :update, :destroy]
     before_filter :ensure_found_cart_item, only: [:add, :update, :destroy]
+    after_filter :reset_shipments, only: [:add, :update, :destroy], if: -> { current_order.shipments.any? }
 
     def add
       if current_comable_user.add_cart_item(@cart_item, cart_item_options)
@@ -59,6 +60,11 @@ module Comable
       options = {}
       options.update(quantity: params[:quantity].to_i) if params[:quantity]
       options
+    end
+
+    def reset_shipments
+      current_order.reset_shipments
+      current_order.update!(state: 'cart')
     end
   end
 end
