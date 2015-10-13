@@ -52,7 +52,7 @@
                         = form_tag comable.add_cart_path do
                           - if order_item.stock.stocked?
                             .add_cart.form-inline.form-group
-                              = hidden_field_tag :stock_id, order_item.stock_id
+                              = hidden_field_tag :variant_id, order_item.variant_id
                               = hidden_field_tag :quantity, order_item.quantity
                               = submit_tag Comable.t('reorder'), class: 'btn btn-default'
 
