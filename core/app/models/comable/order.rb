@@ -66,6 +66,10 @@ module Comable
       end
     end
 
+    def reset_shipments
+      shipments.destroy_all
+    end
+
     def stocked_items
       order_items.to_a.select(&:unstocked?)
     end
@@ -138,10 +142,6 @@ module Comable
         shipment_fee: current_shipment_fee,
         total_price: current_total_price
       }
-    end
-
-    def reset_shipments
-      shipments.destroy_all
     end
 
     #
