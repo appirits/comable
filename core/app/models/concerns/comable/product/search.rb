@@ -3,7 +3,7 @@ module Comable
     module Search
       extend ActiveSupport::Concern
 
-      SEARCH_COLUMNS = %i( code name caption )
+      SEARCH_COLUMNS = %i( name caption )
 
       module ClassMethods
         def search(query)

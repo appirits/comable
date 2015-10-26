@@ -8,7 +8,7 @@ describe Comable::ProductsController do
       expect(assigns(:products)).to eq([product])
     end
 
-    pending 'assigns the matched products as @products' do
+    it 'assigns the matched products as @products' do
       create_list(:product, 5)
 
       name = 'Sample Product #1'
