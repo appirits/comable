@@ -12,6 +12,7 @@
 #= require ace/ace
 #= require ace/worker-html
 #= require ace/mode-liquid
+#= require ace/theme-monokai
 #= require moment
 #= require bootstrap-datetimepicker
 #= require comable/admin/dispatcher
