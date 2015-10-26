@@ -1,19 +1,30 @@
 describe Comable::ProductsController do
   render_views
 
-  context '通常商品' do
-    let!(:product) { create(:product) }
-
-    describe "GET 'index'" do
-      before { get :index }
-
-      it { expect(response).to be_success }
+  describe "GET 'index'" do
+    it 'assigns all products as @products' do
+      product = create(:product)
+      get :index
+      expect(assigns(:products)).to eq([product])
     end
 
-    describe "GET 'show'" do
-      before { get :show, id: product.id }
+    pending 'assigns the matched products as @products' do
+      create_list(:product, 5)
 
-      it { expect(response).to be_success }
+      name = 'Sample Product #1'
+      product = create(:product, name: name)
+
+      get :index, q: name
+
+      expect(assigns(:products)).to eq([product])
+    end
+  end
+
+  describe "GET 'show'" do
+    it 'assigns the requested product as @product' do
+      product = create(:product)
+      get :show, id: product.to_param
+      expect(assigns(:product)).to eq(product)
     end
   end
 
