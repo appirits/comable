@@ -9,7 +9,7 @@ describe 'comable/admin/orders/edit' do
     assert_select 'input[name=_method][value=?]', (Rails::VERSION::MAJOR == 3) ? 'put' : 'patch'
   end
 
-  pending 'with #order_items' do
+  context 'with #order_items' do
     let(:order_item) { build(:order_item) }
 
     before { order.order_items << order_item }
