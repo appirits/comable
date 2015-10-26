@@ -1,4 +1,15 @@
 # Based on http://stackoverflow.com/questions/6853744/how-can-i-have-rspec-test-for-my-default-scope/6853925#6853925
+#
+# ### Example
+#
+#     class User < ActiveRecord::Base
+#       scope :recent, -> { order(created_at: :desc).limit(10) }
+#     end
+#
+#     describe User do
+#       it { is_expected.to scope(:recent) { order(created_at: :desc).limit(10) } }
+#     end
+#
 RSpec::Matchers.define :scope do |scope|
   define_method :actual_for do |subject|
     subject.class.send(scope).to_sql
