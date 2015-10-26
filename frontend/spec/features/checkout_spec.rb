@@ -14,7 +14,7 @@ feature 'Checkout' do
   context "when order state was 'cart'" do
     background { order.update_attributes(state: 'cart', email: nil) }
 
-    scenario 'Sign in via checkout flow' do
+    scenario 'requires sign in to checkout flow' do
       visit comable.cart_path
 
       click_button Comable.t('checkout')
@@ -34,7 +34,7 @@ feature 'Checkout' do
   context "when order state was 'confirm'" do
     background { order.update_attributes(state: 'confirm') }
 
-    scenario 'Update the billing address' do
+    scenario 'redirects the confirm page after update the billing address' do
       visit comable.next_order_path(state: :orderer)
 
       within('form') do
@@ -44,6 +44,25 @@ feature 'Checkout' do
 
       expect(current_url).to eq(comable.next_order_url(state: :confirm))
       expect(order.state).to eq('confirm')
+    end
+  end
+
+  context "when order state was 'confirm'" do
+    background { order.update_attributes(state: 'confirm') }
+
+    scenario 'decreaces the product quantity after complete order' do
+      quantity = 10
+      stock = create(:stock, :with_product, quantity: quantity)
+      order_item = build(:order_item, variant: stock.variant, quantity: quantity)
+      order.order_items << order_item
+
+      visit comable.next_order_path(state: :confirm)
+
+      click_button Comable.t('complete_order')
+
+      expect(current_url).to eq(comable.order_url)
+      expect(order.state).to eq('completed')
+      expect(stock.reload.quantity).to eq(0)
     end
   end
 end
