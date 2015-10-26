@@ -14,7 +14,7 @@ feature 'Checkout' do
   context "when order state was 'cart'" do
     background { order.update_attributes(state: 'cart', email: nil) }
 
-    scenario 'Sign in via checkout flow' do
+    scenario 'requires sign in to checkout flow' do
       visit comable.cart_path
 
       click_button Comable.t('checkout')
@@ -34,7 +34,7 @@ feature 'Checkout' do
   context "when order state was 'confirm'" do
     background { order.update_attributes(state: 'confirm') }
 
-    scenario 'Update the billing address' do
+    scenario 'redirects the confirm page after update the billing address' do
       visit comable.next_order_path(state: :orderer)
 
       within('form') do
