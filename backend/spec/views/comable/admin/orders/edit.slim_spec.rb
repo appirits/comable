@@ -17,11 +17,18 @@ describe 'comable/admin/orders/edit' do
     it 'renders the fields for OrderItem' do
       render
       assert_select 'form input' do
-        assert_select ':match("id", ?)', /order_order_items_attributes_\d_id/ do
+        id_selector = (v(Rails.version) >= v('4.2.0')) ? ':match("id", ?)' : '#?'
+        assert_select id_selector, /order_order_items_attributes_\d_id/ do
           assert_select '[type=hidden]'
           assert_select '[value=?]', order_item.id.to_s
         end
       end
     end
+  end
+
+  private
+
+  def v(version)
+    Gem::Version.new(version)
   end
 end
