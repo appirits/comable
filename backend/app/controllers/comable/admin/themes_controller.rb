@@ -6,6 +6,7 @@ module Comable
       load_and_authorize_resource class: Comable::Theme.name, find_by: :name
 
       def index
+        @themes = @themes.by_newest
       end
 
       def show

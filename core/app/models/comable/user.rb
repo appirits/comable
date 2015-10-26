@@ -17,6 +17,7 @@ module Comable
     scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
     scope :this_week, -> { where(created_at: Time.now.beginning_of_week..Time.now.end_of_week) }
     scope :last_week, -> { where(created_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week) }
+    scope :by_newest, -> { reorder(created_at: :desc) }
 
     validates :email, presence: true, length: { maximum: 255 }
 

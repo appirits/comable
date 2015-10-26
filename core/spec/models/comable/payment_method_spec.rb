@@ -13,4 +13,6 @@ describe Comable::PaymentMethod do
     it { is_expected.to validate_numericality_of(:enable_price_from).is_greater_than_or_equal_to(0) }
     it { is_expected.to validate_numericality_of(:enable_price_to).is_greater_than_or_equal_to(0) }
   end
+
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
 end

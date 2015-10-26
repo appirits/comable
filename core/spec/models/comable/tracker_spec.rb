@@ -7,4 +7,6 @@ RSpec.describe Comable::Tracker do
   it { is_expected.to validate_length_of(:name).is_at_most(255) }
   it { is_expected.to validate_length_of(:tracker_id).is_at_most(255) }
   it { is_expected.to validate_length_of(:place).is_at_most(255) }
+
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
 end

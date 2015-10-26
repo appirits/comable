@@ -13,6 +13,8 @@ describe Comable::Theme, type: :model do
   it { is_expected.to validate_length_of(:homepage).is_at_most(255) }
   it { is_expected.to validate_length_of(:author).is_at_most(255) }
 
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
+
   describe '.dir' do
     it 'returns the dirctory path for themes' do
       expect(described_class.dir).to eq(Rails.root.join('themes'))
