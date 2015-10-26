@@ -7,11 +7,12 @@ module Comable
     validates :code, presence: true
     validates :place, presence: true, length: { maximum: 255 }
 
-    scope :activated, -> { where(activated_flag: true) }
-
     enumerize :place, in: %i(
       everywhere
       checkout
     ), scope: true
+
+    scope :activated, -> { where(activated_flag: true) }
+    scope :by_newest, -> { reorder(created_at: :desc) }
   end
 end

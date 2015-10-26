@@ -16,6 +16,8 @@ module Comable
 
     ransack_options attribute_select: { associations: [:product, :stock, :option_values] }, ransackable_attributes: { except: :product_id }
 
+    scope :by_newest, -> { reorder(created_at: :desc) }
+
     def quantity
       stock.try(:quantity) || build_stock.quantity
     end

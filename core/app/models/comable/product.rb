@@ -14,6 +14,7 @@ module Comable
     accepts_nested_attributes_for :images, allow_destroy: true
 
     scope :published, -> (published_at = nil) { where('published_at <= ?', published_at || Time.now) }
+    scope :by_newest, -> { reorder(created_at: :desc) }
 
     validates :name, presence: true, length: { maximum: 255 }
 

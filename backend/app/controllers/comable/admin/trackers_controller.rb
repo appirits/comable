@@ -6,7 +6,7 @@ module Comable
       load_and_authorize_resource class: Comable::Tracker.name
 
       def index
-        @trackers = @trackers.page(params[:page])
+        @trackers = @trackers.page(params[:page]).by_newest
       end
 
       def show

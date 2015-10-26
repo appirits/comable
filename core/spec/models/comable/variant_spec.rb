@@ -8,6 +8,8 @@ describe Comable::Variant do
   it { is_expected.to validate_numericality_of(:price).is_greater_than_or_equal_to(0) }
   it { is_expected.to validate_length_of(:sku).is_at_most(255) }
 
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
+
   describe '#options' do
     it 'should returns name of OptionValue' do
       option_value = build(:option_value)

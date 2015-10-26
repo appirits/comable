@@ -7,7 +7,7 @@ module Comable
 
       def index
         @q = Comable::Page.ransack(params[:q])
-        @pages = @q.result.accessible_by(current_ability)
+        @pages = @q.result.accessible_by(current_ability).by_newest
       end
 
       def show

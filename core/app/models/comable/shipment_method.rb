@@ -5,5 +5,6 @@ module Comable
     validates :traking_url, length: { maximum: 255 }
 
     scope :activated, -> { where(activated_flag: true) }
+    scope :by_newest, -> { reorder(created_at: :desc) }
   end
 end

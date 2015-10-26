@@ -15,4 +15,6 @@ describe Comable::Page do
     it { is_expected.to validate_length_of(:meta_keywords).is_at_most(255) }
     it { is_expected.to validate_length_of(:meta_description).is_at_most(255) }
   end
+
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
 end

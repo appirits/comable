@@ -12,6 +12,8 @@ describe Comable::User do
     it { is_expected.to validate_length_of(:email).is_at_most(255) }
   end
 
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
+
   describe 'incomplete order' do
     context 'when guest' do
       let(:stock) { create(:stock, :stocked, :with_product) }

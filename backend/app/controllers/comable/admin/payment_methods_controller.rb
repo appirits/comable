@@ -6,7 +6,7 @@ module Comable
       load_and_authorize_resource class: Comable::PaymentMethod.name
 
       def index
-        @payment_methods = @payment_methods.page(params[:page])
+        @payment_methods = @payment_methods.page(params[:page]).by_newest
       end
 
       def show

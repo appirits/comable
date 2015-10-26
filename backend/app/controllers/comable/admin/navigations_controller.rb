@@ -7,7 +7,7 @@ module Comable
 
       def index
         @q = Comable::Navigation.ransack(params[:q])
-        @navigations = @q.result.accessible_by(current_ability)
+        @navigations = @q.result.accessible_by(current_ability).by_newest
       end
 
       def show

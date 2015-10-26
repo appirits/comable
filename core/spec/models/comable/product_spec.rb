@@ -6,6 +6,8 @@ describe Comable::Product do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_length_of(:name).is_at_most(255) }
 
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
+
   describe '.published' do
     it 'includes published products' do
       product = create(:product, published_at: Time.now)

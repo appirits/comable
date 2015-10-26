@@ -6,7 +6,7 @@ module Comable
       load_and_authorize_resource class: Comable::ShipmentMethod.name
 
       def index
-        @shipment_methods = @shipment_methods.page(params[:page])
+        @shipment_methods = @shipment_methods.page(params[:page]).by_newest
       end
 
       def show
