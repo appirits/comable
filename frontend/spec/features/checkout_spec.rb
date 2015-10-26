@@ -46,4 +46,23 @@ feature 'Checkout' do
       expect(order.state).to eq('confirm')
     end
   end
+
+  context "when order state was 'confirm'" do
+    background { order.update_attributes(state: 'confirm') }
+
+    scenario 'decreaces the product quantity after complete order' do
+      quantity = 10
+      stock = create(:stock, :with_product, quantity: quantity)
+      order_item = build(:order_item, variant: stock.variant, quantity: quantity)
+      order.order_items << order_item
+
+      visit comable.next_order_path(state: :confirm)
+
+      click_button Comable.t('complete_order')
+
+      expect(current_url).to eq(comable.order_url)
+      expect(order.state).to eq('completed')
+      expect(stock.reload.quantity).to eq(0)
+    end
+  end
 end
