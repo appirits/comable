@@ -46,18 +46,16 @@ module Comable
     deprecate :complete, deprecator: Comable::Deprecator.instance
 
     def restock!
-      order_items.each(&:restock)
-      save!
+      shipments.each(&:restock!)
     end
 
     def unstock!
-      order_items.each(&:unstock)
-      save!
+      shipments.each(&:unstock!)
     end
 
     def assign_stock_items_to_shipments
       reset_shipments
-      shipment = shipments.create
+      shipment = shipments.create!
       order_items.each do |order_item|
         order_item.quantity.times do
           shipment.shipment_items.create(

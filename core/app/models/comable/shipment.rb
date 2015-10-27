@@ -77,6 +77,14 @@ module Comable
       touch :completed_at
     end
 
+    def restock!
+      shipment_items.each(&:restock!)
+    end
+
+    def unstock!
+      shipment_items.each(&:unstock!)
+    end
+
     def can_ship?
       ready? && order.paid? && order.completed?
     end

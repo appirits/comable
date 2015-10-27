@@ -111,7 +111,7 @@ describe Comable::Admin::OrdersController do
     it 'restock the requested order' do
       stock = create(:stock, :stocked, :with_product)
       order_item = create(:order_item, stock: stock)
-      order.order_items << order_item
+      add_item_to(order, order_item)
 
       expect { post :cancel, id: order.to_param }.to change { stock.reload.quantity }.by(order_item.quantity)
     end
@@ -155,8 +155,7 @@ describe Comable::Admin::OrdersController do
       end
 
       it 'unstock the requested order' do
-        order.order_items << order_item
-
+        add_item_to(order, order_item)
         expect { post :resume, id: order.to_param }.to change { stock.reload.quantity }.by(-order_item.quantity)
       end
 
@@ -168,7 +167,7 @@ describe Comable::Admin::OrdersController do
 
     context 'with out of stock' do
       before do
-        order.order_items << order_item
+        add_item_to(order, order_item)
         stock.update_attributes(quantity: 0)
       end
 
@@ -295,6 +294,16 @@ describe Comable::Admin::OrdersController do
 
     it 'raises error when params[:shipment_id] is not exist' do
       expect { post :resume_shipment, id: order.to_param }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  private
+
+  def add_item_to(order, order_item)
+    order.order_items << order_item
+
+    order_item.quantity.times do
+      order.shipment.shipment_items.create(stock: order_item.stock)
     end
   end
 end
