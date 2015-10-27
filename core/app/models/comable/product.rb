@@ -37,7 +37,7 @@ module Comable
     end
 
     def stocked?
-      variants.any?(:can_supply?)
+      variants.any?(&:can_supply?)
     end
 
     def unstocked?

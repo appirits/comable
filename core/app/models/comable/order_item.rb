@@ -79,10 +79,15 @@ module Comable
       variant.stocks.first
     end
 
+    def stock=(stock)
+      self.variant = stock.variant
+    end
+
     #
     # Deprecated methods
     #
     deprecate :stock, deprecator: Comable::Deprecator.instance
+    deprecate :stock=, deprecator: Comable::Deprecator.instance
     deprecate :sku_h_item_name, deprecator: Comable::Deprecator.instance
     deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
     deprecate :sku_h_choice_name, deprecator: Comable::Deprecator.instance
