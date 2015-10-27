@@ -14,7 +14,7 @@ module Comable
       end
     end
 
-    def as_json(options = {})
+    def as_json(_options = {})
       { id: id, text: name }
     end
   end

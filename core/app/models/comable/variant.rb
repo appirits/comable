@@ -19,14 +19,6 @@ module Comable
 
     scope :by_newest, -> { reorder(created_at: :desc) }
 
-    def name
-      if options.any?
-        "#{product.name} (#{options.map(&:value).join('/')})"
-      else
-        product.name
-      end
-    end
-
     alias_method :quantity, :total_quantity
 
     def quantity=(quantity)
