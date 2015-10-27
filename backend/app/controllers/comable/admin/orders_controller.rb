@@ -59,17 +59,21 @@ module Comable
       end
 
       def ship
-        @order.shipment.ship!
+        if params[:shipment_id]
+          find_shipment.ship!
+        else
+          @order.ship!
+        end
         redirect_to :back, notice: Comable.t('successful')
       end
 
       def cancel_shipment
-        @order.shipment.cancel!
+        find_shipment.cancel!
         redirect_to :back, notice: Comable.t('successful')
       end
 
       def resume_shipment
-        @order.shipment.resume!
+        find_shipment.resume!
         redirect_to :back, notice: Comable.t('successful')
       end
 
@@ -89,6 +93,10 @@ module Comable
 
       def redirect_to_back_with_alert(exception)
         redirect_to :back, alert: exception.message
+      end
+
+      def find_shipment
+        @order.shipments.find(params[:shipment_id])
       end
     end
   end

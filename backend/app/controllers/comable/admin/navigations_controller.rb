@@ -7,7 +7,7 @@ module Comable
 
       def index
         @q = Comable::Navigation.ransack(params[:q])
-        @navigations = @q.result.accessible_by(current_ability)
+        @navigations = @q.result.accessible_by(current_ability).by_newest
       end
 
       def show
@@ -46,20 +46,11 @@ module Comable
       end
 
       def search_linkable_ids
-        @linkable_id_options = linkable_id_options
+        @linkable_id_options = Comable::NavigationItem.linkable_id_options(params[:linkable_type])
         render layout: false
       end
 
       private
-
-      def linkable_type
-        return if params[:linkable_type].blank?
-        params[:linkable_type] if Comable.const_defined?(params[:linkable_type].demodulize)
-      end
-
-      def linkable_id_options
-        linkable_type ? linkable_type.constantize.linkable_id_options : [[]]
-      end
 
       def navigation_params
         params.require(:navigation).permit(

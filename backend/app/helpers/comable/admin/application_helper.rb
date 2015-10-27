@@ -46,10 +46,6 @@ module Comable
         false
       end
 
-      def page_name
-        [controller_name, action_name].join(':')
-      end
-
       private
 
       def singular?(string)

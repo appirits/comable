@@ -25,6 +25,10 @@ module Comable
     # 品切れの在庫インスタンスを返す
     scope :unstocked, -> { where('quantity <= ?', 0) }
 
+    # @!scope class
+    # returns sorted records by newest.
+    scope :by_newest, -> { reorder(created_at: :desc) }
+
     #
     # @!endgroup
     #

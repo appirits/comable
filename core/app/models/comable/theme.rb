@@ -10,6 +10,8 @@ module Comable
     validates :homepage, length: { maximum: 255 }
     validates :author, length: { maximum: 255 }
 
+    scope :by_newest, -> { reorder(created_at: :desc) }
+
     class << self
       def dir
         Rails.root.join('themes')

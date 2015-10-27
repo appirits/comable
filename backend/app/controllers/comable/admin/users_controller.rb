@@ -9,7 +9,7 @@ module Comable
 
       def index
         @q = Comable::User.ransack(params[:q])
-        @users = @q.result.page(params[:page]).accessible_by(current_ability)
+        @users = @q.result.page(params[:page]).accessible_by(current_ability).by_newest
       end
 
       def show

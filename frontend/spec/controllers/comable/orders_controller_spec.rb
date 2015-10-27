@@ -160,12 +160,12 @@ describe Comable::OrdersController do
       let(:order_attributes) { attributes_for(:order, :for_shipment) }
 
       before { current_order.update_attributes(order_attributes) }
-      before { put :update, state: :shipment, order: { shipment_attributes: { shipment_method_id: shipment_method.id } } }
+      before { put :update, state: :shipment, order: { shipments_attributes: { '0' => { shipment_method_id: shipment_method.id } } } }
 
       its(:response) { is_expected.to redirect_to(controller.comable.next_order_path(state: :payment)) }
 
       it 'has assigned @order with shipemnt method' do
-        expect(assigns(:order).shipment.shipment_method).to eq(shipment_method)
+        expect(assigns(:order).shipments.first.shipment_method).to eq(shipment_method)
       end
     end
 

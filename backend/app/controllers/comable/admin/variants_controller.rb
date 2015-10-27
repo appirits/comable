@@ -8,7 +8,7 @@ module Comable
 
       def index
         @q = @variants.ransack(params[:q])
-        @variants = @q.result.includes(:product).page(params[:page]).accessible_by(current_ability)
+        @variants = @q.result.includes(:product).page(params[:page]).accessible_by(current_ability).by_newest
       end
 
       def show
@@ -41,7 +41,7 @@ module Comable
 
       def destroy
         @variant.destroy
-        redirect_to comable.admin_product_variants_path(@product), notice: Comable.t('successful')
+        redirect_to comable.admin_product_path(@product), notice: Comable.t('successful')
       end
 
       private

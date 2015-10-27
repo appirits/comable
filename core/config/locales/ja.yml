@@ -194,6 +194,8 @@ ja:
           visibility: 公開/非公開
           published: 公開
           unpublished: 非公開
+          property: プロパティ
+          add_property: プロパティ追加
         orders:
           detail: 注文明細
           cart: カート情報
@@ -361,6 +363,7 @@ ja:
         name: 商品名
         price: 価格
         caption: キャプション
+        property: プロパティ
         categories: カテゴリ
         sku_h_item_name: SKU横軸項目名
         sku_v_item_name: SKU縦軸項目名

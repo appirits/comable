@@ -4,6 +4,8 @@ describe Comable::Stock do
 
   it { is_expected.to validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
 
+  it { is_expected.to scope(:by_newest) { reorder(created_at: :desc) } }
+
   describe '#product=' do
     it 'should sets product with vatiant' do
       subject.variant = build(:variant)

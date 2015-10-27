@@ -66,6 +66,18 @@ describe Comable::Admin::OrdersController do
         expect(response).to render_template(:edit)
       end
     end
+
+    describe 'with valid params for address' do
+      let(:bill_address_attributes) { { family_name: "NEW: #{order.bill_address.family_name}" } }
+      let(:new_attributes) { { bill_address_attributes: bill_address_attributes.merge(id: order.bill_address.to_param) } }
+
+      it 'updates the address of requested order' do
+        bill_address = order.bill_address
+        put :update, id: order.to_param, order: new_attributes
+        bill_address.reload
+        expect(bill_address).to have_attributes(bill_address_attributes)
+      end
+    end
   end
 
   describe 'GET export' do
@@ -213,51 +225,76 @@ describe Comable::Admin::OrdersController do
 
   describe 'POST ship' do
     let(:order) { create(:order, :completed) }
+    let(:shipment) { order.shipments.first }
 
-    it 'ship the requested order' do
-      post :ship, id: order.to_param
-      order.reload
-      expect(order.shipment).to be_completed
+    it 'ship the shipment of the requested order' do
+      post :ship, id: order.to_param, shipment_id: shipment.id
+      shipment.reload
+      expect(shipment).to be_completed
     end
 
     it 'redirects back' do
-      post :ship, id: order.to_param
+      post :ship, id: order.to_param, shipment_id: shipment.id
       expect(response).to redirect_to(:back)
+    end
+
+    it 'raises error when params[:shipment_id] is invalid' do
+      expect { post :ship, id: order.to_param, shipment_id: shipment.id.next }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'ships all ready shipments of the requested order when params[:shipment_id] is not exist' do
+      second_shipment = shipment.dup
+      pending_shipment = create(:shipment, state: :pending)
+      order.shipments = [shipment, second_shipment, pending_shipment]
+      post :ship, id: order.to_param
+      expect(shipment.reload).to be_completed
+      expect(second_shipment.reload).to be_completed
+      expect(pending_shipment.reload).to be_pending
     end
   end
 
   describe 'POST cancel_shipment' do
     let(:order) { create(:order, :completed) }
+    let(:shipment) { order.shipments.first }
 
-    before { order.shipment.ship! }
+    before { shipment.ship! }
 
     it 'cancel the shipment of the requested order' do
-      post :cancel_shipment, id: order.to_param
-      order.reload
-      expect(order.shipment).to be_canceled
+      post :cancel_shipment, id: order.to_param, shipment_id: shipment.id
+      shipment.reload
+      expect(shipment).to be_canceled
     end
 
     it 'redirects back' do
-      post :cancel_shipment, id: order.to_param
+      post :cancel_shipment, id: order.to_param, shipment_id: shipment.id
       expect(response).to redirect_to(:back)
+    end
+
+    it 'raises error when params[:shipment_id] is not exist' do
+      expect { post :cancel_shipment, id: order.to_param }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
   describe 'POST resume_shipment' do
     let(:order) { create(:order, :completed) }
+    let(:shipment) { order.shipments.first }
 
-    before { order.shipment.ship! }
-    before { order.shipment.cancel! }
+    before { shipment.ship! }
+    before { shipment.cancel! }
 
     it 'resume the shipment of the requested order' do
-      post :resume_shipment, id: order.to_param
-      order.reload
+      post :resume_shipment, id: order.to_param, shipment_id: shipment.id
+      shipment.reload
       expect(order.shipment).to be_resumed
     end
 
     it 'redirects back' do
-      post :resume_shipment, id: order.to_param
+      post :resume_shipment, id: order.to_param, shipment_id: shipment.id
       expect(response).to redirect_to(:back)
+    end
+
+    it 'raises error when params[:shipment_id] is not exist' do
+      expect { post :resume_shipment, id: order.to_param }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

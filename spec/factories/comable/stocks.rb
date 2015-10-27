@@ -11,13 +11,10 @@ FactoryGirl.define do
 
     trait :with_product do
       after(:create) do |stock, evaluator|
-        option_types_attributes = [name: 'Color'] + [name: 'Size'] if evaluator.sku_flag
-        product = build(:product, option_types_attributes: option_types_attributes || [])
-
-        option_values_attributes = [option_type: product.option_types.first, name: 'Red'] + [option_type: product.option_types.first, name: 'S'] if evaluator.sku_flag
-        variant = build(:variant, product: product, option_values_attributes: option_values_attributes || [])
-
-        stock.variant = variant
+        options = [name: 'Color', value: 'Red'] + [name: 'Size', value: 'S'] if evaluator.sku_flag
+        product = build(:product)
+        variant = build(:variant, product: product, options: options || [])
+        stock.update(variant: variant)
       end
     end
 

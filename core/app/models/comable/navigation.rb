@@ -8,5 +8,7 @@ module Comable
 
     validates :name, length: { maximum: 255 }, presence: true
     validates :navigation_items, presence: true
+
+    scope :by_newest, -> { reorder(created_at: :desc) }
   end
 end

@@ -6,7 +6,7 @@ module Comable
     belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants
     has_many :stocks, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy
 
-    has_and_belongs_to_many :option_values, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values
+    has_and_belongs_to_many :option_values, -> { order(:option_type_id, :created_at, :id) }, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values
 
     accepts_nested_attributes_for :stocks, allow_destroy: true
     accepts_nested_attributes_for :option_values, allow_destroy: true
@@ -17,7 +17,7 @@ module Comable
 
     ransack_options attribute_select: { associations: [:product, :stocks, :option_values] }, ransackable_attributes: { except: :product_id }
 
-    alias_method :quantity, :total_quantity
+    scope :by_newest, -> { reorder(created_at: :desc) }
 
     def name
       if options.any?
@@ -26,6 +26,8 @@ module Comable
         product.name
       end
     end
+
+    alias_method :quantity, :total_quantity
 
     def quantity=(quantity)
       fail 'Stocks are already exists!' if stocks.any?
@@ -45,6 +47,21 @@ module Comable
         option_type = Comable::OptionType.where(name: hash[:name]).first_or_initialize(&:save!)
         Comable::OptionValue.where(name: hash[:value], option_type: option_type).first_or_initialize(&:save!)
       end
+    end
+
+    def name
+      if options.any?
+        "#{product.name} (#{options.map(&:value).join('/')})"
+      else
+        product.name
+      end
+    end
+
+    def as_json(options = nil)
+      super.merge(
+        'quantity' => quantity,
+        'options' => option_values.map(&:name)
+      )
     end
   end
 end

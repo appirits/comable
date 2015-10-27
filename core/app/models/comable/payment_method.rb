@@ -7,6 +7,8 @@ module Comable
     validates :enable_price_from, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
     validates :enable_price_to, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
 
+    scope :by_newest, -> { reorder(created_at: :desc) }
+
     def payment_provider
       return unless Object.const_defined?(payment_provider_type)
       Object.const_get(payment_provider_type)

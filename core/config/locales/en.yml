@@ -194,6 +194,8 @@ en:
           visibility: 'publishing/closed'
           published: 'Published'
           unpublished: 'Unpublished'
+          property: 'Property'
+          add_property: 'Add Property'
         orders:
           detail: 'Order details'
           cart: 'Cart infomation'
@@ -361,6 +363,7 @@ en:
         name: 'Name'
         price: 'Price'
         caption: 'Caption'
+        property: 'Property'
         categories: 'Categories'
         sku_h_item_name: 'SKU Horizontal item name'
         sku_v_item_name: 'SKU Vertical item name'

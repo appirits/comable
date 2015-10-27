@@ -19,7 +19,7 @@ section.row
 
       li
         - if shipment.state?(:ready)
-          = link_to comable.ship_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :completed).merge(method: :post, disabled: !@order.can_ship?) do
+          = link_to comable.ship_admin_order_path(shipment.order, shipment_id: shipment.id), options_of_shipment_badge_for(shipment, state: :completed).merge(method: :post, disabled: !shipment.can_ship?) do
             i.fa.fa-truck
         - else
           = content_tag :div, options_of_shipment_badge_for(shipment, state: :completed) do
@@ -32,7 +32,7 @@ section.row
 
       - if shipment.state?(:completed) || shipment.state?(:resumed)
         li
-          = link_to comable.cancel_shipment_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :canceled).merge(method: :post) do
+          = link_to comable.cancel_shipment_admin_order_path(shipment.order, shipment_id: shipment.id), options_of_shipment_badge_for(shipment, state: :canceled).merge(method: :post) do
             i.fa.fa-close
 
       - if shipment.state?(:canceled)
@@ -40,5 +40,5 @@ section.row
           = content_tag :div, options_of_shipment_badge_for(shipment, state: :canceled) do
             i.fa.fa-close
         li
-          = link_to comable.resume_shipment_admin_order_path(shipment.order), options_of_shipment_badge_for(shipment, state: :resumed).merge(method: :post) do
+          = link_to comable.resume_shipment_admin_order_path(shipment.order, shipment_id: shipment.id), options_of_shipment_badge_for(shipment, state: :resumed).merge(method: :post) do
             i.fa.fa-refresh

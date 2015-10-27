@@ -65,6 +65,10 @@ module Comable
       ).stringify_keys
     end
 
+    def page_name
+      [controller_name, action_name].join(':')
+    end
+
     private
 
     def comable_root_path

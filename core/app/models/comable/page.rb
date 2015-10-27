@@ -1,10 +1,10 @@
 module Comable
   class Page < ActiveRecord::Base
     include Comable::Ransackable
-    include Comable::Linkable
     extend FriendlyId
 
-    linkable_columns_keys name: :title
+    PREVIEW_SESSION_KEY = :preview_page
+
     friendly_id :title, use: :slugged
 
     validates :title, length: { maximum: 255 }, presence: true
@@ -14,7 +14,7 @@ module Comable
     validates :meta_keywords, length: { maximum: 255 }
     validates :slug, length: { maximum: 255 }, presence: true, uniqueness: true
 
-    PREVIEW_SESSION_KEY = :preview_page
+    scope :by_newest, -> { reorder(created_at: :desc) }
 
     def published?
       published_at.present? && published_at <= Time.now

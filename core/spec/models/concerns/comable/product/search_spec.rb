@@ -25,25 +25,23 @@ describe Comable::Product::Search do
 
   describe '.search' do
     context 'when 1 word' do
-      let!(:product) { DummyProduct.create(code: 'aaa', name: 'bbb', caption: 'ccc') }
+      let!(:product) { DummyProduct.create(name: 'aaa', caption: 'bbb') }
 
       it 'should return the correct products' do
         expect(DummyProduct.search('aaa').count).to eq(1)
         expect(DummyProduct.search('bbb').count).to eq(1)
-        expect(DummyProduct.search('ccc').count).to eq(1)
-        expect(DummyProduct.search('ddd').count).to eq(0)
+        expect(DummyProduct.search('ccc').count).to eq(0)
       end
     end
 
     context 'when 2 words' do
-      let!(:product) { DummyProduct.create(code: 'aaabbbccc', name: 'dddeeefff', caption: 'ggghhhiii') }
+      let!(:product) { DummyProduct.create(name: 'aaabbbccc', caption: 'dddeeefff') }
 
       it 'should return the correct products' do
         expect(DummyProduct.search('aaa ccc').count).to eq(1)
         expect(DummyProduct.search('ddd fff').count).to eq(1)
-        expect(DummyProduct.search('ggg iii').count).to eq(1)
-        expect(DummyProduct.search('aaa iii').count).to eq(1)
-        expect(DummyProduct.search('aaa jjj').count).to eq(0)
+        expect(DummyProduct.search('aaa fff').count).to eq(1)
+        expect(DummyProduct.search('aaa ggg').count).to eq(0)
       end
     end
   end

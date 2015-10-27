@@ -5,7 +5,6 @@ module Comable
     include Comable::Liquidable
     include Comable::Product::Search
     include Comable::Product::Csvable
-    include Comable::Linkable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, class_name: Comable::Image.name, dependent: :destroy
@@ -15,14 +14,13 @@ module Comable
     accepts_nested_attributes_for :images, allow_destroy: true
 
     scope :published, -> (published_at = nil) { where('published_at <= ?', published_at || Time.now) }
+    scope :by_newest, -> { reorder(created_at: :desc) }
 
     validates :name, presence: true, length: { maximum: 255 }
 
     liquid_methods :id, :code, :name, :price, :images, :image_url
 
     ransack_options attribute_select: { associations: [:variants, :stocks, :option_types] }
-
-    linkable_columns_keys use_index: true
 
     PREVIEW_SESSION_KEY = :preview_product
 
@@ -56,6 +54,10 @@ module Comable
 
     def master?
       option_types.empty?
+    end
+
+    def as_json(options = nil)
+      super (options || {}).merge(methods: [:variants])
     end
 
     def sku_h_item_name
@@ -93,6 +95,14 @@ module Comable
     end
 
     def option_types_attributes=(_option_types_attributes)
+    end
+
+    def properties
+      parse_property = JSON.parse(property) # propertyに不正な値が入っていた場合に例外発生する
+      return [] unless parse_property.is_a?(Array) && parse_property.all? { |prop| prop.is_a?(Hash) }
+      parse_property
+    rescue
+      []
     end
 
     #

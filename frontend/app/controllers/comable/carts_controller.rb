@@ -2,6 +2,7 @@ module Comable
   class CartsController < Comable::ApplicationController
     before_filter :set_cart_item, only: [:add, :update, :destroy]
     before_filter :ensure_found_cart_item, only: [:add, :update, :destroy]
+    after_filter :reset_shipments, only: [:add, :update, :destroy], if: -> { current_order.shipments.any? }
 
     def add
       if current_comable_user.add_cart_item(@cart_item, cart_item_options)
@@ -47,24 +48,23 @@ module Comable
     end
 
     def find_cart_item
-      cart_item = Comable::Stock.where(id: params[:stock_id]).first
-      cart_item ||= find_variant
-      cart_item ||= Comable::Product.where(id: params[:product_id]).first
+      cart_item = Comable::Stock.find_by(id: params[:stock_id])
+      cart_item ||= Comable::Variant.find_by(id: params[:variant_id])
+      cart_item ||= Comable::Product.find_by(id: params[:product_id])
       return unless cart_item
       return if cart_item.is_a?(Comable::Product) && cart_item.sku?
       cart_item
-    end
-
-    def find_variant
-      Comable::Variant.joins(:option_values).where(
-        Comable::OptionValue.table_name => { id: params[:option_values] }
-      ).first
     end
 
     def cart_item_options
       options = {}
       options.update(quantity: params[:quantity].to_i) if params[:quantity]
       options
+    end
+
+    def reset_shipments
+      current_order.reset_shipments
+      current_order.update!(state: 'cart')
     end
   end
 end
