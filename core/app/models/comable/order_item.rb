@@ -25,14 +25,6 @@ module Comable
       # Nothing to do
     end
 
-    def unstock
-      decrement_stock
-    end
-
-    def restock
-      increment_stock
-    end
-
     # TODO: カート投入時との差額表示
     def copy_attributes
       self.attributes = current_attributes
@@ -96,24 +88,6 @@ module Comable
     def valid_stock_quantity
       return unless unstocked?
       errors.add :quantity, Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku)
-    end
-
-    def stock_with_clean_quantity
-      quantity_will = stock.quantity
-      stock.quantity = stock.quantity_was if stock.quantity_was
-      yield stock
-    ensure
-      stock.quantity = quantity_will
-    end
-
-    def decrement_stock
-      stock.lock!
-      stock.quantity -= quantity
-    end
-
-    def increment_stock
-      stock.lock!
-      stock.quantity += quantity
     end
 
     def current_attributes
