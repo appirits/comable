@@ -26,7 +26,7 @@ describe Comable::OrderItem do
     it 'should sets product with vatiant' do
       subject.variant = build(:variant)
       subject.stock = build(:stock)
-      expect(subject.stock).to eq(subject.variant.stock)
+      expect(subject.stock).to eq(subject.variant.stocks.first)
     end
 
     it 'should sets product without vatiant' do

@@ -78,7 +78,7 @@ module Comable
     end
 
     def stock=(stock)
-      self.variant = stock.variant
+      self.variant = stock.variant || stock.build_variant
     end
 
     #
