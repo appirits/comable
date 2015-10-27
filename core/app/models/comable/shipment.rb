@@ -10,7 +10,7 @@ module Comable
     before_validation :copy_attributes_from_shipment_method, unless: :order_completed?
 
     validates :order, presence: true
-    validates :shipment_method, presence: true, if: -> { stated?(:pending) }
+    validates :shipment_method, presence: true, if: -> { stated?(:pending) && order.shipment_required? }
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :tracking_number, length: { maximum: 255 }
 
@@ -49,6 +49,7 @@ module Comable
         transition :canceled => :resumed
       end
 
+      before_transition to: :ready, do: -> (s) { s.ready! }
       before_transition to: :completed, do: -> (s) { s.complete! }
     end
 
@@ -66,6 +67,10 @@ module Comable
 
     def completed?
       completed_at?
+    end
+
+    def ready!
+      shipment_items.each(&:ready!)
     end
 
     def complete!

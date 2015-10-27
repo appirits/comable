@@ -80,66 +80,101 @@ describe Comable::Order do
     end
   end
 
-  describe 'attributes' do
-    describe '#save' do
-      context 'complete order' do
-        let!(:order_item) { create(:order_item, order: order, quantity: 10) }
+  describe '#complete!' do
+    subject { create(:order, :for_confirm) }
 
-        let(:stock) { order_item.stock }
-        let(:product) { stock.product }
-        let(:item_total_price) { product.price * order_item.quantity }
+    let(:shipment_method) { build(:shipment_method) }
 
-        before { subject.complete }
-        before { subject.reload }
+    it 'has completed_at' do
+      expect { subject.complete! }.to change { subject.reload.completed_at }.from(nil)
+    end
 
-        its(:completed_at) { should be }
-        its(:code) { should match(/^C\d{11}$/) }
-        its(:total_price) { should eq(item_total_price) }
+    it 'has code' do
+      subject.complete!
+      expect(subject.code).to match(/^C\d{11}$/)
+    end
 
-        it 'has been subtracted stock' do
-          expect { stock.reload }.to change { stock.quantity }.from(order_item.quantity).to(0)
-        end
+    it 'has total_price' do
+      quantity = 10
 
-        context 'with shipment' do
-          subject(:order) { build(:order, :for_shipment, shipment: shipment) }
+      stock = create(:stock, :with_product, quantity: quantity)
+      order_item = build(:order_item, stock: stock, quantity: quantity)
+      subject.order_items << order_item
 
-          let(:shipment) { build(:shipment) }
+      subject.complete!
 
-          its(:shipment_fee) { is_expected.to eq(shipment.fee) }
-          its(:total_price) { is_expected.to eq(item_total_price + shipment.fee) }
+      item_total_price = stock.variant.price * order_item.quantity
+      total_price = item_total_price + subject.current_shipment_fee + subject.current_payment_fee
 
-          it 'shipment has been ready' do
-            expect(order.shipment.state).to eq('ready')
-          end
-        end
+      expect(subject.total_price).to eq(total_price)
+    end
 
-        context 'with user' do
-          subject(:order) { build(:order, user: user, bill_address: address, ship_address: address) }
+    it 'subtracts the quantity of the product' do
+      quantity = 10
 
-          let(:address) { create(:address) }
+      # Add a order item
+      stock = create(:stock, :with_product, quantity: quantity)
+      order_item = build(:order_item, stock: stock, quantity: quantity)
+      subject.order_items << order_item
 
-          context 'has addresses used in order' do
-            let(:user) { create(:user, addresses: [address]) }
+      # Subtract the quantity
+      expect { subject.complete! }.to change { stock.reload.quantity }.from(order_item.quantity).to(0)
+    end
 
-            it 'has copied address from order to user' do
-              user.reload
-              expect(user.bill_address).to eq(address)
-              expect(user.ship_address).to eq(address)
-            end
-          end
+    context 'with shipment' do
+      subject { create(:order, :for_shipment) }
 
-          context 'has addresses not used in order' do
-            let(:user) { create(:user, :with_addresses) }
+      it 'has shipment_fee' do
+        subject.complete!
+        expect(subject.shipment_fee).to eq(subject.shipment.fee)
+      end
 
-            it 'has cloned address from order to user' do
-              user.reload
-              expect(user.bill_address.contents).to eq(address.contents)
-              expect(user.ship_address.contents).to eq(address.contents)
-            end
-          end
+      it 'has total_price' do
+        subject.complete!
+        expect(subject.total_price).to eq(subject.current_item_total_price + subject.shipment.fee)
+      end
+
+      it 'has a shipment that has been ready' do
+        subject.complete!
+        expect(subject.shipment).to be_ready
+      end
+    end
+
+    context 'with user' do
+      let(:address) { create(:address) }
+
+      before { subject.update(bill_address: address, ship_address: address) }
+
+      context 'has addresses used in order' do
+        let(:user) { create(:user, addresses: [address]) }
+
+        before { subject.update(user: user) }
+
+        it 'has copied address from order to user' do
+          subject.complete!
+          expect(user.bill_address).to eq(address)
+          expect(user.ship_address).to eq(address)
         end
       end
 
+      context 'has addresses not used in order' do
+        let(:user) { create(:user, :with_addresses) }
+
+        before { subject.update(user: user) }
+
+        it 'has cloned address from order to user' do
+          subject.complete!
+          expect(user.bill_address).not_to eq(address)
+          expect(user.ship_address).not_to eq(address)
+          expect(user.bill_address.contents).to eq(address.contents)
+          expect(user.ship_address.contents).to eq(address.contents)
+        end
+      end
+    end
+  end
+
+  describe 'attributes' do
+    describe '#save' do
       context 'incomplete order' do
         before { subject.save }
         before { subject.reload }

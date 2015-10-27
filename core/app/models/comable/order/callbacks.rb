@@ -8,6 +8,7 @@ module Comable
 
         before_validation :generate_guest_token, on: :create
         before_validation :clone_addresses_from_user, on: :create
+        before_complete :assign_stock_items_to_shipments, if: -> { shipments.map(&:shipment_items).flatten.empty? }
         before_complete :generate_code
         after_complete :clone_addresses_to_user
       end

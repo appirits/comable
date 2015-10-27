@@ -22,7 +22,7 @@ module Comable
     before_validation :copy_attributes, unless: :completed?
 
     def complete
-      unstock
+      # Nothing to do
     end
 
     def unstock
