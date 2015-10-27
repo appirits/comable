@@ -56,11 +56,13 @@ module Comable
     def assign_stock_items_to_shipments
       reset_shipments
       shipment = shipments.create!
+      packing_items_to(shipment)
+    end
+
+    def packing_items_to(shipment)
       order_items.each do |order_item|
         order_item.quantity.times do
-          shipment.shipment_items.create(
-            stock: order_item.stock
-          )
+          shipment.shipment_items.create(stock: order_item.stock)
         end
       end
     end
