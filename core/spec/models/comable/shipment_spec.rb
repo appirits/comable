@@ -14,8 +14,9 @@ RSpec.describe Comable::Shipment do
   it { is_expected.to validate_length_of(:tracking_number).is_at_most(255) }
   it { is_expected.to validate_numericality_of(:fee).is_greater_than_or_equal_to(0) }
 
-  context 'when state is "ready"' do
+  context 'when state is "ready" and ShipmentMethod is existed' do
     before { subject.update!(state: :ready) }
+    before { create(:shipment_method) }
 
     it { is_expected.to validate_presence_of(:shipment_method) }
   end

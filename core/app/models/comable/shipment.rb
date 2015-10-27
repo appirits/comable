@@ -10,7 +10,7 @@ module Comable
     before_validation :copy_attributes_from_shipment_method, unless: :order_completed?
 
     validates :order, presence: true
-    validates :shipment_method, presence: true, if: -> { stated?(:pending) && order.shipment_required? }
+    validates :shipment_method, presence: true, if: -> { stated?(:pending) && Comable::ShipmentMethod.activated.exists? }
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :tracking_number, length: { maximum: 255 }
 
