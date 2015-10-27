@@ -13,60 +13,60 @@ variants_attributes = [
   {
     product: suede_dress,
     options: [name: Comable::Sample.t(:size), value: 'S'] + [name: Comable::Sample.t(:color), value: Comable::Sample.t(:navy)],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'SUEDE-DRESS-SN'
   },
   {
     product: suede_dress,
     options: [name: Comable::Sample.t(:size), value: 'M'] + [name: Comable::Sample.t(:color), value: Comable::Sample.t(:navy)],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'SUEDE-DRESS-MN'
   },
   {
     product: girly_coat,
     options: [name: Comable::Sample.t(:size), value: 'S'] + [name: Comable::Sample.t(:color), value: Comable::Sample.t(:beige)],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'GIRLY-COAT-SB'
   },
   {
     product: girly_coat,
     options: [name: Comable::Sample.t(:size), value: 'M'] + [name: Comable::Sample.t(:color), value: Comable::Sample.t(:beige)],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'GIRLY-COAT-MB'
   },
   {
     product: girly_coat,
     options: [name: Comable::Sample.t(:size), value: 'S'] + [name: Comable::Sample.t(:color), value: Comable::Sample.t(:navy)],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'GIRLY-COAT-SN'
   },
   {
     product: girly_coat,
     options: [name: Comable::Sample.t(:size), value: 'M'] + [name: Comable::Sample.t(:color), value: Comable::Sample.t(:navy)],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'GIRLY-COAT-MN'
   },
   {
     product: fur_gloves,
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'FUR-GLOVES'
   },
   {
     product: leather_boots,
     options: [name: Comable::Sample.t(:size), value: 'S'],
-    stock_attributes: { quantity: 0 },
+    stocks_attributes: [quantity: 0],
     sku: 'LEATHER-BOOTS-S'
   },
   {
     product: leather_boots,
     options: [name: Comable::Sample.t(:size), value: 'M'],
-    stock_attributes: { quantity: 1 },
+    stocks_attributes: [quantity: 1],
     sku: 'LEATHER-BOOTS-M'
   },
   {
     product: leather_boots,
     options: [name: Comable::Sample.t(:size), value: 'L'],
-    stock_attributes: default_stock_attributes,
+    stocks_attributes: [default_stock_attributes],
     sku: 'LEATHER-BOOTS-L'
   }
 ]
