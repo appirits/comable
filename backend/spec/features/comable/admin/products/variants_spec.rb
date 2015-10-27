@@ -66,7 +66,8 @@ feature 'Variants', js: true do
 
     visit comable.admin_product_path(product)
 
-    fill_in :product_variants_attributes_0_quantity, with: new_quantity
+    click_on Comable.t('admin.add_stocks')
+    fill_in :product_variants_attributes_0_stocks_attributes_0_quantity, with: new_quantity
 
     click_on Comable.t('admin.actions.save')
 
