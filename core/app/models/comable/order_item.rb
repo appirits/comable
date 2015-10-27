@@ -54,9 +54,7 @@ module Comable
     end
 
     def unstocked?
-      stock_with_clean_quantity do |stock|
-        stock.unstocked?(quantity: quantity)
-      end
+      !variant.can_supply? quantity
     end
 
     def sku_h_item_name
