@@ -6,9 +6,8 @@
 
 <%= Comable.t('order_mailer.complete.introductions', store_name: current_store.name) %>
 
-    <%- shipment = @order.shipment %>
-    <%- if shipment %>
-    <%= @order.class.human_attribute_name(:shipment_method) %>:
+    <%- @order.shipments.select(&:shipment_method).each.with_index(1) do |shipment, index| %>
+    <%= "#{@order.class.human_attribute_name(:shipment_method)} ##{index}" %>:
             <%= shipment.name %>
     <%- end %>
 
