@@ -6,6 +6,8 @@ module Comable
     validates :shipment, presence: true
     validates :stock, presence: true
 
+    attr_accessor :variant
+
     def ready!
       decrement_stock!
     end

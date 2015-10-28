@@ -8,6 +8,8 @@ module Comable
 
     validates :name, presence: true, length: { maximum: 255 }
 
+    scope :active, -> { where(active: true) }
+
     class << self
       def default
         where(default: true).first
@@ -16,6 +18,10 @@ module Comable
 
     def as_json(_options = {})
       { id: id, text: name }
+    end
+
+    def find_stock_item(variant)
+      stocks.find_by(variant: variant)
     end
   end
 end
