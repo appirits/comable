@@ -110,7 +110,7 @@ describe Comable::Admin::OrdersController do
 
     it 'restock the requested order' do
       stock = create(:stock, :stocked, :with_product)
-      order_item = create(:order_item, stock: stock)
+      order_item = build(:order_item, stock: stock)
       add_item_to(order, order_item)
 
       expect { post :cancel, id: order.to_param }.to change { stock.reload.quantity }.by(order_item.quantity)
@@ -142,7 +142,7 @@ describe Comable::Admin::OrdersController do
 
   describe 'POST resume' do
     let(:order) { create(:order, :completed) }
-    let(:order_item) { create(:order_item, stock: stock) }
+    let(:order_item) { build(:order_item, stock: stock) }
     let(:stock) { create(:stock, :stocked, :with_product) }
 
     before { order.cancel! }
@@ -223,7 +223,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST ship' do
-    let(:order) { create(:order, :completed) }
+    let(:order) { create(:order, :completed, :with_shipments) }
     let(:shipment) { order.shipments.first }
 
     it 'ship the shipment of the requested order' do
@@ -243,7 +243,7 @@ describe Comable::Admin::OrdersController do
 
     it 'ships all ready shipments of the requested order when params[:shipment_id] is not exist' do
       second_shipment = shipment.dup
-      pending_shipment = create(:shipment, state: :pending)
+      pending_shipment = build(:shipment, state: :pending)
       order.shipments = [shipment, second_shipment, pending_shipment]
       post :ship, id: order.to_param
       expect(shipment.reload).to be_completed
@@ -253,7 +253,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST cancel_shipment' do
-    let(:order) { create(:order, :completed) }
+    let(:order) { create(:order, :completed, :with_shipments) }
     let(:shipment) { order.shipments.first }
 
     before { shipment.ship! }
@@ -275,7 +275,7 @@ describe Comable::Admin::OrdersController do
   end
 
   describe 'POST resume_shipment' do
-    let(:order) { create(:order, :completed) }
+    let(:order) { create(:order, :completed, :with_shipments) }
     let(:shipment) { order.shipments.first }
 
     before { shipment.ship! }
@@ -302,8 +302,11 @@ describe Comable::Admin::OrdersController do
   def add_item_to(order, order_item)
     order.order_items << order_item
 
+    shipment = order.shipments.first_or_initialize
+    shipment.update! attributes_for(:shipment) if shipment.new_record?
+
     order_item.quantity.times do
-      order.shipment.shipment_items.create(stock: order_item.stock)
+      shipment.shipment_items.create(stock: order_item.stock)
     end
   end
 end

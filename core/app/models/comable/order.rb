@@ -53,9 +53,9 @@ module Comable
       shipments.each(&:unstock!)
     end
 
-    def assign_stock_items_to_shipments
+    def assign_inventory_units_to_shipments
       reset_shipments
-      self.shipments = Comable::Inventory::Coordinator.new(order).shipments
+      self.shipments = Comable::Inventory::Coordinator.new(self).shipments
       save!
     end
 

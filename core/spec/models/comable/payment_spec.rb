@@ -1,5 +1,5 @@
 RSpec.describe Comable::Payment do
-  subject { create(:payment) }
+  subject { create(:payment, :with_order) }
 
   # Disable the automatic change of attributes.
   before { allow(subject).to receive(:order_completed?).and_return(true) }

@@ -65,14 +65,20 @@ describe Comable::Order do
       it { is_expected.to validate_uniqueness_of(:guest_token).scoped_to(:completed_at) }
     end
 
-    describe 'for order items' do
-      let!(:order_item) { create(:order_item, stock: stock, order: order) }
+    describe 'with order_items' do
+      subject(:order) { create(:order, :with_order_items) }
+
+      let(:order_item) { subject.order_items.first }
+      let(:stock) { order_item.variant.stocks.first }
 
       context 'when out of stock' do
-        let(:stock) { create(:stock, :stocked, :with_product) }
-
         it 'has errors' do
-          stock.update_attributes(quantity: 0)
+          # Create shipments
+          order.assign_inventory_units_to_shipments
+
+          # Set the quantity to the stock item
+          stock.update!(quantity: 0)
+
           expect { order.complete! }.to raise_error(ActiveRecord::RecordInvalid, /#{stock.name_with_sku}/)
           expect(order.errors['order_items.quantity'].any?).to be
         end
@@ -81,9 +87,11 @@ describe Comable::Order do
   end
 
   describe '#complete!' do
-    subject { create(:order, :for_confirm) }
+    subject { create(:order, :for_confirm, :with_order_items) }
 
     let(:shipment_method) { build(:shipment_method) }
+    let(:order_item) { subject.order_items.first }
+    let(:stock) { order_item.variant.stocks.first }
 
     it 'has completed_at' do
       expect { subject.complete! }.to change { subject.reload.completed_at }.from(nil)
@@ -96,33 +104,29 @@ describe Comable::Order do
 
     it 'has total_price' do
       quantity = 10
-
-      stock = create(:stock, :with_product, quantity: quantity)
-      order_item = build(:order_item, stock: stock, quantity: quantity)
-      subject.order_items << order_item
+      order_item.update!(quantity: quantity)
+      stock.update!(quantity: quantity)
 
       subject.complete!
 
-      item_total_price = stock.variant.price * order_item.quantity
+      item_total_price = order_item.variant.price * order_item.quantity
       total_price = item_total_price + subject.current_shipment_fee + subject.current_payment_fee
 
       expect(subject.total_price).to eq(total_price)
     end
 
     it 'subtracts the quantity of the product' do
+      # Set the quantity to the order item and the stock item
       quantity = 10
-
-      # Add a order item
-      stock = create(:stock, :with_product, quantity: quantity)
-      order_item = build(:order_item, stock: stock, quantity: quantity)
-      subject.order_items << order_item
+      order_item.update!(quantity: quantity)
+      stock.update!(quantity: quantity)
 
       # Subtract the quantity
       expect { subject.complete! }.to change { stock.reload.quantity }.from(order_item.quantity).to(0)
     end
 
     context 'with shipment' do
-      subject { create(:order, :for_shipment) }
+      subject { create(:order, :for_shipment, :with_order_items) }
 
       it 'has shipment_fee' do
         subject.complete!

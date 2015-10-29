@@ -25,7 +25,7 @@ module Comable
         Comable::StockLocation.active.map do |stock_location|
           next unless units_exists_in? stock_location
           build_packer(stock_location).package
-        end
+        end.compact
       end
 
       def adjust_packages(packages)

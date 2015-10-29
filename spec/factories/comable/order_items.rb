@@ -5,7 +5,6 @@ FactoryGirl.define do
     quantity 10
     price 100
     variant { create(:variant, stocks: [build(:stock, quantity: quantity)], product: build(:product)) }
-    order { build_stubbed(:order) }
 
     trait :sku do
       after(:build) do |order_item|
@@ -17,6 +16,10 @@ FactoryGirl.define do
 
         order_item.variant = variant
       end
+    end
+
+    trait :with_order do
+      order
     end
   end
 end
