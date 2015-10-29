@@ -2,11 +2,11 @@ module Comable
   module Inventory
     class Coordinator
       attr_accessor :order
-      attr_accessor :shipment_items
+      attr_accessor :units
 
       def initialize(order)
         @order = order
-        @shipment_items = build_shipment_items
+        @units = build_units
       end
 
       def shipments
@@ -23,31 +23,31 @@ module Comable
 
       def build_packages
         Comable::StockLocation.active.map do |stock_location|
-          next unless items_exists_in? stock_location
+          next unless units_exists_in? stock_location
           build_packer(stock_location).package
         end
       end
 
       def adjust_packages(packages)
-        Adjuster.new(packages, shipment_items).adjusted_packages
+        Adjuster.new(packages, units).adjusted_packages
       end
 
       def compact_packages(packages)
         packages.reject(&:empty?)
       end
 
-      def items_exists_in?(stock_location)
-        stock_location.stocks.where(variant: shipment_items.map(&:variant).uniq).exists?
+      def units_exists_in?(stock_location)
+        stock_location.stocks.where(variant: units.map(&:variant).uniq).exists?
       end
 
       def build_packer(stock_location)
-        Packer.new(stock_location, shipment_items)
+        Packer.new(stock_location, units)
       end
 
-      def build_shipment_items
+      def build_units
         order.order_items.map do |order_item|
           order_item.quantity.times.map do
-            Comable::ShipmentItem.new(variant: order_item.variant)
+            Unit.new(order_item.variant)
           end
         end.flatten
       end

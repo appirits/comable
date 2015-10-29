@@ -44,40 +44,40 @@ module Comable
           order_item = build(:order_item, variant: variant, quantity: quantity)
           order.order_items << order_item
 
-          expect(subject.send(:build_packages).first.shipment_items.count).to eq(2)
+          expect(subject.send(:build_packages).first.units.count).to eq(2)
         end
       end
 
       describe '#adjust_packages' do
         it 'returns an Array' do
-          shipment_item = ShipmentItem.new(variant: variant)
+          unit = Unit.new(variant)
 
           package = Package.new(stock_location)
-          package.add(shipment_item)
-          allow(subject).to receive(:shipment_items).and_return([shipment_item])
+          package.add(unit)
+          allow(subject).to receive(:units).and_return([unit])
 
           expect(subject.send(:adjust_packages, [package])).to be_an(Array)
         end
 
         it 'returns an Array with the instance of Package' do
-          shipment_item = ShipmentItem.new(variant: variant)
-          allow(subject).to receive(:shipment_items).and_return([shipment_item])
+          unit = Unit.new(variant)
+          allow(subject).to receive(:units).and_return([unit])
 
           package = Package.new(stock_location)
-          package.add(shipment_item)
+          package.add(unit)
 
           expect(subject.send(:adjust_packages, [package]).first).to be_an_instance_of(Package)
         end
 
         it 'removes a duplicated item from packages' do
-          shipment_item = ShipmentItem.new(variant: variant)
-          allow(subject).to receive(:shipment_items).and_return([shipment_item])
+          unit = Unit.new(variant)
+          allow(subject).to receive(:units).and_return([unit])
 
           package_first = Package.new(stock_location)
-          package_first.add(shipment_item)
+          package_first.add(unit)
 
           package_last = Package.new(stock_location)
-          package_last.add(shipment_item)
+          package_last.add(unit)
 
           packages = subject.send(:adjust_packages, [package_first, package_last])
           expect(packages.first).not_to be_empty
@@ -95,14 +95,32 @@ module Comable
         end
 
         it 'does not reject not empty packages' do
-          shipment_item = ShipmentItem.new(variant: variant)
-          allow(subject).to receive(:shipment_items).and_return([shipment_item])
+          unit = Unit.new(variant)
+          allow(subject).to receive(:units).and_return([unit])
 
           package = Package.new(stock_location)
-          package.add(shipment_item)
+          package.add(unit)
 
           packages = subject.send(:compact_packages, [package])
           expect(packages.size).to eq(1)
+        end
+      end
+
+      describe '#units_exists_in?' do
+        it 'returns true when @units exists in requested StockLocation' do
+          unit = Unit.new(variant)
+          allow(subject).to receive(:units).and_return([unit])
+
+          expect(subject.send(:units_exists_in?, stock_location)).to be true
+        end
+
+        it 'returns false when @units does not exist in requested StockLocation' do
+          another_stock_location = create(:stock_location)
+
+          unit = Unit.new(variant)
+          allow(subject).to receive(:units).and_return([unit])
+
+          expect(subject.send(:units_exists_in?, another_stock_location)).to be false
         end
       end
     end

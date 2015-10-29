@@ -2,11 +2,11 @@ module Comable
   module Inventory
     class Adjuster
       attr_accessor :packages
-      attr_accessor :shipment_items
+      attr_accessor :units
 
-      def initialize(packages, shipment_items)
+      def initialize(packages, units)
         @packages = packages.map(&:clone)
-        @shipment_items = shipment_items
+        @units = units
       end
 
       def adjusted_packages
@@ -17,19 +17,19 @@ module Comable
       private
 
       def remove_duplicated_items
-        shipment_items.each do |shipment_item|
-          remove_duplicated(shipment_item)
+        units.each do |unit|
+          remove_duplicated(unit)
         end
       end
 
-      def remove_duplicated(shipment_item)
+      def remove_duplicated(unit)
         duplicated = false
 
         packages.each do |package|
-          next unless package.find(shipment_item)
+          next unless package.find(unit)
 
           if duplicated
-            package.remove(shipment_item)
+            package.remove(unit)
           else
             duplicated = true
           end
