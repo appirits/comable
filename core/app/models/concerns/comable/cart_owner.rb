@@ -54,7 +54,6 @@ module Comable
     def process_cart_item(obj)
       case obj
       when Comable::Product, Comable::Variant
-        # TODO: Codinate
         yield obj.stocks.first
       when Comable::Stock
         yield obj
