@@ -36,7 +36,7 @@ module Comable
           transition to: :resumed, from: :canceled
         end
 
-        before_transition to: :shipment, do: :assign_stock_items_to_shipments
+        before_transition to: :shipment, do: :assign_inventory_units_to_shipments
         before_transition to: :completed, do: :complete!
         before_transition to: :canceled, do: [:payment_cancel!, :restock!]
         before_transition to: :resumed, do: [:payment_resume!, :unstock!]

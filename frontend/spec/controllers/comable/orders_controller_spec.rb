@@ -180,7 +180,8 @@ describe Comable::OrdersController do
     end
 
     describe "PUT 'update' with state 'payment'" do
-      let(:order_attributes) { attributes_for(:order, :for_payment) }
+      let(:order_attributes) { attributes_for(:order, :for_payment, shipments: [shipment]) }
+      let(:shipment) { build(:shipment, shipment_method: shipment_method) }
 
       before { current_order.update_attributes(order_attributes) }
       before { put :update, state: :payment, order: { payment_attributes: { payment_method_id: payment_method.id } } }
@@ -203,10 +204,15 @@ describe Comable::OrdersController do
     end
 
     describe "POST 'create'" do
-      let(:order_attributes) { attributes_for(:order, :for_confirm) }
-      let(:complete_orders) { Comable::Order.complete.where(guest_token: cookies.signed[:guest_token]) }
+      let(:order_attributes) { attributes_for(:order, :for_confirm, shipments: [shipment]) }
+      let(:shipment) { build(:shipment, shipment_method: shipment_method, shipment_items: [shipment_item]) }
+      let(:shipment_item) { build(:shipment_item, stock: stock) }
 
-      before { current_order.update_attributes(order_attributes) }
+      before do
+        current_order.attributes = order_attributes
+        # Do not check out of stock.
+        current_order.save!(validate: false)
+      end
 
       it "renders the 'create' template" do
         post :create

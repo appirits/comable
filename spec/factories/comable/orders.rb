@@ -30,14 +30,12 @@ FactoryGirl.define do
       state 'payment'
       bill_address { build(:address) }
       ship_address { build(:address) }
-      shipment { build(:shipment) }
     end
 
     trait :for_confirm do
       state 'confirm'
       bill_address { build(:address) }
       ship_address { build(:address) }
-      shipment { build(:shipment) }
       payment { build(:payment) }
     end
 
@@ -45,12 +43,29 @@ FactoryGirl.define do
       state 'completed'
       bill_address { build(:address) }
       ship_address { build(:address) }
-      shipment { build(:shipment, state: :ready) }
       payment { build(:payment, state: :completed) }
 
       sequence(:code) { |n| format('%011d', n.next) }
       completed_at Time.now
       total_price 1_000
+    end
+
+    trait :with_order_items do
+      order_items { [build(:order_item, :in_stock)] }
+    end
+
+    trait :with_shipments do
+      shipments { [build(:shipment)] }
+    end
+
+    after(:build) do |order|
+      order.shipments.each { |shipment| shipment.state = 'ready' } if order.state? :completed
+    end
+
+    # Auto create shipments if shipments are empty.
+    after(:create) do |order|
+      shipment_phase = order.state?(:shipment) || order.stated?(:shipment)
+      order.assign_inventory_units_to_shipments if shipment_phase && order.shipments.empty?
     end
   end
 end

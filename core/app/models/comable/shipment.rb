@@ -14,8 +14,6 @@ module Comable
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :tracking_number, length: { maximum: 255 }
 
-    delegate :name, to: :shipment_method
-
     ransack_options ransackable_attributes: { except: [:order_id, :shipment_method_id] }
 
     # The #state attribute assigns the following values:
@@ -87,6 +85,10 @@ module Comable
 
     def can_ship?
       ready? && order.paid? && order.completed?
+    end
+
+    def name
+      shipment_method.try(:name) || Comable.t(:normal_shipment)
     end
 
     private

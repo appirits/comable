@@ -53,25 +53,17 @@ module Comable
       shipments.each(&:unstock!)
     end
 
-    def assign_stock_items_to_shipments
+    def assign_inventory_units_to_shipments
       reset_shipments
-      shipment = shipments.create!
-      packing_items_to(shipment)
-    end
-
-    def packing_items_to(shipment)
-      order_items.each do |order_item|
-        order_item.quantity.times do
-          shipment.shipment_items.create(stock: order_item.stock)
-        end
-      end
+      self.shipments = Comable::Inventory::Coordinator.new(self).shipments
+      save!
     end
 
     def reset_shipments
       shipments.destroy_all
     end
 
-    def stocked_items
+    def unstocked_items
       order_items.to_a.select(&:unstocked?)
     end
 
