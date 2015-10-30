@@ -37,7 +37,7 @@ module Comable
       end
 
       def units_exists_in?(stock_location)
-        stock_location.stocks.where(variant: units.map(&:variant).uniq).exists?
+        stock_location.stocks.where(variant_id: units.map(&:variant).map(&:id).uniq).exists?
       end
 
       def build_packer(stock_location)
