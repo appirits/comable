@@ -116,7 +116,7 @@ module Comable
     end
 
     def can_ship?
-      shipments.any?(&:ready?) && paid? && completed?
+      shipments.any?(&:can_ship?)
     end
 
     def ship!
