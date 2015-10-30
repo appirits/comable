@@ -2,8 +2,6 @@ FactoryGirl.define do
   factory :order, class: Comable::Order do
     sequence(:email) { |n| "test+#{n}@example.com" }
 
-    transient { has_order_items false }
-
     trait :with_addresses do
       bill_address { build(:address) }
       ship_address { build(:address) }
@@ -53,7 +51,7 @@ FactoryGirl.define do
     end
 
     trait :with_order_items do
-      transient { has_order_items true }
+      order_items { [build(:order_item, :in_stock)] }
     end
 
     trait :with_shipments do
@@ -61,27 +59,11 @@ FactoryGirl.define do
     end
 
     after(:build) do |order, evaluator|
-      if evaluator.has_order_items
-        # TODO: Refactoring with build(:order_item, :in_stock) method
-        stock_location = build(:stock_location)
-        stock = build(:stock, stock_location: stock_location)
-        variant = build(:variant, :with_product, stocks: [stock])
-        order_item = build(:order_item, variant: variant)
-
-        stock.quantity = order_item.quantity
-        order.order_items = [order_item]
-      end
-
-      if order.state? :completed
-        order.shipments.each do |shipment|
-          shipment.state = 'ready'
-        end
-      end
+      order.shipments.each { |shipment| shipment.state = 'ready' } if order.state? :completed
     end
 
     # Auto create shipments if shipments are empty.
     after(:create) do |order, evaluator|
-      order.order_items.map(&:variant)
       shipment_phase = order.state?(:shipment) || order.stated?(:shipment)
       order.assign_inventory_units_to_shipments if shipment_phase && order.shipments.empty?
     end
