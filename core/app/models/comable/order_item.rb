@@ -14,8 +14,7 @@ module Comable
 
     liquid_methods :name, :name_with_sku, :code, :quantity, :price, :subtotal_price
 
-    delegate :stock, to: :variant
-    delegate :product, to: :stock
+    delegate :product, to: :variant
     delegate :image_url, to: :product
     delegate :guest_token, to: :order
     delegate :completed?, to: :order, allow_nil: true
@@ -23,15 +22,7 @@ module Comable
     before_validation :copy_attributes, unless: :completed?
 
     def complete
-      unstock
-    end
-
-    def unstock
-      decrement_stock
-    end
-
-    def restock
-      increment_stock
+      # Nothing to do
     end
 
     # TODO: カート投入時との差額表示
@@ -41,7 +32,7 @@ module Comable
 
     # 時価を取得
     def current_price
-      stock.price
+      variant.price
     end
 
     # 時価小計を取得
@@ -55,9 +46,7 @@ module Comable
     end
 
     def unstocked?
-      stock_with_clean_quantity do |stock|
-        stock.unstocked?(quantity: quantity)
-      end
+      !variant.can_supply? quantity
     end
 
     def sku_h_item_name
@@ -76,18 +65,19 @@ module Comable
       variant.option_values.second.try(:name)
     end
 
+    def stock
+      variant.stocks.first
+    end
+
     def stock=(stock)
-      if variant
-        variant.stock = stock
-      else
-        build_variant(stock: stock)
-      end
+      self.variant = stock.variant || stock.build_variant
     end
 
     #
     # Deprecated methods
     #
     deprecate :stock, deprecator: Comable::Deprecator.instance
+    deprecate :stock=, deprecator: Comable::Deprecator.instance
     deprecate :sku_h_item_name, deprecator: Comable::Deprecator.instance
     deprecate :sku_v_item_name, deprecator: Comable::Deprecator.instance
     deprecate :sku_h_choice_name, deprecator: Comable::Deprecator.instance
@@ -100,28 +90,10 @@ module Comable
       errors.add :quantity, Comable.t('errors.messages.out_of_stock', name: stock.name_with_sku)
     end
 
-    def stock_with_clean_quantity
-      quantity_will = stock.quantity
-      stock.quantity = stock.quantity_was if stock.quantity_was
-      yield stock
-    ensure
-      stock.quantity = quantity_will
-    end
-
-    def decrement_stock
-      stock.lock!
-      stock.quantity -= quantity
-    end
-
-    def increment_stock
-      stock.lock!
-      stock.quantity += quantity
-    end
-
     def current_attributes
       {
-        name: stock.name,
-        price: stock.price,
+        name: variant.name,
+        price: variant.price,
         sku: variant.sku
       }
     end

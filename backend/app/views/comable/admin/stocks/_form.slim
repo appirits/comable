@@ -15,20 +15,12 @@
 
     .col-md-9
       .form-group
-        = f.label :code
-        = f.text_field :code
-
-      .form-group
         = f.label :quantity
         = f.text_field :quantity
 
-      - if @stock.sku?
-        - if @stock.sku_h?
-          .form-group
-            = f.label :sku_h_choice_name, @stock.sku_h_item_name
-            = f.text_field :sku_h_choice_name
+      .form-group
+        = f.label :stock_location_id
+        = f.collection_select :stock_location_id, [@stock.stock_location].compact, :id, :name, {}, class: 'select2 ajax', data: { source: comable.admin_stock_locations_path }
 
-        - if @stock.sku_v?
-          .form-group
-            = f.label :sku_v_choice_name, @stock.sku_v_item_name
-            = f.text_field :sku_v_choice_name
+      .help-block.text-right
+        = link_to Comable.t('admin.remove'), 'javascript: void(0)', class: 'remove-fields'

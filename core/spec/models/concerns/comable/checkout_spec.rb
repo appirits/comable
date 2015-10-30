@@ -15,7 +15,7 @@ class DummyOrder
   def complete!
   end
 
-  def assign_stock_items_to_shipments
+  def assign_inventory_units_to_shipments
   end
 end
 
@@ -34,13 +34,13 @@ describe Comable::Checkout do
     end
 
     it 'calls #assign_stock_items_to_shipments' do
-      expect(subject).to receive(:assign_stock_items_to_shipments)
+      expect(subject).to receive(:assign_inventory_units_to_shipments)
 
       # Override `arity` method for the stubbed `assign_stock_items_to_shipments` method.
       # refs: https://github.com/rspec/rspec-expectations/issues/583
       method = double('Method')
       allow(subject).to receive(:method).and_call_original
-      allow(subject).to receive(:method).with(:assign_stock_items_to_shipments).and_return(method)
+      allow(subject).to receive(:method).with(:assign_inventory_units_to_shipments).and_return(method)
       allow(method).to receive(:arity).and_return(0)
 
       subject.next_state

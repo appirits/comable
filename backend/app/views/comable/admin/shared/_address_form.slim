@@ -1,0 +1,27 @@
+.form-group
+  = f.label :full_name
+  .row
+    .col-sm-6
+      = f.text_field :family_name, placeholder: f.object.class.human_attribute_name(:family_name)
+    .col-sm-6
+      = f.text_field :first_name, placeholder: f.object.class.human_attribute_name(:first_name)
+
+.form-group
+  = f.label :zip_code
+  = f.text_field :zip_code, max_length: 8
+
+.form-group
+  = f.label :state_name
+  = f.text_field :state_name
+
+.form-group
+  = f.label :city
+  = f.text_field :city
+
+.form-group
+  = f.label :detail
+  = f.text_field :detail
+
+.form-group
+  = f.label :phone_number
+  = f.text_field :phone_number, max_length: 18

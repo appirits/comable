@@ -46,32 +46,24 @@ module Comable
     deprecate :complete, deprecator: Comable::Deprecator.instance
 
     def restock!
-      order_items.each(&:restock)
-      save!
+      shipments.each(&:restock!)
     end
 
     def unstock!
-      order_items.each(&:unstock)
-      save!
+      shipments.each(&:unstock!)
     end
 
-    def assign_stock_items_to_shipments
+    def assign_inventory_units_to_shipments
       reset_shipments
-      shipment = shipments.create
-      order_items.each do |order_item|
-        order_item.quantity.times do
-          shipment.shipment_items.create(
-            stock: order_item.stock
-          )
-        end
-      end
+      self.shipments = Comable::Inventory::Coordinator.new(self).shipments
+      save!
     end
 
     def reset_shipments
       shipments.destroy_all
     end
 
-    def stocked_items
+    def unstocked_items
       order_items.to_a.select(&:unstocked?)
     end
 
@@ -124,7 +116,7 @@ module Comable
     end
 
     def can_ship?
-      shipments.any?(&:ready?) && paid? && completed?
+      shipments.any?(&:can_ship?)
     end
 
     def ship!

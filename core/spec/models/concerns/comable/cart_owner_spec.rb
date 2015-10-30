@@ -19,7 +19,7 @@ describe Comable::CartOwner do
     let(:stock) { create(:stock, :unstocked, :with_product) }
     let(:cart_item) { subject.cart_items.first }
 
-    before { allow(cart_item).to receive(:stock).and_return(stock) }
+    before { allow(cart_item).to receive(:variant).and_return(stock.variant) }
     before { cart_item.valid? }
 
     it 'has cart with errors' do

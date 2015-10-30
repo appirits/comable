@@ -76,7 +76,8 @@ module Comable
           :code,
           :quantity,
           :sku_h_choice_name,
-          :sku_v_choice_name
+          :sku_v_choice_name,
+          :stock_location_id
         )
       end
     end

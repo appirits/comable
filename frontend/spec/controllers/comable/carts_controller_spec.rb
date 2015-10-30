@@ -212,7 +212,7 @@ describe Comable::CartsController do
   describe '#resets_shipments' do
     let(:product) { create(:product, :with_stock) }
     let(:order) { create(:order, :completed) }
-    let(:shipments) { create_list(:shipment, 2) }
+    let(:shipments) { build_list(:shipment, 2) }
 
     before do
       order.shipments = shipments

@@ -54,6 +54,10 @@ AwesomeAdminLayout.define(only: Comable::Admin::ApplicationController) do |contr
       link comable.admin_stocks_path
     end
 
+    item Comable.t('admin.nav.stock_location') do
+      link comable.admin_stock_locations_path
+    end
+
     item Comable.t('admin.nav.category') do
       link comable.admin_categories_path
     end

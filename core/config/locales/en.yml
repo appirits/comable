@@ -40,6 +40,8 @@ en:
     sample_subheader: 'This is sample text.'
     sample_text: 'Please write your message here.'
     default_store_name: 'K&B style'
+    default: 'Default'
+    normal_shipment: 'Normal shipment'
 
     price: &price
       'Price'
@@ -170,6 +172,7 @@ en:
       view: 'View'
       add_variants: 'Add variants'
       size: 'Size'
+      add_stocks: 'Add stocks'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
@@ -185,6 +188,7 @@ en:
         payment_method: 'Payment methods'
         tracker: 'Tracker'
         theme: 'Theme'
+        stock_location: 'Stock locations'
         products:
           detail: 'Product details'
           list: 'Product list'
@@ -463,6 +467,13 @@ en:
       comable/option_value:
         id: 'ID'
         name: 'Name'
+        <<: *timestamps
+      comable/stock_location:
+        id: 'ID'
+        name: 'Name'
+        address: 'Address'
+        active: 'Active'
+        default: 'Default'
         <<: *timestamps
 
   enumerize:

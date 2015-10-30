@@ -20,6 +20,6 @@ fieldset
       = f.label :sku
       = f.text_field :sku
 
-    .form-group
-      = f.label :quantity
-      = f.text_field :quantity
+    = f.fields_for :stocks do |ff|
+      = render 'comable/admin/shared/stocks_fields', f: ff
+    = link_to_add_fields Comable.t('admin.add_stocks'), f, :stocks

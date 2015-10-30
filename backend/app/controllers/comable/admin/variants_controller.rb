@@ -50,7 +50,7 @@ module Comable
         params.require(:variant).permit(
           :price,
           :sku,
-          stock_attributes: [:quantity],
+          stocks_attributes: [:id, :quantity, :stock_location_id, :_destroy],
           option_values_attributes: [:id, :name]
         )
       end

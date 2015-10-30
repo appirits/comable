@@ -4,16 +4,15 @@ module Comable
 
     belongs_to :order, class_name: Comable::Order.name, inverse_of: :shipments
     belongs_to :shipment_method, class_name: Comable::ShipmentMethod.name
-    has_many :shipment_items, class_name: Comable::ShipmentItem.name
+    belongs_to :stock_location, class_name: Comable::StockLocation.name
+    has_many :shipment_items, class_name: Comable::ShipmentItem.name, inverse_of: :shipment
 
     before_validation :copy_attributes_from_shipment_method, unless: :order_completed?
 
     validates :order, presence: true
-    validates :shipment_method, presence: true, if: -> { stated?(:pending) }
+    validates :shipment_method, presence: true, if: -> { stated?(:pending) && Comable::ShipmentMethod.activated.exists? }
     validates :fee, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :tracking_number, length: { maximum: 255 }
-
-    delegate :name, to: :shipment_method
 
     ransack_options ransackable_attributes: { except: [:order_id, :shipment_method_id] }
 
@@ -48,6 +47,7 @@ module Comable
         transition :canceled => :resumed
       end
 
+      before_transition to: :ready, do: -> (s) { s.ready! }
       before_transition to: :completed, do: -> (s) { s.complete! }
     end
 
@@ -67,12 +67,28 @@ module Comable
       completed_at?
     end
 
+    def ready!
+      shipment_items.each(&:ready!)
+    end
+
     def complete!
       touch :completed_at
     end
 
+    def restock!
+      shipment_items.each(&:restock!)
+    end
+
+    def unstock!
+      shipment_items.each(&:unstock!)
+    end
+
     def can_ship?
       ready? && order.paid? && order.completed?
+    end
+
+    def name
+      shipment_method.try(:name) || Comable.t(:normal_shipment)
     end
 
     private

@@ -10,7 +10,8 @@ module Comable
     include Comable::Liquidable
     include Comable::Stock::Csvable
 
-    belongs_to :variant, class_name: Comable::Variant.name, inverse_of: :stock
+    belongs_to :variant, class_name: Comable::Variant.name, inverse_of: :stocks
+    belongs_to :stock_location, class_name: Comable::StockLocation.name
 
     #
     # @!group Scope
@@ -43,6 +44,8 @@ module Comable
     delegate :sku_v_item_name, to: :product
 
     ransack_options attribute_select: { associations: :variant }, ransackable_attributes: { only: :quantity }
+
+    before_validation :set_default_stock_location, unless: :stock_location
 
     # 在庫の有無を取得する
     #
@@ -88,6 +91,10 @@ module Comable
       else
         build_variant(product: product)
       end
+    end
+
+    def set_default_stock_location
+      self.stock_location = Comable::StockLocation.default
     end
 
     #

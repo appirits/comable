@@ -13,9 +13,9 @@ FactoryGirl.define do
     trait :sku do
       after(:build) do |product|
         product.variants = [
-          build(:variant, stock: build(:stock, :stocked), options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'S']),
-          build(:variant, stock: build(:stock, :stocked), options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'M']),
-          build(:variant, stock: build(:stock, :stocked), options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'L'])
+          build(:variant, stocks: [build(:stock, :stocked)], options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'S']),
+          build(:variant, stocks: [build(:stock, :stocked)], options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'M']),
+          build(:variant, stocks: [build(:stock, :stocked)], options: [name: 'Color', value: 'Red'] + [name: 'Size', value: 'L'])
         ]
       end
     end

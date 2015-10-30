@@ -37,7 +37,7 @@ module Comable
     end
 
     def stocked?
-      stocks.stocked.exists?
+      variants.any?(&:can_supply?)
     end
 
     def unstocked?
@@ -87,7 +87,7 @@ module Comable
     has_many :stocks, class_name: Comable::Stock.name, through: :variants
 
     def stocks=(stocks)
-      stocks.map { |stock| variants.build(stock: stock) }
+      stocks.map { |stock| variants.build(stocks: [stock]) }
     end
 
     def option_types

@@ -41,4 +41,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'momentjs-rails', '~> 2.10', '>= 2.10.2'
   s.add_dependency 'bootstrap3-datetimepicker-rails', '~> 4.7', '>= 4.7.14'
+  s.add_dependency 'select2-rails', '~> 4.0'
 end

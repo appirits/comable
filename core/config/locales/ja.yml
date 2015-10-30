@@ -40,6 +40,8 @@ ja:
     sample_subheader: 'これはサンプルテキストです。'
     sample_text: 'ここにあなたのお好きなメッセージを埋め込むことができます。'
     default_store_name: 'K&B style'
+    default: 'デフォルト'
+    normal_shipment: '通常配送'
 
     price: &price
       '価格'
@@ -170,6 +172,7 @@ ja:
       view: '確認する'
       add_variants: 'バリエーションを追加する'
       size: 'サイズ'
+      add_stocks: '在庫を追加する'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
@@ -185,6 +188,7 @@ ja:
         payment_method: 決済管理
         tracker: トラッキング情報
         theme: 'テーマ'
+        stock_location: '倉庫管理'
         products:
           detail: 商品詳細
           list: '商品一覧'
@@ -463,6 +467,13 @@ ja:
       comable/option_value:
         id: 'ID'
         name: '名称'
+        <<: *timestamps
+      comable/stock_location:
+        id: 'ID'
+        name: '倉庫名'
+        address: '住所'
+        active: '有効'
+        default: 'デフォルト'
         <<: *timestamps
 
   enumerize:

@@ -1,11 +1,11 @@
 describe Comable::OrderMailer do
   describe 'instructions' do
     let!(:store) { create(:store, :email_activate) }
-    let(:order) { build(:order, :with_addresses, order_items: [order_item]) }
+    let(:order) { create(:order, :with_addresses, order_items: [order_item]) }
     let(:order_item) { build(:order_item, :sku, quantity: 2) }
     let(:mail) { described_class.complete(order) }
 
-    before { order.complete }
+    before { order.complete! }
 
     it 'renders the subject' do
       expect(mail.subject).to match(order.code)

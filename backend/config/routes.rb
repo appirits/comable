@@ -39,6 +39,7 @@ Comable::Core::Engine.routes.draw do
     end
 
     resources :categories
+    resources :stock_locations
     resources :pages
 
     resources :navigations do

@@ -65,14 +65,20 @@ describe Comable::Order do
       it { is_expected.to validate_uniqueness_of(:guest_token).scoped_to(:completed_at) }
     end
 
-    describe 'for order items' do
-      let!(:order_item) { create(:order_item, stock: stock, order: order) }
+    describe 'with order_items' do
+      subject(:order) { create(:order, :with_order_items) }
+
+      let(:order_item) { subject.order_items.first }
+      let(:stock) { order_item.variant.stocks.first }
 
       context 'when out of stock' do
-        let(:stock) { create(:stock, :stocked, :with_product) }
-
         it 'has errors' do
-          stock.update_attributes(quantity: 0)
+          # Create shipments
+          order.assign_inventory_units_to_shipments
+
+          # Set the quantity to the stock item
+          stock.update!(quantity: 0)
+
           expect { order.complete! }.to raise_error(ActiveRecord::RecordInvalid, /#{stock.name_with_sku}/)
           expect(order.errors['order_items.quantity'].any?).to be
         end
@@ -80,66 +86,99 @@ describe Comable::Order do
     end
   end
 
-  describe 'attributes' do
-    describe '#save' do
-      context 'complete order' do
-        let!(:order_item) { create(:order_item, order: order, quantity: 10) }
+  describe '#complete!' do
+    subject { create(:order, :for_confirm, :with_order_items) }
 
-        let(:stock) { order_item.stock }
-        let(:product) { stock.product }
-        let(:item_total_price) { product.price * order_item.quantity }
+    let(:shipment_method) { build(:shipment_method) }
+    let(:order_item) { subject.order_items.first }
+    let(:stock) { order_item.variant.stocks.first }
 
-        before { subject.complete }
-        before { subject.reload }
+    it 'has completed_at' do
+      expect { subject.complete! }.to change { subject.reload.completed_at }.from(nil)
+    end
 
-        its(:completed_at) { should be }
-        its(:code) { should match(/^C\d{11}$/) }
-        its(:total_price) { should eq(item_total_price) }
+    it 'has code' do
+      subject.complete!
+      expect(subject.code).to match(/^C\d{11}$/)
+    end
 
-        it 'has been subtracted stock' do
-          expect { stock.reload }.to change { stock.quantity }.from(order_item.quantity).to(0)
-        end
+    it 'has total_price' do
+      quantity = 10
+      order_item.update!(quantity: quantity)
+      stock.update!(quantity: quantity)
 
-        context 'with shipment' do
-          subject(:order) { build(:order, :for_shipment, shipment: shipment) }
+      subject.complete!
 
-          let(:shipment) { build(:shipment) }
+      item_total_price = order_item.variant.price * order_item.quantity
+      total_price = item_total_price + subject.current_shipment_fee + subject.current_payment_fee
 
-          its(:shipment_fee) { is_expected.to eq(shipment.fee) }
-          its(:total_price) { is_expected.to eq(item_total_price + shipment.fee) }
+      expect(subject.total_price).to eq(total_price)
+    end
 
-          it 'shipment has been ready' do
-            expect(order.shipment.state).to eq('ready')
-          end
-        end
+    it 'subtracts the quantity of the product' do
+      # Set the quantity to the order item and the stock item
+      quantity = 10
+      order_item.update!(quantity: quantity)
+      stock.update!(quantity: quantity)
 
-        context 'with user' do
-          subject(:order) { build(:order, user: user, bill_address: address, ship_address: address) }
+      # Subtract the quantity
+      expect { subject.complete! }.to change { stock.reload.quantity }.from(order_item.quantity).to(0)
+    end
 
-          let(:address) { create(:address) }
+    context 'with shipment' do
+      subject { create(:order, :for_shipment, :with_order_items) }
 
-          context 'has addresses used in order' do
-            let(:user) { create(:user, addresses: [address]) }
+      it 'has shipment_fee' do
+        subject.complete!
+        expect(subject.shipment_fee).to eq(subject.shipment.fee)
+      end
 
-            it 'has copied address from order to user' do
-              user.reload
-              expect(user.bill_address).to eq(address)
-              expect(user.ship_address).to eq(address)
-            end
-          end
+      it 'has total_price' do
+        subject.complete!
+        expect(subject.total_price).to eq(subject.current_item_total_price + subject.shipment.fee)
+      end
 
-          context 'has addresses not used in order' do
-            let(:user) { create(:user, :with_addresses) }
+      it 'has a shipment that has been ready' do
+        subject.complete!
+        expect(subject.shipment).to be_ready
+      end
+    end
 
-            it 'has cloned address from order to user' do
-              user.reload
-              expect(user.bill_address.contents).to eq(address.contents)
-              expect(user.ship_address.contents).to eq(address.contents)
-            end
-          end
+    context 'with user' do
+      let(:address) { create(:address) }
+
+      before { subject.update(bill_address: address, ship_address: address) }
+
+      context 'has addresses used in order' do
+        let(:user) { create(:user, addresses: [address]) }
+
+        before { subject.update(user: user) }
+
+        it 'has copied address from order to user' do
+          subject.complete!
+          expect(user.bill_address).to eq(address)
+          expect(user.ship_address).to eq(address)
         end
       end
 
+      context 'has addresses not used in order' do
+        let(:user) { create(:user, :with_addresses) }
+
+        before { subject.update(user: user) }
+
+        it 'has cloned address from order to user' do
+          subject.complete!
+          expect(user.bill_address).not_to eq(address)
+          expect(user.ship_address).not_to eq(address)
+          expect(user.bill_address.contents).to eq(address.contents)
+          expect(user.ship_address.contents).to eq(address.contents)
+        end
+      end
+    end
+  end
+
+  describe 'attributes' do
+    describe '#save' do
       context 'incomplete order' do
         before { subject.save }
         before { subject.reload }
@@ -156,6 +195,94 @@ describe Comable::Order do
           its(:ship_address) { is_expected.to be }
         end
       end
+    end
+  end
+
+  describe '#paid?' do
+    it 'returns true when it does not have a payment' do
+      expect(subject.paid?).to be true
+    end
+
+    it 'returns true when it has the completed payment' do
+      payment = build(:payment)
+      subject.payment = payment
+
+      allow(payment).to receive(:completed?).and_return(true)
+
+      expect(subject.paid?).to be true
+    end
+
+    it 'returns false when it has the incompleted payment' do
+      payment = build(:payment)
+      subject.payment = payment
+      expect(subject.paid?).to be false
+    end
+  end
+
+  describe '#shipped?' do
+    it 'returns true when it does not have any shipments' do
+      expect(subject.shipped?).to be true
+    end
+
+    it 'returns true when it has the completed shipment' do
+      shipment = build(:shipment)
+      subject.shipments = [shipment]
+
+      allow(shipment).to receive(:completed?).and_return(true)
+
+      expect(subject.shipped?).to be true
+    end
+
+    it 'returns false when it has the incompleted shipment' do
+      shipment = build(:shipment)
+      subject.shipments = [shipment]
+      expect(subject.shipped?).to be false
+    end
+  end
+
+  describe '#can_ship?' do
+    it 'returns true when it has the ready shipment' do
+      shipment = build(:shipment)
+      pending_shipment = build(:shipment)
+      order.shipments = [pending_shipment, shipment]
+
+      allow(shipment).to receive(:ready?).and_return(true)
+      allow(subject).to receive(:paid?).and_return(true)
+      allow(subject).to receive(:completed?).and_return(true)
+
+      expect(subject.can_ship?).to be true
+    end
+
+    it 'returns false when it has the pending shipment' do
+      pending_shipment = build(:shipment)
+      order.shipments = [pending_shipment]
+
+      allow(subject).to receive(:paid?).and_return(true)
+      allow(subject).to receive(:completed?).and_return(true)
+
+      expect(subject.can_ship?).to be false
+    end
+
+    it 'returns false when it is unpaid' do
+      shipment = build(:shipment)
+      order.shipments = [shipment]
+
+      allow(shipment).to receive(:ready?).and_return(true)
+      allow(subject).to receive(:paid?).and_return(false)
+      allow(subject).to receive(:completed?).and_return(true)
+
+      expect(subject.can_ship?).to be false
+    end
+
+    it 'returns false when it is completed' do
+      shipment = build(:shipment)
+      order.shipments = [shipment]
+
+      allow(shipment).to receive(:ready?).and_return(true)
+      allow(subject).to receive(:paid?).and_return(true)
+      allow(subject).to receive(:completed?).and_return(false)
+
+      expect(subject.can_ship?).to be false
     end
   end
 end
