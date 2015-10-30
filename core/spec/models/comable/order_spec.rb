@@ -197,4 +197,92 @@ describe Comable::Order do
       end
     end
   end
+
+  describe '#paid?' do
+    it 'returns true when it does not have a payment' do
+      expect(subject.paid?).to be true
+    end
+
+    it 'returns true when it has the completed payment' do
+      payment = build(:payment)
+      subject.payment = payment
+
+      allow(payment).to receive(:completed?).and_return(true)
+
+      expect(subject.paid?).to be true
+    end
+
+    it 'returns false when it has the incompleted payment' do
+      payment = build(:payment)
+      subject.payment = payment
+      expect(subject.paid?).to be false
+    end
+  end
+
+  describe '#shipped?' do
+    it 'returns true when it does not have any shipments' do
+      expect(subject.shipped?).to be true
+    end
+
+    it 'returns true when it has the completed shipment' do
+      shipment = build(:shipment)
+      subject.shipments = [shipment]
+
+      allow(shipment).to receive(:completed?).and_return(true)
+
+      expect(subject.shipped?).to be true
+    end
+
+    it 'returns false when it has the incompleted shipment' do
+      shipment = build(:shipment)
+      subject.shipments = [shipment]
+      expect(subject.shipped?).to be false
+    end
+  end
+
+  describe '#can_ship?' do
+    it 'returns true when it has the ready shipment' do
+      shipment = build(:shipment)
+      pending_shipment = build(:shipment)
+      order.shipments = [pending_shipment, shipment]
+
+      allow(shipment).to receive(:ready?).and_return(true)
+      allow(subject).to receive(:paid?).and_return(true)
+      allow(subject).to receive(:completed?).and_return(true)
+
+      expect(subject.can_ship?).to be true
+    end
+
+    it 'returns false when it has the pending shipment' do
+      pending_shipment = build(:shipment)
+      order.shipments = [pending_shipment]
+
+      allow(subject).to receive(:paid?).and_return(true)
+      allow(subject).to receive(:completed?).and_return(true)
+
+      expect(subject.can_ship?).to be false
+    end
+
+    it 'returns false when it is unpaid' do
+      shipment = build(:shipment)
+      order.shipments = [shipment]
+
+      allow(shipment).to receive(:ready?).and_return(true)
+      allow(subject).to receive(:paid?).and_return(false)
+      allow(subject).to receive(:completed?).and_return(true)
+
+      expect(subject.can_ship?).to be false
+    end
+
+    it 'returns false when it is completed' do
+      shipment = build(:shipment)
+      order.shipments = [shipment]
+
+      allow(shipment).to receive(:ready?).and_return(true)
+      allow(subject).to receive(:paid?).and_return(true)
+      allow(subject).to receive(:completed?).and_return(false)
+
+      expect(subject.can_ship?).to be false
+    end
+  end
 end

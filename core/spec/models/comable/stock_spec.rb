@@ -33,4 +33,18 @@ describe Comable::Stock do
       expect(subject.sku_v?).to be false
     end
   end
+
+  describe '#unstocked?' do
+    it 'returns ture when it is out of stock' do
+      quantity = 10
+      subject.quantity = quantity - 1
+      expect(subject.unstocked?(quantity: quantity)).to be true
+    end
+
+    it 'returns false when it is in stock' do
+      quantity = 10
+      subject.quantity = quantity
+      expect(subject.unstocked?(quantity: quantity)).to be false
+    end
+  end
 end

@@ -44,4 +44,34 @@ RSpec.describe Comable::Shipment do
       end
     end
   end
+
+  describe '#can_ship?' do
+    it 'returns true when state is :ready' do
+      subject.state = 'ready'
+      allow(subject.order).to receive(:paid?).and_return(true)
+      allow(subject.order).to receive(:completed?).and_return(true)
+      expect(subject.can_ship?).to be true
+    end
+
+    it 'returns false when state is :pending' do
+      subject.state = 'pending'
+      allow(subject.order).to receive(:paid?).and_return(true)
+      allow(subject.order).to receive(:completed?).and_return(true)
+      expect(subject.can_ship?).to be false
+    end
+
+    it 'returns false when it has the unpaid order' do
+      subject.state = 'ready'
+      allow(subject.order).to receive(:paid?).and_return(false)
+      allow(subject.order).to receive(:completed?).and_return(true)
+      expect(subject.can_ship?).to be false
+    end
+
+    it 'returns false when it has the incompleted order' do
+      subject.state = 'ready'
+      allow(subject.order).to receive(:paid?).and_return(true)
+      allow(subject.order).to receive(:completed?).and_return(false)
+      expect(subject.can_ship?).to be false
+    end
+  end
 end
