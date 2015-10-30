@@ -4,7 +4,7 @@ module Comable
       attr_accessor :stock_location
       attr_accessor :units
 
-      delegate :empty?, to: :units
+      delegate :empty?, :size, :count, to: :units
 
       def initialize(stock_location)
         @stock_location = stock_location
@@ -22,19 +22,17 @@ module Comable
         shipment
       end
 
-      def find(item)
-        units.detect do |unit|
-          unit == item
-        end
+      def find(unit)
+        units.detect { |u| u == unit }
       end
 
-      def add(item)
-        item = [item] unless item.is_a? Array
-        units.concat(item)
+      def add(unit)
+        unit = [unit] unless unit.is_a? Array
+        units.concat(unit)
       end
 
-      def remove(item)
-        units.delete(item)
+      def remove(unit)
+        units.delete(unit)
       end
 
       private

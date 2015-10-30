@@ -8,6 +8,23 @@ module Comable
 
       subject { described_class.new(order) }
 
+      it { is_expected.to have_attr_accessor(:order) }
+      it { is_expected.to have_attr_accessor(:units) }
+
+      describe '#initialize' do
+        it 'sets the order as @order' do
+          coordinator = described_class.new(order)
+          expect(coordinator.instance_variable_get(:@order)).to eq(order)
+        end
+
+        it 'sets the units as @units' do
+          units = []
+          allow(subject).to receive(:build_units).and_return(units)
+          coordinator = described_class.new(order)
+          expect(coordinator.instance_variable_get(:@units)).to eq(units)
+        end
+      end
+
       describe '#shipments' do
         it 'returns an Array with the instance of Shipment' do
           shipment = Shipment.new
@@ -17,6 +34,31 @@ module Comable
           allow(subject).to receive(:packages).and_return([package])
 
           expect(subject.shipments).to eq([shipment])
+        end
+      end
+
+      describe '#packages' do
+        it 'calls #build_packages' do
+          expect(subject).to receive(:build_packages).exactly(1).times
+          allow(subject).to receive(:adjust_packages)
+          allow(subject).to receive(:compact_packages)
+          subject.send(:packages)
+        end
+
+        it 'calls #adjust_packages with packages' do
+          packages = [Package.new(stock_location)]
+          allow(subject).to receive(:build_packages).and_return(packages)
+          expect(subject).to receive(:adjust_packages).with(packages).exactly(1).times
+          allow(subject).to receive(:compact_packages)
+          subject.send(:packages)
+        end
+
+        it 'calls #compact_packages with adjusted packages' do
+          adjusted_packages = [Package.new(stock_location)]
+          allow(subject).to receive(:build_packages)
+          allow(subject).to receive(:adjust_packages).and_return(adjusted_packages)
+          expect(subject).to receive(:compact_packages).with(adjusted_packages).exactly(1).times
+          subject.send(:packages)
         end
       end
 
@@ -121,6 +163,40 @@ module Comable
           allow(subject).to receive(:units).and_return([unit])
 
           expect(subject.send(:units_exists_in?, another_stock_location)).to be false
+        end
+      end
+
+      describe '#build_packer' do
+        it 'returns an instance of Packer' do
+          packer = subject.send(:build_packer, stock_location)
+          expect(packer).to be_an_instance_of(Packer)
+        end
+      end
+
+      describe '#build_units' do
+        it 'builds a unit from a order item' do
+          order_item = build(:order_item, quantity: 1)
+          order.order_items = [order_item]
+
+          units = subject.send(:build_units)
+          expect(units.size).to eq(1)
+        end
+
+        it 'builds two units from a order item' do
+          order_item = build(:order_item, quantity: 2)
+          order.order_items = [order_item]
+
+          units = subject.send(:build_units)
+          expect(units.size).to eq(2)
+        end
+
+        it 'has the variant' do
+          variant = build(:variant)
+          order_item = build(:order_item, variant: variant)
+          order.order_items = [order_item]
+
+          units = subject.send(:build_units)
+          expect(units.first.variant).to eq(variant)
         end
       end
     end
