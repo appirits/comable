@@ -143,18 +143,6 @@ describe Comable::User do
       current_order.complete
       expect(subject.orders.last.order_items.last.stock).to eq(stock)
     end
-
-    it '在庫が減っていること' do
-      expect { current_order.complete }.to change { stock.reload.quantity }.by(-order_quantity)
-    end
-
-    context '在庫がない場合' do
-      before { stock.update_attributes(quantity: 0) }
-
-      it '商品を購入できないこと' do
-        expect { current_order.complete! }.to raise_error(ActiveRecord::RecordInvalid, /#{stock.name_with_sku}/)
-      end
-    end
   end
 
   describe 'Associations' do
