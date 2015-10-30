@@ -12,7 +12,9 @@ module Comable
 
     class << self
       def default
-        where(default: true).first
+        where(default: true).first_or_initialize do |stock_location|
+          stock_location.name = 'Default'
+        end
       end
     end
 

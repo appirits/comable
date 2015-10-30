@@ -45,6 +45,8 @@ module Comable
 
     ransack_options attribute_select: { associations: :variant }, ransackable_attributes: { only: :quantity }
 
+    before_validation :set_default_stock_location, unless: :stock_location
+
     # 在庫の有無を取得する
     #
     # @example
@@ -91,8 +93,8 @@ module Comable
       end
     end
 
-    def stock_location
-      super || Comable::StockLocation.default
+    def set_default_stock_location
+      self.stock_location = Comable::StockLocation.default
     end
 
     #

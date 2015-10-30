@@ -62,6 +62,7 @@ FactoryGirl.define do
 
     after(:build) do |order, evaluator|
       if evaluator.has_order_items
+        # TODO: Refactoring with build(:order_item, :in_stock) method
         stock_location = build(:stock_location)
         stock = build(:stock, stock_location: stock_location)
         variant = build(:variant, :with_product, stocks: [stock])

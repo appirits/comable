@@ -63,7 +63,7 @@ module Comable
       shipments.destroy_all
     end
 
-    def stocked_items
+    def unstocked_items
       order_items.to_a.select(&:unstocked?)
     end
 
