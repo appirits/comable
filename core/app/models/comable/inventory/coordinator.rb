@@ -17,8 +17,8 @@ module Comable
 
       def packages
         packages = build_packages
-        packages = adjust_packages(packages)
-        packages = compact_packages(packages)
+        adjusted_packages = adjust_packages(packages)
+        compact_packages(adjusted_packages)
       end
 
       def build_packages

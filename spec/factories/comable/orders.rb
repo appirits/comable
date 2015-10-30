@@ -58,12 +58,12 @@ FactoryGirl.define do
       shipments { [build(:shipment)] }
     end
 
-    after(:build) do |order, evaluator|
+    after(:build) do |order|
       order.shipments.each { |shipment| shipment.state = 'ready' } if order.state? :completed
     end
 
     # Auto create shipments if shipments are empty.
-    after(:create) do |order, evaluator|
+    after(:create) do |order|
       shipment_phase = order.state?(:shipment) || order.stated?(:shipment)
       order.assign_inventory_units_to_shipments if shipment_phase && order.shipments.empty?
     end

@@ -48,6 +48,15 @@ ClassAndModuleChildren:
   Exclude:
     - core/lib/comable/state_machine_patch.rb
 
+# C: Module has too many lines.
+ModuleLength:
+  # Ignore spec files
+  Exclude:
+    - spec/**/*_spec.rb
+    - core/spec/**/*_spec.rb
+    - frontend/spec/**/*_spec.rb
+    - backend/spec/**/*_spec.rb
+
 # Ignore files.
 AllCops:
   Exclude:
