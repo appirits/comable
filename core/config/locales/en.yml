@@ -41,6 +41,7 @@ en:
     sample_text: 'Please write your message here.'
     default_store_name: 'K&B style'
     default: 'Default'
+    normal_shipment: 'Normal shipment'
 
     price: &price
       'Price'

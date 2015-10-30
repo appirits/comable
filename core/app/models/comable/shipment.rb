@@ -88,12 +88,7 @@ module Comable
     end
 
     def name
-      if shipment_method
-        shipment_method.name
-      else
-        # TODO: I18n
-        'Normal shipment'
-      end
+      shipment_method.try(:name) || Comable.t(:normal_shipment)
     end
 
     private

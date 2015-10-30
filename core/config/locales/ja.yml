@@ -41,6 +41,7 @@ ja:
     sample_text: 'ここにあなたのお好きなメッセージを埋め込むことができます。'
     default_store_name: 'K&B style'
     default: 'デフォルト'
+    normal_shipment: '通常配送'
 
     price: &price
       '価格'
