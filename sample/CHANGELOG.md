@@ -1,3 +1,8 @@
+## Comable 0.7.0.beta2 (October 31, 2015) ##
+
+*   Implement Multiple Shipments.
+
+
 ## Comable 0.7.0.beta1 (September 25, 2015) ##
 
 *   Change the architecture of stocks.

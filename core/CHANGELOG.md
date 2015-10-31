@@ -1,3 +1,16 @@
+## Comable 0.7.0.beta2 (October 31, 2015) ##
+
+*   Implement Shipment Location.
+
+*   Implement Multiple Shipments.
+
+*   Implement Product Property.
+
+*   Remove a performance bottleneck for the guest user.
+
+*   bugfix: Fix the failed test in Ruby 2.1.5.
+
+
 ## Comable 0.7.0.beta1 (September 25, 2015) ##
 
 *   Implement Navigations.

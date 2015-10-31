@@ -1,3 +1,12 @@
+## Comable 0.7.0.beta2 (October 31, 2015) ##
+
+*   Implement Multiple Shipments.
+
+*   Implement Product Property.
+
+*   bugfix: Cannot add a variant to the cart.
+
+
 ## Comable 0.7.0.beta1 (September 25, 2015) ##
 
 *   Implement Navigations.

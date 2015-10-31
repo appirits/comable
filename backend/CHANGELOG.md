@@ -1,3 +1,23 @@
+## Comable 0.7.0.beta2 (October 31, 2015) ##
+
+*   Implement Shipment Location.
+
+*   Implement Multiple Shipments.
+
+*   Implement Product Property.
+
+*   Sort records.
+
+*   bugfix:
+
+    - Cannot edit a order.
+    - Cannot apply ace theme in production.
+    - Cannot destroy a variant.
+    - Cannot update a product quantity.
+    - Fix a problem that create a duplicate address.
+    - Fix a problem that exists two variants on new master product.
+
+
 ## Comable 0.7.0.beta1 (September 25, 2015) ##
 
 *   Update awesome_admin_layout gem.
