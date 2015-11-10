@@ -16,8 +16,9 @@
           - if @order.new_record?
             .form-group
               = select_tag :variant, nil, id: 'js-variant-selector', class: 'select2 ajax', data: { source: comable.admin_variants_path, term: :product_name_cont }
+              = link_to_add_fields nil, f, :order_items, id: 'js-add-order-item', class: 'hidden'
 
-          table.table
+          table.table#js-order-items-table
             thead
               tr
                 th colspan="2"
@@ -30,21 +31,8 @@
                   = f.object.order_items.klass.human_attribute_name(:subtotal_price)
             tbody
               = f.fields_for :order_items do |ff|
-
-                tr.comable-order-items
-                  td width="180"
-                    = image_tag ff.object.image_url, width: '100%'
-                  td
-                    p
-                      = ff.text_field :name, placeholder: ff.object.class.human_attribute_name(:name), data: { name: 'name' }
-                    p.text-muted
-                      = ff.text_field :sku, placeholder: ff.object.class.human_attribute_name(:sku), data: { name: 'sku' }
-                  td
-                    = ff.text_field :price, placeholder: ff.object.class.human_attribute_name(:price), data: { name: 'price' }
-                  td
-                    = ff.text_field :quantity, placeholder: ff.object.class.human_attribute_name(:quantity), data: { name: 'quantity' }
-                  td
-                    = ff.text_field :subtotal_price, disabled: true, data: { name: 'subtotal_price' }
+                = render 'comable/admin/shared/order_items_fields', f: ff
+            tfoot
               tr
                 th.text-right colspan="4"
                   = f.object.class.human_attribute_name(:item_total_price)

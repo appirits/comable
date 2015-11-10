@@ -22,6 +22,8 @@ Comable::Core::Engine.routes.draw do
       end
     end
 
+    resources :variants, only: :index
+
     resources :orders do
       collection do
         get :export
