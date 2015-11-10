@@ -18,6 +18,20 @@ module Comable
       def show
       end
 
+      def new
+        @order.build_bill_address
+        @order.build_ship_address
+      end
+
+      def create
+        if complete_order
+          redirect_to comable.admin_order_path(@order), notice: Comable.t('successful')
+        else
+          flash.now[:alert] = Comable.t('failure')
+          render :new
+        end
+      end
+
       def edit
       end
 
@@ -78,6 +92,15 @@ module Comable
       end
 
       private
+
+      def complete_order
+        Comable::Order.transaction do
+          @order.next_state! until @order.completed?
+        end
+        true
+      rescue StateMachine::InvalidTransition
+        false
+      end
 
       def order_params
         params.require(:order).permit(

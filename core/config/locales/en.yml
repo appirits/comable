@@ -173,6 +173,7 @@ en:
       add_variants: 'Add variants'
       size: 'Size'
       add_stocks: 'Add stocks'
+      user: 'User'
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'

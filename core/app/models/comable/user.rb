@@ -92,6 +92,14 @@ module Comable
       "##{id}"
     end
 
+    def text
+      bill_address ? "#{bill_full_name} (#{email})" : email
+    end
+
+    def as_json(options = nil)
+      super (options || {}).merge(methods: [:text])
+    end
+
     private
 
     def current_guest_token

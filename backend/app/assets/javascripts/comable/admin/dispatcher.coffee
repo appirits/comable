@@ -15,7 +15,7 @@ class Dispatcher
     action_name = path[1]
 
     switch page
-      when 'orders:edit', 'pages:update'
+      when 'orders:new', 'orders:create', 'orders:edit', 'orders:update'
         new DynamicOrder
       when 'pages:new', 'pages:show', 'pages:edit', 'pages:update', 'pages:create'
         new Page

@@ -1,0 +1,162 @@
+= error_messages_for @order
+
+= form_for [comable, :admin, @order] do |f|
+  .hidden
+    = f.submit
+
+  .col-md-6
+    .row
+      fieldset
+        .col-md-3
+          legend
+            = f.object.class.human_attribute_name(:order_items)
+          .help-block
+
+        .col-md-9
+          - if @order.new_record?
+            .form-group
+              = select_tag :variant, nil, id: 'js-variant-selector', class: 'select2 ajax', data: { source: comable.admin_variants_path, term: :product_name_cont }
+
+          table.table
+            thead
+              tr
+                th colspan="2"
+                  = f.object.order_items.klass.human_attribute_name(:product)
+                th
+                  = f.object.order_items.klass.human_attribute_name(:price)
+                th
+                  = f.object.order_items.klass.human_attribute_name(:quantity)
+                th
+                  = f.object.order_items.klass.human_attribute_name(:subtotal_price)
+            tbody
+              = f.fields_for :order_items do |ff|
+
+                tr.comable-order-items
+                  td width="180"
+                    = image_tag ff.object.image_url, width: '100%'
+                  td
+                    p
+                      = ff.text_field :name, placeholder: ff.object.class.human_attribute_name(:name), data: { name: 'name' }
+                    p.text-muted
+                      = ff.text_field :sku, placeholder: ff.object.class.human_attribute_name(:sku), data: { name: 'sku' }
+                  td
+                    = ff.text_field :price, placeholder: ff.object.class.human_attribute_name(:price), data: { name: 'price' }
+                  td
+                    = ff.text_field :quantity, placeholder: ff.object.class.human_attribute_name(:quantity), data: { name: 'quantity' }
+                  td
+                    = ff.text_field :subtotal_price, disabled: true, data: { name: 'subtotal_price' }
+              tr
+                th.text-right colspan="4"
+                  = f.object.class.human_attribute_name(:item_total_price)
+                td
+                  = f.text_field :item_total_price, disabled: true, data: { name: 'item_total_price' }
+              tr
+                th.text-right colspan="4"
+                  = f.object.class.human_attribute_name(:payment_fee)
+                td
+                  = f.text_field :payment_fee, data: { name: 'payment_fee' }
+              tr
+                th.text-right colspan="4"
+                  = f.object.class.human_attribute_name(:shipment_fee)
+                td
+                  = f.text_field :shipment_fee, data: { name: 'shipment_fee' }
+              tr
+                th.text-right colspan="4"
+                  = f.object.class.human_attribute_name(:total_price)
+                td
+                  = f.text_field :total_price, disabled: true, data: { name: 'total_price' }
+
+  .col-md-6
+    .row
+      fieldset
+        .col-md-3
+          legend
+            = Comable.t('admin.user')
+          .help-block
+
+        .col-md-9
+          - if @order.new_record?
+            .form-group
+              = f.collection_select :user_id, [@order.user].compact, :id, :email, {}, class: 'select2 ajax', data: { source: comable.admin_users_path, term: :email_or_bill_address_full_name_cont }
+
+          .form-group
+            = f.label :email
+            = f.email_field :email
+
+      - if f.object.bill_address
+        hr
+
+        fieldset
+          .col-md-3
+            legend
+              = f.object.class.human_attribute_name(:bill_address)
+            .help-block
+
+          .col-md-9
+            = f.fields_for :bill_address do |ff|
+              .form-group
+                = ff.label :full_name
+                .row
+                  .col-sm-6
+                    = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
+                  .col-sm-6
+                    = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
+
+              .form-group
+                = ff.label :zip_code
+                = ff.text_field :zip_code, max_length: 8
+
+              .form-group
+                = ff.label :state_name
+                = ff.text_field :state_name
+
+              .form-group
+                = ff.label :city
+                = ff.text_field :city
+
+              .form-group
+                = ff.label :detail
+                = ff.text_field :detail
+
+              .form-group
+                = ff.label :phone_number
+                = ff.text_field :phone_number, max_length: 18
+
+      - if f.object.ship_address
+        hr
+
+        fieldset
+          .col-md-3
+            legend
+              = f.object.class.human_attribute_name(:ship_address)
+            .help-block
+
+          .col-md-9
+            = f.fields_for :ship_address do |ff|
+              .form-group
+                = ff.label :full_name
+                .row
+                  .col-sm-6
+                    = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
+                  .col-sm-6
+                    = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
+
+              .form-group
+                = ff.label :zip_code
+                = ff.text_field :zip_code, max_length: 8
+
+              .form-group
+                = ff.label :state_name
+                = ff.text_field :state_name
+
+              .form-group
+                = ff.label :city
+                = ff.text_field :city
+
+              .form-group
+                = ff.label :detail
+                = ff.text_field :detail
+
+              .form-group
+                = ff.label :phone_number
+                = ff.text_field :phone_number, max_length: 18

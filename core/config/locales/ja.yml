@@ -173,6 +173,7 @@ ja:
       add_variants: 'バリエーションを追加する'
       size: 'サイズ'
       add_stocks: '在庫を追加する'
+      user: 'ユーザー'
       nav:
         dashboard: ダッシュボード
         order: 注文管理

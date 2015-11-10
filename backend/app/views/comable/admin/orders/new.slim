@@ -9,10 +9,8 @@
         ol.breadcrumb
           li>
             = link_to Comable.t('admin.nav.order'), comable.admin_orders_path
-          li>
-            = link_to @order.code, comable.admin_order_path(@order)
           li.active
-            = Comable.t('admin.actions.edit')
+            = Comable.t('admin.actions.new')
 
   .comable-page-body
     = render 'form'
