@@ -103,6 +103,7 @@ module Comable
         false
       end
 
+      # rubocop:disable Metrics/MethodLength
       def order_params
         params.require(:order).permit(
           :user_id,
@@ -116,6 +117,7 @@ module Comable
           order_items_attributes: [:id, :name, :sku, :price, :quantity, :variant_id]
         )
       end
+      # rubocop:enable Metrics/MethodLength
 
       def redirect_to_back_with_alert(exception)
         redirect_to :back, alert: exception.message
