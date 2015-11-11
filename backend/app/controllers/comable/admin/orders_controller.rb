@@ -95,6 +95,7 @@ module Comable
 
       def complete_order
         Comable::Order.transaction do
+          @order.allow_multiple_incomplete_orders!
           @order.next_state! until @order.completed?
         end
         true
@@ -104,10 +105,12 @@ module Comable
 
       def order_params
         params.require(:order).permit(
+          :user_id,
           :email,
           :payment_fee,
           :shipment_fee,
           :total_price,
+          :same_as_bill_address,
           bill_address_attributes: permitted_address_attributes,
           ship_address_attributes: permitted_address_attributes,
           order_items_attributes: [:id, :name, :sku, :price, :quantity, :variant_id]

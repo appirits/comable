@@ -335,6 +335,7 @@ en:
         guest_token: 'Guest token'
         payment_state: 'Payment state'
         shipment_state: 'Shipment state'
+        same_as_bill_address: 'Same as the billing address'
         <<: *timestamps
       comable/order_item: &comable_order_item
         quantity: *quantity

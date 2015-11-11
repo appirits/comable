@@ -97,7 +97,11 @@ module Comable
     end
 
     def as_json(options = nil)
-      super (options || {}).merge(methods: [:text])
+      options =  {
+        include: [:bill_address, :ship_address],
+        methods: [:text]
+      }
+      super
     end
 
     private

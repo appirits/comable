@@ -26,6 +26,8 @@ module Comable
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
     delegate :cancel!, :resume!, to: :payment, allow_nil: true, prefix: true
 
+    attr_accessor :same_as_bill_address
+
     def complete!
       ActiveRecord::Base.transaction do
         run_callbacks :complete do

@@ -335,6 +335,7 @@ ja:
         guest_token: ゲストトークン
         payment_state: '決済ステータス'
         shipment_state: '配送ステータス'
+        same_as_bill_address: '請求先と同じ住所を利用する'
         <<: *timestamps
       comable/order_item: &comable_order_item
         quantity: *quantity

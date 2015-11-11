@@ -54,7 +54,7 @@
                 td
                   = f.text_field :total_price, disabled: true, data: { name: 'total_price' }
 
-  .col-md-6
+  .col-md-6#js-user-fields
     .row
       fieldset
         .col-md-3
@@ -65,11 +65,11 @@
         .col-md-9
           - if @order.new_record?
             .form-group
-              = f.collection_select :user_id, [@order.user].compact, :id, :email, {}, class: 'select2 ajax', data: { source: comable.admin_users_path, term: :email_or_bill_address_full_name_cont }
+              = f.collection_select :user_id, [@order.user].compact, :id, :text, {}, id: 'js-user-selector', class: 'select2 ajax', data: { source: comable.admin_users_path, term: :email_or_bill_address_full_name_cont }
 
           .form-group
             = f.label :email
-            = f.email_field :email
+            = f.email_field :email, data: { name: 'email' }
 
       - if f.object.bill_address
         hr
@@ -86,29 +86,29 @@
                 = ff.label :full_name
                 .row
                   .col-sm-6
-                    = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
+                    = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name), data: { name: 'bill-family-name' }
                   .col-sm-6
-                    = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
+                    = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name), data: { name: 'bill-first-name' }
 
               .form-group
                 = ff.label :zip_code
-                = ff.text_field :zip_code, max_length: 8
+                = ff.text_field :zip_code, max_length: 8, data: { name: 'bill-zip-code' }
 
               .form-group
                 = ff.label :state_name
-                = ff.text_field :state_name
+                = ff.text_field :state_name, data: { name: 'bill-state-name' }
 
               .form-group
                 = ff.label :city
-                = ff.text_field :city
+                = ff.text_field :city, data: { name: 'bill-city' }
 
               .form-group
                 = ff.label :detail
-                = ff.text_field :detail
+                = ff.text_field :detail, data: { name: 'bill-detail' }
 
               .form-group
                 = ff.label :phone_number
-                = ff.text_field :phone_number, max_length: 18
+                = ff.text_field :phone_number, max_length: 18, data: { name: 'bill-phone-number' }
 
       - if f.object.ship_address
         hr
@@ -120,31 +120,38 @@
             .help-block
 
           .col-md-9
-            = f.fields_for :ship_address do |ff|
-              .form-group
-                = ff.label :full_name
-                .row
-                  .col-sm-6
-                    = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name)
-                  .col-sm-6
-                    = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name)
+            .form-group
+              .checkbox
+                label
+                  = f.check_box :same_as_bill_address, data: { name: 'same-as-bill-address' }
+                  = f.object.class.human_attribute_name(:same_as_bill_address)
 
-              .form-group
-                = ff.label :zip_code
-                = ff.text_field :zip_code, max_length: 8
+            #js-ship-address-fields
+              = f.fields_for :ship_address do |ff|
+                .form-group
+                  = ff.label :full_name
+                  .row
+                    .col-sm-6
+                      = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name), data: { name: 'ship-family-name' }
+                    .col-sm-6
+                      = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name), data: { name: 'ship-first-name' }
 
-              .form-group
-                = ff.label :state_name
-                = ff.text_field :state_name
+                .form-group
+                  = ff.label :zip_code
+                  = ff.text_field :zip_code, max_length: 8, data: { name: 'ship-zip-code' }
 
-              .form-group
-                = ff.label :city
-                = ff.text_field :city
+                .form-group
+                  = ff.label :state_name
+                  = ff.text_field :state_name, data: { name: 'ship-state-name' }
 
-              .form-group
-                = ff.label :detail
-                = ff.text_field :detail
+                .form-group
+                  = ff.label :city
+                  = ff.text_field :city, data: { name: 'ship-city' }
 
-              .form-group
-                = ff.label :phone_number
-                = ff.text_field :phone_number, max_length: 18
+                .form-group
+                  = ff.label :detail
+                  = ff.text_field :detail, data: { name: 'ship-detail' }
+
+                .form-group
+                  = ff.label :phone_number
+                  = ff.text_field :phone_number, max_length: 18, data: { name: 'ship-phone-number' }

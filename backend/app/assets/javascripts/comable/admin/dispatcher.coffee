@@ -16,7 +16,8 @@ class Dispatcher
 
     switch page
       when 'orders:new', 'orders:create'
-        new NewOrder
+        new OrderItemBuilder
+        new UserSelector
         new DynamicOrder
       when 'orders:new', 'orders:create', 'orders:edit', 'orders:update'
         new DynamicOrder

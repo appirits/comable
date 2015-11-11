@@ -4,7 +4,7 @@ module Comable
       extend ActiveSupport::Concern
 
       included do
-        validates :user_id, uniqueness: { scope: :completed_at }, if: :user
+        validates :user_id, uniqueness: { scope: :completed_at }, if: -> { user && !@allow_multiple_incomplete_orders }
         validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
         with_options if: -> { stated?(:cart) } do |context|
@@ -33,6 +33,10 @@ module Comable
           context.validates :shipment_fee, presence: true
           context.validates :total_price, presence: true
         end
+      end
+
+      def allow_multiple_incomplete_orders!
+        @allow_multiple_incomplete_orders = true
       end
     end
   end
