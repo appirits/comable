@@ -4,18 +4,17 @@ module Comable
   module Admin
     class VariantsController < Comable::Admin::ApplicationController
       # for /admin/variants
-      load_and_authorize_resource :variant, class: Comable::Variant.name, unless: -> { params[:product_id] }, only: :index
+      load_and_authorize_resource :variant, class: Comable::Variant.name, only: :index
 
-      # for /admin/products/:product_id/variants
-      load_and_authorize_resource :product, class: Comable::Product.name, if: -> { params[:product_id] }
-      load_and_authorize_resource :variant, class: Comable::Variant.name, if: -> { params[:product_id] }, through: :product
+      # for /admin/products/:product_id/variants/:id
+      load_and_authorize_resource :product, class: Comable::Product.name, except: :index
+      load_and_authorize_resource :variant, class: Comable::Variant.name, except: :index, through: :product
 
       def index
         @q = @variants.ransack(params[:q])
         @variants = @q.result.includes(:product).page(params[:page]).accessible_by(current_ability).by_newest
 
         respond_to do |format|
-          format.html
           format.json { render json: @variants }
         end
       end
