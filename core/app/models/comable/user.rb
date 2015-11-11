@@ -57,10 +57,6 @@ module Comable
       !new_record?
     end
 
-    def not_signed_in?
-      !signed_in?
-    end
-
     # TODO: Add a test case
     def reload(*_)
       super.tap do
@@ -96,12 +92,8 @@ module Comable
       bill_address ? "#{bill_full_name} (#{email})" : email
     end
 
-    def as_json(options = nil)
-      options =  {
-        include: [:bill_address, :ship_address],
-        methods: [:text]
-      }
-      super
+    def as_json(options = {})
+      super options.merge(include: [:bill_address, :ship_address], methods: [:text])
     end
 
     private
