@@ -3,7 +3,12 @@ require_dependency 'comable/admin/application_controller'
 module Comable
   module Admin
     class VariantsController < Comable::Admin::ApplicationController
-      load_and_authorize_resource :variant, class: Comable::Variant.name, only: :index
+      # for /admin/variants
+      load_and_authorize_resource :variant, class: Comable::Variant.name, unless: -> { params[:product_id] }, only: :index
+
+      # for /admin/products/:product_id/variants
+      load_and_authorize_resource :product, class: Comable::Product.name, if: -> { params[:product_id] }
+      load_and_authorize_resource :variant, class: Comable::Variant.name, if: -> { params[:product_id] }, through: :product
 
       def index
         @q = @variants.ransack(params[:q])

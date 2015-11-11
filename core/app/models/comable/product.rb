@@ -57,7 +57,7 @@ module Comable
     end
 
     def as_json(options = {})
-      options[:include] = { variants: { except: :product } }
+      options[:include] = { variants: { except: :product, methods: [:quantity, :option_names] } }
       super
     end
 

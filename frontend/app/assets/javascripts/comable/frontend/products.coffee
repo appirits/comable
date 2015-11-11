@@ -24,7 +24,7 @@ class @VariantSelector
     matchedVariant = null
     $.each(@class.variants, (_, variant) =>
       matched = true
-      $.each(variant.options, (index, option) =>
+      $.each(variant.option_names, (index, option) =>
         return matched = false if option != optionValues[index]
       )
       matchedVariant = variant if matched

@@ -50,15 +50,18 @@ module Comable
       end
     end
 
-    def as_json(options = {})
-      options[:include] = { product: { except: :variants } }
+    alias_method :text, :name
 
-      super.merge(
-        text: name,
-        quantity: quantity,
-        options: option_values.map(&:name),
-        image_url: image_url
-      ).stringify_keys
+    def option_names
+      option_values.map(&:name)
+    end
+
+    def as_json(options = {})
+      options = {
+        include: { product: { except: :variants } },
+        methods: [:text, :quantity, :option_names, :image_url]
+      }
+      super
     end
   end
 end

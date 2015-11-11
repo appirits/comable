@@ -18,21 +18,21 @@ describe 'VariantSelector', ->
     described_class.variants = undefined
 
   describe '#getVariant', ->
-    it 'returns a variant when options are matched', ->
-      variantRed = { options: ['M', 'Red'] }
-      variantBlue = { options: ['M', 'Blue'] }
+    it 'returns a variant when option names are matched', ->
+      variantRed = { option_names: ['M', 'Red'] }
+      variantBlue = { option_names: ['M', 'Blue'] }
       described_class.variants = [variantRed, variantBlue]
-      expect(subject.getVariant(variantRed.options)).toBe(variantRed)
+      expect(subject.getVariant(variantRed.option_names)).toBe(variantRed)
 
-    it 'returns null when options are not matched', ->
-      variantRed = { options: ['M', 'Red'] }
-      variantBlue = { options: ['M', 'Blue'] }
+    it 'returns null when option names are not matched', ->
+      variantRed = { option_names: ['M', 'Red'] }
+      variantBlue = { option_names: ['M', 'Blue'] }
       described_class.variants = [variantRed]
-      expect(subject.getVariant(variantBlue.options)).toBe(null)
+      expect(subject.getVariant(variantBlue.option_names)).toBe(null)
 
   describe '.setProduct', ->
     it 'sets @variants', ->
-      variant = { options: ['M', 'Red'] }
+      variant = { option_names: ['M', 'Red'] }
       product = { variants: [variant] }
       described_class.setProduct(product)
       expect(described_class.variants[0]).toBe(variant)
