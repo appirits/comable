@@ -177,6 +177,7 @@ en:
       nav:
         dashboard: 'Dashboard'
         order: 'Orders'
+        draft_order: 'Draft Orders'
         product: 'Products'
         stock: 'Stocks'
         category: 'Categories'

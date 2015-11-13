@@ -19,17 +19,7 @@ module Comable
       end
 
       def new
-        @order.build_bill_address
-        @order.build_ship_address
-      end
-
-      def create
-        if complete_order
-          redirect_to comable.admin_order_path(@order), notice: Comable.t('successful')
-        else
-          flash.now[:alert] = Comable.t('failure')
-          render :new
-        end
+        redirect_to comable.new_admin_draft_order_path
       end
 
       def edit

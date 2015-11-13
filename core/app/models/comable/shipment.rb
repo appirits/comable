@@ -91,6 +91,10 @@ module Comable
       shipment_method.try(:name) || Comable.t(:normal_shipment)
     end
 
+    def current_fee
+      shipment_method.try(:fee) || 0
+    end
+
     private
 
     def order_completed?
@@ -99,7 +103,7 @@ module Comable
 
     def copy_attributes_from_shipment_method
       self.attributes = {
-        fee: shipment_method.try(:fee) || 0
+        fee: current_fee
       }
     end
   end

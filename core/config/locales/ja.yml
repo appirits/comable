@@ -177,6 +177,7 @@ ja:
       nav:
         dashboard: ダッシュボード
         order: 注文管理
+        draft_order: '下書き注文'
         product: 商品管理
         stock: 在庫管理
         category: カテゴリ

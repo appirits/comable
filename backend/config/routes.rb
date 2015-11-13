@@ -24,7 +24,7 @@ Comable::Core::Engine.routes.draw do
 
     resources :variants, only: :index
 
-    resources :orders do
+    resources :orders, except: :create do
       collection do
         get :export
       end
@@ -39,6 +39,8 @@ Comable::Core::Engine.routes.draw do
         post :resume_shipment
       end
     end
+
+    resources :draft_orders
 
     resources :categories
     resources :stock_locations

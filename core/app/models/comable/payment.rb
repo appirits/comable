@@ -72,6 +72,10 @@ module Comable
       touch :completed_at
     end
 
+    def current_fee
+      payment_method.try(:fee) || 0
+    end
+
     private
 
     def order_completed?
@@ -80,7 +84,7 @@ module Comable
 
     def copy_attributes_from_payment_method
       self.attributes = {
-        fee: payment_method.fee
+        fee: current_fee
       }
     end
   end
