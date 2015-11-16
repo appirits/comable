@@ -4,6 +4,7 @@ module Comable
       extend ActiveSupport::Concern
 
       included do
+        validates :code, presence: true
         validates :user_id, uniqueness: { scope: :completed_at }, if: -> { user && !draft }
         validates :guest_token, presence: true, uniqueness: { scope: :completed_at }, unless: :user
 
@@ -28,7 +29,6 @@ module Comable
         end
 
         with_options if: -> { stated?(:confirm) } do |context|
-          context.validates :code, presence: true
           context.validates :payment_fee, presence: true
           context.validates :shipment_fee, presence: true
           context.validates :total_price, presence: true

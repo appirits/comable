@@ -7,9 +7,9 @@ module Comable
         define_model_callbacks :complete
 
         before_validation :copy_ship_address_from_bill_address, if: :same_as_bill_address
+        before_validation :generate_code, on: :create
         before_validation :generate_guest_token, on: :create
         before_validation :clone_addresses_from_user, on: :create
-        before_complete :generate_code
         after_complete :clone_addresses_to_user
       end
 
