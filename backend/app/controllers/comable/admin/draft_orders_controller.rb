@@ -22,6 +22,7 @@ module Comable
 
       def create
         if save_order_as_draft
+          @order.update!(draft: false) if @order.completed?
           redirect_to admin_order_path, notice: Comable.t('successful')
         else
           build_associations
