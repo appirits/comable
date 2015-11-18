@@ -58,6 +58,13 @@ FactoryGirl.define do
       shipments { [build(:shipment)] }
     end
 
+    trait :draft do
+      draft true
+      state 'draft'
+      bill_address { build(:address) }
+      ship_address { build(:address) }
+    end
+
     after(:build) do |order|
       order.shipments.each { |shipment| shipment.state = 'ready' } if order.state? :completed
     end

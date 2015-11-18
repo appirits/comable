@@ -173,9 +173,11 @@ ja:
       add_variants: 'バリエーションを追加する'
       size: 'サイズ'
       add_stocks: '在庫を追加する'
+      user: 'ユーザー'
       nav:
         dashboard: ダッシュボード
         order: 注文管理
+        draft_order: '下書き注文'
         product: 商品管理
         stock: 在庫管理
         category: カテゴリ
@@ -334,6 +336,7 @@ ja:
         guest_token: ゲストトークン
         payment_state: '決済ステータス'
         shipment_state: '配送ステータス'
+        same_as_bill_address: '請求先と同じ住所を利用する'
         <<: *timestamps
       comable/order_item: &comable_order_item
         quantity: *quantity

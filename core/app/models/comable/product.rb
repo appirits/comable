@@ -56,8 +56,9 @@ module Comable
       option_types.empty?
     end
 
-    def as_json(options = nil)
-      super (options || {}).merge(methods: [:variants])
+    def as_json(options = {})
+      options[:include] = { variants: { except: :product, methods: [:quantity, :option_names] } }
+      super
     end
 
     def sku_h_item_name

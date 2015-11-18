@@ -7,7 +7,7 @@ class @DynamicOrder
 
   listen_events: ->
     self = this
-    $('input').on('change', ->
+    $(document).on('change', 'input', ->
       attribute_name = $(this).attr('data-name')
       return unless jQuery.inArray(attribute_name, self.refresh_trigger_attributes)
       self.refresh_order_item_prices_for(this)
@@ -18,7 +18,7 @@ class @DynamicOrder
 
     $price = $group.find('[data-name="price"]')
     $quantity = $group.find('[data-name="quantity"]')
-    $subtotal_price = $group.find('[data-name="subtotal_price"]')
+    $subtotal_price = $group.find('[data-name="subtotal-price"]')
 
     price = Number($price.val())
     quantity = Number($quantity.val())
@@ -28,14 +28,14 @@ class @DynamicOrder
 
   refresh_order_prices: ->
     item_total_price = 0
-    $('[data-name="subtotal_price"]').each( ->
+    $('[data-name="subtotal-price"]').each( ->
       item_total_price += Number($(this).val())
     )
 
-    $item_total_price = $('[data-name="item_total_price"]')
-    $payment_fee = $('[data-name="payment_fee"]')
-    $shipment_fee = $('[data-name="shipment_fee"]')
-    $total_price = $('[data-name="total_price"]')
+    $item_total_price = $('[data-name="item-total-price"]')
+    $payment_fee = $('[data-name="payment-fee"]')
+    $shipment_fee = $('[data-name="shipment-fee"]')
+    $total_price = $('[data-name="total-price"]')
 
     payment_fee = Number($payment_fee.val())
     shipment_fee = Number($shipment_fee.val())

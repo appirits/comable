@@ -13,7 +13,7 @@ AwesomeAdminLayout.define(only: Comable::Admin::ApplicationController) do |contr
     end
 
     item Comable.t('admin.nav.order') do
-      link comable.admin_orders_path
+      nest :orders
       icon 'shopping-cart'
     end
 
@@ -40,6 +40,18 @@ AwesomeAdminLayout.define(only: Comable::Admin::ApplicationController) do |contr
     item current_comable_user.email do
       nest :profile
       icon 'gift'
+    end
+  end
+
+  navigation :orders do
+    brand Comable.t('admin.nav.order')
+
+    item Comable.t('admin.nav.order') do
+      link comable.admin_orders_path
+    end
+
+    item Comable.t('admin.nav.draft_order') do
+      link comable.admin_draft_orders_path
     end
   end
 

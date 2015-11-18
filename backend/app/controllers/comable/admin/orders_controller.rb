@@ -18,6 +18,10 @@ module Comable
       def show
       end
 
+      def new
+        redirect_to comable.new_admin_draft_order_path
+      end
+
       def edit
       end
 
@@ -87,7 +91,7 @@ module Comable
           :total_price,
           bill_address_attributes: permitted_address_attributes,
           ship_address_attributes: permitted_address_attributes,
-          order_items_attributes: [:id, :name, :code, :price, :quantity]
+          order_items_attributes: [:id, :name, :price, :quantity]
         )
       end
 

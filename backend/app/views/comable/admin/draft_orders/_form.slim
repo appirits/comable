@@ -1,0 +1,179 @@
+= error_messages_for @order
+
+= form_for [comable, :admin, :draft, @order] do |f|
+  .hidden
+    = f.submit
+
+  .col-md-6
+    .row
+      fieldset
+        .col-md-3
+          legend
+            = f.object.class.human_attribute_name(:order_items)
+          .help-block
+
+        .col-md-9
+          - if @order.new_record?
+            .form-group
+              = select_tag :variant, nil, id: 'js-variant-selector', class: 'select2 ajax', data: { source: comable.admin_variants_path, term: :product_name_cont }
+              = link_to_add_fields nil, f, :order_items, id: 'js-add-order-item', class: 'hidden'
+
+          table.table#js-order-items-table
+            thead
+              tr
+                th colspan="2"
+                  = f.object.order_items.klass.human_attribute_name(:product)
+                th
+                  = f.object.order_items.klass.human_attribute_name(:price)
+                th
+                  = f.object.order_items.klass.human_attribute_name(:quantity)
+                th
+                  = f.object.order_items.klass.human_attribute_name(:subtotal_price)
+            tbody
+              = f.fields_for :order_items do |ff|
+                = render 'comable/admin/shared/order_items_fields', f: ff
+            tfoot
+              tr
+                th.text-right colspan="4"
+                  = f.object.class.human_attribute_name(:item_total_price)
+                td
+                  = f.text_field :item_total_price, disabled: true, data: { name: 'item-total-price' }
+
+          .form-group
+            = f.fields_for :payment do |ff|
+              .panel.panel-default
+                .panel-heading
+                  = f.object.class.human_attribute_name(:payment_method)
+
+                ul.list-group
+                  = ff.collection_radio_buttons :payment_method_id, Comable::PaymentMethod.all, :id, :name do |b|
+                    li.list-group-item
+                      .radio
+                        = b.label do
+                          = b.radio_button
+                          strong
+                            = b.text
+                      p
+                        = "#{b.object.class.human_attribute_name(:fee)}: "
+                        = number_to_currency b.object.fee
+
+          - if @order.shipment?
+            .form-group
+              = f.fields_for :shipments do |ff|
+                .panel.panel-default
+                  .panel-heading
+                    | #{f.object.class.human_attribute_name(:shipment_method)} ##{ff.index.next}
+
+                  ul.list-group
+                    = ff.collection_radio_buttons :shipment_method_id, Comable::ShipmentMethod.all, :id, :name do |b|
+                      li.list-group-item
+                        .radio
+                          = b.label do
+                            = b.radio_button
+                            strong
+                              = b.text
+                        p
+                          = "#{b.object.class.human_attribute_name(:fee)}: "
+                          = number_to_currency b.object.fee
+
+  .col-md-6#js-user-fields
+    .row
+      fieldset
+        .col-md-3
+          legend
+            = Comable.t('admin.user')
+          .help-block
+
+        .col-md-9
+          - if @order.new_record?
+            .form-group
+              = f.collection_select :user_id, [@order.user].compact, :id, :text, {}, id: 'js-user-selector', class: 'select2 ajax', data: { source: comable.admin_users_path, term: :email_or_bill_address_full_name_cont }
+
+          .form-group
+            = f.label :email
+            = f.email_field :email, data: { name: 'email' }
+
+      - if f.object.bill_address
+        hr
+
+        fieldset
+          .col-md-3
+            legend
+              = f.object.class.human_attribute_name(:bill_address)
+            .help-block
+
+          .col-md-9
+            = f.fields_for :bill_address do |ff|
+              .form-group
+                = ff.label :full_name
+                .row
+                  .col-sm-6
+                    = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name), data: { name: 'bill-family-name' }
+                  .col-sm-6
+                    = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name), data: { name: 'bill-first-name' }
+
+              .form-group
+                = ff.label :zip_code
+                = ff.text_field :zip_code, max_length: 8, data: { name: 'bill-zip-code' }
+
+              .form-group
+                = ff.label :state_name
+                = ff.text_field :state_name, data: { name: 'bill-state-name' }
+
+              .form-group
+                = ff.label :city
+                = ff.text_field :city, data: { name: 'bill-city' }
+
+              .form-group
+                = ff.label :detail
+                = ff.text_field :detail, data: { name: 'bill-detail' }
+
+              .form-group
+                = ff.label :phone_number
+                = ff.text_field :phone_number, max_length: 18, data: { name: 'bill-phone-number' }
+
+      - if f.object.ship_address
+        hr
+
+        fieldset
+          .col-md-3
+            legend
+              = f.object.class.human_attribute_name(:ship_address)
+            .help-block
+
+          .col-md-9
+            .form-group
+              .checkbox
+                label
+                  = f.check_box :same_as_bill_address, data: { name: 'same-as-bill-address' }
+                  = f.object.class.human_attribute_name(:same_as_bill_address)
+
+            #js-ship-address-fields
+              = f.fields_for :ship_address do |ff|
+                .form-group
+                  = ff.label :full_name
+                  .row
+                    .col-sm-6
+                      = ff.text_field :family_name, placeholder: ff.object.class.human_attribute_name(:family_name), data: { name: 'ship-family-name' }
+                    .col-sm-6
+                      = ff.text_field :first_name, placeholder: ff.object.class.human_attribute_name(:first_name), data: { name: 'ship-first-name' }
+
+                .form-group
+                  = ff.label :zip_code
+                  = ff.text_field :zip_code, max_length: 8, data: { name: 'ship-zip-code' }
+
+                .form-group
+                  = ff.label :state_name
+                  = ff.text_field :state_name, data: { name: 'ship-state-name' }
+
+                .form-group
+                  = ff.label :city
+                  = ff.text_field :city, data: { name: 'ship-city' }
+
+                .form-group
+                  = ff.label :detail
+                  = ff.text_field :detail, data: { name: 'ship-detail' }
+
+                .form-group
+                  = ff.label :phone_number
+                  = ff.text_field :phone_number, max_length: 18, data: { name: 'ship-phone-number' }

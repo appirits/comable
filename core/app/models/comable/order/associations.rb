@@ -12,7 +12,7 @@ module Comable
         has_many :shipments, dependent: :destroy, class_name: Comable::Shipment.name, inverse_of: :order
 
         accepts_nested_attributes_for :bill_address
-        accepts_nested_attributes_for :ship_address
+        accepts_nested_attributes_for :ship_address, reject_if: :same_as_bill_address
         accepts_nested_attributes_for :order_items
         accepts_nested_attributes_for :payment
         accepts_nested_attributes_for :shipments

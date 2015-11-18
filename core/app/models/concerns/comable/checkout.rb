@@ -3,7 +3,11 @@ module Comable
     extend ActiveSupport::Concern
 
     included do
-      state_machine initial: :cart do
+      state_machine initial: -> (order) { order.draft? ? :draft : :cart } do
+        # for Draft Order
+        state :draft
+
+        # for Normal Order
         state :cart
         state :orderer
         state :delivery
@@ -22,6 +26,11 @@ module Comable
           transition [:cart, :orderer, :delivery, :shipment] => :payment, if: :payment_required?
           transition all - [:confirm, :completed] => :confirm
           transition :confirm => :completed
+        end
+
+        event :next_draft_state do
+          transition :draft => :shipment, if: :shipment_required?
+          transition all => :completed
         end
 
         event :cancel do

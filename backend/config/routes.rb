@@ -5,7 +5,7 @@ Comable::Core::Engine.routes.draw do
     resource :dashboard, only: :show
 
     resources :products do
-      resources :variants
+      resources :variants, except: :index
 
       resources :stocks
 
@@ -22,7 +22,9 @@ Comable::Core::Engine.routes.draw do
       end
     end
 
-    resources :orders do
+    resources :variants, only: :index
+
+    resources :orders, except: :create do
       collection do
         get :export
       end
@@ -37,6 +39,8 @@ Comable::Core::Engine.routes.draw do
         post :resume_shipment
       end
     end
+
+    resources :draft_orders
 
     resources :categories
     resources :stock_locations

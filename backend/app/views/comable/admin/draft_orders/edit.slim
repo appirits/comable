@@ -8,9 +8,9 @@
       h1.page-header
         ol.breadcrumb
           li>
-            = link_to Comable.t('admin.nav.order'), comable.admin_orders_path
+            = link_to Comable.t('admin.nav.draft_order'), comable.admin_draft_orders_path
           li>
-            = link_to @order.code, comable.admin_order_path(@order)
+            = link_to @order.code, comable.admin_draft_order_path(@order)
           li.active
             = Comable.t('admin.actions.edit')
 

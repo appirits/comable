@@ -26,6 +26,8 @@ module Comable
     delegate :state, :human_state_name, to: :payment, allow_nil: true, prefix: true
     delegate :cancel!, :resume!, to: :payment, allow_nil: true, prefix: true
 
+    attr_writer :same_as_bill_address
+
     def complete!
       ActiveRecord::Base.transaction do
         run_callbacks :complete do
@@ -79,12 +81,12 @@ module Comable
 
     # 時価送料を取得
     def current_shipment_fee
-      shipments.to_a.sum(&:fee)
+      shipments.to_a.sum(&:current_fee)
     end
 
     # Get the current payment fee
     def current_payment_fee
-      payment.try(:fee) || 0
+      payment.try(:current_fee) || 0
     end
 
     # 時価合計を取得
@@ -106,6 +108,10 @@ module Comable
       completed_at?
     end
 
+    def draft?
+      read_attribute(:draft)
+    end
+
     def paid?
       payment ? payment.completed? : true
     end
@@ -121,6 +127,10 @@ module Comable
 
     def ship!
       shipments.with_state(:ready).each(&:ship!)
+    end
+
+    def same_as_bill_address
+      @same_as_bill_address.nil? ? bill_address == ship_address : @same_as_bill_address
     end
 
     private

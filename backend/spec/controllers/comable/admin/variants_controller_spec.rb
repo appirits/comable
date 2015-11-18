@@ -8,11 +8,11 @@ describe Comable::Admin::VariantsController do
 
   let(:product) { create(:product, variants: []) }
 
-  describe 'GET index' do
-    it 'assigns all variants as @variants' do
+  describe 'GET index.json' do
+    it 'responses with JSON' do
       variant = create(:variant, product: product)
-      get :index, product_id: product.to_param
-      expect(assigns(:variants)).to eq([variant])
+      get :index, product_id: product.to_param, format: :json
+      expect(response.body).to eq([variant].to_json)
     end
   end
 

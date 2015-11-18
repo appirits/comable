@@ -32,6 +32,13 @@ describe Comable::Admin::OrdersController do
     end
   end
 
+  describe 'GET new' do
+    it 'redirects to a new draft order' do
+      get :new
+      expect(response).to redirect_to(comable.new_admin_draft_order_path)
+    end
+  end
+
   describe 'PUT update' do
     let!(:order) { create(:order, :completed) }
 

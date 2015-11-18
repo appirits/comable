@@ -20,6 +20,7 @@ module Comable
     scope :by_newest, -> { reorder(created_at: :desc) }
 
     alias_method :quantity, :total_quantity
+    delegate :image_url, to: :product
 
     def quantity=(quantity)
       fail 'Stocks are already exists!' if stocks.any?
@@ -49,11 +50,18 @@ module Comable
       end
     end
 
-    def as_json(options = nil)
-      super.merge(
-        'quantity' => quantity,
-        'options' => option_values.map(&:name)
-      )
+    alias_method :text, :name
+
+    def option_names
+      option_values.map(&:name)
+    end
+
+    def as_json(options = {})
+      options = {
+        include: { product: { except: :variants } },
+        methods: [:text, :quantity, :option_names, :image_url]
+      }
+      super
     end
   end
 end

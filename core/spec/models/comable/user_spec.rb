@@ -158,4 +158,18 @@ describe Comable::User do
       expect(subject.ship_address).to be
     end
   end
+
+  describe '#text' do
+    it 'returns email' do
+      subject.email = 'foobar@example.com'
+      expect(subject.text).to eq(subject.email)
+    end
+
+    it 'returns full name for billing with email when billing address is existed' do
+      subject.email = 'foobar@example.com'
+      subject.bill_address = build(:address)
+      expect(subject.text).to include(subject.bill_full_name)
+      expect(subject.text).to include(subject.email)
+    end
+  end
 end

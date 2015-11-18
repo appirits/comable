@@ -10,6 +10,12 @@ module Comable
     validates :detail, length: { maximum: 255 }
     validates :phone_number, length: { maximum: 255 }
 
+    # for Search by ransack
+    # https://github.com/activerecord-hackery/ransack/wiki/using-ransackers#5-search-on-a-concatenated-full-name-from-first_name-and-last_name-several-examples
+    ransacker :full_name do |parent|
+      Arel::Nodes::InfixOperation.new('||', parent.table[:first_name], parent.table[:family_name])
+    end
+
     class << self
       def find_or_clone(address)
         all.to_a.find { |obj| obj.same_as? address } || address.clone

@@ -6,9 +6,10 @@ module Comable
       included do
         define_model_callbacks :complete
 
+        before_validation :copy_ship_address_from_bill_address, if: :same_as_bill_address
+        before_validation :generate_code, on: :create
         before_validation :generate_guest_token, on: :create
         before_validation :clone_addresses_from_user, on: :create
-        before_complete :generate_code
         after_complete :clone_addresses_to_user
       end
 
@@ -37,6 +38,10 @@ module Comable
         return unless user
         user.update_bill_address_by bill_address
         user.update_ship_address_by ship_address
+      end
+
+      def copy_ship_address_from_bill_address
+        self.ship_address = bill_address
       end
     end
   end

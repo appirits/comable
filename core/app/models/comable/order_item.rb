@@ -14,8 +14,8 @@ module Comable
 
     liquid_methods :name, :name_with_sku, :code, :quantity, :price, :subtotal_price
 
-    delegate :product, to: :variant
-    delegate :image_url, to: :product
+    delegate :product, to: :variant, allow_nil: true
+    delegate :image_url, to: :product, allow_nil: true
     delegate :guest_token, to: :order
     delegate :completed?, to: :order, allow_nil: true
 
@@ -42,7 +42,7 @@ module Comable
 
     # 売価小計を取得
     def subtotal_price
-      price * quantity
+      price * quantity if price
     end
 
     def unstocked?

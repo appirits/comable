@@ -8,6 +8,11 @@ describe Comable::Order do
   it { is_expected.to have_many(:shipments).class_name(Comable::Shipment.name).dependent(:destroy).inverse_of(:order) }
 
   describe 'validations' do
+    it 'requires the code' do
+      allow(subject).to receive(:generate_code).and_return(nil)
+      is_expected.to validate_presence_of(:code)
+    end
+
     context "when state is 'orderer'" do
       before { order.state = 'orderer' }
 
@@ -44,7 +49,6 @@ describe Comable::Order do
     context "when state is 'completed'" do
       before { order.state = 'completed' }
 
-      it { is_expected.to validate_presence_of(:code) }
       it { is_expected.to validate_presence_of(:payment_fee) }
       it { is_expected.to validate_presence_of(:shipment_fee) }
       it { is_expected.to validate_presence_of(:total_price) }
@@ -184,7 +188,6 @@ describe Comable::Order do
         before { subject.reload }
 
         its(:completed_at) { should be_nil }
-        its(:code) { should be_nil }
 
         context 'with user address' do
           subject(:order) { build(:order, user: user) }

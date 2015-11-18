@@ -13,4 +13,15 @@ describe Comable::Address do
   it { is_expected.to validate_length_of(:city).is_at_most(255) }
   it { is_expected.to validate_length_of(:detail).is_at_most(255) }
   it { is_expected.to validate_length_of(:phone_number).is_at_most(255) }
+
+  describe 'ransacker' do
+    describe ':full_name' do
+      it 'returns all required addresses' do
+        family_name = 'foo'
+        first_name = 'bar'
+        address = create(:address, family_name: family_name, first_name: first_name)
+        expect(subject.class.ransack(full_name: address.full_name).result).to eq([address])
+      end
+    end
+  end
 end
