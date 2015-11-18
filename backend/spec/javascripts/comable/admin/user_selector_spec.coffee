@@ -10,43 +10,6 @@ describe 'UserSelector', ->
     described_class = UserSelector
     subject = described_class.prototype
 
-  describe '#constructor', ->
-    beforeEach ->
-      spyOn(subject, 'setSelectors')
-      # Set @$userSelector
-      subject.$userSelector = $('<select />')
-
-    it 'calls #setSelectors', ->
-      subject.constructor()
-      expect(subject.setSelectors).toHaveBeenCalled()
-      expect(subject.setSelectors.calls.count()).toEqual(1)
-
-    it 'handles "select2:select" on @$userSelector with #fillUser', ->
-      spyOn(subject, 'fillUser')
-
-      subject.constructor()
-
-      # Trigger "select2:select" event on @$userSelector
-      event = $.Event("select2:select")
-      event.params =  { data: {} }
-      subject.$userSelector.trigger(event)
-
-      expect(subject.fillUser).toHaveBeenCalled()
-      expect(subject.fillUser.calls.count()).toEqual(1)
-
-  describe '#setSelectors', ->
-    it 'sets @$userSelector', ->
-      id = 'js-user-selector'
-      setFixtures("<select id=\"#{id}\" />")
-      subject.setSelectors()
-      expect(subject.$userSelector).toEqual("##{id}")
-
-    it 'sets @$user', ->
-      id = 'js-user-fields'
-      setFixtures("<div id=\"#{id}\" />")
-      subject.setSelectors()
-      expect(subject.$user).toEqual("##{id}")
-
   describe '#fillUser', ->
     user = {
       email: 'example@example.com'
