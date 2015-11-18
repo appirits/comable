@@ -28,12 +28,12 @@ class @OrderItemBuilder
     $orderItem
 
   fillOrderItem: ($orderItem, variant) ->
-    $orderItem.find('[data-name="variant_id"]').val(variant.id)
+    $orderItem.find('[data-name="variant-id"]').val(variant.id)
     $orderItem.find('[data-name="name"]').val(variant.text)
     $orderItem.find('[data-name="sku"]').val(variant.sku)
     $orderItem.find('[data-name="price"]').val(variant.price)
-    $orderItem.find('[data-name="subtotal_price"]').val(variant.price)
-    $orderItem.find('[data-name="image_url"]').attr('src', variant.image_url)
+    $orderItem.find('[data-name="subtotal-price"]').val(variant.price)
+    $orderItem.find('[data-name="image-url"]').attr('src', variant.image_url)
 
   removeOrderItem: (element) ->
     $(element).closest(NEW_ORDER_ITEM_SELECTOR).remove()

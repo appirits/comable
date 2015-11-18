@@ -3,7 +3,7 @@
 
 tr.comable-order-items class="#{css_class}"
   td width="180"
-    = image_tag f.object.image_url, width: '100%', data: { name: 'image_url' }
+    = image_tag f.object.image_url, width: '100%', data: { name: 'image-url' }
   td
     p
       = f.text_field :name, placeholder: f.object.class.human_attribute_name(:name), data: { name: 'name' }
@@ -14,7 +14,7 @@ tr.comable-order-items class="#{css_class}"
   td
     = f.text_field :quantity, placeholder: f.object.class.human_attribute_name(:quantity), data: { name: 'quantity' }
   td
-    = f.text_field :subtotal_price, disabled: true, data: { name: 'subtotal_price' }
+    = f.text_field :subtotal_price, disabled: true, data: { name: 'subtotal-price' }
     br
-    = f.text_field :variant_id, data: { name: 'variant_id' }, class: 'hidden'
+    = f.text_field :variant_id, data: { name: 'variant-id' }, class: 'hidden'
     = link_to Comable.t('admin.actions.destroy'), 'javascript:void(0)', class: 'js-remove-order-item'

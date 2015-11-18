@@ -37,7 +37,7 @@
                 th.text-right colspan="4"
                   = f.object.class.human_attribute_name(:item_total_price)
                 td
-                  = f.text_field :item_total_price, disabled: true, data: { name: 'item_total_price' }
+                  = f.text_field :item_total_price, disabled: true, data: { name: 'item-total-price' }
 
           .form-group
             = f.fields_for :payment do |ff|

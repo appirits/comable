@@ -37,22 +37,22 @@
                 th.text-right colspan="4"
                   = f.object.class.human_attribute_name(:item_total_price)
                 td
-                  = f.text_field :item_total_price, disabled: true, data: { name: 'item_total_price' }
+                  = f.text_field :item_total_price, disabled: true, data: { name: 'item-total-price' }
               tr
                 th.text-right colspan="4"
                   = f.object.class.human_attribute_name(:payment_fee)
                 td
-                  = f.text_field :payment_fee, data: { name: 'payment_fee' }
+                  = f.text_field :payment_fee, data: { name: 'payment-fee' }
               tr
                 th.text-right colspan="4"
                   = f.object.class.human_attribute_name(:shipment_fee)
                 td
-                  = f.text_field :shipment_fee, data: { name: 'shipment_fee' }
+                  = f.text_field :shipment_fee, data: { name: 'shipment-fee' }
               tr
                 th.text-right colspan="4"
                   = f.object.class.human_attribute_name(:total_price)
                 td
-                  = f.text_field :total_price, disabled: true, data: { name: 'total_price' }
+                  = f.text_field :total_price, disabled: true, data: { name: 'total-price' }
 
   .col-md-6#js-user-fields
     .row
