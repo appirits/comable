@@ -87,23 +87,5 @@ module Comable
     def allow_return?
       !allow_cancel?
     end
-
-    def can_complete?
-      return false if orderer_required?
-      return false if delivery_required?
-      return false if payment_required?
-      return false if shipment_required?
-      true
-    end
-
-    def save_as_draft!
-      self.draft = true
-      next_state! until state? :delivery
-    end
-
-    def complete_from_draft!
-      next_state! until completed?
-      update!(draft: false)
-    end
   end
 end
