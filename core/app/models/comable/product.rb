@@ -7,7 +7,7 @@ module Comable
     include Comable::Product::Csvable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
-    has_many :images, class_name: Comable::Image.name, dependent: :destroy
+    has_many :images, -> { order(:id) }, class_name: Comable::Image.name, dependent: :destroy
     has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
 
     accepts_nested_attributes_for :variants, allow_destroy: true
@@ -23,12 +23,6 @@ module Comable
     ransack_options attribute_select: { associations: [:variants, :stocks, :option_types] }
 
     PREVIEW_SESSION_KEY = :preview_product
-
-    # Add conditions for the images association.
-    # Override method of the images association to support Rails 3.x.
-    def images
-      super.order(:id)
-    end
 
     def image_url
       image = images.first

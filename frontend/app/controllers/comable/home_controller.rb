@@ -8,7 +8,7 @@ module Comable
     private
 
     def load_products
-      @products = Comable::Product.limit(5)
+      @products = Comable::Product.includes(:images, :variants).limit(4)
     end
   end
 end

@@ -3,7 +3,7 @@ module Comable
     before_filter :load_category_and_products, only: :index
 
     def index
-      @products = @products.page(params[:page]).per(Comable::Config.products_per_page)
+      @products = @products.includes(:images, :variants).page(params[:page]).per(Comable::Config.products_per_page)
     end
 
     def show
