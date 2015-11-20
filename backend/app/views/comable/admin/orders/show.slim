@@ -6,11 +6,11 @@
         = link_to comable.ship_admin_order_path(@order), class: 'btn btn-primary', method: :post, disabled: !@order.can_ship? do
           i.fa.fa-truck>
           = Comable.t('admin.ship')
-      - if @order.completed?
+      - if @order.can_cancel?
         li
           = link_to comable.cancel_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:cancel)
-      - if @order.canceled?
+      - if @order.can_resume?
         li
           = button_to comable.resume_admin_order_path(@order), class: 'btn btn-default', method: :post do
             = @order.class.human_state_event_name(:resume)
