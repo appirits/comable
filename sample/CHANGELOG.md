@@ -1,3 +1,8 @@
+## Comable 0.7.0 (November 20, 2015) ##
+
+*   No changes.
+
+
 ## Comable 0.7.0.beta2 (October 31, 2015) ##
 
 *   Implement Multiple Shipments.

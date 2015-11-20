@@ -1,3 +1,11 @@
+## Comable 0.7.0 (November 20, 2015) ##
+
+*   Improve Performance in frontend.
+
+    - Products page
+    - Home page
+
+
 ## Comable 0.7.0.beta2 (October 31, 2015) ##
 
 *   Implement Multiple Shipments.
