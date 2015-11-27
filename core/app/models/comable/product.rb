@@ -24,6 +24,15 @@ module Comable
 
     PREVIEW_SESSION_KEY = :preview_product
 
+    class << self
+      def cache_key
+        page = all.current_page if all.respond_to? :current_page
+        maximum_updated_at = maximum(:updated_at)
+        timestamp = maximum_updated_at.utc.to_s(cache_timestamp_format) if maximum_updated_at
+        "#{model_name.cache_key}/all-#{[page, timestamp, count].compact.join('-')}"
+      end
+    end
+
     def image_url
       image = images.first
       return image.url if image
