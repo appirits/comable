@@ -4,7 +4,7 @@ module Comable
 
     mount_uploader :file, Comable::ImageUploader
 
-    belongs_to :product, class_name: Comable::Product.name
+    belongs_to :product, class_name: Comable::Product.name, touch: true
 
     liquid_methods :url
 

@@ -1,104 +1,105 @@
-#comable-product
-  .row
-    ol.breadcrumb
-      - if @product.categories.any?
-        - @product.categories.first.path.each do |category|
-          li = link_to category.name, comable.products_path(category_id: category.id)
-      li.active
-        = @product.name
-
-  .row
-    .images.col-sm-6
-      - if @product.images.any?
-        .image
-          = link_to @product.image_url, class: 'thumbnail' do
-            = image_tag @product.image_url, width: '100%'
-        .row
-          - (@product.images - [@product.images.first]).each do |image|
-              .image.col-sm-4
-                = link_to image.url, class: 'thumbnail' do
-                  = image_tag image.url, width: '100%'
-      - else
-        .thumbnail
-          .image = image_tag @product.image_url, width: '100%'
-
-    .text.col-sm-6
-      h1.name
-        = @product.name
-        small< = @product.code
-      .caption
-        = @product.caption
-      .price
-        = number_to_currency @product.price
-      - if @product.properties.any?(&:present?)
-        .property
-          table.table.table-bordered
-            - @product.properties.each do |property|
-              tr
-                td= property['property_key']
-                td= property['property_value']
-
-      = form_tag comable.add_cart_path do
-        - if @product.sku?
-          - @product.variants.map(&:option_values).flatten.uniq.group_by(&:option_type).each_pair.with_index do |(option_type, option_values), index|
-            .sku
-              label for="option_values_#{index}"
-                = option_type.name
-              = select_tag "option_values[]", options_for_select(option_values.map { |o| [o.name, o.id] }), id: "option_values_#{index}"
-
-          #variant-selector.hidden
-            = select_tag 'variant_id', options_for_select(@product.variants.map { |v| [v.name, v.id] }), include_blank: true
-            javascript:
-              VariantSelector.setProduct(#{@product.to_json.html_safe});
-
-        - if @product.stocked?
-          .add_cart.form-inline.form-group
-            = hidden_field_tag :product_id, @product.id
-            = select_tag :quantity, options_for_select(1.upto(10).to_a)
-            = submit_tag Comable.t('add_to_cart')
-        - else
-          .soldout
-            = Comable.t('soldout')
-
-  - if @product.categories.any?
+- cache @product.cache_key do
+  #comable-product
     .row
-      h2
-        = Comable.t('browse_related_products')
-      ul
-        - @product.categories.each do |category|
-          li = listed_categories category.path, class: 'category-breadcrumb'
+      ol.breadcrumb
+        - if @product.categories.any?
+          - @product.categories.first.path.each do |category|
+            li = link_to category.name, comable.products_path(category_id: category.id)
+        li.active
+          = @product.name
 
-  #comable-image-dialog
-  coffee:
-    jQuery( ->
-      $('#comable-product .images .image a').click((event) ->
-        # Disable this event on smartphone
-        return if $(window).width() <= 768
+    .row
+      .images.col-sm-6
+        - if @product.images.any?
+          .image
+            = link_to @product.image_url, class: 'thumbnail' do
+              = image_tag @product.image_url, width: '100%'
+          .row
+            - (@product.images - [@product.images.first]).each do |image|
+                .image.col-sm-4
+                  = link_to image.url, class: 'thumbnail' do
+                    = image_tag image.url, width: '100%'
+        - else
+          .thumbnail
+            .image = image_tag @product.image_url, width: '100%'
 
-        event.preventDefault()
+      .text.col-sm-6
+        h1.name
+          = @product.name
+          small< = @product.code
+        .caption
+          = @product.caption
+        .price
+          = number_to_currency @product.price
+        - if @product.properties.any?(&:present?)
+          .property
+            table.table.table-bordered
+              - @product.properties.each do |property|
+                tr
+                  td= property['property_key']
+                  td= property['property_value']
 
-        image = $(this).find('img')[0]
-        return if image.length == 0
+        = form_tag comable.add_cart_path do
+          - if @product.sku?
+            - @product.variants.map(&:option_values).flatten.uniq.group_by(&:option_type).each_pair.with_index do |(option_type, option_values), index|
+              .sku
+                label for="option_values_#{index}"
+                  = option_type.name
+                = select_tag "option_values[]", options_for_select(option_values.map { |o| [o.name, o.id] }), id: "option_values_#{index}"
 
-        $('body').addClass('stop-scrolling')
+            #variant-selector.hidden
+              = select_tag 'variant_id', options_for_select(@product.variants.map { |v| [v.name, v.id] }), include_blank: true
+              javascript:
+                VariantSelector.setProduct(#{@product.to_json.html_safe});
 
-        image_clone = $(image).clone().css(width: 'auto', height: 'auto')
+          - if @product.stocked?
+            .add_cart.form-inline.form-group
+              = hidden_field_tag :product_id, @product.id
+              = select_tag :quantity, options_for_select(1.upto(10).to_a)
+              = submit_tag Comable.t('add_to_cart')
+          - else
+            .soldout
+              = Comable.t('soldout')
 
-        $('#comable-image-dialog').html(image_clone).dialog(
-          modal: true,
-          resizable: false,
-          width: $(window).width(),
-          height: $(window).height(),
-          dialogClass: 'without-titlebar',
-          close: -> $('body').removeClass('stop-scrolling')
+    - if @product.categories.any?
+      .row
+        h2
+          = Comable.t('browse_related_products')
+        ul
+          - @product.categories.each do |category|
+            li = listed_categories category.path, class: 'category-breadcrumb'
+
+    #comable-image-dialog
+    coffee:
+      jQuery( ->
+        $('#comable-product .images .image a').click((event) ->
+          # Disable this event on smartphone
+          return if $(window).width() <= 768
+
+          event.preventDefault()
+
+          image = $(this).find('img')[0]
+          return if image.length == 0
+
+          $('body').addClass('stop-scrolling')
+
+          image_clone = $(image).clone().css(width: 'auto', height: 'auto')
+
+          $('#comable-image-dialog').html(image_clone).dialog(
+            modal: true,
+            resizable: false,
+            width: $(window).width(),
+            height: $(window).height(),
+            dialogClass: 'without-titlebar',
+            close: -> $('body').removeClass('stop-scrolling')
+          )
         )
+
+        $('#comable-image-dialog').click( ->
+          $(this).dialog('close')
+        );
+
+        $(document).on('click', '.ui-widget-overlay', ->
+          $('#comable-image-dialog').dialog('close')
+        );
       )
-
-      $('#comable-image-dialog').click( ->
-        $(this).dialog('close')
-      );
-
-      $(document).on('click', '.ui-widget-overlay', ->
-        $('#comable-image-dialog').dialog('close')
-      );
-    )

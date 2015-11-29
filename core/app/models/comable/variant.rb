@@ -3,7 +3,7 @@ module Comable
     include Comable::Ransackable
     include Comable::Variant::Quantifier
 
-    belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants
+    belongs_to :product, class_name: Comable::Product.name, inverse_of: :variants, touch: true
     has_many :stocks, class_name: Comable::Stock.name, inverse_of: :variant, dependent: :destroy
 
     has_and_belongs_to_many :option_values, -> { order(:option_type_id, :created_at, :id) }, class_name: Comable::OptionValue.name, join_table: :comable_variants_option_values

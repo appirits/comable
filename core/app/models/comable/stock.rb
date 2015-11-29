@@ -10,7 +10,7 @@ module Comable
     include Comable::Liquidable
     include Comable::Stock::Csvable
 
-    belongs_to :variant, class_name: Comable::Variant.name, inverse_of: :stocks
+    belongs_to :variant, class_name: Comable::Variant.name, inverse_of: :stocks, touch: true
     belongs_to :stock_location, class_name: Comable::StockLocation.name
 
     #

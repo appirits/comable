@@ -8,7 +8,7 @@ module Comable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, -> { order(:id) }, class_name: Comable::Image.name, dependent: :destroy
-    has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
+    has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories, after_add: :touch_updated_at, after_remove: :touch_updated_at
 
     accepts_nested_attributes_for :variants, allow_destroy: true
     accepts_nested_attributes_for :images, allow_destroy: true
@@ -23,6 +23,15 @@ module Comable
     ransack_options attribute_select: { associations: [:variants, :stocks, :option_types] }
 
     PREVIEW_SESSION_KEY = :preview_product
+
+    class << self
+      def cache_key
+        page = all.current_page if all.respond_to? :current_page
+        maximum_updated_at = maximum(:updated_at)
+        timestamp = maximum_updated_at.utc.to_s(cache_timestamp_format) if maximum_updated_at
+        "#{model_name.cache_key}/all-#{[page, timestamp, count].compact.join('-')}"
+      end
+    end
 
     def image_url
       image = images.first
@@ -109,5 +118,11 @@ module Comable
     deprecate :code, deprecator: Comable::Deprecator.instance
     deprecate :code=, deprecator: Comable::Deprecator.instance
     deprecate :option_types_attributes=, deprecator: Comable::Deprecator.instance
+
+    private
+
+    def touch_updated_at(_category)
+      touch if persisted?
+    end
   end
 end

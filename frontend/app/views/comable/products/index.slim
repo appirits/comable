@@ -14,7 +14,8 @@
         = listed_categories Comable::Category.roots
 
     .products.col-sm-10
-      = render 'comable/shared/products'
+      - cache @products.cache_key do
+        = render 'comable/shared/products'
 
       .text-center
         = paginate @products, theme: :comable_frontend
