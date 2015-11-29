@@ -6,6 +6,8 @@ module Comable
 
     default_scope -> { order('position ASC') }
 
+    after_save :touch_all_products
+
     DEFAULT_PATH_NAME_DELIMITER = ' > '
 
     class << self
@@ -67,6 +69,10 @@ module Comable
 
         restore_from_jstree!(node['children'], category)
       end
+    end
+
+    def touch_all_products
+      products.update_all(updated_at: Time.now)
     end
   end
 end

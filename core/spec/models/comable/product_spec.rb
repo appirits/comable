@@ -70,4 +70,18 @@ describe Comable::Product do
       expect(subject.properties).to eq []
     end
   end
+
+  describe '#touch_updated_at' do
+    it 'touches updated_at after adding the category' do
+      category = create(:category)
+      product = create(:product)
+      expect { product.categories << category }.to change(product, :updated_at)
+    end
+
+    it 'touches updated_at after removing the category' do
+      category = create(:category)
+      product = create(:product, categories: [category])
+      expect { product.categories.delete(category) }.to change(product, :updated_at)
+    end
+  end
 end

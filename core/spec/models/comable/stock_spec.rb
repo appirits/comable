@@ -1,5 +1,5 @@
 describe Comable::Stock do
-  it { is_expected.to belong_to(:variant).class_name(Comable::Variant.name) }
+  it { is_expected.to belong_to(:variant).class_name(Comable::Variant.name).touch(true) }
   it { is_expected.to belong_to(:stock_location).class_name(Comable::StockLocation.name) }
 
   it { is_expected.to validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }

@@ -8,7 +8,7 @@ module Comable
 
     has_many :variants, class_name: Comable::Variant.name, inverse_of: :product, dependent: :destroy
     has_many :images, -> { order(:id) }, class_name: Comable::Image.name, dependent: :destroy
-    has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories
+    has_and_belongs_to_many :categories, class_name: Comable::Category.name, join_table: :comable_products_categories, after_add: :touch_updated_at, after_remove: :touch_updated_at
 
     accepts_nested_attributes_for :variants, allow_destroy: true
     accepts_nested_attributes_for :images, allow_destroy: true
@@ -118,5 +118,11 @@ module Comable
     deprecate :code, deprecator: Comable::Deprecator.instance
     deprecate :code=, deprecator: Comable::Deprecator.instance
     deprecate :option_types_attributes=, deprecator: Comable::Deprecator.instance
+
+    private
+
+    def touch_updated_at(_category)
+      touch if persisted?
+    end
   end
 end

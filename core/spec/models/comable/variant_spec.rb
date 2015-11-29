@@ -1,5 +1,5 @@
 describe Comable::Variant do
-  it { is_expected.to belong_to(:product).class_name(Comable::Product.name).inverse_of(:variants) }
+  it { is_expected.to belong_to(:product).class_name(Comable::Product.name).inverse_of(:variants).touch(true) }
   it { is_expected.to have_many(:stocks).class_name(Comable::Stock.name).inverse_of(:variant).dependent(:destroy) }
   it { is_expected.to have_and_belong_to_many(:option_values).class_name(Comable::OptionValue.name) }
 
