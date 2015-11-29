@@ -1,9 +1,8 @@
 describe 'comable/products/index.html.slim' do
-  let(:products) { create_list(:product, 5) }
-  let(:product) { products.first }
+  let!(:product) { create(:product) }
 
   context '商品が登録されている場合' do
-    before { assign(:products, Kaminari.paginate_array(products).page(1)) }
+    before { assign(:products, product.class.page(1)) }
     before { render }
 
     it '商品が表示されること' do
