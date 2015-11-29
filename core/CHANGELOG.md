@@ -1,3 +1,11 @@
+## Comable 0.7.1 (November 29, 2015) ##
+
+*   Improve performance in frontend.
+
+    - Add fragment caching for products.
+    - Add indexes to variants and stocks.
+
+
 ## Comable 0.7.0 (November 20, 2015) ##
 
 *   Implement Draft Order.
